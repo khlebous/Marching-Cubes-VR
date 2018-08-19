@@ -9,6 +9,9 @@ namespace Assets.marching2.MarchingCubes.PartialMarching
 
     public class SculpturalBlockPartial : MonoBehaviour
     {
+        [SerializeField] private GameObject brush;
+        [SerializeField] private GameObject sphere;
+
         public Material Material;
 
         public Vector3 Size = new Vector3(32, 32, 32);
@@ -37,6 +40,30 @@ namespace Assets.marching2.MarchingCubes.PartialMarching
 
             Initialize();
             UpdateShape();
+
+            var quadmesh = brush.GetComponent<MeshFilter>().mesh;
+            var ver = quadmesh.vertices;
+            for (int i = 0; i < ver.Length; i++)
+            {
+                Debug.Log(i + ": " + ver[i]);
+            }
+
+            SetBrushMesh();
+        }
+
+        private void SetBrushMesh()
+        {
+            float value = Slider.value;// / 2;
+
+            Vector3[] newVert = new Vector3[4];
+            newVert[0] = new Vector3(-value, -value, 0);
+            newVert[1] = new Vector3(value, value, 0);
+            newVert[2] = new Vector3(value, -value, 0);
+            newVert[3] = new Vector3(-value, value, 0);
+            
+            brush.GetComponent<MeshFilter>().mesh.vertices = newVert;
+
+            sphere.transform.localScale = new Vector3(2*value, 2*value, 2*value);
         }
 
         private void Update()
@@ -72,12 +99,16 @@ namespace Assets.marching2.MarchingCubes.PartialMarching
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
             {
                 Slider.value += 0.01f;
+                SetBrushMesh();
+
             }
             else if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger))
             {
                 Slider.value -= 0.01f;
+                SetBrushMesh();
             }
         }
+
 
         public void SetValue(bool value, Vector3 position, float radius)
         {

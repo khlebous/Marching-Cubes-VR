@@ -44,9 +44,7 @@ namespace Assets.marching2.MarchingCubes.PartialMarching
             var quadmesh = brush.GetComponent<MeshFilter>().mesh;
             var ver = quadmesh.vertices;
             for (int i = 0; i < ver.Length; i++)
-            {
                 Debug.Log(i + ": " + ver[i]);
-            }
 
             SetBrushMesh();
         }

@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 1058996051}
   - component: {fileID: 1058996050}
   - component: {fileID: 1058996054}
+  - component: {fileID: 1058996055}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -243,7 +244,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1058996049}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0636c0a3b4e41ac46bb74c7e68f1bae4, type: 3}
   m_Name: 
@@ -251,6 +252,20 @@ MonoBehaviour:
   buttonY: 1
   buttonXZ: 2
   speed: 500
+  bound: 20
+--- !u!114 &1058996055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1058996049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6ab14313cf505341b22d2f169bcef2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonY: 1
+  speed: 10
   bound: 20
 --- !u!1 &1385287522
 GameObject:

@@ -210,7 +210,7 @@ MonoBehaviour:
   HandRight: {fileID: 114000010372160784}
   RecordPackets: 0
   UseSDKPackets: 1
-  StartWithControllers: 0
+  StartWithControllers: 1
   FirstPersonLayer:
     layerIndex: 0
   ThirdPersonLayer:

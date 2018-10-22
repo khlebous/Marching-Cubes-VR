@@ -8,6 +8,8 @@ public class RotationWithOculusTouch : MonoBehaviour
 	[SerializeField] private OVRInput.Button buttonY = OVRInput.Button.One;
 	[Tooltip("Button to rotate around X and Z axis")]
 	[SerializeField] private OVRInput.Button buttonXZ = OVRInput.Button.Two;
+	[Tooltip("Controller to follow")]
+	[SerializeField] private OVRInput.Controller controllerToFollow = OVRInput.Controller.RTouch;
 
 	[Header("Rotatation multipliers")]
 	[SerializeField] private int speed = 500;
@@ -56,7 +58,7 @@ public class RotationWithOculusTouch : MonoBehaviour
 		{
 			if (OVRInput.GetDown(buttonY))
 			{
-				startPosA = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
+				startPosA = OVRInput.GetLocalControllerPosition(controllerToFollow);
 
 				StopCoroutine(buttonA_down);
 				buttonA_up = StartCoroutine(WaitForButtonA_Up());
@@ -70,7 +72,7 @@ public class RotationWithOculusTouch : MonoBehaviour
 	{
 		while (true)
 		{
-			Vector3 currentPos = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
+			Vector3 currentPos = OVRInput.GetLocalControllerPosition(controllerToFollow);
 			Vector3 diff = startPosA - currentPos;
 			startPosA = currentPos;
 			transform.Rotate(new Vector3(0, diff.x * speed, 0), Space.World);
@@ -92,7 +94,7 @@ public class RotationWithOculusTouch : MonoBehaviour
 		{
 			if (OVRInput.GetDown(buttonXZ))
 			{
-				startPosB = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
+				startPosB = OVRInput.GetLocalControllerPosition(controllerToFollow);
 
 				StopCoroutine(buttonB_down);
 				buttonB_up = StartCoroutine(WaitForButtonB_Up());
@@ -106,7 +108,7 @@ public class RotationWithOculusTouch : MonoBehaviour
 	{
 		while (true)
 		{
-			Vector3 currentPos = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
+			Vector3 currentPos = OVRInput.GetLocalControllerPosition(controllerToFollow);
 			Vector3 diff = startPosB - currentPos;
 			startPosB = currentPos;
 			transform.Rotate(new Vector3(-speed * diff.y, 0, 0), Space.World);

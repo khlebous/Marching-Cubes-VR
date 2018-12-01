@@ -12,7 +12,7 @@ using System;
 
 namespace MarchingCubesGPUProject
 {
-    public class MarchingCubesGPUSimple : MonoBehaviour
+    public class TerrainObject : MonoBehaviour
     {
         //The size of the voxel array for each dimension
         const int N = 24;
@@ -96,7 +96,7 @@ namespace MarchingCubesGPUProject
 
                         if (x != 0 && y != 0 && z != 0 && x != N - 1 && y != N - 1 && z != N - 1)
                         {
-                            if (y > 0 && y < 2 && x > 1 && x < 7 && z > 1 && z < 7)
+                            if (y > 0 && y < 2 && x > 1 && x < N && z > 1 && z < N)
                                 data[x + y * N + z * N * N] = 0.51f;
                         }
                     }
@@ -314,7 +314,7 @@ namespace MarchingCubesGPUProject
             for (int i = 0; i < SIZE; i++)
             {
                 //If the marching cubes generated a vert for this index
-                //then the position w value will be 1, not -1.
+                //then the position w value will be not -1.
                 if (verts[i].position.w != -1)
                 {
                     positions.Add(verts[i].position);

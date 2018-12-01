@@ -1,12 +1,11 @@
 ﻿#pragma kernel CSMain
 
-
 int _BrushShape;
-float4 _BrushColor;
 float3 _BrushScale;
 
 float4x4 _FromMcToBrushMatrix;
-RWStructuredBuffer<float4> _VoxelColors;
+float _HeightChange;
+RWStructuredBuffer<float> _Voxels;
 
 float3 _Scale;
 uint _Width, _Height, _Depth;
@@ -21,19 +20,22 @@ float GetDistToBrush(float3 pos) {
 	else {
 		//rectangle
 		float2 closestPointInCuboid = clamp(pos.xz, -0.5, 0.5);
-		return distance(pos.xz, closestPointInCuboid);
+		return distance(pos, closestPointInCuboid);
 	}
 }
 
 [numthreads(8, 1, 8)]
 void CSMain(uint3 id : SV_DispatchThreadID)
 {
-	int idx = id.x + id.z * _Width;
-	float4 rawPosition = float4(id.x * _Scale.x, id.y * _Scale.y, id.z * _Scale.z, 1);
-	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
-	float dist = GetDistToBrush(position.xyz);
+	if (id.x == 0 || id.z == 0 || id.x == _Width - 1 || id.z == _Depth - 1)
+		return;
 
-	if (dist <= 0)
-		_VoxelColors[idx] = _BrushColor;
+	int idx = id.x + id.z * _Width;
+	float3 rawPosition = float3(id.x * _Scale.x, id.x * _Scale.y, id.z * _Scale.z);
+	float3 position = mul(_FromMcToBrushMatrix, float4(rawPosition, 1)).xyz;
+	float dist = GetDistToBrush(position);
+
+	if (dist <= 1) // 1 is cube size
+		_Voxels[idx] = max(2, min(_Voxels[idx] + _HeightChange, _Height - 1)); //2 is min height
 }
 

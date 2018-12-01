@@ -88,7 +88,6 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &5
@@ -197,6 +196,15 @@ Prefab:
     - target: {fileID: 4286503460252976, guid: dba7aa6f7ff36894eb0d2823ed0f5ebb, type: 2}
       propertyPath: m_RootOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200427698222584, guid: dba7aa6f7ff36894eb0d2823ed0f5ebb, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114090845577558942, guid: dba7aa6f7ff36894eb0d2823ed0f5ebb,
+        type: 2}
+      propertyPath: shape
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dba7aa6f7ff36894eb0d2823ed0f5ebb, type: 2}
@@ -724,16 +732,25 @@ Prefab:
       objectReference: {fileID: 144837727}
     - target: {fileID: 4482195925483730, guid: 37daf0f734c63434e8f74c76a590b4ea, type: 2}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4482195925483730, guid: 37daf0f734c63434e8f74c76a590b4ea, type: 2}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4482195925483730, guid: 37daf0f734c63434e8f74c76a590b4ea, type: 2}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1648714995374246, guid: 37daf0f734c63434e8f74c76a590b4ea, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114021563666317528, guid: 37daf0f734c63434e8f74c76a590b4ea,
+        type: 2}
+      propertyPath: m_brushBuffer
+      value: 
+      objectReference: {fileID: 7200000, guid: f354a092d260c9a4e9b9072f0ff17445, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 37daf0f734c63434e8f74c76a590b4ea, type: 2}
   m_IsPrefabParent: 0

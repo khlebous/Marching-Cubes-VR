@@ -295,18 +295,19 @@ namespace MarchingCubesGPUProject
             var mcPosition = Matrix4x4.Translate(-this.transform.position);
             var mcRotation = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation));
             var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(N - 1, 0, N - 1) / 2); // N-1 is triangle number
+            var mcScale = Matrix4x4.Scale(-this.transform.lossyScale);
 
-            var result = mcOffsetTranslation * mcRotation * mcPosition;
+            var result = mcOffsetTranslation * mcRotation * mcPosition * mcScale;
             return result;
-
         }
         private Matrix4x4 GetFromMcMatrix()
         {
+            var mcScale = Matrix4x4.Scale(this.transform.lossyScale);
             var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(-(N - 1), 0, -(N - 1)) / 2);// N-1 is triangle number
             var mcRotation = Matrix4x4.Rotate(this.transform.rotation);
             var mcPosition = Matrix4x4.Translate(this.transform.position);
 
-            var result = mcPosition * mcRotation * mcOffsetTranslation;
+            var result = mcScale * mcPosition * mcRotation * mcOffsetTranslation;
             return result;
         }
 

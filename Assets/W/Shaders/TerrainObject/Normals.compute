@@ -1,0 +1,33 @@
+
+#pragma kernel CSMain
+
+StructuredBuffer<float> _Noise;
+
+RWTexture3D<float3> _Result;
+
+int _Width, _Height, _Depth;
+
+
+[numthreads(8,8,8)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	float dxR = id.x==_Width - 1 ? 0 : _Noise[(id.x+1) + id.y * _Width + id.z * _Width * _Height];
+	float dyR = id.y==_Height - 1 ? 0 : _Noise[id.x + (id.y+1) * _Width + id.z * _Width * _Height];
+	float dzR = id.z==_Depth - 1 ? 0 : _Noise[id.x + id.y * _Width + (id.z+1) * _Width * _Height];
+	
+	
+	float dxL = id.x==0 ? 0 : _Noise[(id.x-1) + id.y * _Width + id.z * _Width * _Height];
+	float dyL = id.y==0 ? 0 : _Noise[id.x + (id.y-1) * _Width + id.z * _Width * _Height];
+	float dzL = id.z==0 ? 0 : _Noise[id.x + id.y * _Width + (id.z-1) * _Width * _Height];
+
+
+	float dx = dxL - dxR;
+	float dy = dyL - dyR;
+	float dz = dzL - dzR;
+	
+	if(dy == 0 && dx == 0 && dz == 0)
+		_Result[id] = float3(0,0,0);
+	else
+		_Result[id] = normalize(float3(dx,dy,dz));
+
+}

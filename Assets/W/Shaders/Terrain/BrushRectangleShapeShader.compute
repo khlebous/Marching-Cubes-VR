@@ -1,0 +1,54 @@
+﻿#pragma kernel CSMain
+
+static float2 zeros = float2(0, 0);
+
+int _BrushMode;
+float4 _BrushColor;
+float2 _BrushRectangleCornerr;
+float4x4 _FromMcToBrushMatrix;
+float _HeightChange;
+
+RWStructuredBuffer<float> _Voxels;
+
+float3 _Scale;
+uint _Width, _Height, _Depth;
+
+//float GetDistToCuboidBrush(float3 pos) {
+//	float3 closestPointInCuboid = float3(clamp(pos, zeros, _BrushCuboidCorner));
+//	return distance(pos, closestPointInCuboid);
+//}
+
+float GetDistToRectangleBrush(float2 pos) {
+	float2 closestPointInRectangle = float2(clamp(pos, zeros, _BrushRectangleCornerr));
+	return distance(pos, closestPointInRectangle);
+}
+
+//void ChangeShape(uint3 id)
+//{
+//	if (id.x == 0 || id.y == 0 || id.z == 0 || id.x == _Width - 1 || id.y == _Height - 1 || id.z == _Depth - 1)
+//		return;
+//
+//	int idx = id.x + id.y * _Width + id.z * _Width * _Height;
+//	float4 rawPosition = float4(id.x * _Scale.x, id.y * _Scale.y, id.z * _Scale.z, 1);
+//	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
+//	float dist = GetDistToCuboidBrush(position.xyz);
+//
+//	if (dist <= 1)
+//		Draw(idx, dist);
+//}
+
+[numthreads(8, 1, 8)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+	if (id.x == 0 || id.z == 0 || id.x == _Width - 1 || id.z == _Depth - 1)
+		return;
+
+	int idx = id.x + id.z * _Width;
+	float3 rawPosition = float3(id.x * _Scale.x, id.x * _Scale.y, id.z * _Scale.z);
+	float2 position = mul(_FromMcToBrushMatrix, float4(rawPosition,1)).xz;
+	float dist = GetDistToRectangleBrush(position);
+
+	if (dist <= 1) // 1 is cube size
+		_Voxels[idx] = max(2, min(_Voxels[idx] + _HeightChange, _Height - 1)); //2 is min height
+}
+

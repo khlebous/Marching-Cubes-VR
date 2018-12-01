@@ -15,7 +15,7 @@ namespace MarchingCubesGPUProject
     public class TerrainObject : MonoBehaviour
     {
         //The size of the voxel array for each dimension
-        const int N = 24;
+        const int N = 16;
         const int meshCount = 20;
 
         //The size of the buffer that holds the verts.
@@ -114,7 +114,7 @@ namespace MarchingCubesGPUProject
                     for (int x = 0; x < N; x++)
                     {
                         data[x + y * N + z * N * N] = new Vector4(0, 0, 1, 1);
-                        if (x>3)
+                        if (x > 3)
                             data[x + y * N + z * N * N] = new Vector4(1, 0, 0, 1);
                     }
 
@@ -178,7 +178,7 @@ namespace MarchingCubesGPUProject
                 CalculateBrushCuboidChanges();
             }
         }
-        private void CalculateBrushSphereChanges()
+        private void CalculateBrushSphereChangesOld()
         {
             m_brushSphereBuffer.SetInt("_Width", N);
             m_brushSphereBuffer.SetInt("_Height", N);
@@ -191,7 +191,7 @@ namespace MarchingCubesGPUProject
 
             var brushPosition = (GetToMcMatrix() * brush.transform.position.ToVector4()).ToVector3();
             m_brushSphereBuffer.SetVector("_BrushPosition", brushPosition);
-            m_brushSphereBuffer.SetFloat("_BrushRange", brush.range);
+            //m_brushSphereBuffer.SetFloat("_BrushRange", brush.range);
 
             m_brushSphereBuffer.SetVector("_BrushColor", brush.color);
             m_brushSphereBuffer.SetInt("_BrushMode", (int)brush.mode);
@@ -199,6 +199,26 @@ namespace MarchingCubesGPUProject
 
             m_brushSphereBuffer.Dispatch(0, N / 8, N / 8, N / 8);
 
+        }
+        private void CalculateBrushSphereChanges()
+        {
+            m_brushCuboidBuffer.SetInt("_Width", N);
+            m_brushCuboidBuffer.SetInt("_Height", N);
+            m_brushCuboidBuffer.SetInt("_Depth", N);
+
+            m_brushCuboidBuffer.SetVector("_Scale", transform.lossyScale);
+            m_brushCuboidBuffer.SetBuffer(0, "_Voxels", m_dataBuffer);
+            m_brushCuboidBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
+
+            m_brushCuboidBuffer.SetVector("_BrushColor", brush.color);
+            m_brushCuboidBuffer.SetInt("_BrushMode", (int)brush.mode);
+
+            var fromMcToBrushMatrix = brush.GetToBrushMatrix() * GetFromMcMatrix();
+            m_brushCuboidBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
+            m_brushCuboidBuffer.SetVector("_BrushScale", brush.transform.lossyScale);
+
+
+            m_brushCuboidBuffer.Dispatch(0, N / 8, N / 8, N / 8);
         }
         private void CalculateBrushCuboidChanges()
         {
@@ -208,17 +228,16 @@ namespace MarchingCubesGPUProject
 
             m_brushCuboidBuffer.SetVector("_Scale", transform.lossyScale);
             m_brushCuboidBuffer.SetBuffer(0, "_Voxels", m_dataBuffer);
-            m_brushSphereBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
-
-            var fromMcToBrushMatrix = brush.GetToBrushMatrix() * GetFromMcMatrix();
-            m_brushCuboidBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
-            m_brushCuboidBuffer.SetVector("_BrushCuboidCorner", new Vector3(brush.width, brush.thickness, brush.length));
+            m_brushCuboidBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
 
             m_brushCuboidBuffer.SetVector("_BrushColor", brush.color);
             m_brushCuboidBuffer.SetInt("_BrushMode", (int)brush.mode);
 
-            m_brushCuboidBuffer.Dispatch(0, N / 8, N / 8, N / 8);
+            var fromMcToBrushMatrix = brush.GetToBrushMatrix() * GetFromMcMatrix();
+            m_brushCuboidBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
+            m_brushCuboidBuffer.SetVector("_BrushScale", brush.transform.lossyScale);
 
+            m_brushCuboidBuffer.Dispatch(0, N / 8, N / 8, N / 8);
         }
         private void CalculateNormals()
         {

@@ -4,7 +4,7 @@ static float3 zeros = float3(0, 0, 0);
 
 int _BrushMode;
 float4 _BrushColor;
-float3 _BrushCuboidCorner;
+float3 _BrushScale;
 float4x4 _FromMcToBrushMatrix;
 
 RWStructuredBuffer<float> _Voxels;
@@ -23,7 +23,8 @@ void Draw(int idx, float distanceToBrush) {
 }
 
 float GetDistToCuboidBrush(float3 pos) {
-	float3 closestPointInCuboid = float3(clamp(pos, zeros, _BrushCuboidCorner));
+	//float3 closestPointInCuboid = float3(clamp(pos, -_BrushScale / 2, _BrushScale / 2));
+	float3 closestPointInCuboid = float3(clamp(pos, -0.5, 0.5));
 	return distance(pos, closestPointInCuboid);
 }
 

@@ -27,8 +27,7 @@ namespace MarchingCubesGPUProject
 
         public Brush brush;
 
-        public ComputeShader m_brushCuboidBuffer;
-        public ComputeShader m_brushSphereBuffer;
+        public ComputeShader m_brushBuffer;
         public ComputeShader m_marchingCubes;
         public ComputeShader m_normals;
         public ComputeShader m_clearBuffer;
@@ -169,75 +168,23 @@ namespace MarchingCubesGPUProject
         }
         private void CalculateChanges()
         {
-            if (brush.shape == BrushShape.Sphere)
-            {
-                CalculateBrushSphereChanges();
-            }
-            else
-            {
-                CalculateBrushCuboidChanges();
-            }
-        }
-        private void CalculateBrushSphereChangesOld()
-        {
-            m_brushSphereBuffer.SetInt("_Width", N);
-            m_brushSphereBuffer.SetInt("_Height", N);
-            m_brushSphereBuffer.SetInt("_Depth", N);
+            m_brushBuffer.SetInt("_Width", N);
+            m_brushBuffer.SetInt("_Height", N);
+            m_brushBuffer.SetInt("_Depth", N);
 
-            m_brushSphereBuffer.SetVector("_Scale", transform.lossyScale);
-            m_brushSphereBuffer.SetBuffer(0, "_Voxels", m_dataBuffer);
-            m_brushSphereBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
+            m_brushBuffer.SetVector("_Scale", transform.lossyScale);
+            m_brushBuffer.SetBuffer(0, "_Voxels", m_dataBuffer);
+            m_brushBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
 
-
-            var brushPosition = (GetToMcMatrix() * brush.transform.position.ToVector4()).ToVector3();
-            m_brushSphereBuffer.SetVector("_BrushPosition", brushPosition);
-            //m_brushSphereBuffer.SetFloat("_BrushRange", brush.range);
-
-            m_brushSphereBuffer.SetVector("_BrushColor", brush.color);
-            m_brushSphereBuffer.SetInt("_BrushMode", (int)brush.mode);
-
-
-            m_brushSphereBuffer.Dispatch(0, N / 8, N / 8, N / 8);
-
-        }
-        private void CalculateBrushSphereChanges()
-        {
-            m_brushCuboidBuffer.SetInt("_Width", N);
-            m_brushCuboidBuffer.SetInt("_Height", N);
-            m_brushCuboidBuffer.SetInt("_Depth", N);
-
-            m_brushCuboidBuffer.SetVector("_Scale", transform.lossyScale);
-            m_brushCuboidBuffer.SetBuffer(0, "_Voxels", m_dataBuffer);
-            m_brushCuboidBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
-
-            m_brushCuboidBuffer.SetVector("_BrushColor", brush.color);
-            m_brushCuboidBuffer.SetInt("_BrushMode", (int)brush.mode);
+            m_brushBuffer.SetVector("_BrushColor", brush.color);
+            m_brushBuffer.SetInt("_BrushMode", (int)brush.mode);
+            m_brushBuffer.SetInt("_BrushShape", (int)brush.shape);
 
             var fromMcToBrushMatrix = brush.GetToBrushMatrix() * GetFromMcMatrix();
-            m_brushCuboidBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
-            m_brushCuboidBuffer.SetVector("_BrushScale", brush.transform.lossyScale);
+            m_brushBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
+            m_brushBuffer.SetVector("_BrushScale", brush.transform.lossyScale);
 
-
-            m_brushCuboidBuffer.Dispatch(0, N / 8, N / 8, N / 8);
-        }
-        private void CalculateBrushCuboidChanges()
-        {
-            m_brushCuboidBuffer.SetInt("_Width", N);
-            m_brushCuboidBuffer.SetInt("_Height", N);
-            m_brushCuboidBuffer.SetInt("_Depth", N);
-
-            m_brushCuboidBuffer.SetVector("_Scale", transform.lossyScale);
-            m_brushCuboidBuffer.SetBuffer(0, "_Voxels", m_dataBuffer);
-            m_brushCuboidBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
-
-            m_brushCuboidBuffer.SetVector("_BrushColor", brush.color);
-            m_brushCuboidBuffer.SetInt("_BrushMode", (int)brush.mode);
-
-            var fromMcToBrushMatrix = brush.GetToBrushMatrix() * GetFromMcMatrix();
-            m_brushCuboidBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
-            m_brushCuboidBuffer.SetVector("_BrushScale", brush.transform.lossyScale);
-
-            m_brushCuboidBuffer.Dispatch(0, N / 8, N / 8, N / 8);
+            m_brushBuffer.Dispatch(0, N / 8, N / 8, N / 8);
         }
         private void CalculateNormals()
         {

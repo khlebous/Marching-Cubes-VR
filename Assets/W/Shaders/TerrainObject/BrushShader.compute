@@ -26,8 +26,7 @@ float GetDistToBrush(float3 pos) {
 
 	if (_BrushShape == 1) {
 		//sphere
-		float3 unscaledPos = float3(pos.x / _BrushScale.x, pos.y / _BrushScale.y, pos.z / _BrushScale.z);
-		return max(0, distance(unscaledPos, 0) - 0.5);
+		return max(0, distance(pos, 0) - 0.5);
 	}
 	else {
 		//cuboid

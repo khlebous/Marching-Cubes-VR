@@ -21,11 +21,6 @@ namespace Assets.MarchingCubesGPU.Scripts
 
     public class TerrainBrush : MonoBehaviour
     {
-        //public float range;
-
-        //public float width;//x
-        //public float length; //z 
-
         public Color color;
 
         public TerrainBrushMode mode = TerrainBrushMode.Change;

@@ -16,7 +16,7 @@ namespace MarchingCubesGPUProject
     public class Terrain : MonoBehaviour
     {
         //The size of the voxel array for each dimension
-        const int N = 8;
+        const int N = 16;
         const int meshCount = 20;
 
         //The size of the buffer that holds the verts.
@@ -226,7 +226,6 @@ namespace MarchingCubesGPUProject
             m_brushColorBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
 
             m_brushColorBuffer.SetInt("_BrushShape", (int)brush.shape);
-            m_brushColorBuffer.SetVector("_BrushScale", brush.transform.lossyScale);
             m_brushColorBuffer.SetVector("_BrushColor", brush.color);
 
             m_brushColorBuffer.Dispatch(0, N / 8, 1, N / 8);
@@ -245,7 +244,6 @@ namespace MarchingCubesGPUProject
             //m_brushRectangleShapeBuffer.SetVector("_BrushRectangleCornerr", new Vector2(brush.width, brush.length));
 
             m_brushShapeBuffer.SetInt("_BrushShape", (int)brush.shape);
-            m_brushShapeBuffer.SetVector("_BrushScale", brush.transform.lossyScale);
             m_brushShapeBuffer.SetFloat("_HeightChange", GetShapingHeight());
 
             m_brushShapeBuffer.Dispatch(0, N / 8, 1, N / 8);

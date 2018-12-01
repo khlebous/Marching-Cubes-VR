@@ -3,7 +3,6 @@
 
 int _BrushShape;
 float4 _BrushColor;
-float3 _BrushScale;
 
 float4x4 _FromMcToBrushMatrix;
 RWStructuredBuffer<float4> _VoxelColors;
@@ -11,17 +10,17 @@ RWStructuredBuffer<float4> _VoxelColors;
 float3 _Scale;
 uint _Width, _Height, _Depth;
 
-float GetDistToBrush(float3 pos) {
+
+float GetDistToBrush(float2 pos) {
 
 	if (_BrushShape == 1) {
 		//wheel
-		float2 unscaledPos = float2(pos.x / _BrushScale.x, pos.z / _BrushScale.z);
-		return max(0, distance(unscaledPos, 0) - 0.5);
+		return max(0, distance(pos, 0) - 0.5);
 	}
 	else {
 		//rectangle
-		float2 closestPointInCuboid = clamp(pos.xz, -0.5, 0.5);
-		return distance(pos.xz, closestPointInCuboid);
+		float2 closestPointInRectangle = clamp(pos, -0.5, 0.5);
+		return distance(pos, closestPointInRectangle);
 	}
 }
 
@@ -31,7 +30,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 	int idx = id.x + id.z * _Width;
 	float4 rawPosition = float4(id.x * _Scale.x, id.y * _Scale.y, id.z * _Scale.z, 1);
 	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
-	float dist = GetDistToBrush(position.xyz);
+	float dist = GetDistToBrush(position.xz);
 
 	if (dist <= 0)
 		_VoxelColors[idx] = _BrushColor;

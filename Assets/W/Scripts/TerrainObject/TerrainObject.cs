@@ -20,6 +20,7 @@ namespace MarchingCubesGPUProject
         const int SIZE = N * N * N * 3 * 5;
 
         public Material m_drawBuffer;
+        public Camera m_Camera;
 
         public Brush brush;
 
@@ -44,6 +45,9 @@ namespace MarchingCubesGPUProject
             //There are 8 threads run per group so N must be divisible by 8.
             if (N % 8 != 0)
                 throw new System.ArgumentException("N must be divisible be 8");
+
+            //Allows this camera to draw mesh procedurally.
+            PostRenderEvent.AddEvent(m_Camera, DrawMesh);
 
             InitMeshes();
 
@@ -150,7 +154,7 @@ namespace MarchingCubesGPUProject
             CalculateNormals();
             CalculateMesh();
 
-            UpdateMeshes();
+            //UpdateMeshes();
         }
 
         private void CleanMeshBuffer()
@@ -212,6 +216,18 @@ namespace MarchingCubesGPUProject
             m_marchingCubes.Dispatch(0, N / 8, N / 8, N / 8);
         }
 
+
+        void DrawMesh(Camera camera)
+        {
+            Debug.Log("qwe");
+            //Since mesh is in a buffer need to use DrawProcedual called from OnPostRender
+            m_drawBuffer.SetBuffer("_Buffer", m_meshBuffer);
+            m_drawBuffer.SetPass(0);
+
+            Graphics.DrawProcedural(MeshTopology.Triangles, SIZE);
+
+        }
+
         private void OnDestroy()
         {
             //MUST release buffers.
@@ -221,6 +237,8 @@ namespace MarchingCubesGPUProject
             m_cubeEdgeFlags.Release();
             m_triangleConnectionTable.Release();
             m_normalsBuffer.Release();
+
+            PostRenderEvent.RemoveEvent(m_Camera, DrawMesh);
         }
 
         //private Matrix4x4 GetToMcMatrix()
@@ -240,7 +258,7 @@ namespace MarchingCubesGPUProject
             var mcRotation = Matrix4x4.Rotate(this.transform.rotation);
             var mcPosition = Matrix4x4.Translate(this.transform.position);
 
-            var result = mcPosition * mcRotation  * mcScale * mcOffsetTranslation;
+            var result = mcPosition * mcRotation * mcScale * mcOffsetTranslation;
             return result;
         }
 

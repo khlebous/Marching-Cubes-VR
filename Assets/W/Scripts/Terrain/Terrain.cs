@@ -289,7 +289,7 @@ namespace MarchingCubesGPUProject
             m_triangleConnectionTable.Release();
             m_normalsBuffer.Release();
         }
-
+        
         private Matrix4x4 GetToMcMatrix()
         {
             var mcPosition = Matrix4x4.Translate(-this.transform.position);
@@ -297,7 +297,7 @@ namespace MarchingCubesGPUProject
             var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(N - 1, 0, N - 1) / 2); // N-1 is triangle number
             var mcScale = Matrix4x4.Scale(-this.transform.lossyScale);
 
-            var result = mcOffsetTranslation * mcRotation * mcPosition * mcScale;
+            var result = mcScale * mcOffsetTranslation * mcRotation * mcPosition;
             return result;
         }
         private Matrix4x4 GetFromMcMatrix()
@@ -307,7 +307,7 @@ namespace MarchingCubesGPUProject
             var mcRotation = Matrix4x4.Rotate(this.transform.rotation);
             var mcPosition = Matrix4x4.Translate(this.transform.position);
 
-            var result = mcScale * mcPosition * mcRotation * mcOffsetTranslation;
+            var result = mcPosition * mcRotation * mcOffsetTranslation * mcScale;
             return result;
         }
 

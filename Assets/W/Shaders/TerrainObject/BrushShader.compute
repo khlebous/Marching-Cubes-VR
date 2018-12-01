@@ -38,7 +38,7 @@ float GetDistToBrush(float3 pos) {
 void ChangeColor(uint3 id)
 {
 	int idx = id.x + id.y * _Width + id.z * _Width * _Height;
-	float4 rawPosition = float4(id.x * _Scale.x, id.y * _Scale.y, id.z * _Scale.z, 1);
+	float4 rawPosition = float4(id, 1);
 	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
 	float dist = GetDistToBrush(position.xyz);
 
@@ -52,7 +52,7 @@ void ChangeShape(uint3 id)
 		return;
 
 	int idx = id.x + id.y * _Width + id.z * _Width * _Height;
-	float4 rawPosition = float4(id.x * _Scale.x, id.y * _Scale.y, id.z * _Scale.z, 1);
+	float4 rawPosition = float4(id, 1);
 	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
 	float dist = GetDistToBrush(position.xyz);
 

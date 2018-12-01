@@ -22,11 +22,6 @@ namespace Assets.MarchingCubesGPU.Scripts
 
     public class Brush : MonoBehaviour
     {
-        public float range;
-
-        public float width;//x
-        public float thickness;//y
-        public float length; //z 
 
         public Color color;
 
@@ -46,18 +41,18 @@ namespace Assets.MarchingCubesGPU.Scripts
         {
             var brushPosition = Matrix4x4.Translate(-this.transform.position);
             var brushRotation = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation));
-            var brushSize = Matrix4x4.Translate(new Vector3(width, thickness, length) / 2);
+            var scale = Matrix4x4.Scale(this.transform.lossyScale).inverse;
 
-            var result = brushSize * brushRotation * brushPosition;
+            var result = scale * brushRotation * brushPosition;
             return result;
         }
         public Matrix4x4 GetFromBrushMatrix()
         {
-            var brushSize = Matrix4x4.Translate(new Vector3(-width, -thickness, -length) / 2);
+            var scale = Matrix4x4.Scale(this.transform.lossyScale);
             var brushRotation = Matrix4x4.Rotate(this.transform.rotation);
             var brushPosition = Matrix4x4.Translate(this.transform.position);
 
-            var result = brushPosition * brushRotation * brushSize;
+            var result = brushPosition * brushRotation * scale;
             return result;
         }
     }

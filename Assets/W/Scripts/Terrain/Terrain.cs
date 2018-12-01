@@ -16,7 +16,7 @@ namespace MarchingCubesGPUProject
     public class Terrain : MonoBehaviour
     {
         //The size of the voxel array for each dimension
-        const int N = 8;
+        const int N = 16;
         const int meshCount = 20;
 
         //The size of the buffer that holds the verts.
@@ -28,10 +28,8 @@ namespace MarchingCubesGPUProject
 
         public TerrainBrush brush;
 
-        public ComputeShader m_brushRectangleColorBuffer;
-        public ComputeShader m_brushRectangleShapeBuffer;
-        public ComputeShader m_brushWheelColorBuffer;
-        public ComputeShader m_brushWheelShapeBuffer;
+        public ComputeShader m_brushColorBuffer;
+        public ComputeShader m_brushShapeBuffer;
         public ComputeShader m_marchingCubes;
         public ComputeShader m_normals;
         public ComputeShader m_clearBuffer;
@@ -207,102 +205,50 @@ namespace MarchingCubesGPUProject
 
             m_clearBuffer.Dispatch(0, N / 8, N / 8, N / 8);
         }
+
         private void CalculateChanges()
         {
             if (brush.mode == TerrainBrushMode.Color)
-            {
-                if (brush.shape == TerrainBrushShape.Wheel)
-                {
-                    CalculateBrushWheelColoring();
-                }
-                else
-                {
-                    CalculateBrushRectangleColoring();
-                }
-            }
+                CalculateColoring();
             else
-            {
-                if (brush.shape == TerrainBrushShape.Wheel)
-                {
-                    CalculateBrushWheelShaping();
-                }
-                else
-                {
-                    CalculateBrushRectangleShaping();
-                }
-            }
+                CalculateShaping();
         }
-        private void CalculateBrushWheelColoring()
+        private void CalculateColoring()
         {
-            m_brushWheelColorBuffer.SetInt("_Width", N);
-            m_brushWheelColorBuffer.SetInt("_Height", N);
-            m_brushWheelColorBuffer.SetInt("_Depth", N);
+            m_brushColorBuffer.SetInt("_Width", N);
+            m_brushColorBuffer.SetInt("_Height", N);
+            m_brushColorBuffer.SetInt("_Depth", N);
 
-            m_brushWheelColorBuffer.SetVector("_Scale", transform.lossyScale);
-            m_brushWheelColorBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
-
-
-            var brushPosition = (GetToMcMatrix() * brush.transform.position.ToVector4()).ToVector3();
-            m_brushWheelColorBuffer.SetVector("_BrushPosition", brushPosition);
-            m_brushWheelColorBuffer.SetFloat("_BrushRange", brush.range);
-
-            m_brushWheelColorBuffer.SetVector("_BrushColor", brush.color);
-
-            m_brushWheelColorBuffer.Dispatch(0, N / 8, 1, N / 8);
-
-        }
-        private void CalculateBrushRectangleColoring()
-        {
-            m_brushRectangleColorBuffer.SetInt("_Width", N);
-            m_brushRectangleColorBuffer.SetInt("_Height", N);
-            m_brushRectangleColorBuffer.SetInt("_Depth", N);
-
-            m_brushRectangleColorBuffer.SetVector("_Scale", transform.lossyScale);
-            m_brushRectangleColorBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
+            m_brushColorBuffer.SetVector("_Scale", transform.lossyScale);
+            m_brushColorBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
 
             var fromMcToBrushMatrix = brush.GetToBrushMatrix(brush.transform.position) * GetFromMcMatrix();
-            m_brushRectangleColorBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
-            m_brushRectangleColorBuffer.SetVector("_BrushRectangleCorner", new Vector2(brush.width, brush.length));
+            m_brushColorBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
 
-            m_brushRectangleColorBuffer.SetVector("_BrushColor", brush.color);
+            m_brushColorBuffer.SetInt("_BrushShape", (int)brush.shape);
+            m_brushColorBuffer.SetVector("_BrushColor", brush.color);
 
-            m_brushRectangleColorBuffer.Dispatch(0, N / 8, 1, N / 8);
-
+            m_brushColorBuffer.Dispatch(0, N / 8, 1, N / 8);
         }
-        private void CalculateBrushWheelShaping()
+        private void CalculateShaping()
         {
-            m_brushWheelShapeBuffer.SetInt("_Width", N);
-            m_brushWheelShapeBuffer.SetInt("_Height", N);
-            m_brushWheelShapeBuffer.SetInt("_Depth", N);
+            m_brushShapeBuffer.SetInt("_Width", N);
+            m_brushShapeBuffer.SetInt("_Height", N);
+            m_brushShapeBuffer.SetInt("_Depth", N);
 
-            m_brushWheelShapeBuffer.SetVector("_Scale", transform.lossyScale);
-            m_brushWheelShapeBuffer.SetBuffer(0, "_Voxels", m_dataBuffer);
-
-            var brushPosition = (GetToMcMatrix() * StartShapingBrushPosition.ToVector4()).ToVector3();
-            m_brushWheelShapeBuffer.SetVector("_BrushPosition", brushPosition);
-            m_brushWheelShapeBuffer.SetFloat("_BrushRange", brush.range);
-
-            m_brushWheelShapeBuffer.SetFloat("_HeightChange", GetShapingHeight());
-
-            m_brushWheelShapeBuffer.Dispatch(0, N / 8, 1, N / 8);
-        }
-        private void CalculateBrushRectangleShaping()
-        {
-            m_brushRectangleShapeBuffer.SetInt("_Width", N);
-            m_brushRectangleShapeBuffer.SetInt("_Height", N);
-            m_brushRectangleShapeBuffer.SetInt("_Depth", N);
-
-            m_brushRectangleShapeBuffer.SetVector("_Scale", transform.lossyScale);
-            m_brushRectangleShapeBuffer.SetBuffer(0, "_Voxels", m_dataBuffer);
+            m_brushShapeBuffer.SetVector("_Scale", transform.lossyScale);
+            m_brushShapeBuffer.SetBuffer(0, "_Voxels", m_dataBuffer);
 
             var fromMcToBrushMatrix = brush.GetToBrushMatrix(StartShapingBrushPosition) * GetFromMcMatrix();
-            m_brushRectangleShapeBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
-            m_brushRectangleShapeBuffer.SetVector("_BrushRectangleCornerr", new Vector2(brush.width, brush.length));
+            m_brushShapeBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
+            //m_brushRectangleShapeBuffer.SetVector("_BrushRectangleCornerr", new Vector2(brush.width, brush.length));
 
-            m_brushRectangleShapeBuffer.SetFloat("_HeightChange", GetShapingHeight());
+            m_brushShapeBuffer.SetInt("_BrushShape", (int)brush.shape);
+            m_brushShapeBuffer.SetFloat("_HeightChange", GetShapingHeight());
 
-            m_brushRectangleShapeBuffer.Dispatch(0, N / 8, 1, N / 8);
+            m_brushShapeBuffer.Dispatch(0, N / 8, 1, N / 8);
         }
+
         private void CalculateNormals()
         {
             m_normals.SetInt("_Width", N);
@@ -343,24 +289,25 @@ namespace MarchingCubesGPUProject
             m_triangleConnectionTable.Release();
             m_normalsBuffer.Release();
         }
-
+        
         private Matrix4x4 GetToMcMatrix()
         {
             var mcPosition = Matrix4x4.Translate(-this.transform.position);
             var mcRotation = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation));
             var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(N - 1, 0, N - 1) / 2); // N-1 is triangle number
+            var mcScale = Matrix4x4.Scale(-this.transform.lossyScale);
 
-            var result = mcOffsetTranslation * mcRotation * mcPosition;
+            var result = mcScale * mcOffsetTranslation * mcRotation * mcPosition;
             return result;
-
         }
         private Matrix4x4 GetFromMcMatrix()
         {
+            var mcScale = Matrix4x4.Scale(this.transform.lossyScale);
             var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(-(N - 1), 0, -(N - 1)) / 2);// N-1 is triangle number
             var mcRotation = Matrix4x4.Rotate(this.transform.rotation);
             var mcPosition = Matrix4x4.Translate(this.transform.position);
 
-            var result = mcPosition * mcRotation * mcOffsetTranslation;
+            var result = mcPosition * mcRotation * mcOffsetTranslation * mcScale;
             return result;
         }
 

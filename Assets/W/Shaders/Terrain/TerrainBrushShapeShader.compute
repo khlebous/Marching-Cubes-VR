@@ -1,0 +1,39 @@
+﻿#pragma kernel CSMain
+
+int _BrushShape;
+
+float4x4 _FromMcToBrushMatrix;
+float _HeightChange;
+RWStructuredBuffer<float> _Voxels;
+
+float3 _Scale;
+uint _Width, _Height, _Depth;
+
+float GetDistToBrush(float2 pos) {
+
+	if (_BrushShape == 1) {
+		//wheel
+		return max(0, distance(pos, 0) - 0.5);
+	}
+	else {
+		//rectangle
+		float2 closestPointInRectangle = clamp(pos, -0.5, 0.5);
+		return distance(pos, closestPointInRectangle);
+	}
+}
+
+[numthreads(8, 1, 8)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+	if (id.x == 0 || id.z == 0 || id.x == _Width - 1 || id.z == _Depth - 1)
+		return;
+
+	int idx = id.x + id.z * _Width;
+	float4 rawPosition = float4(id, 1);
+	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
+	float dist = GetDistToBrush(position.xz);
+
+	if (dist <= 1) // 1 is cube size
+		_Voxels[idx] = max(2, min(_Voxels[idx] + _HeightChange, _Height - 1)); //2 is min height
+}
+

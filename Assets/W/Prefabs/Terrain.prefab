@@ -9,17 +9,17 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1114578052120020}
+  m_RootGameObject: {fileID: 1793658070833782}
   m_IsPrefabParent: 1
---- !u!1 &1114578052120020
+--- !u!1 &1793658070833782
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4261816934219876}
-  - component: {fileID: 114273401398625300}
+  - component: {fileID: 4950746919767436}
+  - component: {fileID: 114716906415070472}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -27,12 +27,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4261816934219876
+--- !u!4 &4950746919767436
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1114578052120020}
+  m_GameObject: {fileID: 1793658070833782}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,12 +40,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114273401398625300
+--- !u!114 &114716906415070472
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1114578052120020}
+  m_GameObject: {fileID: 1793658070833782}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2680d413d518e442b17028ab79db8da, type: 3}
@@ -53,14 +53,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_drawBuffer: {fileID: 2100000, guid: eb1c8c9ad529a2645bb84c55c0b78513, type: 2}
   brush: {fileID: 0}
-  m_brushRectangleColorBuffer: {fileID: 7200000, guid: 61ac53158a236284aa73ce4b2e4fec87,
-    type: 3}
-  m_brushRectangleShapeBuffer: {fileID: 7200000, guid: ed459d13947a75e469d5784c72165e70,
-    type: 3}
-  m_brushWheelColorBuffer: {fileID: 7200000, guid: 7f247bb4561299d46a39dd74a4344dd3,
-    type: 3}
-  m_brushWheelShapeBuffer: {fileID: 7200000, guid: 08087e48f0282644685a6b9b61c39fe7,
-    type: 3}
+  m_brushColorBuffer: {fileID: 7200000, guid: 61ac53158a236284aa73ce4b2e4fec87, type: 3}
+  m_brushShapeBuffer: {fileID: 7200000, guid: ed459d13947a75e469d5784c72165e70, type: 3}
   m_marchingCubes: {fileID: 7200000, guid: c55e30a151f4e45408487fc525630346, type: 3}
   m_normals: {fileID: 7200000, guid: f9fdee0c5e89d4843b3e139b010ac71d, type: 3}
   m_clearBuffer: {fileID: 7200000, guid: c01c61315f4438e489dca09da4ab47dc, type: 3}

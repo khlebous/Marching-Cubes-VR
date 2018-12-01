@@ -29,7 +29,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 		return;
 
 	int idx = id.x + id.z * _Width;
-	float4 rawPosition = float4(id.x * _Scale.x, id.x * _Scale.y, id.z * _Scale.z, 1);
+	float4 rawPosition = float4(id, 1);
 	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
 	float dist = GetDistToBrush(position.xz);
 

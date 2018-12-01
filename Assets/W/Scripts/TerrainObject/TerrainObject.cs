@@ -180,6 +180,7 @@ namespace MarchingCubesGPUProject
             m_brushBuffer.SetInt("_BrushMode", (int)brush.mode);
             m_brushBuffer.SetInt("_BrushShape", (int)brush.shape);
 
+            Debug.Log(GetFromMcMatrix() * (new Vector4(30, 30, 0, 1)));
             var fromMcToBrushMatrix = brush.GetToBrushMatrix() * GetFromMcMatrix();
             m_brushBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
             m_brushBuffer.SetVector("_BrushScale", brush.transform.lossyScale);
@@ -231,22 +232,20 @@ namespace MarchingCubesGPUProject
         {
             var mcPosition = Matrix4x4.Translate(-this.transform.position);
             var mcRotation = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation));
-            var mcOffsetTranslation =  Matrix4x4.Translate(new Vector3(N - 1, 0, N - 1) / 2); // N-1 is triangle number
-            //var mcOffsetTranslation = Matrix4x4.identity;// Matrix4x4.Translate(new Vector3(N - 1, 0, N - 1) / 2); // N-1 is triangle number
-            var mcScale = Matrix4x4.Scale(-this.transform.lossyScale).inverse;
+            var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(N - 1, 0, N - 1) / 2); // N-1 is triangle number
+            var mcScale = Matrix4x4.Scale(-this.transform.lossyScale);
 
             var result = mcScale * mcOffsetTranslation * mcRotation * mcPosition;
             return result;
         }
         private Matrix4x4 GetFromMcMatrix()
         {
-            var mcScale = Matrix4x4.Scale(this.transform.lossyScale);
             var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(-(N - 1), 0, -(N - 1)) / 2);// N-1 is triangle number
-            //var mcOffsetTranslation = Matrix4x4.identity;//Matrix4x4.Translate(new Vector3(-(N - 1), 0, -(N - 1)) / 2);// N-1 is triangle number
+            var mcScale = Matrix4x4.Scale(this.transform.lossyScale);
             var mcRotation = Matrix4x4.Rotate(this.transform.rotation);
             var mcPosition = Matrix4x4.Translate(this.transform.position);
 
-            var result = mcPosition * mcRotation * mcOffsetTranslation * mcScale;
+            var result = mcPosition * mcRotation  * mcScale * mcOffsetTranslation;
             return result;
         }
 

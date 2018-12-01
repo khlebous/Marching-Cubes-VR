@@ -28,9 +28,8 @@ namespace MarchingCubesGPUProject
 
         public TerrainBrush brush;
 
-        public ComputeShader m_brushRectangleColorBuffer;
+        public ComputeShader m_brushColorBuffer;
         public ComputeShader m_brushRectangleShapeBuffer;
-        public ComputeShader m_brushWheelColorBuffer;
         public ComputeShader m_brushWheelShapeBuffer;
         public ComputeShader m_marchingCubes;
         public ComputeShader m_normals;
@@ -210,16 +209,7 @@ namespace MarchingCubesGPUProject
         private void CalculateChanges()
         {
             if (brush.mode == TerrainBrushMode.Color)
-            {
-                if (brush.shape == TerrainBrushShape.Wheel)
-                {
-                    CalculateBrushWheelColoring();
-                }
-                else
-                {
-                    CalculateBrushRectangleColoring();
-                }
-            }
+                    CalculateBrushColoring();
             else
             {
                 if (brush.shape == TerrainBrushShape.Wheel)
@@ -232,41 +222,23 @@ namespace MarchingCubesGPUProject
                 }
             }
         }
-        private void CalculateBrushWheelColoring()
+        private void CalculateBrushColoring()
         {
-            m_brushWheelColorBuffer.SetInt("_Width", N);
-            m_brushWheelColorBuffer.SetInt("_Height", N);
-            m_brushWheelColorBuffer.SetInt("_Depth", N);
+            m_brushColorBuffer.SetInt("_Width", N);
+            m_brushColorBuffer.SetInt("_Height", N);
+            m_brushColorBuffer.SetInt("_Depth", N);
 
-            m_brushWheelColorBuffer.SetVector("_Scale", transform.lossyScale);
-            m_brushWheelColorBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
-
-
-            var brushPosition = (GetToMcMatrix() * brush.transform.position.ToVector4()).ToVector3();
-            m_brushWheelColorBuffer.SetVector("_BrushPosition", brushPosition);
-            m_brushWheelColorBuffer.SetFloat("_BrushRange", brush.range);
-
-            m_brushWheelColorBuffer.SetVector("_BrushColor", brush.color);
-
-            m_brushWheelColorBuffer.Dispatch(0, N / 8, 1, N / 8);
-
-        }
-        private void CalculateBrushRectangleColoring()
-        {
-            m_brushRectangleColorBuffer.SetInt("_Width", N);
-            m_brushRectangleColorBuffer.SetInt("_Height", N);
-            m_brushRectangleColorBuffer.SetInt("_Depth", N);
-
-            m_brushRectangleColorBuffer.SetVector("_Scale", transform.lossyScale);
-            m_brushRectangleColorBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
+            m_brushColorBuffer.SetVector("_Scale", transform.lossyScale);
+            m_brushColorBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
 
             var fromMcToBrushMatrix = brush.GetToBrushMatrix(brush.transform.position) * GetFromMcMatrix();
-            m_brushRectangleColorBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
-            m_brushRectangleColorBuffer.SetVector("_BrushRectangleCorner", new Vector2(brush.width, brush.length));
+            m_brushColorBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
 
-            m_brushRectangleColorBuffer.SetVector("_BrushColor", brush.color);
+            m_brushColorBuffer.SetVector("_BrushColor", brush.color);
+            m_brushColorBuffer.SetInt("_BrushShape", (int)brush.shape);
+            m_brushColorBuffer.SetVector("_BrushScale", brush.transform.lossyScale);
 
-            m_brushRectangleColorBuffer.Dispatch(0, N / 8, 1, N / 8);
+            m_brushColorBuffer.Dispatch(0, N / 8, 1, N / 8);
 
         }
         private void CalculateBrushWheelShaping()
@@ -280,7 +252,7 @@ namespace MarchingCubesGPUProject
 
             var brushPosition = (GetToMcMatrix() * StartShapingBrushPosition.ToVector4()).ToVector3();
             m_brushWheelShapeBuffer.SetVector("_BrushPosition", brushPosition);
-            m_brushWheelShapeBuffer.SetFloat("_BrushRange", brush.range);
+            //m_brushWheelShapeBuffer.SetFloat("_BrushRange", brush.range);
 
             m_brushWheelShapeBuffer.SetFloat("_HeightChange", GetShapingHeight());
 
@@ -297,7 +269,7 @@ namespace MarchingCubesGPUProject
 
             var fromMcToBrushMatrix = brush.GetToBrushMatrix(StartShapingBrushPosition) * GetFromMcMatrix();
             m_brushRectangleShapeBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
-            m_brushRectangleShapeBuffer.SetVector("_BrushRectangleCornerr", new Vector2(brush.width, brush.length));
+            //m_brushRectangleShapeBuffer.SetVector("_BrushRectangleCornerr", new Vector2(brush.width, brush.length));
 
             m_brushRectangleShapeBuffer.SetFloat("_HeightChange", GetShapingHeight());
 

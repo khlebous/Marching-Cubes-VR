@@ -1,9 +1,10 @@
 ﻿#pragma kernel CSMain
 
-static float2 zeros = float2(0, 0);
 
+int _BrushShape;
 float4 _BrushColor;
-float2 _BrushRectangleCorner;
+float3 _BrushScale;
+
 float4x4 _FromMcToBrushMatrix;
 
 RWStructuredBuffer<float4> _VoxelColors;
@@ -11,9 +12,18 @@ RWStructuredBuffer<float4> _VoxelColors;
 float3 _Scale;
 uint _Width, _Height, _Depth;
 
-float GetDistToRectangleBrush(float2 pos) {
-	float2 closestPointInRectangle = float2(clamp(pos, zeros, _BrushRectangleCorner));
-	return distance(pos, closestPointInRectangle);
+float GetDistToBrush(float3 pos) {
+
+	if (_BrushShape == 1) {
+		//sphere
+		float2 unscaledPos = float2(pos.x / _BrushScale.x, pos.z / _BrushScale.z);
+		return max(0, distance(unscaledPos, 0) - 0.5);
+	}
+	else {
+		//cuboid
+		float2 closestPointInCuboid = clamp(pos.xz, -0.5, 0.5);
+		return distance(pos, closestPointInCuboid);
+	}
 }
 
 [numthreads(8, 1, 8)]
@@ -22,7 +32,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 	int idx = id.x + id.z * _Width;
 	float4 rawPosition = float4(id.x * _Scale.x, id.y * _Scale.y, id.z * _Scale.z, 1);
 	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
-	float dist = GetDistToRectangleBrush(position.xz);
+	float dist = GetDistToBrush(position.xyz);
 
 	if (dist <= 0)
 		_VoxelColors[idx] = _BrushColor;

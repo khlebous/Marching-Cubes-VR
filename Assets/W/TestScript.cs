@@ -20,8 +20,8 @@ public class TestScript : MonoBehaviour
 		//var dt = Time.deltaTime;
 		//terrain.brush.transform.position += new Vector3(0.0f, 0.3f, 0.0f) * dt;1
 
-		transform.position = template.position;
-		Debug.Log(template.position);
+		//transform.position = template.position;
+		//Debug.Log(template.position);
 		//transform.rotation = template.rotation;
 
 	}

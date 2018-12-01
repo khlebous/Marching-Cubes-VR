@@ -1,10 +1,10 @@
 ﻿#pragma kernel CSMain
 
-static float3 zeros = float3(0, 0, 0);
-
 int _BrushMode;
+int _BrushShape;
 float4 _BrushColor;
-float3 _BrushCuboidCorner;
+float3 _BrushScale;
+
 float4x4 _FromMcToBrushMatrix;
 
 RWStructuredBuffer<float> _Voxels;
@@ -22,17 +22,25 @@ void Draw(int idx, float distanceToBrush) {
 		_Voxels[idx] = max(_Voxels[idx], 1 - distanceToBrush);
 }
 
-float GetDistToCuboidBrush(float3 pos) {
-	float3 closestPointInCuboid = float3(clamp(pos, zeros, _BrushCuboidCorner));
-	return distance(pos, closestPointInCuboid);
+float GetDistToBrush(float3 pos) {
+
+	if (_BrushShape == 1) {
+		//sphere
+		return max(0, distance(pos, 0) - 0.5);
+	}
+	else {
+		//cuboid
+		float3 closestPointInCuboid = float3(clamp(pos, -0.5, 0.5));
+		return distance(pos, closestPointInCuboid);
+	}
 }
 
 void ChangeColor(uint3 id)
 {
 	int idx = id.x + id.y * _Width + id.z * _Width * _Height;
-	float4 rawPosition = float4(id.x * _Scale.x, id.y * _Scale.y, id.z * _Scale.z, 1);
+	float4 rawPosition = float4(id, 1);
 	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
-	float dist = GetDistToCuboidBrush(position.xyz);
+	float dist = GetDistToBrush(position.xyz);
 
 	if (dist <= 0)
 		_VoxelColors[idx] = _BrushColor;
@@ -44,9 +52,9 @@ void ChangeShape(uint3 id)
 		return;
 
 	int idx = id.x + id.y * _Width + id.z * _Width * _Height;
-	float4 rawPosition = float4(id.x * _Scale.x, id.y * _Scale.y, id.z * _Scale.z, 1);
+	float4 rawPosition = float4(id, 1);
 	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
-	float dist = GetDistToCuboidBrush(position.xyz);
+	float dist = GetDistToBrush(position.xyz);
 
 	if (dist <= 1)
 		Draw(idx, dist);
@@ -57,7 +65,6 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 {
 	if (_BrushMode == 0)
 		return;
-
 
 	if (_BrushMode == 3)
 		ChangeColor(id);

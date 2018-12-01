@@ -12,10 +12,10 @@ using System;
 
 namespace MarchingCubesGPUProject
 {
-    public class MarchingCubesGPUSimple : MonoBehaviour
+    public class TerrainObject : MonoBehaviour
     {
         //The size of the voxel array for each dimension
-        const int N = 24;
+        const int N = 16;
         const int meshCount = 20;
 
         //The size of the buffer that holds the verts.
@@ -27,8 +27,7 @@ namespace MarchingCubesGPUProject
 
         public Brush brush;
 
-        public ComputeShader m_brushCuboidBuffer;
-        public ComputeShader m_brushSphereBuffer;
+        public ComputeShader m_brushBuffer;
         public ComputeShader m_marchingCubes;
         public ComputeShader m_normals;
         public ComputeShader m_clearBuffer;
@@ -96,7 +95,7 @@ namespace MarchingCubesGPUProject
 
                         if (x != 0 && y != 0 && z != 0 && x != N - 1 && y != N - 1 && z != N - 1)
                         {
-                            if (y > 0 && y < 2 && x > 1 && x < 7 && z > 1 && z < 7)
+                            if (y > 0 && y < 2 && x > 1 && x < N && z > 1 && z < N)
                                 data[x + y * N + z * N * N] = 0.51f;
                         }
                     }
@@ -114,7 +113,7 @@ namespace MarchingCubesGPUProject
                     for (int x = 0; x < N; x++)
                     {
                         data[x + y * N + z * N * N] = new Vector4(0, 0, 1, 1);
-                        if (x>3)
+                        if (x > 3)
                             data[x + y * N + z * N * N] = new Vector4(1, 0, 0, 1);
                     }
 
@@ -169,56 +168,24 @@ namespace MarchingCubesGPUProject
         }
         private void CalculateChanges()
         {
-            if (brush.shape == BrushShape.Sphere)
-            {
-                CalculateBrushSphereChanges();
-            }
-            else
-            {
-                CalculateBrushCuboidChanges();
-            }
-        }
-        private void CalculateBrushSphereChanges()
-        {
-            m_brushSphereBuffer.SetInt("_Width", N);
-            m_brushSphereBuffer.SetInt("_Height", N);
-            m_brushSphereBuffer.SetInt("_Depth", N);
+            m_brushBuffer.SetInt("_Width", N);
+            m_brushBuffer.SetInt("_Height", N);
+            m_brushBuffer.SetInt("_Depth", N);
 
-            m_brushSphereBuffer.SetVector("_Scale", transform.lossyScale);
-            m_brushSphereBuffer.SetBuffer(0, "_Voxels", m_dataBuffer);
-            m_brushSphereBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
+            m_brushBuffer.SetVector("_Scale", transform.lossyScale);
+            m_brushBuffer.SetBuffer(0, "_Voxels", m_dataBuffer);
+            m_brushBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
 
+            m_brushBuffer.SetVector("_BrushColor", brush.color);
+            m_brushBuffer.SetInt("_BrushMode", (int)brush.mode);
+            m_brushBuffer.SetInt("_BrushShape", (int)brush.shape);
 
-            var brushPosition = (GetToMcMatrix() * brush.transform.position.ToVector4()).ToVector3();
-            m_brushSphereBuffer.SetVector("_BrushPosition", brushPosition);
-            m_brushSphereBuffer.SetFloat("_BrushRange", brush.range);
-
-            m_brushSphereBuffer.SetVector("_BrushColor", brush.color);
-            m_brushSphereBuffer.SetInt("_BrushMode", (int)brush.mode);
-
-
-            m_brushSphereBuffer.Dispatch(0, N / 8, N / 8, N / 8);
-
-        }
-        private void CalculateBrushCuboidChanges()
-        {
-            m_brushCuboidBuffer.SetInt("_Width", N);
-            m_brushCuboidBuffer.SetInt("_Height", N);
-            m_brushCuboidBuffer.SetInt("_Depth", N);
-
-            m_brushCuboidBuffer.SetVector("_Scale", transform.lossyScale);
-            m_brushCuboidBuffer.SetBuffer(0, "_Voxels", m_dataBuffer);
-            m_brushSphereBuffer.SetBuffer(0, "_VoxelColors", m_dataColorBuffer);
-
+            Debug.Log(GetFromMcMatrix() * (new Vector4(30, 30, 0, 1)));
             var fromMcToBrushMatrix = brush.GetToBrushMatrix() * GetFromMcMatrix();
-            m_brushCuboidBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
-            m_brushCuboidBuffer.SetVector("_BrushCuboidCorner", new Vector3(brush.width, brush.thickness, brush.length));
+            m_brushBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
+            m_brushBuffer.SetVector("_BrushScale", brush.transform.lossyScale);
 
-            m_brushCuboidBuffer.SetVector("_BrushColor", brush.color);
-            m_brushCuboidBuffer.SetInt("_BrushMode", (int)brush.mode);
-
-            m_brushCuboidBuffer.Dispatch(0, N / 8, N / 8, N / 8);
-
+            m_brushBuffer.Dispatch(0, N / 8, N / 8, N / 8);
         }
         private void CalculateNormals()
         {
@@ -266,18 +233,19 @@ namespace MarchingCubesGPUProject
             var mcPosition = Matrix4x4.Translate(-this.transform.position);
             var mcRotation = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation));
             var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(N - 1, 0, N - 1) / 2); // N-1 is triangle number
+            var mcScale = Matrix4x4.Scale(-this.transform.lossyScale);
 
-            var result = mcOffsetTranslation * mcRotation * mcPosition;
+            var result = mcScale * mcOffsetTranslation * mcRotation * mcPosition;
             return result;
-
         }
         private Matrix4x4 GetFromMcMatrix()
         {
             var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(-(N - 1), 0, -(N - 1)) / 2);// N-1 is triangle number
+            var mcScale = Matrix4x4.Scale(this.transform.lossyScale);
             var mcRotation = Matrix4x4.Rotate(this.transform.rotation);
             var mcPosition = Matrix4x4.Translate(this.transform.position);
 
-            var result = mcPosition * mcRotation * mcOffsetTranslation;
+            var result = mcPosition * mcRotation  * mcScale * mcOffsetTranslation;
             return result;
         }
 
@@ -314,7 +282,7 @@ namespace MarchingCubesGPUProject
             for (int i = 0; i < SIZE; i++)
             {
                 //If the marching cubes generated a vert for this index
-                //then the position w value will be 1, not -1.
+                //then the position w value will be not -1.
                 if (verts[i].position.w != -1)
                 {
                     positions.Add(verts[i].position);

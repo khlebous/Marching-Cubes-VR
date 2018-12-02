@@ -60,9 +60,9 @@ namespace MarchingCubesGPUProject
 
             InitMarchingCubesTablesBuffors();
 
-            //test
-            StartShaping();
-        }
+			//test
+			//StartShaping();
+		}
 
         private void InitMeshes()
         {
@@ -172,7 +172,10 @@ namespace MarchingCubesGPUProject
             var changeVector = Vector3.Project(diff, mcUp);
             var changeHeight = changeVector.y;
 
-            return changeHeight;
+			LastShapingBrushPosition = brush.transform.position;
+
+
+			return changeHeight;
         }
 
         private void Update()

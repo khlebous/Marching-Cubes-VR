@@ -1,14 +1,10 @@
 using UnityEngine;
 using UnityEngine.Rendering;
-using System.Collections;
 
 #pragma warning disable 162
 
 using System.Collections.Generic;
-using System.Linq;
 using Assets.MarchingCubesGPU.Scripts;
-using System.Runtime.InteropServices;
-using System;
 
 namespace MarchingCubesGPUProject
 {
@@ -180,7 +176,6 @@ namespace MarchingCubesGPUProject
             m_brushBuffer.SetInt("_BrushMode", (int)brush.mode);
             m_brushBuffer.SetInt("_BrushShape", (int)brush.shape);
 
-            Debug.Log(GetFromMcMatrix() * (new Vector4(30, 30, 0, 1)));
             var fromMcToBrushMatrix = brush.GetToBrushMatrix() * GetFromMcMatrix();
             m_brushBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
             m_brushBuffer.SetVector("_BrushScale", brush.transform.lossyScale);

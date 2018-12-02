@@ -60,9 +60,9 @@ namespace MarchingCubesGPUProject
 
             InitMarchingCubesTablesBuffors();
 
-			//test
-			//StartShaping();
-		}
+            //test
+            StartShaping();
+        }
 
         private void InitMeshes()
         {
@@ -172,10 +172,7 @@ namespace MarchingCubesGPUProject
             var changeVector = Vector3.Project(diff, mcUp);
             var changeHeight = changeVector.y;
 
-			LastShapingBrushPosition = brush.transform.position;
-
-
-			return changeHeight;
+            return changeHeight;
         }
 
         private void Update()
@@ -244,7 +241,6 @@ namespace MarchingCubesGPUProject
 
             var fromMcToBrushMatrix = brush.GetToBrushMatrix(StartShapingBrushPosition) * GetFromMcMatrix();
             m_brushShapeBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
-            //m_brushRectangleShapeBuffer.SetVector("_BrushRectangleCornerr", new Vector2(brush.width, brush.length));
 
             m_brushShapeBuffer.SetInt("_BrushShape", (int)brush.shape);
             m_brushShapeBuffer.SetFloat("_HeightChange", GetShapingHeight());
@@ -292,25 +288,25 @@ namespace MarchingCubesGPUProject
             m_triangleConnectionTable.Release();
             m_normalsBuffer.Release();
         }
-        
-        private Matrix4x4 GetToMcMatrix()
-        {
-            var mcPosition = Matrix4x4.Translate(-this.transform.position);
-            var mcRotation = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation));
-            var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(N - 1, 0, N - 1) / 2); // N-1 is triangle number
-            var mcScale = Matrix4x4.Scale(-this.transform.lossyScale);
 
-            var result = mcScale * mcOffsetTranslation * mcRotation * mcPosition;
-            return result;
-        }
+        //private Matrix4x4 GetToMcMatrix()
+        //{
+        //    var mcPosition = Matrix4x4.Translate(-this.transform.position);
+        //    var mcRotation = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation));
+        //    var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(N - 1, 0, N - 1) / 2); // N-1 is triangle number
+        //    var mcScale = Matrix4x4.Scale(this.transform.lossyScale).inverse;
+
+        //    var result = mcScale * mcOffsetTranslation * mcRotation * mcPosition;
+        //    return result;
+        //}
         private Matrix4x4 GetFromMcMatrix()
         {
-            var mcScale = Matrix4x4.Scale(this.transform.lossyScale);
             var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(-(N - 1), 0, -(N - 1)) / 2);// N-1 is triangle number
+            var mcScale = Matrix4x4.Scale(this.transform.lossyScale);
             var mcRotation = Matrix4x4.Rotate(this.transform.rotation);
             var mcPosition = Matrix4x4.Translate(this.transform.position);
 
-            var result = mcPosition * mcRotation * mcOffsetTranslation * mcScale;
+            var result = mcPosition * mcRotation * mcScale * mcOffsetTranslation;
             return result;
         }
 

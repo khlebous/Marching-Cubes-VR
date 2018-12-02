@@ -154,7 +154,7 @@ namespace MarchingCubesGPUProject
             CalculateNormals();
             CalculateMesh();
 
-            //UpdateMeshes();
+          //UpdateMeshes();
         }
 
         private void CleanMeshBuffer()
@@ -219,7 +219,6 @@ namespace MarchingCubesGPUProject
 
         void DrawMesh(Camera camera)
         {
-            Debug.Log("qwe");
             //Since mesh is in a buffer need to use DrawProcedual called from OnPostRender
             m_drawBuffer.SetBuffer("_Buffer", m_meshBuffer);
             m_drawBuffer.SetPass(0);

@@ -223,16 +223,16 @@ namespace MarchingCubesGPUProject
             m_normalsBuffer.Release();
         }
 
-        private Matrix4x4 GetToMcMatrix()
-        {
-            var mcPosition = Matrix4x4.Translate(-this.transform.position);
-            var mcRotation = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation));
-            var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(N - 1, 0, N - 1) / 2); // N-1 is triangle number
-            var mcScale = Matrix4x4.Scale(-this.transform.lossyScale);
+        //private Matrix4x4 GetToMcMatrix()
+        //{
+        //    var mcPosition = Matrix4x4.Translate(-this.transform.position);
+        //    var mcRotation = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation));
+        //    var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(N - 1, 0, N - 1) / 2); // N-1 is triangle number
+        //    var mcScale = Matrix4x4.Scale(this.transform.lossyScale).inverse;
 
-            var result = mcScale * mcOffsetTranslation * mcRotation * mcPosition;
-            return result;
-        }
+        //    var result = mcScale * mcOffsetTranslation * mcRotation * mcPosition;
+        //    return result;
+        //}
         private Matrix4x4 GetFromMcMatrix()
         {
             var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(-(N - 1), 0, -(N - 1)) / 2);// N-1 is triangle number

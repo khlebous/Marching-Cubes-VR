@@ -11,7 +11,7 @@ namespace MarchingCubesGPUProject
     public class TerrainObject : MonoBehaviour
     {
         //The size of the voxel array for each dimension
-        const int N = 16;
+        const int N = 24;
         const int meshCount = 20;
 
         //The size of the buffer that holds the verts.

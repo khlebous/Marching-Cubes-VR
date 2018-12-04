@@ -16,7 +16,7 @@ namespace MarchingCubesGPUProject
     public class Terrain : MonoBehaviour
     {
         //The size of the voxel array for each dimension
-        const int N = 16;
+        const int N = 32;
         const int meshCount = 20;
 
         //The size of the buffer that holds the verts.
@@ -61,7 +61,7 @@ namespace MarchingCubesGPUProject
             InitMarchingCubesTablesBuffors();
 
             //test
-            StartShaping();
+            //StartShaping();
         }
 
         private void InitMeshes()
@@ -172,13 +172,14 @@ namespace MarchingCubesGPUProject
             var changeVector = Vector3.Project(diff, mcUp);
             var changeHeight = changeVector.y;
 
-            return changeHeight;
+            return changeHeight / this.transform.lossyScale.y;
         }
 
         private void Update()
         {
             if (brush.mode != TerrainBrushMode.Inactive)
             {
+
                 UpdateBrushRotation();
                 CleanMeshBuffer();
                 CalculateChanges();

@@ -10,7 +10,7 @@ public class MovementWithOculusTouch : MonoBehaviour
 	[SerializeField] private OVRInput.Controller controllerToFollow = OVRInput.Controller.LTouch;
 
 	[Header("Rotatation multipliers")]
-	[SerializeField] private int speed = 500;
+	[SerializeField] private int speed = 10;
 	[SerializeField] private int bound = 20;
 
 	private new Transform transform;

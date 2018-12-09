@@ -96,7 +96,7 @@ namespace MarchingCubesGPUProject
                         if (x != 0 && y != 0 && z != 0 && x != N - 1 && y != N - 1 && z != N - 1)
                         {
                             if (y > 0 && y < 2 && x > 1 && x < N && z > 1 && z < N)
-                                data[x + y * N + z * N * N] = 0.51f;
+                                data[x + y * N + z * N * N] = 1.0f;
                         }
                     }
 

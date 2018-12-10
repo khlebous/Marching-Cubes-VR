@@ -1,10 +1,12 @@
 ﻿#pragma kernel CSMain
 
 int _BrushShape;
+int _BrushMode;
 
 float4x4 _FromMcToBrushMatrix;
 float _HeightChange;
 RWStructuredBuffer<float> _Voxels;
+StructuredBuffer<float> _ExtremeValue;
 
 float3 _Scale;
 uint _Width, _Height, _Depth;
@@ -33,7 +35,21 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
 	float dist = GetDistToBrush(position.xz);
 
-	if (dist <= 1) // 1 is cube size
-		_Voxels[idx] = max(2, min(_Voxels[idx] + _HeightChange, _Height - 1)); //2 is min height
+
+	float newHeight = _Voxels[idx];
+
+	if (_BrushMode == 2) {
+		newHeight += _HeightChange;
+	}
+	else {
+		float extreme = _ExtremeValue[0];
+		if (_HeightChange >= 0)
+			newHeight = max(newHeight, extreme + _HeightChange);
+		else
+			newHeight = min(newHeight, extreme + _HeightChange);
+	}
+
+	if (dist <= 0) // 1 is cube size
+		_Voxels[idx] = max(2, min(newHeight, _Height - 1));
 }
 

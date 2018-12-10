@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections;
 
@@ -33,6 +33,7 @@ namespace MarchingCubesGPUProject
         public ComputeShader m_marchingCubes;
         public ComputeShader m_normals;
         public ComputeShader m_clearBuffer;
+        public ComputeShader m_ExtremeValue;
         public Material material;
 
         private ComputeBuffer m_dataBuffer;
@@ -41,6 +42,7 @@ namespace MarchingCubesGPUProject
         private RenderTexture m_normalsBuffer;
         private ComputeBuffer m_cubeEdgeFlags;
         private ComputeBuffer m_triangleConnectionTable;
+        private ComputeBuffer m_ExtremeValueBuffer;
 
         private Mesh[] meshes;
 
@@ -57,8 +59,9 @@ namespace MarchingCubesGPUProject
             InitDataColorBuffer();
             InitNormalsBuffer();
             InitMeshBuffer();
-
             InitMarchingCubesTablesBuffors();
+            InitExtremeValueBuffer();
+
 
             //test
             //StartShaping();
@@ -99,8 +102,7 @@ namespace MarchingCubesGPUProject
 
                     if (x != 0 && z != 0 && x != N - 1 && z != N - 1)
                     {
-                        if (z < 5)
-                            data[x + z * N] = 1f;
+                        data[x + z * N] = 2;
                     }
                 }
 
@@ -148,6 +150,10 @@ namespace MarchingCubesGPUProject
             m_cubeEdgeFlags.SetData(MarchingCubesTables.CubeEdgeFlags);
             m_triangleConnectionTable = new ComputeBuffer(256 * 16, sizeof(int));
             m_triangleConnectionTable.SetData(MarchingCubesTables.TriangleConnectionTable);
+        }
+        private void InitExtremeValueBuffer()
+        {
+            m_ExtremeValueBuffer = new ComputeBuffer(1, sizeof(float));
         }
 
         //shaping
@@ -244,9 +250,32 @@ namespace MarchingCubesGPUProject
             m_brushShapeBuffer.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
 
             m_brushShapeBuffer.SetInt("_BrushShape", (int)brush.shape);
+            m_brushShapeBuffer.SetInt("_BrushMode", (int)brush.mode);
             m_brushShapeBuffer.SetFloat("_HeightChange", GetShapingHeight());
 
+            if (brush.mode == TerrainBrushMode.ExtremeChange)
+            {
+                CalculateExtremeValue();
+                m_brushShapeBuffer.SetBuffer(0, "_ExtremeValue", m_ExtremeValueBuffer);
+            }
             m_brushShapeBuffer.Dispatch(0, N / 8, 1, N / 8);
+        }
+        private void CalculateExtremeValue()
+        {
+            m_ExtremeValue.SetInt("_Width", N);
+            m_ExtremeValue.SetInt("_Height", N);
+            m_ExtremeValue.SetInt("_Depth", N);
+
+            m_ExtremeValue.SetBuffer(0, "_Voxels", m_dataBuffer);
+
+            var fromMcToBrushMatrix = brush.GetToBrushMatrix(StartShapingBrushPosition) * GetFromMcMatrix();
+            m_ExtremeValue.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
+
+            m_ExtremeValue.SetInt("_BrushShape", (int)brush.shape);
+            m_ExtremeValue.SetFloat("_HeightChange", GetShapingHeight());
+            m_ExtremeValue.SetBuffer(0, "_ExtremeValue", m_ExtremeValueBuffer);
+
+            m_ExtremeValue.Dispatch(0, 1, 1, 1);
         }
 
         private void CalculateNormals()

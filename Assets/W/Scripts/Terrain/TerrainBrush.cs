@@ -9,6 +9,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 {
     public enum TerrainBrushMode
     {
+        ExtremeChange = 4,
         Color = 3,
         Change = 2,
         Inactive = 0
@@ -23,12 +24,12 @@ namespace Assets.MarchingCubesGPU.Scripts
     public class TerrainBrush : MonoBehaviour
     {
         public Color color;
-		[SerializeField] private MarchingCubesGPUProject.Terrain terrain;
-		[SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Four;
+        [SerializeField] private MarchingCubesGPUProject.Terrain terrain;
+        [SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Four;
 
-		public TerrainBrushMode mode = TerrainBrushMode.Change;
+        public TerrainBrushMode mode = TerrainBrushMode.Change;
         public TerrainBrushShape shape = TerrainBrushShape.Wheel;
-		
+
         public Matrix4x4 GetToBrushMatrix(Vector3 position)
         {
             var brushPosition = Matrix4x4.Translate(-position);
@@ -48,60 +49,60 @@ namespace Assets.MarchingCubesGPU.Scripts
         //    return result;
         //}
 
-		private Coroutine buttonA_down;
-		private Coroutine buttonA_up;
+        private Coroutine buttonA_down;
+        private Coroutine buttonA_up;
 
-		void Start()
-		{
-			StartListening();
-		}
+        void Start()
+        {
+            StartListening();
+        }
 
-		private void StartListening()
-		{
-			buttonA_down = StartCoroutine(WaitForButtonA_Down());
-		}
+        private void StartListening()
+        {
+            buttonA_down = StartCoroutine(WaitForButtonA_Down());
+        }
 
-		private void StopListening()
-		{
-			if (null != buttonA_down)
-				StopCoroutine(buttonA_down);
+        private void StopListening()
+        {
+            if (null != buttonA_down)
+                StopCoroutine(buttonA_down);
 
-			if (null != buttonA_up)
-				StopCoroutine(buttonA_up);
-		}
+            if (null != buttonA_up)
+                StopCoroutine(buttonA_up);
+        }
 
-		private IEnumerator WaitForButtonA_Down()
-		{
-			while (true)
-			{
-				if (OVRInput.GetDown(buttonY))
-				{
-					StopCoroutine(buttonA_down);
-					Debug.Log("change");
-					mode = TerrainBrushMode.Change;
-					terrain.StartShaping();
-					buttonA_up = StartCoroutine(WaitForButtonA_Up());
-				}
+        private IEnumerator WaitForButtonA_Down()
+        {
+            while (true)
+            {
+                if (OVRInput.GetDown(buttonY))
+                {
+                    StopCoroutine(buttonA_down);
+                    Debug.Log("change");
+                    mode = TerrainBrushMode.Change;
+                    terrain.StartShaping();
+                    buttonA_up = StartCoroutine(WaitForButtonA_Up());
+                }
 
-				yield return new WaitForEndOfFrame();
-			}
-		}
+                yield return new WaitForEndOfFrame();
+            }
+        }
 
-		private IEnumerator WaitForButtonA_Up()
-		{
-			while (true)
-			{
-				if (OVRInput.GetUp(buttonY))
-				{
-					StopCoroutine(buttonA_up);
-					Debug.Log("inactive");
-					mode = TerrainBrushMode.Inactive;
-					terrain.FinishShaping();
-					buttonA_down = StartCoroutine(WaitForButtonA_Down());
-				}
+        private IEnumerator WaitForButtonA_Up()
+        {
+            while (true)
+            {
+                if (OVRInput.GetUp(buttonY))
+                {
+                    StopCoroutine(buttonA_up);
+                    Debug.Log("inactive");
+                    mode = TerrainBrushMode.Inactive;
+                    terrain.FinishShaping();
+                    buttonA_down = StartCoroutine(WaitForButtonA_Down());
+                }
 
-				yield return new WaitForEndOfFrame();
-			}
-		}
-	}   
+                yield return new WaitForEndOfFrame();
+            }
+        }
+    }
 }

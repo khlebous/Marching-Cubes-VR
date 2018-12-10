@@ -1,0 +1,54 @@
+﻿#pragma kernel CSMain
+
+int _BrushShape;
+
+float4x4 _FromMcToBrushMatrix;
+float _HeightChange;
+RWStructuredBuffer<float> _Voxels;
+RWStructuredBuffer<float> _ExtremeValue;
+
+uint _Width, _Height, _Depth;
+
+
+float GetDistToBrush(float2 pos) {
+
+	if (_BrushShape == 1) {
+		//wheel
+		return max(0, distance(pos, 0) - 0.5);
+	}
+	else {
+		//rectangle
+		float2 closestPointInRectangle = clamp(pos, -0.5, 0.5);
+		return distance(pos, closestPointInRectangle);
+	}
+}
+
+[numthreads(1, 1, 1)]
+void CSMain()
+{
+	float extreme = _HeightChange >= 0 ? _Height : 0;
+
+	for (int x = 1; x < _Width - 1; x++)
+	{
+		for (int z = 1; z < _Depth - 1; z++)
+		{
+			float4 rawPosition = float4(x, 0, z, 1);
+			float4 position = mul(_FromMcToBrushMatrix, rawPosition);
+			float dist = GetDistToBrush(position.xz);
+
+			int idx = x + z * _Width;
+
+			if (dist <= 0)
+			{
+				if (_HeightChange >= 0 && extreme > _Voxels[idx])
+					extreme = _Voxels[idx];
+
+				if (_HeightChange < 0 && extreme < _Voxels[idx])
+					extreme = _Voxels[idx];
+			}
+		}
+	}
+
+	_ExtremeValue[0] = extreme;
+}
+

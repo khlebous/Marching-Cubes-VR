@@ -26,8 +26,9 @@ namespace Assets.MarchingCubesGPU.Scripts
         public Color color;
         [SerializeField] private MarchingCubesGPUProject.Terrain terrain;
         [SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Four;
+        [SerializeField] private OVRInput.Button buttonX = OVRInput.Button.Three;
 
-        public TerrainBrushMode mode = TerrainBrushMode.Change;
+		public TerrainBrushMode mode = TerrainBrushMode.Change;
         public TerrainBrushShape shape = TerrainBrushShape.Wheel;
 
         public Matrix4x4 GetToBrushMatrix(Vector3 position)
@@ -81,18 +82,25 @@ namespace Assets.MarchingCubesGPU.Scripts
                     Debug.Log("change");
                     mode = TerrainBrushMode.Change;
                     terrain.StartShaping();
-                    buttonA_up = StartCoroutine(WaitForButtonA_Up());
+                    buttonA_up = StartCoroutine(WaitForButtonA_Up(buttonY));
                 }
-
-                yield return new WaitForEndOfFrame();
+				else if (OVRInput.GetDown(buttonX))
+				{
+					StopCoroutine(buttonA_down);
+					Debug.Log("change");
+					mode = TerrainBrushMode.ExtremeChange;
+					terrain.StartShaping();
+					buttonA_up = StartCoroutine(WaitForButtonA_Up(buttonX));
+				}
+				yield return new WaitForEndOfFrame();
             }
         }
 
-        private IEnumerator WaitForButtonA_Up()
+        private IEnumerator WaitForButtonA_Up(OVRInput.Button button)
         {
             while (true)
             {
-                if (OVRInput.GetUp(buttonY))
+                if (OVRInput.GetUp(button))
                 {
                     StopCoroutine(buttonA_up);
                     Debug.Log("inactive");

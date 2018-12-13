@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using UniRx;
+using System;
+
 public enum buttonState
 {
 	Left, Up, Right, Down, Normal
@@ -19,7 +22,14 @@ public class HandMenuController : MonoBehaviour
 	private void Start()
 	{
 		foreach (var item in items)
+		{
 			item.SetInactive();
+			if(item is SubMenuMenuItemV)
+			{
+				SubMenuMenuItemV tmp = item as SubMenuMenuItemV;
+				tmp.ThubstickClickedStream.Subscribe(SetActive);
+			}
+		}
 		//items[activeItemIndex].SetActive();
 	}
 
@@ -34,6 +44,9 @@ public class HandMenuController : MonoBehaviour
 		this.active = active;
 	}
 
+	private ISubject<bool> thubstickClickedSubject = new Subject<bool>();
+	public IObservable<bool> ThubstickClickedStream { get { return thubstickClickedSubject; } }
+
 	void Update()
 	{
 		if (active)
@@ -43,8 +56,8 @@ public class HandMenuController : MonoBehaviour
 			{
 				if (subMenuChoosen)
 				{
-
 					items[activeItemIndex].SetUnChoosen();
+					thubstickClickedSubject.OnNext(true);
 				}
 				else
 				{

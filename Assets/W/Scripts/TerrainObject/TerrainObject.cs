@@ -108,9 +108,9 @@ namespace MarchingCubesGPUProject
                 for (int y = 0; y < N; y++)
                     for (int x = 0; x < N; x++)
                     {
-                        data[x + y * N + z * N * N] = new Vector4(0, 0, 1, 1);
-                        if (x > 3)
-                            data[x + y * N + z * N * N] = new Vector4(1, 0, 0, 1);
+                        data[x + y * N + z * N * N] = new Vector4(0.7f,0.7f,0.7f, 1);
+                        //if (x > 3)
+                        //    data[x + y * N + z * N * N] = new Vector4(1, 0, 0, 1);
                     }
 
             m_dataColorBuffer.SetData(data);

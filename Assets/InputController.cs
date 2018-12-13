@@ -18,41 +18,41 @@ public class InputController : MonoBehaviour
 	private Subject<Unit> decreaseRadiusButtonClickedSubject = new Subject<Unit>();
 	public IObservable<Unit> DecreaseRadiusButtonClickedStream { get { return decreaseRadiusButtonClickedSubject.AsObservable(); } }
 
-	void Update()
-	{
-		if (OVRInput.Get(OVRInput.Button.Two)) // Right hand B
-		{
-			Vector3 position = player.transform.Find("TrackingSpace").
-				transform.TransformPoint(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch));
-			removeButtonClickedSubject.OnNext(position);
-		}
-		else if (OVRInput.Get(OVRInput.Button.One)) // Right hand A
-		{
-			Vector3 position = player.transform.Find("TrackingSpace").
-				transform.TransformPoint(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch));
-			addButtonClickedSubject.OnNext(position);
-		}
+	//void Update()
+	//{
+	//	if (OVRInput.Get(OVRInput.Button.Two)) // Right hand B
+	//	{
+	//		Vector3 position = player.transform.Find("TrackingSpace").
+	//			transform.TransformPoint(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch));
+	//		removeButtonClickedSubject.OnNext(position);
+	//	}
+	//	else if (OVRInput.Get(OVRInput.Button.One)) // Right hand A
+	//	{
+	//		Vector3 position = player.transform.Find("TrackingSpace").
+	//			transform.TransformPoint(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch));
+	//		addButtonClickedSubject.OnNext(position);
+	//	}
 
-		if (OVRInput.Get(OVRInput.Button.Four)) // Left hand Y
-		{
-			Vector3 position = player.transform.Find("TrackingSpace").
-				transform.TransformPoint(OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch));
-			removeButtonClickedSubject.OnNext(position);
-		}
-		else if (OVRInput.Get(OVRInput.Button.Three)) // Left hand X
-		{
-			Vector3 position = player.transform.Find("TrackingSpace").
-				transform.TransformPoint(OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch));
-			addButtonClickedSubject.OnNext(position);
-		}
+	//	if (OVRInput.Get(OVRInput.Button.Four)) // Left hand Y
+	//	{
+	//		Vector3 position = player.transform.Find("TrackingSpace").
+	//			transform.TransformPoint(OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch));
+	//		removeButtonClickedSubject.OnNext(position);
+	//	}
+	//	else if (OVRInput.Get(OVRInput.Button.Three)) // Left hand X
+	//	{
+	//		Vector3 position = player.transform.Find("TrackingSpace").
+	//			transform.TransformPoint(OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch));
+	//		addButtonClickedSubject.OnNext(position);
+	//	}
 
-		if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
-		{
-			increaseRadiusButtonClickedSubject.OnNext(Unit.Default);
-		}
-		else if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger))
-		{
-			decreaseRadiusButtonClickedSubject.OnNext(Unit.Default);
-		}
-	}
+	//	if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
+	//	{
+	//		increaseRadiusButtonClickedSubject.OnNext(Unit.Default);
+	//	}
+	//	else if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger))
+	//	{
+	//		decreaseRadiusButtonClickedSubject.OnNext(Unit.Default);
+	//	}
+	//}
 }

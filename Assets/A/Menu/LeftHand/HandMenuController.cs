@@ -24,11 +24,7 @@ public class HandMenuController : MonoBehaviour
 		foreach (var item in items)
 		{
 			item.SetInactive();
-			if(item is SubMenuMenuItemV)
-			{
-				SubMenuMenuItemV tmp = item as SubMenuMenuItemV;
-				tmp.ThubstickClickedStream.Subscribe(SetActive);
-			}
+			item.ThubstickClickedStream.Subscribe(SetActive);
 		}
 		//items[activeItemIndex].SetActive();
 	}
@@ -41,7 +37,8 @@ public class HandMenuController : MonoBehaviour
 	IEnumerator WaitNextFrame(bool active)
 	{
 		yield return new WaitForSeconds(0.5f);
-		this.active = active;
+		subMenuChoosen = false;
+		this.active = true;
 	}
 
 	private ISubject<bool> thubstickClickedSubject = new Subject<bool>();
@@ -56,16 +53,19 @@ public class HandMenuController : MonoBehaviour
 			{
 				if (subMenuChoosen)
 				{
-					items[activeItemIndex].SetUnChoosen();
-					thubstickClickedSubject.OnNext(true);
+					// NIGDY SIE NIE WYKONA
+
+					//items[activeItemIndex].SetUnChoosen();
+					//thubstickClickedSubject.OnNext(true);
 				}
 				else
 				{
 					active = false;
+					subMenuChoosen = true;
 					items[activeItemIndex].SetChoosen();
 				}
 
-				subMenuChoosen = !subMenuChoosen;
+				//subMenuChoosen = !subMenuChoosen;
 				Debug.Log("Clicked");
 			}
 			else if (!subMenuChoosen)
@@ -121,7 +121,7 @@ public class HandMenuController : MonoBehaviour
 					if (thumbstick != buttonState.Normal)
 					{
 						thumbstick = buttonState.Normal;
-						Debug.Log("Normal");
+						//Debug.Log("Normal");
 					}
 				}
 			}

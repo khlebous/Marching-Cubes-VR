@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+using UniRx;
+
 public class MenuController : MonoBehaviour
 {
 	[SerializeField] private HandMenuController menuController;
@@ -10,9 +12,17 @@ public class MenuController : MonoBehaviour
 
 	void Start()
 	{
+		menuController.ItemIsActiveSubject.Subscribe(SubItem);
 		menuController.CloseMenu();
-
 		StartWaitForOpen();
+	}
+
+	private void SubItem(bool value)
+	{
+		if (value)
+			StopListening();
+		else
+			StartWaitForClose();
 	}
 
 	private void StartWaitForOpen()

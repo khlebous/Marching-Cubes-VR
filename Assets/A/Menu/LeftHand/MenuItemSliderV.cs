@@ -1,21 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class MenuItemHMenuV : MenuItemV
+public class MenuItemSliderV : MenuItemV
 {
-	[SerializeField] public List<MenuItemV> items;
+	[SerializeField] private Slider slider;
 
-	private int activeItemIndex = 0;
 	private buttonState thumbstick = buttonState.Normal;
+
+	[SerializeField] float sliderStep = 0.1f;
 	[SerializeField] private bool active;
 
 	public void Start()
 	{
 		active = false;
-
-		foreach (var item in items)
-			item.SetInactive();
-		items[activeItemIndex].SetActive();
 	}
 
 	public override void SetActive()
@@ -42,12 +41,7 @@ public class MenuItemHMenuV : MenuItemV
 					thumbstick = buttonState.Left;
 					Debug.Log("Left");
 
-					items[activeItemIndex].SetInactive();
-					if (activeItemIndex == 0)
-						activeItemIndex = items.Count;
-					activeItemIndex--;
-					activeItemIndex %= items.Count;
-					items[activeItemIndex].SetActive();
+					slider.value -= sliderStep;
 				}
 
 			}
@@ -58,10 +52,8 @@ public class MenuItemHMenuV : MenuItemV
 					thumbstick = buttonState.Right;
 					Debug.Log("Right");
 
-					items[activeItemIndex].SetInactive();
-					activeItemIndex++;
-					activeItemIndex %= items.Count;
-					items[activeItemIndex].SetActive();
+					slider.value += sliderStep;
+
 				}
 			}
 			else
@@ -72,4 +64,3 @@ public class MenuItemHMenuV : MenuItemV
 		}
 	}
 }
-

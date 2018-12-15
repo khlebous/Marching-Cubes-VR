@@ -1,43 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-using UniRx;
-using System;
+//using UniRx;
+//using System;
 
-public class SubMenuMenuItemV : MenuItemV
-{
-	[SerializeField] HandMenuController submenu;
+//public class SubMenuMenuItemV : MenuItemV
+//{
+//	[SerializeField] HandMenuController submenu;
 
-	protected ISubject<Unit> submenuActiveSubject = new Subject<Unit>();
-	public IObservable<Unit> SubmenuActiveStream { get { return submenuActiveSubject; } }
-
-
-	public void Start()
-	{
-		submenu.SetActive(false);
-		//submenu.ThubstickClickedStream.Subscribe(thubstickClickedSubject.OnNext);
-	}
-
-	public override void SetUnChoosen()
-	{
-		base.SetUnChoosen();
-
-		thubstickClickedSubject.OnNext(true);
-	}
+//	protected ISubject<Unit> submenuActiveSubject = new Subject<Unit>();
+//	public IObservable<Unit> SubmenuActiveStream { get { return submenuActiveSubject; } }
 
 
-	public override void SetInactive()
-	{
-		base.SetInactive();
-	}
+//	public void Start()
+//	{
+//		submenu.SetActive(false);
+//	}
 
-	public override void SetChoosen()
-	{
-		Debug.Log("set choosen2");
-		base.SetChoosen();
-		submenuActiveSubject.OnNext(Unit.Default);
+//	public override void SetUnChoosen()
+//	{
+//		base.SetUnChoosen();
+//		thubstickClickedSubject.OnNext(true);
+//	}
 
-		submenu.SetActive(true);
-	}
-}
+
+//	public override void SetInactive()
+//	{
+//		base.SetInactive();
+//	}
+
+//	public override void SetChoosen()
+//	{
+//		Debug.Log("set choosen2");
+//		base.SetChoosen();
+//		submenuActiveSubject.OnNext(Unit.Default);
+
+//		submenu.SetActive(true);
+//	}
+//}

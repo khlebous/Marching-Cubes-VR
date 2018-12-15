@@ -12,19 +12,7 @@ public class MenuItemV : MonoBehaviour
 	protected ISubject<bool> thubstickClickedSubject = new Subject<bool>();
 	public IObservable<bool> ThubstickClickedStream { get { return thubstickClickedSubject; } }
 
-	//public void Start()
-	//{
-	//    submenu.SetActive(false);
-	//    submenu.ThubstickClickedStream.Subscribe(thubstickClickedSubject.OnNext);
-	//}
-
-	private Coroutine WaitForSubmit;
-
-
-	public void OnClick()
-	{
-		// highlight submenu
-	}
+	private Coroutine waitForEndEditing;
 
 	public virtual void SetInactive()
 	{
@@ -39,21 +27,21 @@ public class MenuItemV : MonoBehaviour
 
 	public virtual void SetChoosen()
 	{
-		Debug.Log("set choosen");
+		Debug.Log("start editing item");
 
 		highlight.SetState(2);
-		WaitForSubmit = StartCoroutine(WaitForButtonA_Down());
+		waitForEndEditing = StartCoroutine(WaitForEndEditing());
 	}
 
-	private IEnumerator WaitForButtonA_Down()
+	private IEnumerator WaitForEndEditing()
 	{
-		yield return new WaitForSeconds(0.5f);
+		yield return 0;
 
 		while (true)
 		{
 			if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick))
 			{
-				Debug.Log("thubm");
+				Debug.Log("end edithing item");
 				SetUnChoosen();
 			}
 
@@ -64,10 +52,10 @@ public class MenuItemV : MonoBehaviour
 
 	public virtual void SetUnChoosen()
 	{
-		if (WaitForSubmit != null)
+		if (waitForEndEditing != null)
 		{
 			Debug.Log("stop courutine");
-			StopCoroutine(WaitForSubmit);
+			StopCoroutine(waitForEndEditing);
 		}
 
 		Debug.Log("unchoosen");

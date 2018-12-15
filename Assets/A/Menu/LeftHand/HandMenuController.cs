@@ -57,12 +57,14 @@ public class HandMenuController : MonoBehaviour
 		activeItemChoosen = false;
 		this.active = true;
 
+		itemIsActiveStream.OnNext(false);
+
 		//items[activeItemIndex].SetUnChoosen();
 		//thubstickClickedSubject.OnNext(true);
 	}
 
-	private ISubject<bool> thubstickClickedSubject = new Subject<bool>();
-	public IObservable<bool> ThubstickClickedStream { get { return thubstickClickedSubject; } }
+	private ISubject<bool> itemIsActiveStream = new Subject<bool>();
+	public IObservable<bool> ItemIsActiveSubject { get { return itemIsActiveStream; } }
 
 
 	void Update()
@@ -78,29 +80,31 @@ public class HandMenuController : MonoBehaviour
 					active = false;
 					activeItemChoosen = true;
 					items[activeItemIndex].SetChoosen();
+					itemIsActiveStream.OnNext(true);
 				}
 			}
 			else if (!activeItemChoosen)
 			{
 
-				if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
-				{
-					if (thumbstick == buttonState.Normal)
-					{
-						thumbstick = buttonState.Left;
-						Debug.Log("Left");
-					}
+				//if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
+				//{
+				//	if (thumbstick == buttonState.Normal)
+				//	{
+				//		thumbstick = buttonState.Left;
+				//		Debug.Log("Left");
+				//	}
 
-				}
-				else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
-				{
-					if (thumbstick == buttonState.Normal)
-					{
-						thumbstick = buttonState.Right;
-						Debug.Log("Right");
-					}
-				}
-				else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickUp))
+				//}
+				//else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
+				//{
+				//	if (thumbstick == buttonState.Normal)
+				//	{
+				//		thumbstick = buttonState.Right;
+				//		Debug.Log("Right");
+				//	}
+				//}
+				//else 
+				if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickUp))
 				{
 					if (thumbstick == buttonState.Normal)
 					{
@@ -138,33 +142,7 @@ public class HandMenuController : MonoBehaviour
 				}
 			}
 		}
-
-		Vector2 tmp = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
-		//Debug.Log(tmp);
-		if (Mathf.Abs(tmp.x) > Mathf.Abs(tmp.y))
-		{
-			if (tmp.x > 0.9999)
-				Debug.Log("right");
-			else if (tmp.x < -0.5)
-				Debug.Log("left");
-		}
-		else
-		{
-			if (tmp.y > 0.5)
-			{
-				Debug.Log("up");
-
-			}
-			else if (tmp.y < -0.5)
-			{
-				Debug.Log("down");
-				//items[activeItemIndex].SetActive(false);
-				//activeItemIndex++;
-				//activeItemIndex %= items.Count;
-				//Debug.Log("new curr index");
-				//items[activeItemIndex].SetActive(true);
-			}
-		}
+		
 	}
 
 

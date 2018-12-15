@@ -11,10 +11,25 @@ public class MenuItemHMenuV : MenuItemV
 	private bool subMenuChoosen;
 	[SerializeField] private bool active;
 
+	public void Start()
+	{
+		active = false;
+
+		foreach (var item in items)
+			item.SetInactive();
+		items[activeItemIndex].SetActive();
+	}
+
 	public override void SetActive()
 	{
 		base.SetActive();
 		active = true;
+	}
+
+	public override void SetInactive()
+	{
+		base.SetInactive();
+		active = false;
 	}
 
 	void Update()

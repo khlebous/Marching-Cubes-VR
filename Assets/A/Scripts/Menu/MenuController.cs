@@ -7,6 +7,10 @@ public class MenuController : MonoBehaviour
 {
 	[SerializeField] private HandMenuController menuController;
 
+	[Header("Input")]
+	[SerializeField] private OVRInput.Button showMenuButton = OVRInput.Button.SecondaryThumbstickLeft;
+	[SerializeField] private OVRInput.Button hideMenuButton = OVRInput.Button.SecondaryThumbstickRight;
+
 	private Coroutine waitForOpenCoroutine;
 	private Coroutine waitForCloseCoroutine;
 
@@ -50,7 +54,7 @@ public class MenuController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
+			if (OVRInput.Get(showMenuButton))
 			{
 				StopCoroutine(waitForOpenCoroutine);
 				menuController.OpenMenu();
@@ -65,7 +69,7 @@ public class MenuController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
+			if (OVRInput.Get(hideMenuButton))
 			{
 				StopCoroutine(waitForCloseCoroutine);
 				menuController.CloseMenu();

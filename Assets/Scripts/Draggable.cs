@@ -7,17 +7,17 @@ public class Draggable : MonoBehaviour
 	public Transform thumb;
 	bool dragging;
 
-	public void Input(buttonState state)
+	public void Input(ButtonState state)
 	{
 		Debug.Log("deaggable get input: " + state);
-		if (state == buttonState.Left)
+		if (state == ButtonState.Left)
 		{
 			if (thumb.localPosition.x > -100)
 				SetThumbPosition(thumb.localPosition - new Vector3(1, 0, 0));
 			else
 				SetThumbPosition(thumb.localPosition);
 		}
-		else if (state == buttonState.Right)
+		else if (state == ButtonState.Right)
 		{
 			if (thumb.localPosition.x < 100)
 				SetThumbPosition(thumb.localPosition + new Vector3(1, 0, 0));

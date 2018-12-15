@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 using UniRx;
@@ -9,8 +8,8 @@ public class MenuItemV : MonoBehaviour
 {
 	[SerializeField] MultiStateMaterial highlight;
 
-	protected ISubject<bool> thubstickClickedSubject = new Subject<bool>();
-	public IObservable<bool> ThubstickClickedStream { get { return thubstickClickedSubject; } }
+	protected ISubject<Unit> thubstickClickedSubject = new Subject<Unit>();
+	public IObservable<Unit> ThubstickClickedStream { get { return thubstickClickedSubject; } }
 
 	private Coroutine waitForEndEditing;
 
@@ -60,7 +59,7 @@ public class MenuItemV : MonoBehaviour
 
 		Debug.Log("unchoosen");
 		highlight.SetState(1);
-		thubstickClickedSubject.OnNext(true);
+		thubstickClickedSubject.OnNext(Unit.Default);
 	}
 
 }

@@ -63,6 +63,18 @@ namespace Assets.MarchingCubesGPU.Scripts
 			buttonB_down = StartCoroutine(WaitForButtonB_Down());
 		}
 
+		public void SetChangeMode()
+		{
+			mode = BrushMode.Inactive;
+			StartListening();
+		}
+
+		public void SetColorMode()
+		{
+			StopListening();
+			mode = BrushMode.Color;
+		}
+
 		private void StopListening()
 		{
 			if (null != buttonA_down)

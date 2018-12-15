@@ -1,39 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UniRx;
 using System;
-
-public enum buttonState
-{
-	Left, Up, Right, Down, Normal
-}
 
 public class HandMenuController : MonoBehaviour
 {
 	[SerializeField] private List<MenuItemV> items;
 
-	// TODO will not be serialized (only to debug)
-	[SerializeField] private bool active;
+	private ISubject<bool> itemIsActiveStream = new Subject<bool>();
+	public IObservable<bool> ItemIsActiveSubject { get { return itemIsActiveStream; } }
 
+	private ButtonState currThumbstickState = ButtonState.Normal;
+	private bool isMenuActive;
 	private int activeItemIndex = 0;
-	private bool activeItemChoosen;
-
-	private buttonState thumbstick = buttonState.Normal;
 
 	public void OpenMenu()
 	{
 		Debug.Log("open menu");
 		gameObject.SetActive(true);
-		active = true;
+		isMenuActive = true;
 	}
 
 	public void CloseMenu()
 	{
 		Debug.Log("close menu");
 		gameObject.SetActive(false);
-		active = false;
+		isMenuActive = false;
 	}
 
 	private void Start()
@@ -41,49 +34,38 @@ public class HandMenuController : MonoBehaviour
 		foreach (var item in items)
 		{
 			item.SetInactive();
-			item.ThubstickClickedStream.Subscribe(SetActive);
+			item.ThubstickClickedStream.Subscribe(_ => SetMenuActive());
 		}
 		items[activeItemIndex].SetActive();
 	}
 
-	public void SetActive(bool active)
+	public void SetMenuActive()
 	{
-		StartCoroutine(WaitNextFrame(active));
+		StartCoroutine(WaitNextFrame());
 	}
 
-	IEnumerator WaitNextFrame(bool active)
+	IEnumerator WaitNextFrame()
 	{
 		yield return new WaitForSeconds(0.5f);
-		activeItemChoosen = false;
-		this.active = true;
+		isMenuActive = true;
 
 		itemIsActiveStream.OnNext(false);
-
-		//items[activeItemIndex].SetUnChoosen();
-		//thubstickClickedSubject.OnNext(true);
 	}
-
-	private ISubject<bool> itemIsActiveStream = new Subject<bool>();
-	public IObservable<bool> ItemIsActiveSubject { get { return itemIsActiveStream; } }
 
 
 	void Update()
 	{
-		if (active)
+		if (isMenuActive)
 		{
 			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstick))
 			{
 				Debug.Log("Thumbstic clickedClicked");
 
-				if (!activeItemChoosen) // chyba nie rzeba tego if
-				{
-					active = false;
-					activeItemChoosen = true;
+					isMenuActive = false;
 					items[activeItemIndex].SetChoosen();
 					itemIsActiveStream.OnNext(true);
-				}
 			}
-			else if (!activeItemChoosen)
+			else
 			{
 
 				//if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
@@ -106,9 +88,9 @@ public class HandMenuController : MonoBehaviour
 				//else 
 				if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickUp))
 				{
-					if (thumbstick == buttonState.Normal)
+					if (currThumbstickState == ButtonState.Normal)
 					{
-						thumbstick = buttonState.Up;
+						currThumbstickState = ButtonState.Up;
 						Debug.Log("Up");
 						items[activeItemIndex].SetInactive();
 						if (activeItemIndex == 0)
@@ -121,9 +103,9 @@ public class HandMenuController : MonoBehaviour
 				}
 				else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickDown))
 				{
-					if (thumbstick == buttonState.Normal)
+					if (currThumbstickState == ButtonState.Normal)
 					{
-						thumbstick = buttonState.Down;
+						currThumbstickState = ButtonState.Down;
 						Debug.Log("Down");
 						items[activeItemIndex].SetInactive();
 						activeItemIndex++;
@@ -134,9 +116,9 @@ public class HandMenuController : MonoBehaviour
 				}
 				else
 				{
-					if (thumbstick != buttonState.Normal)
+					if (currThumbstickState != ButtonState.Normal)
 					{
-						thumbstick = buttonState.Normal;
+						currThumbstickState = ButtonState.Normal;
 						Debug.Log("Normal");
 					}
 				}

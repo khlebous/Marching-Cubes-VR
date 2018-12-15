@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class MenuItemHMenuV : MenuItemV
 {
-	[SerializeField] public List<MenuItemV> items;
+	[SerializeField] private List<MenuItemV> items;
+	[SerializeField] private Assets.MarchingCubesGPU.Scripts.Brush brush;
 
 	private int activeItemIndex = 0;
-	private buttonState thumbstick = buttonState.Normal;
+	private ButtonState thumbstick = ButtonState.Normal;
 	[SerializeField] private bool active;
 
 	public void Start()
@@ -18,15 +19,15 @@ public class MenuItemHMenuV : MenuItemV
 		items[activeItemIndex].SetActive();
 	}
 
-	public override void SetActive()
+	public override void SetChoosen()
 	{
-		base.SetActive();
+		base.SetChoosen();
 		active = true;
 	}
 
-	public override void SetInactive()
+	public override void SetUnChoosen()
 	{
-		base.SetInactive();
+		base.SetUnChoosen();
 		active = false;
 	}
 
@@ -37,9 +38,9 @@ public class MenuItemHMenuV : MenuItemV
 
 			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
 			{
-				if (thumbstick == buttonState.Normal)
+				if (thumbstick == ButtonState.Normal)
 				{
-					thumbstick = buttonState.Left;
+					thumbstick = ButtonState.Left;
 					Debug.Log("Left");
 
 					items[activeItemIndex].SetInactive();
@@ -48,26 +49,34 @@ public class MenuItemHMenuV : MenuItemV
 					activeItemIndex--;
 					activeItemIndex %= items.Count;
 					items[activeItemIndex].SetActive();
+					if (activeItemIndex == 0)
+						brush.SetChangeMode();
+					else
+						brush.SetColorMode();
 				}
 
 			}
 			else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
 			{
-				if (thumbstick == buttonState.Normal)
+				if (thumbstick == ButtonState.Normal)
 				{
-					thumbstick = buttonState.Right;
+					thumbstick = ButtonState.Right;
 					Debug.Log("Right");
 
 					items[activeItemIndex].SetInactive();
 					activeItemIndex++;
 					activeItemIndex %= items.Count;
 					items[activeItemIndex].SetActive();
+					if (activeItemIndex == 0)
+						brush.SetChangeMode();
+					else
+						brush.SetColorMode();
 				}
 			}
 			else
 			{
-				if (thumbstick != buttonState.Normal)
-					thumbstick = buttonState.Normal;
+				if (thumbstick != ButtonState.Normal)
+					thumbstick = ButtonState.Normal;
 			}
 		}
 	}

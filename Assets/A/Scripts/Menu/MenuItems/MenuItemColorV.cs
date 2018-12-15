@@ -6,7 +6,7 @@ public class MenuItemColorV : MenuItemV
 {
 	private bool colorIsChoosing = true;
 
-	private buttonState thumbstick = buttonState.Normal;
+	private ButtonState thumbstick = ButtonState.Normal;
 	[SerializeField] private bool active;
 	[SerializeField] Draggable color;
 	//[SerializeField] Draggable intensity;
@@ -16,15 +16,15 @@ public class MenuItemColorV : MenuItemV
 		active = false;
 	}
 
-	public override void SetActive()
+	public override void SetChoosen()
 	{
-		base.SetActive();
+		base.SetChoosen();
 		active = true;
 	}
 
-	public override void SetInactive()
+	public override void SetUnChoosen()
 	{
-		base.SetInactive();
+		base.SetUnChoosen();
 		active = false;
 	}
 
@@ -34,19 +34,19 @@ public class MenuItemColorV : MenuItemV
 		{
 			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
 			{
-				color.Input(buttonState.Left);
+				color.Input(ButtonState.Left);
 				Debug.Log("Left");
 
 			}
 			else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
 			{
-				color.Input(buttonState.Right);
+				color.Input(ButtonState.Right);
 				Debug.Log("Right");
 			}
 			else
 			{
-				if (thumbstick != buttonState.Normal)
-					thumbstick = buttonState.Normal;
+				if (thumbstick != ButtonState.Normal)
+					thumbstick = ButtonState.Normal;
 			}
 		}
 	}

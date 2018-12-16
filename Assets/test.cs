@@ -18,7 +18,8 @@ public class test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = Quaternion.Euler(new Rotator().GetRotation_5(startRotation,
+        transform.rotation = Quaternion.Euler(new Rotator().GetRotation_5(transform.position,
+                                                                            startRotation,
                                                                             startCube.transform.position,
                                                                             currentCube.transform.position));
     }

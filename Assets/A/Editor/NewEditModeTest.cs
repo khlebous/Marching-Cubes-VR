@@ -7,35 +7,35 @@ using System.Collections;
 public class RotationTests
 {
 
-    [Test]
-    public void SimpleRotationTest()
-    {
-        var objectRotation = new Vector3(0, 0, 0);
-        var startPosition = new Vector3(0, 2, 0);
-        var currentPosition = new Vector3(0, 2, -2);
+    //[Test]
+    //public void SimpleRotationTest()
+    //{
+    //    var objectRotation = new Vector3(0, 0, 0);
+    //    var startPosition = new Vector3(0, 2, 0);
+    //    var currentPosition = new Vector3(0, 2, -2);
 
 
-        var rotator = new Rotator();
-        var newRotation = rotator.GetRotation_5(objectRotation, startPosition, currentPosition);
+    //    var rotator = new Rotator();
+    //    var newRotation = rotator.GetRotation_5(objectRotation, startPosition, currentPosition);
 
 
-        Assert.AreEqual(new Vector3(-45, 0, 0), newRotation);
-    }
+    //    Assert.AreEqual(new Vector3(-45, 0, 0), newRotation);
+    //}
 
-    [Test]
-    public void RotateBothAxiesTest()
-    {
-        var objectRotation = new Vector3(0, 0, 0);
-        var startPosition = new Vector3(0, 2, 0);
-        var currentPosition = new Vector3(2, 0, -2);
-
-
-        var rotator = new Rotator();
-        var newRotation = rotator.GetRotation_5(objectRotation, startPosition, currentPosition);
+    //[Test]
+    //public void RotateBothAxiesTest()
+    //{
+    //    var objectRotation = new Vector3(0, 0, 0);
+    //    var startPosition = new Vector3(0, 2, 0);
+    //    var currentPosition = new Vector3(2, 0, -2);
 
 
-        Assert.AreEqual(new Vector3(-45, 0, -45), newRotation);
-    }
+    //    var rotator = new Rotator();
+    //    var newRotation = rotator.GetRotation_5(objectRotation, startPosition, currentPosition);
+
+
+    //    Assert.AreEqual(new Vector3(-45, 0, -45), newRotation);
+    //}
 
 
     // A UnityTest behaves like a coroutine in PlayMode

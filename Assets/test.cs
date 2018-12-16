@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class test : MonoBehaviour
 {
+    public Transform startCube;
+    public Transform currentCube;
+
+    private Vector3 startRotation;
 
     // Use this for initialization
     void Start()
@@ -14,11 +18,8 @@ public class test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var euler = transform.rotation.eulerAngles;
-        Debug.Log(euler);
-        Debug.Log(transform.position);
-
-        transform.rotation = Quaternion.Euler(new Vector3(euler.x, 0, euler.z));
-        Debug.Log(euler);
+        transform.rotation = Quaternion.Euler(new Rotator().GetRotation_5(startRotation,
+                                                                            startCube.transform.position,
+                                                                            currentCube.transform.position));
     }
 }

@@ -1,20 +1,22 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UniRx;
 
 public class MenuItemSliderV : MenuItemV
 {
+	[Header("Slider")]
 	[SerializeField] private Slider slider;
+	[SerializeField] float sliderStep = 0.01f;
 
-	private ButtonState thumbstick = ButtonState.Normal;
+	[Header("Input")]
+	[SerializeField] private OVRInput.Button decreaseValueButton = OVRInput.Button.SecondaryThumbstickLeft;
+	[SerializeField] private OVRInput.Button increaseButton = OVRInput.Button.SecondaryThumbstickRight;
 
-	[SerializeField] float sliderStep = 0.1f;
-	[SerializeField] private bool active;
+	protected ISubject<float> valueChangedSubject = new Subject<float>();
+	public IObservable<float> ValueChangedStream { get { return valueChangedSubject; } }
 
-	public void Start()
-	{
-		active = false;
-	}
-
+	private bool active;
+	
 	public override void SetChoosen()
 	{
 		base.SetChoosen();
@@ -27,38 +29,26 @@ public class MenuItemSliderV : MenuItemV
 		active = false;
 	}
 
+	// TODO not in update but coroutines
 	void Update()
 	{
 		if (active)
 		{
-
-			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
+			if (OVRInput.Get(decreaseValueButton))
 			{
-				if (thumbstick == ButtonState.Normal)
-				{
-					thumbstick = ButtonState.Left;
-					Debug.Log("Left");
-
-					slider.value -= sliderStep;
-				}
-
+				slider.value -= sliderStep;
+				SliderValueChanged();
 			}
-			else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
+			else if (OVRInput.Get(increaseButton))
 			{
-				if (thumbstick == ButtonState.Normal)
-				{
-					thumbstick = ButtonState.Right;
-					Debug.Log("Right");
-
-					slider.value += sliderStep;
-
-				}
-			}
-			else
-			{
-				if (thumbstick != ButtonState.Normal)
-					thumbstick = ButtonState.Normal;
+				slider.value += sliderStep;
+				SliderValueChanged();
 			}
 		}
+	}
+
+	private void SliderValueChanged()
+	{
+		valueChangedSubject.OnNext(slider.value);
 	}
 }

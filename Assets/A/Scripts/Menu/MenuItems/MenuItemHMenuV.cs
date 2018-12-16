@@ -1,19 +1,24 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class MenuItemHMenuV : MenuItemV
 {
 	[SerializeField] private List<MenuItemV> items;
-	[SerializeField] private Assets.MarchingCubesGPU.Scripts.Brush brush;
 
-	private int activeItemIndex = 0;
+	[Header("Input")]
+	[SerializeField] private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickRight;
+	[SerializeField] private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickLeft;
+
+	private ISubject<int> choosenItemStream = new Subject<int>();
+	public IObservable<int> ChoosenItemSubject { get { return choosenItemStream; } }
+
 	private ButtonState thumbstick = ButtonState.Normal;
-	[SerializeField] private bool active;
+	private int activeItemIndex = 0;
+	private bool active;
 
 	public void Start()
 	{
-		active = false;
-
 		foreach (var item in items)
 			item.SetInactive();
 		items[activeItemIndex].SetActive();
@@ -35,8 +40,7 @@ public class MenuItemHMenuV : MenuItemV
 	{
 		if (active)
 		{
-
-			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
+			if (OVRInput.Get(prevItemButton))
 			{
 				if (thumbstick == ButtonState.Normal)
 				{
@@ -44,33 +48,22 @@ public class MenuItemHMenuV : MenuItemV
 					Debug.Log("Left");
 
 					items[activeItemIndex].SetInactive();
-					if (activeItemIndex == 0)
-						activeItemIndex = items.Count;
-					activeItemIndex--;
-					activeItemIndex %= items.Count;
+					DecreaseActiveItemIndex();
+					ModeChanged();
 					items[activeItemIndex].SetActive();
-					if (activeItemIndex == 0)
-						brush.SetChangeMode();
-					else
-						brush.SetColorMode();
 				}
 
 			}
-			else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
+			else if (OVRInput.Get(nextItemButton))
 			{
 				if (thumbstick == ButtonState.Normal)
 				{
 					thumbstick = ButtonState.Right;
 					Debug.Log("Right");
-
 					items[activeItemIndex].SetInactive();
-					activeItemIndex++;
-					activeItemIndex %= items.Count;
+					IncreaseActiveItemIndex();
+					ModeChanged();
 					items[activeItemIndex].SetActive();
-					if (activeItemIndex == 0)
-						brush.SetChangeMode();
-					else
-						brush.SetColorMode();
 				}
 			}
 			else
@@ -79,6 +72,25 @@ public class MenuItemHMenuV : MenuItemV
 					thumbstick = ButtonState.Normal;
 			}
 		}
+	}
+
+	private void ModeChanged()
+	{
+		choosenItemStream.OnNext(activeItemIndex);
+	}
+
+	private void IncreaseActiveItemIndex()
+	{
+		activeItemIndex++;
+		activeItemIndex %= items.Count;
+	}
+
+	private void DecreaseActiveItemIndex()
+	{
+		if (activeItemIndex == 0)
+			activeItemIndex = items.Count;
+		activeItemIndex--;
+		activeItemIndex %= items.Count;
 	}
 }
 

@@ -1,17 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UniRx;
 
 public class MenuItemColorV : MenuItemV
 {
+	[SerializeField] Draggable colorHuePicker;
+	[SerializeField] ColorIndicator colorIndicator;
+	// TODO [SerializeField] Draggable intensity;
+
+	[Header("Input")]
+	[SerializeField] private OVRInput.Button decreaseValueButton = OVRInput.Button.SecondaryThumbstickLeft;
+	[SerializeField] private OVRInput.Button increaseValueButton = OVRInput.Button.SecondaryThumbstickRight;
+
+	protected ISubject<Color> colorChangedSubject = new Subject<Color>();
+	public IObservable<Color> ColorChangedStream { get { return colorChangedSubject; } }
+
 	private bool colorIsChoosing = true;
 
 	private ButtonState thumbstick = ButtonState.Normal;
-	[SerializeField] private bool active;
-	[SerializeField] Draggable colorHuePicker;
-	
-	// TODO 
-	// [SerializeField] Draggable intensity;
+	private bool active;
 
 	public void Start()
 	{
@@ -34,23 +40,23 @@ public class MenuItemColorV : MenuItemV
 	{
 		if (active)
 		{
-			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
+			if (OVRInput.Get(decreaseValueButton))
 			{
 				colorHuePicker.Input(ButtonState.Left);
-				Debug.Log("Left");
+				ColorChanged();
 
 			}
-			else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
+			else if (OVRInput.Get(increaseValueButton))
 			{
 				colorHuePicker.Input(ButtonState.Right);
-				Debug.Log("Right");
-			}
-			else
-			{
-				if (thumbstick != ButtonState.Normal)
-					thumbstick = ButtonState.Normal;
+				ColorChanged();
 			}
 		}
+	}
+
+	private void ColorChanged()
+	{
+		colorChangedSubject.OnNext(colorIndicator.GetColor());
 	}
 
 }

@@ -5,7 +5,7 @@ using UniRx;
 
 public class MenuController : MonoBehaviour
 {
-	[SerializeField] private HandMenuController menuController;
+	[SerializeField] private ObjectMenuController menuController;
 
 	[Header("Input")]
 	[SerializeField] private OVRInput.Button showMenuButton = OVRInput.Button.SecondaryThumbstickLeft;

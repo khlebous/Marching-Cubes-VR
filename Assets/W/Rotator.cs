@@ -21,31 +21,35 @@ public class Rotator
         var verRotationChange = Quaternion.FromToRotation(startVec, verCurrVec).eulerAngles;
         verRotationChange = NormalizeRotation(verRotationChange);
 
-        Debug.Log(horRotationChange);
-        Debug.Log(verRotationChange);
+        //Debug.Log(horRotationChange);
+        //Debug.Log(verRotationChange);
 
         if (Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.x) && Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.z))
         {
-            var rotation = startTerrainRotation + horRotationChange;
+            Debug.Log(horRotationChange);
+            //var rotation = (Quaternion.Euler(startTerrainRotation) * Quaternion.Euler(horRotationChange)).eulerAngles;
+            var rotation = (Quaternion.Euler(horRotationChange) * Quaternion.Euler(startTerrainRotation)).eulerAngles;
+            //var rotation = startTerrainRotation + horRotationChange;
             rotation = NormalizeRotation(rotation);
 
             return rotation;
         }
         else
         {
-            var rotation = startTerrainRotation + verRotationChange;
+            //var rotation = (Quaternion.Euler(startTerrainRotation) * Quaternion.Euler(verRotationChange)).eulerAngles;
+            var rotation = (Quaternion.Euler(verRotationChange) * Quaternion.Euler(startTerrainRotation)).eulerAngles;
             rotation = NormalizeRotation(rotation);
 
             var boundaryAngle = 10f;
             if (Math.Abs(rotation.x) < boundaryAngle && Math.Abs(rotation.z) < boundaryAngle)
             {
                 rotation.x = 0;
-                rotation.y -= verRotationChange.y;
+                //rotation.y -= verRotationChange.y;
                 rotation.z = 0;
             }
 
-            rotation = Vector3.Max(rotation, new Vector3(-90, rotation.y, -90));
-            rotation = Vector3.Min(rotation, new Vector3(90, rotation.y, 90));
+            //rotation = Vector3.Max(rotation, new Vector3(-90, rotation.y, -90));
+            //rotation = Vector3.Min(rotation, new Vector3(90, rotation.y, 90));
 
             return rotation;
         }

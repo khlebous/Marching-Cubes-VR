@@ -12,47 +12,55 @@ public class Rotator
         var startVec = startPos - startTerrainPosition;
         var currentVec = currentPos - startTerrainPosition;
 
-        var horCurrVec = Vector3.ProjectOnPlane(currentVec, Vector3.up);
-        var horRotationChange = Quaternion.FromToRotation(startVec, horCurrVec).eulerAngles;
-        horRotationChange = NormalizeRotation(horRotationChange);
-
-        var verPlaneNormal = Vector3.Cross(Vector3.up, startVec);
-        var verCurrVec = Vector3.ProjectOnPlane(currentVec, verPlaneNormal);
-        var verRotationChange = Quaternion.FromToRotation(startVec, verCurrVec).eulerAngles;
-        verRotationChange = NormalizeRotation(verRotationChange);
-
-        //Debug.Log(horRotationChange);
-        //Debug.Log(verRotationChange);
+        var horRotationChange = GetHorizontalRotation(startVec, currentVec);
+        var verRotationChange = GetVerticalRotation(startVec, currentVec);
 
         if (Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.x) && Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.z))
         {
-            Debug.Log(horRotationChange);
-            //var rotation = (Quaternion.Euler(startTerrainRotation) * Quaternion.Euler(horRotationChange)).eulerAngles;
-            var rotation = (Quaternion.Euler(horRotationChange) * Quaternion.Euler(startTerrainRotation)).eulerAngles;
-            //var rotation = startTerrainRotation + horRotationChange;
-            rotation = NormalizeRotation(rotation);
-
+            var rotation = NormalizeRotation(ComposeRotations(horRotationChange, startTerrainRotation));
             return rotation;
         }
         else
         {
-            //var rotation = (Quaternion.Euler(startTerrainRotation) * Quaternion.Euler(verRotationChange)).eulerAngles;
-            var rotation = (Quaternion.Euler(verRotationChange) * Quaternion.Euler(startTerrainRotation)).eulerAngles;
-            rotation = NormalizeRotation(rotation);
+            var rotation = NormalizeRotation(ComposeRotations(verRotationChange, startTerrainRotation));
 
             var boundaryAngle = 10f;
             if (Math.Abs(rotation.x) < boundaryAngle && Math.Abs(rotation.z) < boundaryAngle)
             {
                 rotation.x = 0;
-                //rotation.y -= verRotationChange.y;
                 rotation.z = 0;
             }
 
-            //rotation = Vector3.Max(rotation, new Vector3(-90, rotation.y, -90));
-            //rotation = Vector3.Min(rotation, new Vector3(90, rotation.y, 90));
+            rotation = Vector3.Max(rotation, new Vector3(-90, rotation.y, -90));
+            rotation = Vector3.Min(rotation, new Vector3(90, rotation.y, 90));
 
             return rotation;
         }
+    }
+
+    public Vector3 GetHorizontalRotation(Vector3 startVec, Vector3 currentVec)
+    {
+        var horCurrVec = Vector3.ProjectOnPlane(currentVec, Vector3.up);
+        var horRotationChange = Quaternion.FromToRotation(startVec, horCurrVec).eulerAngles;
+        horRotationChange = NormalizeRotation(horRotationChange);
+
+        return horRotationChange;
+    }
+
+    public Vector3 GetVerticalRotation(Vector3 startVec, Vector3 currentVec)
+    {
+        var verPlaneNormal = Vector3.Cross(Vector3.up, startVec);
+        var verCurrVec = Vector3.ProjectOnPlane(currentVec, verPlaneNormal);
+        var verRotationChange = Quaternion.FromToRotation(startVec, verCurrVec).eulerAngles;
+        verRotationChange = NormalizeRotation(verRotationChange);
+
+        return verRotationChange;
+    }
+
+    public Vector3 ComposeRotations(Vector3 r1, Vector3 r2)
+    {
+        var rotation = (Quaternion.Euler(r1) * Quaternion.Euler(r2)).eulerAngles;
+        return rotation;
     }
 
     //public Vector3 GetRotation_5(Vector3 startTerrainPosition, Vector3 startTerrainRotation, Vector3 startPos, Vector3 currentPos)

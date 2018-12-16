@@ -8,8 +8,10 @@ public class MenuItemColorV : MenuItemV
 
 	private ButtonState thumbstick = ButtonState.Normal;
 	[SerializeField] private bool active;
-	[SerializeField] Draggable color;
-	//[SerializeField] Draggable intensity;
+	[SerializeField] Draggable colorHuePicker;
+	
+	// TODO 
+	// [SerializeField] Draggable intensity;
 
 	public void Start()
 	{
@@ -34,13 +36,13 @@ public class MenuItemColorV : MenuItemV
 		{
 			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
 			{
-				color.Input(ButtonState.Left);
+				colorHuePicker.Input(ButtonState.Left);
 				Debug.Log("Left");
 
 			}
 			else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
 			{
-				color.Input(ButtonState.Right);
+				colorHuePicker.Input(ButtonState.Right);
 				Debug.Log("Right");
 			}
 			else

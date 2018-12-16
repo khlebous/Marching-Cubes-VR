@@ -61,31 +61,12 @@ public class HandMenuController : MonoBehaviour
 			{
 				Debug.Log("Thumbstic clickedClicked");
 
-					isMenuActive = false;
-					items[activeItemIndex].SetChoosen();
-					itemIsActiveStream.OnNext(true);
+				isMenuActive = false;
+				items[activeItemIndex].SetChoosen();
+				itemIsActiveStream.OnNext(true);
 			}
 			else
 			{
-
-				//if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
-				//{
-				//	if (thumbstick == buttonState.Normal)
-				//	{
-				//		thumbstick = buttonState.Left;
-				//		Debug.Log("Left");
-				//	}
-
-				//}
-				//else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
-				//{
-				//	if (thumbstick == buttonState.Normal)
-				//	{
-				//		thumbstick = buttonState.Right;
-				//		Debug.Log("Right");
-				//	}
-				//}
-				//else 
 				if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickUp))
 				{
 					if (currThumbstickState == ButtonState.Normal)
@@ -124,7 +105,7 @@ public class HandMenuController : MonoBehaviour
 				}
 			}
 		}
-		
+
 	}
 
 

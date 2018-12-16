@@ -16,12 +16,12 @@ public class MenuController : MonoBehaviour
 
 	void Start()
 	{
-		menuController.ItemIsActiveSubject.Subscribe(SubItem);
+		menuController.ItemIsActiveSubject.Subscribe(ItemChoosen);
 		menuController.CloseMenu();
 		StartWaitForOpen();
 	}
 
-	private void SubItem(bool value)
+	private void ItemChoosen(bool value)
 	{
 		if (value)
 			StopListening();

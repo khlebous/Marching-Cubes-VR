@@ -1,11 +1,22 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using System.Collections.Generic;
 
-public class HandMenuController : MonoBehaviour
+public class ObjectMenuController : MonoBehaviour
 {
-	[SerializeField] private List<MenuItemV> items;
+	[SerializeField] private Assets.MarchingCubesGPU.Scripts.Brush brush;
+
+	[Header("Input")]
+	[SerializeField] private OVRInput.Button selectItemButton = OVRInput.Button.SecondaryThumbstick;
+	[SerializeField] private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickDown;
+	[SerializeField] private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickUp;
+
+	[Header("Menu items")]
+	[SerializeField] MenuItemHMenuV modeItem;
+	[SerializeField] MenuItemHMenuV brushShapeItem;
+	[SerializeField] MenuItemSliderV brushSizeItem;
+	[SerializeField] MenuItemColorV brushColorItem;
 
 	private ISubject<bool> itemIsActiveStream = new Subject<bool>();
 	public IObservable<bool> ItemIsActiveSubject { get { return itemIsActiveStream; } }
@@ -13,6 +24,8 @@ public class HandMenuController : MonoBehaviour
 	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;
 	private int activeItemIndex = 0;
+
+	private List<MenuItemV> items;
 
 	public void OpenMenu()
 	{
@@ -30,12 +43,25 @@ public class HandMenuController : MonoBehaviour
 
 	private void Start()
 	{
+		items = new List<MenuItemV>
+		{
+			modeItem,
+			brushShapeItem,
+			brushSizeItem,
+			brushColorItem
+		};
+
 		foreach (var item in items)
 		{
 			item.SetInactive();
 			item.ThubstickClickedStream.Subscribe(_ => SetMenuActive());
 		}
 		items[activeItemIndex].SetActive();
+
+		modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
+		brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
+	    brushSizeItem.ValueChangedStream.Subscribe(brush.SetSizeChanged);
+		brushColorItem.ColorChangedStream.Subscribe(brush.SetColor);
 	}
 
 	public void SetMenuActive()
@@ -55,17 +81,15 @@ public class HandMenuController : MonoBehaviour
 	{
 		if (isMenuActive)
 		{
-			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstick))
+			if (OVRInput.Get(selectItemButton))
 			{
-				Debug.Log("Thumbstic clickedClicked");
-
 				isMenuActive = false;
 				items[activeItemIndex].SetChoosen();
 				itemIsActiveStream.OnNext(true);
 			}
 			else
 			{
-				if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickUp))
+				if (OVRInput.Get(prevItemButton))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{
@@ -77,7 +101,7 @@ public class HandMenuController : MonoBehaviour
 						items[activeItemIndex].SetActive();
 					}
 				}
-				else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickDown))
+				else if (OVRInput.Get(nextItemButton))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{

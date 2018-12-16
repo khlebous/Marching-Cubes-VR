@@ -46,21 +46,69 @@ namespace Assets.MarchingCubesGPU.Scripts
 		//	return result;
 		//}
 
-		void Start()
-		{
-			StartListening();
-		}
-
 		private Coroutine buttonA_down;
 		private Coroutine buttonA_up;
 
 		private Coroutine buttonB_down;
 		private Coroutine buttonB_up;
 
-		private void StartListening()
+		private void Start()
 		{
-			buttonA_down = StartCoroutine(WaitForButtonA_Down());
-			buttonB_down = StartCoroutine(WaitForButtonB_Down());
+			StartListening(BrushMode.Create);
+		}
+
+		private void StartListening(BrushMode brushMode)
+		{
+			buttonA_down = StartCoroutine(WaitForButtonA_Down(brushMode));
+			buttonB_down = StartCoroutine(WaitForButtonB_Down()); // automaticalu delele
+		}
+
+		private void SetChangeMode()
+		{
+			StopListening();
+			mode = BrushMode.Inactive;
+			StartListening(BrushMode.Create);
+		}
+
+		private void SetColorMode()
+		{
+			StopListening();
+			mode = BrushMode.Inactive;
+			buttonA_down = StartCoroutine(WaitForButtonA_Down(BrushMode.Color));
+		}
+
+		public void SetColor(Color color)
+		{
+			this.color = color;
+		}
+
+		public void SetMode(int newMode)
+		{
+			if (newMode == 0)
+				SetChangeMode();
+			else if (newMode == 1)
+				SetColorMode();
+
+			Debug.Log("new mode: " + newMode);
+			
+		}
+
+		public void SetShape(int newShape)
+		{
+			if (newShape == 0)
+				shape = BrushShape.Sphere;
+			else if (newShape == 1)
+				shape = BrushShape.Cuboid;
+
+			Debug.Log("new brush shape: " + newShape);
+		}
+
+		public void SetSizeChanged(float newValue)
+		{
+			Debug.Log("new brush size: " + newValue);
+		
+			// TODO Wojtek
+			// value jest w przedziale 0-1
 		}
 
 		private void StopListening()
@@ -76,22 +124,22 @@ namespace Assets.MarchingCubesGPU.Scripts
 				StopCoroutine(buttonB_up);
 		}
 
-		private IEnumerator WaitForButtonA_Down()
+		private IEnumerator WaitForButtonA_Down(BrushMode brushMode)
 		{
 			while (true)
 			{
 				if (OVRInput.GetDown(buttonX))
 				{
 					StopCoroutine(buttonA_down);
-					mode = BrushMode.Create;
-					buttonA_up = StartCoroutine(WaitForButtonA_Up());
+					mode = brushMode;
+					buttonA_up = StartCoroutine(WaitForButtonA_Up(brushMode));
 				}
 
 				yield return new WaitForEndOfFrame();
 			}
 		}
 
-		private IEnumerator WaitForButtonA_Up()
+		private IEnumerator WaitForButtonA_Up(BrushMode brushMode)
 		{
 			while (true)
 			{
@@ -99,7 +147,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 				{
 					StopCoroutine(buttonA_up);
 					mode = BrushMode.Inactive;
-					buttonA_down = StartCoroutine(WaitForButtonA_Down());
+					buttonA_down = StartCoroutine(WaitForButtonA_Down(brushMode));
 				}
 
 				yield return new WaitForEndOfFrame();

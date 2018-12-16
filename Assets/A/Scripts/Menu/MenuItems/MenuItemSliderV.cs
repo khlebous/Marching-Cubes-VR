@@ -1,66 +1,54 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UniRx;
 
 public class MenuItemSliderV : MenuItemV
 {
+	[Header("Slider")]
 	[SerializeField] private Slider slider;
+	[SerializeField] float sliderStep = 0.01f;
 
-	private buttonState thumbstick = buttonState.Normal;
+	[Header("Input")]
+	[SerializeField] private OVRInput.Button decreaseValueButton = OVRInput.Button.SecondaryThumbstickLeft;
+	[SerializeField] private OVRInput.Button increaseButton = OVRInput.Button.SecondaryThumbstickRight;
 
-	[SerializeField] float sliderStep = 0.1f;
-	[SerializeField] private bool active;
+	protected ISubject<float> valueChangedSubject = new Subject<float>();
+	public IObservable<float> ValueChangedStream { get { return valueChangedSubject; } }
 
-	public void Start()
+	private bool active;
+	
+	public override void SetChoosen()
 	{
-		active = false;
-	}
-
-	public override void SetActive()
-	{
-		base.SetActive();
+		base.SetChoosen();
 		active = true;
 	}
 
-	public override void SetInactive()
+	public override void SetUnChoosen()
 	{
-		base.SetInactive();
+		base.SetUnChoosen();
 		active = false;
 	}
 
+	// TODO not in update but coroutines
 	void Update()
 	{
 		if (active)
 		{
-
-			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
+			if (OVRInput.Get(decreaseValueButton))
 			{
-				if (thumbstick == buttonState.Normal)
-				{
-					thumbstick = buttonState.Left;
-					Debug.Log("Left");
-
-					slider.value -= sliderStep;
-				}
-
+				slider.value -= sliderStep;
+				SliderValueChanged();
 			}
-			else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
+			else if (OVRInput.Get(increaseButton))
 			{
-				if (thumbstick == buttonState.Normal)
-				{
-					thumbstick = buttonState.Right;
-					Debug.Log("Right");
-
-					slider.value += sliderStep;
-
-				}
-			}
-			else
-			{
-				if (thumbstick != buttonState.Normal)
-					thumbstick = buttonState.Normal;
+				slider.value += sliderStep;
+				SliderValueChanged();
 			}
 		}
+	}
+
+	private void SliderValueChanged()
+	{
+		valueChangedSubject.OnNext(slider.value);
 	}
 }

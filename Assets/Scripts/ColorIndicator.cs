@@ -26,4 +26,9 @@ public class ColorIndicator : MonoBehaviour {
 		color.b = sb.y;
 		ApplyColor();
 	}
+
+	public Color GetColor()
+	{
+		return HSBColor.ToColor(color);
+	}
 }

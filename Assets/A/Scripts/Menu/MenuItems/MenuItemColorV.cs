@@ -1,30 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UniRx;
 
 public class MenuItemColorV : MenuItemV
 {
+	[SerializeField] Draggable colorHuePicker;
+	[SerializeField] ColorIndicator colorIndicator;
+	// TODO [SerializeField] Draggable intensity;
+
+	[Header("Input")]
+	[SerializeField] private OVRInput.Button decreaseValueButton = OVRInput.Button.SecondaryThumbstickLeft;
+	[SerializeField] private OVRInput.Button increaseValueButton = OVRInput.Button.SecondaryThumbstickRight;
+
+	protected ISubject<Color> colorChangedSubject = new Subject<Color>();
+	public IObservable<Color> ColorChangedStream { get { return colorChangedSubject; } }
+
 	private bool colorIsChoosing = true;
 
-	private buttonState thumbstick = buttonState.Normal;
-	[SerializeField] private bool active;
-	[SerializeField] Draggable color;
-	//[SerializeField] Draggable intensity;
+	private ButtonState thumbstick = ButtonState.Normal;
+	private bool active;
 
 	public void Start()
 	{
 		active = false;
 	}
 
-	public override void SetActive()
+	public override void SetChoosen()
 	{
-		base.SetActive();
+		base.SetChoosen();
 		active = true;
 	}
 
-	public override void SetInactive()
+	public override void SetUnChoosen()
 	{
-		base.SetInactive();
+		base.SetUnChoosen();
 		active = false;
 	}
 
@@ -32,23 +40,23 @@ public class MenuItemColorV : MenuItemV
 	{
 		if (active)
 		{
-			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
+			if (OVRInput.Get(decreaseValueButton))
 			{
-				color.Input(buttonState.Left);
-				Debug.Log("Left");
+				colorHuePicker.Input(ButtonState.Left);
+				ColorChanged();
 
 			}
-			else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
+			else if (OVRInput.Get(increaseValueButton))
 			{
-				color.Input(buttonState.Right);
-				Debug.Log("Right");
-			}
-			else
-			{
-				if (thumbstick != buttonState.Normal)
-					thumbstick = buttonState.Normal;
+				colorHuePicker.Input(ButtonState.Right);
+				ColorChanged();
 			}
 		}
+	}
+
+	private void ColorChanged()
+	{
+		colorChangedSubject.OnNext(colorIndicator.GetColor());
 	}
 
 }

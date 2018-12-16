@@ -1,32 +1,38 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class MenuItemHMenuV : MenuItemV
 {
-	[SerializeField] public List<MenuItemV> items;
+	[SerializeField] private List<MenuItemV> items;
 
+	[Header("Input")]
+	[SerializeField] private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickRight;
+	[SerializeField] private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickLeft;
+
+	private ISubject<int> choosenItemStream = new Subject<int>();
+	public IObservable<int> ChoosenItemSubject { get { return choosenItemStream; } }
+
+	private ButtonState thumbstick = ButtonState.Normal;
 	private int activeItemIndex = 0;
-	private buttonState thumbstick = buttonState.Normal;
-	[SerializeField] private bool active;
+	private bool active;
 
 	public void Start()
 	{
-		active = false;
-
 		foreach (var item in items)
 			item.SetInactive();
 		items[activeItemIndex].SetActive();
 	}
 
-	public override void SetActive()
+	public override void SetChoosen()
 	{
-		base.SetActive();
+		base.SetChoosen();
 		active = true;
 	}
 
-	public override void SetInactive()
+	public override void SetUnChoosen()
 	{
-		base.SetInactive();
+		base.SetUnChoosen();
 		active = false;
 	}
 
@@ -34,42 +40,57 @@ public class MenuItemHMenuV : MenuItemV
 	{
 		if (active)
 		{
-
-			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
+			if (OVRInput.Get(prevItemButton))
 			{
-				if (thumbstick == buttonState.Normal)
+				if (thumbstick == ButtonState.Normal)
 				{
-					thumbstick = buttonState.Left;
+					thumbstick = ButtonState.Left;
 					Debug.Log("Left");
 
 					items[activeItemIndex].SetInactive();
-					if (activeItemIndex == 0)
-						activeItemIndex = items.Count;
-					activeItemIndex--;
-					activeItemIndex %= items.Count;
+					DecreaseActiveItemIndex();
+					ModeChanged();
 					items[activeItemIndex].SetActive();
 				}
 
 			}
-			else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
+			else if (OVRInput.Get(nextItemButton))
 			{
-				if (thumbstick == buttonState.Normal)
+				if (thumbstick == ButtonState.Normal)
 				{
-					thumbstick = buttonState.Right;
+					thumbstick = ButtonState.Right;
 					Debug.Log("Right");
-
 					items[activeItemIndex].SetInactive();
-					activeItemIndex++;
-					activeItemIndex %= items.Count;
+					IncreaseActiveItemIndex();
+					ModeChanged();
 					items[activeItemIndex].SetActive();
 				}
 			}
 			else
 			{
-				if (thumbstick != buttonState.Normal)
-					thumbstick = buttonState.Normal;
+				if (thumbstick != ButtonState.Normal)
+					thumbstick = ButtonState.Normal;
 			}
 		}
+	}
+
+	private void ModeChanged()
+	{
+		choosenItemStream.OnNext(activeItemIndex);
+	}
+
+	private void IncreaseActiveItemIndex()
+	{
+		activeItemIndex++;
+		activeItemIndex %= items.Count;
+	}
+
+	private void DecreaseActiveItemIndex()
+	{
+		if (activeItemIndex == 0)
+			activeItemIndex = items.Count;
+		activeItemIndex--;
+		activeItemIndex %= items.Count;
 	}
 }
 

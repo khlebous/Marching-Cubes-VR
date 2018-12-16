@@ -5,19 +5,23 @@ using UniRx;
 
 public class MenuController : MonoBehaviour
 {
-	[SerializeField] private HandMenuController menuController;
+	[SerializeField] private ObjectMenuController menuController;
+
+	[Header("Input")]
+	[SerializeField] private OVRInput.Button showMenuButton = OVRInput.Button.SecondaryThumbstickLeft;
+	[SerializeField] private OVRInput.Button hideMenuButton = OVRInput.Button.SecondaryThumbstickRight;
 
 	private Coroutine waitForOpenCoroutine;
 	private Coroutine waitForCloseCoroutine;
 
 	void Start()
 	{
-		menuController.ItemIsActiveSubject.Subscribe(SubItem);
+		menuController.ItemIsActiveSubject.Subscribe(ItemChoosen);
 		menuController.CloseMenu();
 		StartWaitForOpen();
 	}
 
-	private void SubItem(bool value)
+	private void ItemChoosen(bool value)
 	{
 		if (value)
 			StopListening();
@@ -50,7 +54,7 @@ public class MenuController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
+			if (OVRInput.Get(showMenuButton))
 			{
 				StopCoroutine(waitForOpenCoroutine);
 				menuController.OpenMenu();
@@ -65,7 +69,7 @@ public class MenuController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
+			if (OVRInput.Get(hideMenuButton))
 			{
 				StopCoroutine(waitForCloseCoroutine);
 				menuController.CloseMenu();

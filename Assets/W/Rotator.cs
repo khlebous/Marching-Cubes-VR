@@ -6,62 +6,62 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Rotator
-{
-    public Vector3 GetRotation_1(Vector3 startTerrainPosition, Vector3 startTerrainRotation, Vector3 startPos, Vector3 currentPos)
+{   
+    public Vector3 GetRotation_1(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
-        var startVec = startPos - startTerrainPosition;
-        var currentVec = currentPos - startTerrainPosition;
+        var startVec = startConPos - objPos;
+        var currentVec = currentConPos - objPos;
 
-        var rotationChange = Quaternion.FromToRotation(startVec, currentPos).eulerAngles;
-        var rotation = NormalizeRotation(ComposeRotations(rotationChange, startTerrainRotation));
+        var rotationChange = Quaternion.FromToRotation(startVec, currentVec).eulerAngles;
+        var rotation = NormalizeRotation(ComposeRotations(rotationChange, objRotation));
 
         return rotation;
     }
-    public Vector3 GetRotation_2(Vector3 startTerrainPosition, Vector3 startTerrainRotation, Vector3 startPos, Vector3 currentPos)
+    public Vector3 GetRotation_2(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
-        var startVec = startPos - startTerrainPosition;
-        var currentVec = currentPos - startTerrainPosition;
+        var startVec = startConPos - objPos;
+        var currentVec = currentConPos - objPos;
 
         var horRotationChange = GetHorizontalRotation(startVec, currentVec);
-        var rotation = NormalizeRotation(ComposeRotations(horRotationChange, startTerrainRotation));
+        var rotation = NormalizeRotation(ComposeRotations(horRotationChange, objRotation));
 
         return rotation;
     }
-    public Vector3 GetRotation_3(Vector3 startTerrainPosition, Vector3 startTerrainRotation, Vector3 startPos, Vector3 currentPos)
+    public Vector3 GetRotation_3(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
-        var startVec = startPos - startTerrainPosition;
-        var currentVec = currentPos - startTerrainPosition;
+        var startVec = startConPos - objPos;
+        var currentVec = currentConPos - objPos;
 
         var horRotationChange = GetHorizontalRotation(startVec, currentVec);
         var verRotationChange = GetVerticalRotation(startVec, currentVec);
 
         if (Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.x) && Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.z))
         {
-            var rotation = NormalizeRotation(ComposeRotations(horRotationChange, startTerrainRotation));
+            var rotation = NormalizeRotation(ComposeRotations(horRotationChange, objRotation));
             return rotation;
         }
         else
         {
-            var rotation = NormalizeRotation(ComposeRotations(verRotationChange, startTerrainRotation));
+            var rotation = NormalizeRotation(ComposeRotations(verRotationChange, objRotation));
             return rotation;
         }
     }
-    public Vector3 GetRotation_4(Vector3 startTerrainPosition, Vector3 startTerrainRotation, Vector3 startPos, Vector3 currentPos)
+    public Vector3 GetRotation_4(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
-        var startVec = startPos - startTerrainPosition;
-        var currentVec = currentPos - startTerrainPosition;
+        var startVec = startConPos - objPos;
+        var currentVec = currentConPos - objPos;
 
         var horRotationChange = GetHorizontalRotation(startVec, currentVec);
         var verRotationChange = GetVerticalRotation(startVec, currentVec);
 
         if (Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.x) && Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.z))
         {
-            var rotation = NormalizeRotation(ComposeRotations(horRotationChange, startTerrainRotation));
+            var rotation = NormalizeRotation(ComposeRotations(horRotationChange, objRotation));
             return rotation;
         }
         else
         {
-            var rotation = NormalizeRotation(ComposeRotations(verRotationChange, startTerrainRotation));
+            var rotation = NormalizeRotation(ComposeRotations(verRotationChange, objRotation));
 
             var boundaryAngle = 10f;
             if (Math.Abs(rotation.x) < boundaryAngle && Math.Abs(rotation.z) < boundaryAngle)
@@ -73,22 +73,22 @@ public class Rotator
             return rotation;
         }
     }
-    public Vector3 GetRotation_5(Vector3 startTerrainPosition, Vector3 startTerrainRotation, Vector3 startPos, Vector3 currentPos)
+    public Vector3 GetRotation_5(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
-        var startVec = startPos - startTerrainPosition;
-        var currentVec = currentPos - startTerrainPosition;
+        var startVec = startConPos - objPos;
+        var currentVec = currentConPos - objPos;
 
         var horRotationChange = GetHorizontalRotation(startVec, currentVec);
         var verRotationChange = GetVerticalRotation(startVec, currentVec);
 
         if (Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.x) && Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.z))
         {
-            var rotation = NormalizeRotation(ComposeRotations(horRotationChange, startTerrainRotation));
+            var rotation = NormalizeRotation(ComposeRotations(horRotationChange, objRotation));
             return rotation;
         }
         else
         {
-            var rotation = NormalizeRotation(ComposeRotations(verRotationChange, startTerrainRotation));
+            var rotation = NormalizeRotation(ComposeRotations(verRotationChange, objRotation));
 
             var boundaryAngle = 10f;
             if (Math.Abs(rotation.x) < boundaryAngle && Math.Abs(rotation.z) < boundaryAngle)

@@ -3,9 +3,11 @@ using UnityEngine;
 
 using UniRx;
 
-public class MenuController : MonoBehaviour
+public class MenuObjectController : MonoBehaviour
 {
-	[SerializeField] private ObjectMenuController menuController;
+	// TODO add left menu 
+
+	[SerializeField] private MenuRightObjectController menuController;
 
 	[Header("Input")]
 	[SerializeField] private OVRInput.Button showMenuButton = OVRInput.Button.SecondaryThumbstickLeft;

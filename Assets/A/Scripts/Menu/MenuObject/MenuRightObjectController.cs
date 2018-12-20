@@ -3,7 +3,7 @@ using UnityEngine;
 using UniRx;
 using System.Collections.Generic;
 
-public class ObjectMenuController : MonoBehaviour
+public class MenuRightObjectController : MonoBehaviour
 {
 	[SerializeField] private Assets.MarchingCubesGPU.Scripts.ModelBrush brush;
 

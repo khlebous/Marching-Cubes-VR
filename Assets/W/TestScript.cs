@@ -18,10 +18,18 @@ public class TestScript : MonoBehaviour
         startRotation = transform.rotation.eulerAngles;
         startPosition = transform.position;
 
+        var loader = new McLoader();
+        var data = new McData();
+        data.Values = new Vector4[] { new Vector4(1, 2, 3, 4) };
+        data.Colors = new Vector4[] { new Vector4(1, 1, 1, 1) };
+
+        loader.SaveObj("qweTest", data);
+        var loadedData = loader.LoadObj("qweTest");
     }
 
     void Update()
     {
+
         //var result = new RotationHelper().GetRotation(transform.position,
         //                                            startRotation,
         //                                            startCube.transform.position,

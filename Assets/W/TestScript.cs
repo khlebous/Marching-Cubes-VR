@@ -44,7 +44,7 @@ public class TestScript : MonoBehaviour
 
     void Update()
     {
-        var result = new Rotator().GetRotation_5(transform.position,
+        var result = new RotationHelper().GetRotation(transform.position,
                                                     startRotation,
                                                     startCube.transform.position,
                                                     currentCube.transform.position);

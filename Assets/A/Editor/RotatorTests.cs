@@ -17,8 +17,8 @@ public class RotationTests
         var currentPosition = new Vector3(0, 2, -2);
 
 
-        var rotator = new Rotator();
-        var newRotation = rotator.GetRotation_5(objectPosition, objectRotation, startPosition, currentPosition);
+        var rotator = new RotationHelper();
+        var newRotation = rotator.GetRotation(objectPosition, objectRotation, startPosition, currentPosition);
 
 
         Assert.AreEqual(new Vector3(-45, 0, 0), newRotation);
@@ -34,8 +34,8 @@ public class RotationTests
         var currentPosition = new Vector3(2, 0, -2);
 
 
-        var rotator = new Rotator();
-        var newRotation = rotator.GetRotation_5(objectPosition, objectRotation, startPosition, currentPosition);
+        var rotator = new RotationHelper();
+        var newRotation = rotator.GetRotation(objectPosition, objectRotation, startPosition, currentPosition);
 
 
         Assert.AreEqual(new Vector3(0, -45, 0), newRotation);
@@ -51,8 +51,8 @@ public class RotationTests
         var currentPosition = new Vector3(2, 1, -2);
 
 
-        var rotator = new Rotator();
-        var newRotation = rotator.GetRotation_5(objectPosition, objectRotation, startPosition, currentPosition);
+        var rotator = new RotationHelper();
+        var newRotation = rotator.GetRotation(objectPosition, objectRotation, startPosition, currentPosition);
 
 
         Assert.AreEqual(new Vector3(0, -45, 0), newRotation);
@@ -68,8 +68,8 @@ public class RotationTests
         var currentPosition = new Vector3(1, -2, -2);
 
 
-        var rotator = new Rotator();
-        var newRotation = rotator.GetRotation_5(objectPosition, objectRotation, startPosition, currentPosition);
+        var rotator = new RotationHelper();
+        var newRotation = rotator.GetRotation(objectPosition, objectRotation, startPosition, currentPosition);
 
 
         Assert.AreEqual(new Vector3(-45, 0, 0), newRotation);
@@ -85,8 +85,8 @@ public class RotationTests
         var currentPosition = new Vector3(0, 0, -2);
 
 
-        var rotator = new Rotator();
-        var newRotation = rotator.GetRotation_5(objectPosition, objectRotation, startPosition, currentPosition);
+        var rotator = new RotationHelper();
+        var newRotation = rotator.GetRotation(objectPosition, objectRotation, startPosition, currentPosition);
 
 
         Assert.AreEqual(new Vector3(0, 0, 0), newRotation);

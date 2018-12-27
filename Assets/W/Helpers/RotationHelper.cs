@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rotator
+public class RotationHelper
 {
     public Vector3 GetRotation_1(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
@@ -73,7 +73,7 @@ public class Rotator
             return rotation;
         }
     }
-    public Vector3 GetRotation_5(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
+    public Vector3 GetRotation(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
         var startVec = startConPos - objPos;
         var currentVec = currentConPos - objPos;

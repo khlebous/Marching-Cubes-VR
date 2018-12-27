@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Rotator
-{   
+{
     public Vector3 GetRotation_1(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
         var startVec = startConPos - objPos;
@@ -22,8 +22,8 @@ public class Rotator
         var startVec = startConPos - objPos;
         var currentVec = currentConPos - objPos;
 
-        var horRotationChange = GetHorizontalRotation(startVec, currentVec);
-        var rotation = NormalizeRotation(ComposeRotations(horRotationChange, objRotation));
+        var horChange = GetHorizontalRotation(startVec, currentVec);
+        var rotation = NormalizeRotation(ComposeRotations(horChange, objRotation));
 
         return rotation;
     }
@@ -32,17 +32,17 @@ public class Rotator
         var startVec = startConPos - objPos;
         var currentVec = currentConPos - objPos;
 
-        var horRotationChange = GetHorizontalRotation(startVec, currentVec);
-        var verRotationChange = GetVerticalRotation(startVec, currentVec);
+        var horChange = GetHorizontalRotation(startVec, currentVec);
+        var verChange = GetVerticalRotation(startVec, currentVec);
 
-        if (Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.x) && Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.z))
+        if (Math.Abs(horChange.y) > Math.Abs(verChange.x) && Math.Abs(horChange.y) > Math.Abs(verChange.z))
         {
-            var rotation = NormalizeRotation(ComposeRotations(horRotationChange, objRotation));
+            var rotation = NormalizeRotation(ComposeRotations(horChange, objRotation));
             return rotation;
         }
         else
         {
-            var rotation = NormalizeRotation(ComposeRotations(verRotationChange, objRotation));
+            var rotation = NormalizeRotation(ComposeRotations(verChange, objRotation));
             return rotation;
         }
     }
@@ -51,17 +51,17 @@ public class Rotator
         var startVec = startConPos - objPos;
         var currentVec = currentConPos - objPos;
 
-        var horRotationChange = GetHorizontalRotation(startVec, currentVec);
-        var verRotationChange = GetVerticalRotation(startVec, currentVec);
+        var horChange = GetHorizontalRotation(startVec, currentVec);
+        var verChange = GetVerticalRotation(startVec, currentVec);
 
-        if (Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.x) && Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.z))
+        if (Math.Abs(horChange.y) > Math.Abs(verChange.x) && Math.Abs(horChange.y) > Math.Abs(verChange.z))
         {
-            var rotation = NormalizeRotation(ComposeRotations(horRotationChange, objRotation));
+            var rotation = NormalizeRotation(ComposeRotations(horChange, objRotation));
             return rotation;
         }
         else
         {
-            var rotation = NormalizeRotation(ComposeRotations(verRotationChange, objRotation));
+            var rotation = NormalizeRotation(ComposeRotations(verChange, objRotation));
 
             var boundaryAngle = 10f;
             if (Math.Abs(rotation.x) < boundaryAngle && Math.Abs(rotation.z) < boundaryAngle)
@@ -78,17 +78,18 @@ public class Rotator
         var startVec = startConPos - objPos;
         var currentVec = currentConPos - objPos;
 
-        var horRotationChange = GetHorizontalRotation(startVec, currentVec);
-        var verRotationChange = GetVerticalRotation(startVec, currentVec);
+        var horChange = GetHorizontalRotation(startVec, currentVec);
+        var verChange = GetVerticalRotation(startVec, currentVec);
 
-        if (Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.x) && Math.Abs(horRotationChange.y) > Math.Abs(verRotationChange.z))
+        if (Math.Abs(horChange.y) > Math.Abs(verChange.x) && Math.Abs(horChange.y) > Math.Abs(verChange.z))
         {
-            var rotation = NormalizeRotation(ComposeRotations(horRotationChange, objRotation));
+            var rotation = NormalizeRotation(ComposeRotations(horChange, objRotation));
             return rotation;
         }
         else
         {
-            var rotation = NormalizeRotation(ComposeRotations(verRotationChange, objRotation));
+            var rotation = NormalizeRotation(ComposeRotations(verChange, objRotation));
+
 
             var boundaryAngle = 10f;
             if (Math.Abs(rotation.x) < boundaryAngle && Math.Abs(rotation.z) < boundaryAngle)
@@ -97,9 +98,8 @@ public class Rotator
                 rotation.z = 0;
             }
 
-            //does not work
-            //rotation = Vector3.Max(rotation, new Vector3(-30, rotation.y, -30));
-            //rotation = Vector3.Min(rotation, new Vector3(30, rotation.y, 30));
+            rotation = Vector3.Max(rotation, new Vector3(-30, rotation.y, -30));
+            rotation = Vector3.Min(rotation, new Vector3(30, rotation.y, 30));
 
 
             return rotation;
@@ -110,20 +110,20 @@ public class Rotator
     {
         var horCurrVec = Vector3.ProjectOnPlane(currentVec, Vector3.up);
         var horStartVec = Vector3.ProjectOnPlane(startVec, Vector3.up);
-        var horRotationChange = Quaternion.FromToRotation(horStartVec, horCurrVec).eulerAngles;
-        horRotationChange = NormalizeRotation(horRotationChange);
+        var horChange = Quaternion.FromToRotation(horStartVec, horCurrVec).eulerAngles;
+        horChange = NormalizeRotation(horChange);
 
-        return horRotationChange;
+        return horChange;
     }
     private Vector3 GetVerticalRotation(Vector3 startVec, Vector3 currentVec)
     {
         var verPlaneNormal = Vector3.Cross(Vector3.up, startVec);
-        var verStartVec = Vector3.ProjectOnPlane(startVec, verPlaneNormal);
+        var verStartVec = Vector3.ProjectOnPlane(startVec, verPlaneNormal);//verPlaneNormal == startVec?
         var verCurrVec = Vector3.ProjectOnPlane(currentVec, verPlaneNormal);
-        var verRotationChange = Quaternion.FromToRotation(verStartVec, verCurrVec).eulerAngles;
-        verRotationChange = NormalizeRotation(verRotationChange);
+        var verChange = Quaternion.FromToRotation(verStartVec, verCurrVec).eulerAngles;
+        verChange = NormalizeRotation(verChange);
 
-        return verRotationChange;
+        return verChange;
     }
 
     private Vector3 ComposeRotations(Vector3 r1, Vector3 r2)
@@ -138,6 +138,14 @@ public class Rotator
         normalizedRotation.x = NormalizeAngle(rotation.x);
         normalizedRotation.y = NormalizeAngle(rotation.y);
         normalizedRotation.z = NormalizeAngle(rotation.z);
+
+        //hot-fix
+        if (normalizedRotation.z == 180 && normalizedRotation.y == 180)
+        {
+            normalizedRotation.x = NormalizeAngle(180 - normalizedRotation.x);
+            normalizedRotation.z -= 180;
+            normalizedRotation.y -= 180;
+        }
 
         return normalizedRotation;
     }

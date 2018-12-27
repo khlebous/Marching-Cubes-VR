@@ -2,27 +2,33 @@
 using MarchingCubesGPUProject;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    //public MarchingCubesGPUProject.Terrain terrain;
-    public Transform template;
-	//public MonoBehaviour brush;
-	// Use this for initialization
-	void Start()
+    public Transform startCube;
+    public Transform currentCube;
+
+    private Vector3 startRotation;
+    private Vector3 startPosition;
+
+    void Start()
     {
+        startRotation = transform.rotation.eulerAngles;
+        startPosition = transform.position;
+
     }
 
-    // Update is called once per frame
     void Update()
     {
-		//var dt = Time.deltaTime;
-		//terrain.brush.transform.position += new Vector3(0.0f, 0.3f, 0.0f) * dt;1
+        //var result = new RotationHelper().GetRotation(transform.position,
+        //                                            startRotation,
+        //                                            startCube.transform.position,
+        //                                            currentCube.transform.position);
+        //transform.rotation = Quaternion.Euler(result);
 
-		//transform.position = template.position;
-		//Debug.Log(template.position);
-		//transform.rotation = template.rotation;
-
-	}
+        var result = new MovementService().GetPosition(startPosition, startCube.transform.position, currentCube.transform.position);
+        transform.position = result;
+    }
 }

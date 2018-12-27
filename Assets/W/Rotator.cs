@@ -98,8 +98,8 @@ public class Rotator
                 rotation.z = 0;
             }
 
-            rotation = Vector3.Max(rotation, new Vector3(-30, rotation.y, -30));
-            rotation = Vector3.Min(rotation, new Vector3(30, rotation.y, 30));
+            rotation = Vector3.Max(rotation, new Vector3(-80, rotation.y, -80));
+            rotation = Vector3.Min(rotation, new Vector3(80, rotation.y, 80));
 
 
             return rotation;
@@ -118,9 +118,8 @@ public class Rotator
     private Vector3 GetVerticalRotation(Vector3 startVec, Vector3 currentVec)
     {
         var verPlaneNormal = Vector3.Cross(Vector3.up, startVec);
-        var verStartVec = Vector3.ProjectOnPlane(startVec, verPlaneNormal);//verPlaneNormal == startVec?
         var verCurrVec = Vector3.ProjectOnPlane(currentVec, verPlaneNormal);
-        var verChange = Quaternion.FromToRotation(verStartVec, verCurrVec).eulerAngles;
+        var verChange = Quaternion.FromToRotation(startVec, verCurrVec).eulerAngles;
         verChange = NormalizeRotation(verChange);
 
         return verChange;

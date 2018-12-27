@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotationHelper
+public class RotationService
 {
     public Vector3 GetRotation_1(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {

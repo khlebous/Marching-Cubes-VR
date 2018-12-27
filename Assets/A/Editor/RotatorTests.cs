@@ -17,7 +17,7 @@ public class RotationTests
         var currentPosition = new Vector3(0, 2, -2);
 
 
-        var rotator = new RotationHelper();
+        var rotator = new RotationService();
         var newRotation = rotator.GetRotation(objectPosition, objectRotation, startPosition, currentPosition);
 
 
@@ -34,7 +34,7 @@ public class RotationTests
         var currentPosition = new Vector3(2, 0, -2);
 
 
-        var rotator = new RotationHelper();
+        var rotator = new RotationService();
         var newRotation = rotator.GetRotation(objectPosition, objectRotation, startPosition, currentPosition);
 
 
@@ -51,7 +51,7 @@ public class RotationTests
         var currentPosition = new Vector3(2, 1, -2);
 
 
-        var rotator = new RotationHelper();
+        var rotator = new RotationService();
         var newRotation = rotator.GetRotation(objectPosition, objectRotation, startPosition, currentPosition);
 
 
@@ -68,7 +68,7 @@ public class RotationTests
         var currentPosition = new Vector3(1, -2, -2);
 
 
-        var rotator = new RotationHelper();
+        var rotator = new RotationService();
         var newRotation = rotator.GetRotation(objectPosition, objectRotation, startPosition, currentPosition);
 
 
@@ -85,7 +85,7 @@ public class RotationTests
         var currentPosition = new Vector3(0, 0, -2);
 
 
-        var rotator = new RotationHelper();
+        var rotator = new RotationService();
         var newRotation = rotator.GetRotation(objectPosition, objectRotation, startPosition, currentPosition);
 
 

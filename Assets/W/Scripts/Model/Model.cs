@@ -108,7 +108,7 @@ namespace MarchingCubesGPUProject
                 for (int y = 0; y < N; y++)
                     for (int x = 0; x < N; x++)
                     {
-                        data[x + y * N + z * N * N] = new Vector4(0.7f,0.7f,0.7f, 1);
+                        data[x + y * N + z * N * N] = new Vector4(0.7f, 0.7f, 0.7f, 1);
                         //if (x > 3)
                         //    data[x + y * N + z * N * N] = new Vector4(1, 0, 0, 1);
                     }
@@ -240,7 +240,7 @@ namespace MarchingCubesGPUProject
             var mcRotation = Matrix4x4.Rotate(this.transform.rotation);
             var mcPosition = Matrix4x4.Translate(this.transform.position);
 
-            var result = mcPosition * mcRotation  * mcScale * mcOffsetTranslation;
+            var result = mcPosition * mcRotation * mcScale * mcOffsetTranslation;
             return result;
         }
 
@@ -309,6 +309,19 @@ namespace MarchingCubesGPUProject
             meshes[meshIdx].SetNormals(normals);
             meshes[meshIdx].SetColors(colors);
             meshes[meshIdx].SetTriangles(indexes, 0);
+        }
+
+        public McData GetData()
+        {
+            var data = new McData();
+            data.Values = new float[N * N * N];
+            data.Colors = new Vector4[N * N * N];
+
+            m_dataBuffer.GetData(data.Values);
+            m_dataColorBuffer.GetData(data.Colors);
+
+
+            return data;
         }
     }
 }

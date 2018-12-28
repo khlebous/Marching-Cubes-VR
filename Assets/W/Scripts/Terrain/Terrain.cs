@@ -406,6 +406,19 @@ namespace MarchingCubesGPUProject
             meshes[meshIdx].SetColors(colors);
             meshes[meshIdx].SetTriangles(indexes, 0);
         }
+
+        public McData GetData()
+        {
+            var data = new McData();
+            data.Values = new float[N * N];
+            data.Colors = new Vector4[N * N];
+
+            m_dataBuffer.GetData(data.Values);
+            m_dataColorBuffer.GetData(data.Colors);
+
+
+            return data;
+        }
     }
 }
 

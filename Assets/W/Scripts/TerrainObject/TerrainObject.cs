@@ -187,7 +187,7 @@ namespace MarchingCubesGPUProject
             m_normals.SetInt("_Width", N);
             m_normals.SetInt("_Height", N);
             m_normals.SetInt("_Depth", N);
-            m_normals.SetBuffer(0, "_Noise", m_dataBuffer);
+            m_normals.SetBuffer(0, "_Voxels", m_dataBuffer);
             m_normals.SetTexture(0, "_Result", m_normalsBuffer);
 
             m_normals.Dispatch(0, N / 8, N / 8, N / 8);

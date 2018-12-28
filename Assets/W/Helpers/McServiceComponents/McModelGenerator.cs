@@ -10,16 +10,16 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class McTerrainGenerator : McBaseGenerator
+public class McModelGenerator : McBaseGenerator
 {
     protected override int N
-    { get { return McSettings.TerrN; } }
+    { get { return McSettings.ModelN; } }
 
     protected override int DesiredBufferSize
-    { get { return N * N; } }
+    { get { return N * N * N; } }
 
 
-    public McTerrainGenerator(ComputeShader marchingSh, ComputeShader normalsSh, ComputeShader clearSh, Material material)
+    public McModelGenerator(ComputeShader marchingSh, ComputeShader normalsSh, ComputeShader clearSh, Material material)
         : base(marchingSh, normalsSh, clearSh, material)
     {
     }

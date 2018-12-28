@@ -1,7 +1,7 @@
 
 #pragma kernel CSMain
 
-StructuredBuffer<float> _Noise;
+StructuredBuffer<float> _Voxels;
 
 RWTexture3D<float3> _Result;
 
@@ -11,14 +11,14 @@ int _Width, _Height, _Depth;
 [numthreads(8,8,8)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-	float dxR = id.x==_Width - 1 ? 0 : _Noise[(id.x+1) + id.y * _Width + id.z * _Width * _Height];
-	float dyR = id.y==_Height - 1 ? 0 : _Noise[id.x + (id.y+1) * _Width + id.z * _Width * _Height];
-	float dzR = id.z==_Depth - 1 ? 0 : _Noise[id.x + id.y * _Width + (id.z+1) * _Width * _Height];
+	float dxR = id.x==_Width - 1 ? 0 : _Voxels[(id.x+1) + id.y * _Width + id.z * _Width * _Height];
+	float dyR = id.y==_Height - 1 ? 0 : _Voxels[id.x + (id.y+1) * _Width + id.z * _Width * _Height];
+	float dzR = id.z==_Depth - 1 ? 0 : _Voxels[id.x + id.y * _Width + (id.z+1) * _Width * _Height];
 	
 	
-	float dxL = id.x==0 ? 0 : _Noise[(id.x-1) + id.y * _Width + id.z * _Width * _Height];
-	float dyL = id.y==0 ? 0 : _Noise[id.x + (id.y-1) * _Width + id.z * _Width * _Height];
-	float dzL = id.z==0 ? 0 : _Noise[id.x + id.y * _Width + (id.z-1) * _Width * _Height];
+	float dxL = id.x==0 ? 0 : _Voxels[(id.x-1) + id.y * _Width + id.z * _Width * _Height];
+	float dyL = id.y==0 ? 0 : _Voxels[id.x + (id.y-1) * _Width + id.z * _Width * _Height];
+	float dzL = id.z==0 ? 0 : _Voxels[id.x + id.y * _Width + (id.z-1) * _Width * _Height];
 
 
 	float dx = dxL - dxR;

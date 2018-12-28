@@ -24,7 +24,7 @@ public class TestScript : MonoBehaviour
         startRotation = transform.rotation.eulerAngles;
         startPosition = transform.position;
 
-        int N = Settings.TerrN;
+        int N = McSettings.TerrN;
 
         var generator = new McTerrainGenerator(m_marchingCubes, m_normals, m_clearBuffer, material);
 
@@ -52,7 +52,6 @@ public class TestScript : MonoBehaviour
         data.Colors = Colordata;
         data.Values = values;
 
-        generator.Init();
         var obj = generator.GetTerrainMeshes(data);
         obj.transform.parent = this.transform;
     }

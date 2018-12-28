@@ -17,7 +17,7 @@ namespace MarchingCubesGPUProject
     {
         const int N = McConsts.ModelN;
         const int meshCount = McConsts.MeshCount;
-        const int SIZE = N * N * N * 3 * 5;
+        const int Size = N * N * N * 3 * 5;
 
         public Material drawBuffer;
         public TerrainBrush brush;
@@ -39,10 +39,10 @@ namespace MarchingCubesGPUProject
         private ComputeBuffer _extremeValueBuffer;
 
         private Mesh[] _meshes;
+        private McVert[] _verts = new McVert[Size];
 
         private void Start()
         {
-
             //There are 8 threads run per group so N must be divisible by 8.
             if (N % 8 != 0)
                 throw new System.ArgumentException("N must be divisible be 8");
@@ -134,7 +134,7 @@ namespace MarchingCubesGPUProject
         private void InitMeshBuffer()
         {
             //m_meshBuffer = new ComputeBuffer(SIZE, sizeof(float) * 7);
-            _meshBuffer = new ComputeBuffer(SIZE, sizeof(float) * 11);
+            _meshBuffer = new ComputeBuffer(Size, sizeof(float) * 11);
             CleanMeshBuffer();
         }
         private void InitMarchingCubesTablesBuffors()
@@ -334,12 +334,6 @@ namespace MarchingCubesGPUProject
             return result;
         }
 
-        struct Vert
-        {
-            public Vector4 position;
-            public Vector3 normal;
-            public Vector4 color;
-        };
 
         /// <summary>
         /// Reads back the mesh data from the GPU and turns it into a standard unity mesh.
@@ -347,11 +341,10 @@ namespace MarchingCubesGPUProject
         /// <returns></returns>
         /// 
 
-        private Vert[] verts = new Vert[SIZE];
         private void UpdateMeshes()
         {
             //Get the data out of the buffer.
-            _meshBuffer.GetData(verts);
+            _meshBuffer.GetData(_verts);
             //var a = m_meshBuffer.GetNativeBufferPtr();
 
             var positions = new List<Vector3>();
@@ -364,15 +357,15 @@ namespace MarchingCubesGPUProject
             //int maxTriangles = 65000 / 3;
             int maxVerts = 65000;
 
-            for (int i = 0; i < SIZE; i++)
+            for (int i = 0; i < Size; i++)
             {
                 //If the marching cubes generated a vert for this index
                 //then the position w value will be 1, not -1.
-                if (verts[i].position.w != -1)
+                if (_verts[i].position.w != -1)
                 {
-                    positions.Add(verts[i].position);
-                    normals.Add(verts[i].normal);
-                    colors.Add(verts[i].color);
+                    positions.Add(_verts[i].position);
+                    normals.Add(_verts[i].normal);
+                    colors.Add(_verts[i].color);
                     indexes.Add(idx++);
                 }
 

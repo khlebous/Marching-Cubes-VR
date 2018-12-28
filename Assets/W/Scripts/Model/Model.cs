@@ -8,7 +8,7 @@ using Assets.MarchingCubesGPU.Scripts;
 
 namespace MarchingCubesGPUProject
 {
-    public class TerrainObject : MonoBehaviour
+    public class Model : MonoBehaviour
     {
         //The size of the voxel array for each dimension
         const int N = 24;
@@ -21,7 +21,7 @@ namespace MarchingCubesGPUProject
 
         public Material m_drawBuffer;
 
-        public Brush brush;
+        public ModelBrush brush;
 
         public ComputeShader m_brushBuffer;
         public ComputeShader m_marchingCubes;

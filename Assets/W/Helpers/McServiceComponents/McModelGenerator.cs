@@ -13,7 +13,7 @@ using UnityEngine.Rendering;
 public class McModelGenerator : McBaseGenerator
 {
     protected override int N
-    { get { return McSettings.ModelN; } }
+    { get { return McConsts.ModelN; } }
 
     protected override int DesiredBufferSize
     { get { return N * N * N; } }

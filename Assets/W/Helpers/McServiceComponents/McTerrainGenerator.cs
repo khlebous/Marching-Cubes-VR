@@ -13,7 +13,7 @@ using UnityEngine.Rendering;
 public class McTerrainGenerator : McBaseGenerator
 {
     protected override int N
-    { get { return McSettings.TerrN; } }
+    { get { return McConsts.TerrN; } }
 
     protected override int DesiredBufferSize
     { get { return N * N; } }

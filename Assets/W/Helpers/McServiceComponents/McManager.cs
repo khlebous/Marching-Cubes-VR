@@ -27,7 +27,6 @@ public class McManager : MonoBehaviour
 
     public void Update()
     {
-
     }
 
     public void OnDestroy()

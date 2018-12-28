@@ -6,19 +6,20 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 
 public static class Settings
 {
-    const int TerrN = 32;
-    const int TerrSize = TerrN * TerrN * TerrN * 3 * 5;
+    public const int TerrN = 16;
+    public const int TerrSize = TerrN * TerrN * TerrN * 3 * 5;
 }
 public class McTerrainGenerator
 {
     //The size of the voxel array for each dimension
-    const int N = 32;
+    const int N = 16;
 
     //The size of the buffer that holds the verts.
     //This is the maximum number of verts that the 
@@ -40,7 +41,7 @@ public class McTerrainGenerator
     private ComputeBuffer m_triangleConnectionTable;
 
 
-    public void AddTerrainMeshes(McData data, Transform parent)
+    public GameObject GetTerrainMeshes(McData data)
     {
         if (data.Values.Length != N * N)
             throw new System.ArgumentException("Values array should have " + N * N + " elements");
@@ -48,31 +49,38 @@ public class McTerrainGenerator
         if (data.Colors.Length != N * N)
             throw new System.ArgumentException("Colors array should have " + N * N + " elements");
 
+        m_dataBuffer = new ComputeBuffer(N * N, 4 * sizeof(float));
         m_dataBuffer.SetData(data.Values);
+
+        m_dataColorBuffer = new ComputeBuffer(N * N * 4, 4 * sizeof(float));
         m_dataColorBuffer.SetData(data.Colors);
 
+        GameObject meshesObject = new GameObject("Marching Meshes");
 
         CleanMeshBuffer();
         CalculateNormals();
-        CalculateMesh(parent);
+        CalculateMesh(meshesObject.transform);
+
+        CreateMeshes(meshesObject.transform);
 
 
-        AddMeshes(parent);
+        return meshesObject;
     }
 
-    private void Init()
+    public McTerrainGenerator(ComputeShader marchingShader, ComputeShader normalsShader, ComputeShader clearShader, Material material)
+    {
+        m_marchingCubes = marchingShader;
+        m_normals = normalsShader;
+        m_clearBuffer = clearShader;
+        this.material = material;
+
+    }
+
+    public void Init()
     {
         //There are 8 threads run per group so N must be divisible by 8.
         if (N % 8 != 0)
             throw new System.ArgumentException("N must be divisible be 8");
-
-
-        //material = (Material)Resources.Load("MaterialName", typeof(Material));
-        material = (Material)Resources.Load("W/Materials/MarchingCubesGPUProject_MyDraw");
-        m_marchingCubes = (ComputeShader)Resources.Load("W/Schaders/Terrain/TerrainMarchingCubes");
-        m_normals = (ComputeShader)Resources.Load("W/Schaders/Terrain/TerrainNormals");
-        m_clearBuffer = (ComputeShader)Resources.Load("W/Schaders/ClearBuffer");
-
 
         InitNormalsBuffer();
         InitMeshBuffer();
@@ -161,10 +169,11 @@ public class McTerrainGenerator
 
         return mesh;
     }
-    private void AddMeshes(Transform parent)
+    private void CreateMeshes(Transform parent)
     {
         //Get the data out of the buffer.
         m_meshBuffer.GetData(verts);
+
 
         var positions = new List<Vector3>();
         var normals = new List<Vector3>();
@@ -212,5 +221,6 @@ public class McTerrainGenerator
         lastMesh.SetNormals(normals);
         lastMesh.SetColors(colors);
         lastMesh.SetTriangles(indexes, 0);
+
     }
 }

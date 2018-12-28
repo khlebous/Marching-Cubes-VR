@@ -8,7 +8,7 @@ using UnityEngine;
 [Serializable]
 public class McData
 {
-    public Vector4[] Values { get; set; }
+    public float[] Values { get; set; }
     public Vector4[] Colors { get; set; }
 }
 

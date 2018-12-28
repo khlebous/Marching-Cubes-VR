@@ -539,6 +539,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startCube: {fileID: 119335969}
   currentCube: {fileID: 828129827}
+  m_marchingCubes: {fileID: 7200000, guid: c55e30a151f4e45408487fc525630346, type: 3}
+  m_normals: {fileID: 7200000, guid: f9fdee0c5e89d4843b3e139b010ac71d, type: 3}
+  m_clearBuffer: {fileID: 7200000, guid: c01c61315f4438e489dca09da4ab47dc, type: 3}
 --- !u!1 &475801813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1101,7 +1104,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1793658070833782, guid: 1eedfb13ed7f42e41ab53428f31546ca, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4950746919767436, guid: 1eedfb13ed7f42e41ab53428f31546ca, type: 2}
       propertyPath: m_LocalScale.x

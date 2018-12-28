@@ -456,7 +456,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &439536305
 Transform:
   m_ObjectHideFlags: 0
@@ -1105,7 +1105,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1793658070833782, guid: 1eedfb13ed7f42e41ab53428f31546ca, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4950746919767436, guid: 1eedfb13ed7f42e41ab53428f31546ca, type: 2}
       propertyPath: m_LocalScale.x
@@ -1123,6 +1123,41 @@ Prefab:
     - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
         type: 2}
       propertyPath: m_ExtremeValue
+      value: 
+      objectReference: {fileID: 7200000, guid: 19a07a8ef9004a44cbba524635051b90, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: brushColorShader
+      value: 
+      objectReference: {fileID: 7200000, guid: 61ac53158a236284aa73ce4b2e4fec87, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: brushShapeShader
+      value: 
+      objectReference: {fileID: 7200000, guid: ed459d13947a75e469d5784c72165e70, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: marchingShader
+      value: 
+      objectReference: {fileID: 7200000, guid: c55e30a151f4e45408487fc525630346, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: noramlsShader
+      value: 
+      objectReference: {fileID: 7200000, guid: f9fdee0c5e89d4843b3e139b010ac71d, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: normalsShader
+      value: 
+      objectReference: {fileID: 7200000, guid: f9fdee0c5e89d4843b3e139b010ac71d, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: clearShader
+      value: 
+      objectReference: {fileID: 7200000, guid: c01c61315f4438e489dca09da4ab47dc, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: ExtremeValueShader
       value: 
       objectReference: {fileID: 7200000, guid: 19a07a8ef9004a44cbba524635051b90, type: 3}
     m_RemovedComponents: []

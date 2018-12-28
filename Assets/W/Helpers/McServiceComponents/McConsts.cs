@@ -9,6 +9,7 @@ public static class McConsts
 {
     public const int TerrN = 16;
     public const int ModelN = 16;
+    public const int MeshCount = 20;
 }
 
 

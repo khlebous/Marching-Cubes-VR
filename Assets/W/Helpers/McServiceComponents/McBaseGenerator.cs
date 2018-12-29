@@ -54,7 +54,16 @@ public abstract class McBaseGenerator
         InitMeshBuffer();
         InitMarchingCubesTablesBuffors();
     }
-    public GameObject GetMeshes(McData data)
+    public McData GetNewEmptyData()
+    {
+        var data = new McData();
+        data.Guid = new Guid();
+        data.Values = new float[DesiredBufferSize];
+        data.Colors = Enumerable.Repeat(new Vector4(1, 1, 1, 1), DesiredBufferSize).ToArray();
+
+        return data;
+    }
+    public GameObject GenerateMeshes(McData data)
     {
         if (data.Values.Length != DesiredBufferSize)
             throw new System.ArgumentException("Values array should have " + DesiredBufferSize + " elements");
@@ -63,7 +72,6 @@ public abstract class McBaseGenerator
             throw new System.ArgumentException("Colors array should have " + DesiredBufferSize + " elements");
 
         dataBuffer.SetData(data.Values);
-
         dataColorBuffer.SetData(data.Colors);
 
         GameObject meshesObject = new GameObject("Marching Meshes");

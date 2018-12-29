@@ -8,6 +8,7 @@ using UnityEngine;
 [Serializable]
 public class McSceneData
 {
+    public Guid Guid { get; set; }
     public Guid TerrainGuid { get; set; }
     public List<McSceneModelData> Models { get; set; }
 }

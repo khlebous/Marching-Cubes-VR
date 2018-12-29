@@ -52,7 +52,7 @@ public class TestScript : MonoBehaviour
         data.Colors = Colordata;
         data.Values = values;
 
-        var obj = generator.GetMeshes(data);
+        var obj = generator.GenerateMeshes(data);
         obj.transform.parent = this.transform;
     }
 

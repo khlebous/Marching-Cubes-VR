@@ -5,11 +5,14 @@ using UnityEngine.Rendering;
 
 using System.Collections.Generic;
 using Assets.MarchingCubesGPU.Scripts;
+using System;
 
 namespace MarchingCubesGPUProject
 {
     public class EditableModel : MonoBehaviour
     {
+        public Guid Guid { get; set; }
+
         const int N = McConsts.ModelN;
         const int meshCount = McConsts.MeshCount;
         const int Size = N * N * N * 3 * 5;
@@ -294,18 +297,19 @@ namespace MarchingCubesGPUProject
 
         public void SetData(McData data)
         {
+            Guid = data.Guid;
             _dataBuffer.SetData(data.Values);
             _dataColorBuffer.SetData(data.Colors);
         }
         public McData GetData()
         {
             var data = new McData();
+            data.Guid = Guid;
             data.Values = new float[N * N * N];
             data.Colors = new Vector4[N * N * N];
 
             _dataBuffer.GetData(data.Values);
             _dataColorBuffer.GetData(data.Colors);
-
 
             return data;
         }

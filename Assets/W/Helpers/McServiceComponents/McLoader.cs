@@ -11,10 +11,10 @@ public class McLoader
 {
     private const string _extension = ".bin";
 
-    public void SaveScene(string name, McSceneData data)
+    public void SaveScene(string path, McSceneData data)
     {
-        var fileName = GetFilePath(name);
-        EnsureDirExists(fileName);
+        var fileName = GetFilePath(path);
+        EnsureDirForFileExists(fileName);
 
         BinaryFormatter bin = GetBinFormatter();
         using (Stream stream = File.Open(fileName, FileMode.Create))
@@ -22,12 +22,10 @@ public class McLoader
             bin.Serialize(stream, data);
         }
     }
-
-
-    public McSceneData LoadScene(string name)
+    public McSceneData LoadScene(string path)
     {
-        var fileName = GetFilePath(name);
-        EnsureDirExists(fileName);
+        var fileName = GetFilePath(path);
+        EnsureDirForFileExists(fileName);
 
         BinaryFormatter bin = GetBinFormatter();
         using (Stream stream = File.Open(fileName, FileMode.Open))
@@ -37,10 +35,10 @@ public class McLoader
         }
     }
 
-    public void SaveObj(string name, McData data)
+    public void SaveObj(string path, McData data)
     {
-        var fileName = GetFilePath(name);
-        EnsureDirExists(fileName);
+        var fileName = GetFilePath(path);
+        EnsureDirForFileExists(fileName);
 
         BinaryFormatter bin = GetBinFormatter();
         using (Stream stream = File.Open(fileName, FileMode.Create))
@@ -48,11 +46,10 @@ public class McLoader
             bin.Serialize(stream, data);
         }
     }
-
-    public McData LoadObj(string name)
+    public McData LoadObj(string path)
     {
-        var fileName = GetFilePath(name);
-        EnsureDirExists(fileName);
+        var fileName = GetFilePath(path);
+        EnsureDirForFileExists(fileName);
 
         BinaryFormatter bin = GetBinFormatter();
         using (Stream stream = File.Open(fileName, FileMode.Open))
@@ -62,7 +59,34 @@ public class McLoader
         }
     }
 
-    public BinaryFormatter GetBinFormatter()
+    public List<Guid> GetAllObjGuids(string path)
+    {
+        var dirPath = Path.Combine(GetRootPath(), path);
+        var dirInfo = new DirectoryInfo(GetFilePath(path));
+
+        var guids = new List<Guid>();
+        if (dirInfo.Exists)
+        {
+            foreach (var file in dirInfo.GetFiles())
+            {
+                if (file.Extension != _extension)
+                    continue;
+
+                try
+                {
+                    var guid = new Guid(Path.GetFileNameWithoutExtension(file.Name));
+                    guids.Add(guid);
+                }
+                catch (Exception)
+                {
+                }
+            }
+        }
+
+        return guids;
+    }
+
+    private BinaryFormatter GetBinFormatter()
     {
         var bin = new BinaryFormatter();
 
@@ -76,18 +100,18 @@ public class McLoader
         return bin;
     }
 
-    public void EnsureDirExists(string path)
+    private void EnsureDirForFileExists(string path)
     {
         var fileInfo = new FileInfo(path);
         fileInfo.Directory.Create();
     }
-    public string GetFilePath(string name)
+    private string GetFilePath(string path)
     {
-        var fullPath = Path.Combine(GetRootPath(), name + _extension);
+        var fullPath = Path.Combine(GetRootPath(), path + _extension);
 
         return fullPath;
     }
-    public string GetRootPath()
+    private string GetRootPath()
     {
         var root = Path.Combine(Directory.GetCurrentDirectory(), "saves");
         return root;

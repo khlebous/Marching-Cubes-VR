@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class EditableScene : MonoBehaviour
 {
-    public Guid SceneGuid;
+    public Guid SceneGuid { get; set; }
 
-    public GameObject Terrain;
-    public Guid TerrainGuid;
+    public GameObject Terrain { get; set; }
+    public Guid TerrainGuid { get; set; }
 
-    public List<KeyValuePair<Guid, GameObject>> Models;
+    public List<KeyValuePair<Guid, GameObject>> Models { get; set; }
 
     public void Start()
     {

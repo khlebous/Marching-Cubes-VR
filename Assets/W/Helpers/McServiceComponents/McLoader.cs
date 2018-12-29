@@ -11,6 +11,32 @@ public class McLoader
 {
     private const string _extension = ".bin";
 
+    public void SaveScene(string name, McSceneData data)
+    {
+        var fileName = GetFilePath(name);
+        EnsureDirExists(fileName);
+
+        BinaryFormatter bin = GetBinFormatter();
+        using (Stream stream = File.Open(fileName, FileMode.Create))
+        {
+            bin.Serialize(stream, data);
+        }
+    }
+
+
+    public McSceneData LoadScene(string name)
+    {
+        var fileName = GetFilePath(name);
+        EnsureDirExists(fileName);
+
+        BinaryFormatter bin = GetBinFormatter();
+        using (Stream stream = File.Open(fileName, FileMode.Open))
+        {
+            var data = (McSceneData)bin.Deserialize(stream);
+            return data;
+        }
+    }
+
     public void SaveObj(string name, McData data)
     {
         var fileName = GetFilePath(name);

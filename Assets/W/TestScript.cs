@@ -52,7 +52,7 @@ public class TestScript : MonoBehaviour
         data.Colors = Colordata;
         data.Values = values;
 
-        var obj = generator.GetTerrainMeshes(data);
+        var obj = generator.GetMeshes(data);
         obj.transform.parent = this.transform;
     }
 
@@ -65,7 +65,7 @@ public class TestScript : MonoBehaviour
         //                                            currentCube.transform.position);
         //transform.rotation = Quaternion.Euler(result);
 
-        var result = new MovementService().GetPosition(startPosition, startCube.transform.position, currentCube.transform.position);
+        var result = new OperationService().GetPosition(startPosition, startCube.transform.position, currentCube.transform.position);
         transform.position = result;
     }
 }

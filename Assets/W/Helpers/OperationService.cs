@@ -5,8 +5,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotationService
+public class OperationService
 {
+    public Vector3 GetPosition(Vector3 objPos, Vector3 startConPos, Vector3 currentConPos)
+    {
+        var positionChange = currentConPos - startConPos;
+
+        return objPos + positionChange;
+    }
+
     public Vector3 GetRotation_1(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
         var startVec = startConPos - objPos;

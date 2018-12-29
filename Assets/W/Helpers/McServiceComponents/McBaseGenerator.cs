@@ -54,7 +54,7 @@ public abstract class McBaseGenerator
         InitMeshBuffer();
         InitMarchingCubesTablesBuffors();
     }
-    public GameObject GetTerrainMeshes(McData data)
+    public GameObject GetMeshes(McData data)
     {
         if (data.Values.Length != DesiredBufferSize)
             throw new System.ArgumentException("Values array should have " + DesiredBufferSize + " elements");

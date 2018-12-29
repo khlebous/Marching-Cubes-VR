@@ -109,7 +109,7 @@ public class McManager : MonoBehaviour
 
         scene.Models = new Dictionary<Guid, GameObject>();
         scene.ModelsData = new Dictionary<Guid, McData>();
-        scene.ModelsOnTerrain = new Dictionary<Guid, GameObject>();
+        scene.ModelsOnTerrain = new List<KeyValuePair<Guid, GameObject>>();
 
         var terrainData = CreateTerrain();
         scene.TerrainGuid = terrainData.Guid;
@@ -175,7 +175,7 @@ public class McManager : MonoBehaviour
     }
     private void LoadModelsOnScene(EditableScene scene, List<McSceneModelData> Models)
     {
-        scene.ModelsOnTerrain = new Dictionary<Guid, GameObject>();
+        scene.ModelsOnTerrain = new List<KeyValuePair<Guid, GameObject>>();
         foreach (var modelSceneData in Models)
         {
             var modelObj = GameObject.Instantiate(scene.Models[modelSceneData.Guid]);
@@ -187,8 +187,8 @@ public class McManager : MonoBehaviour
             modelObj.transform.localScale = modelSceneData.Scale;
 
             modelObj.SetActive(true);
-
-            scene.ModelsOnTerrain.Add(modelSceneData.Guid, modelObj);
+            
+            scene.ModelsOnTerrain.Add(new KeyValuePair<Guid, GameObject>(modelSceneData.Guid, modelObj));
         }
     }
 

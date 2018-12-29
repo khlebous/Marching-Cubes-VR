@@ -12,14 +12,18 @@ public class EditableScene : MonoBehaviour
     public McData TerrainData { get; set; }
     public GameObject Terrain { get; set; }
 
-    public Dictionary<Guid, GameObject> ModelsOnTerrain { get; set; }
+    public List<KeyValuePair<Guid, GameObject>> ModelsOnTerrain { get; set; }
 
     public Dictionary<Guid, McData> ModelsData { get; set; }
     public Dictionary<Guid, GameObject> Models { get; set; }
 
-    public void InstantiateModel(Guid guid)
+    public GameObject InstantiateModel(Guid guid)
     {
+        var obj = GameObject.Instantiate(Models[guid]);
+        ModelsOnTerrain.Add(new KeyValuePair<Guid, GameObject>(guid, obj));
+        obj.SetActive(true);
 
+        return obj;
     }
 
     public void Start()

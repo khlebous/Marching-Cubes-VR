@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using UniRx;
 using UnityEngine;
 
 public class McManager : MonoBehaviour
@@ -109,7 +110,7 @@ public class McManager : MonoBehaviour
 
         scene.Models = new Dictionary<Guid, GameObject>();
         scene.ModelsData = new Dictionary<Guid, McData>();
-        scene.ModelsOnTerrain = new List<KeyValuePair<Guid, GameObject>>();
+        scene.ModelsOnTerrain = new List<McObject>();
 
         var terrainData = CreateTerrain();
         scene.TerrainGuid = terrainData.Guid;
@@ -175,7 +176,7 @@ public class McManager : MonoBehaviour
     }
     private void LoadModelsOnScene(EditableScene scene, List<McSceneModelData> Models)
     {
-        scene.ModelsOnTerrain = new List<KeyValuePair<Guid, GameObject>>();
+        scene.ModelsOnTerrain = new List<McObject>();
         foreach (var modelSceneData in Models)
         {
             var modelObj = GameObject.Instantiate(scene.Models[modelSceneData.Guid]);
@@ -188,7 +189,7 @@ public class McManager : MonoBehaviour
 
             modelObj.SetActive(true);
             
-            scene.ModelsOnTerrain.Add(new KeyValuePair<Guid, GameObject>(modelSceneData.Guid, modelObj));
+            scene.ModelsOnTerrain.Add(new Tuple<Guid, GameObject>(modelSceneData.Guid, modelObj));
         }
     }
 

@@ -59,6 +59,11 @@ public class McLoader
         }
     }
 
+    public bool ObjectExists(string path)
+    {
+        var fileInfo = new FileInfo(GetFilePath(path));
+        return fileInfo.Exists;
+    }
     public List<Guid> GetAllObjGuids(string path)
     {
         var dirPath = Path.Combine(GetRootPath(), path);
@@ -99,7 +104,6 @@ public class McLoader
 
         return bin;
     }
-
     private void EnsureDirForFileExists(string path)
     {
         var fileInfo = new FileInfo(path);

@@ -37,7 +37,6 @@ public class McManager : MonoBehaviour
         ModelGenerator.ReleaseBuffers();
     }
 
-
     public void Save(EditableTerrain terrain, Guid sceneGuid)
     {
         var data = terrain.GetData();
@@ -54,6 +53,10 @@ public class McManager : MonoBehaviour
     {
         var data = scene.GetData();
         Loader.SaveScene(scene.Guid.ToString(), data);
+
+        var terrinPath = GetTerrainPath(scene.TerrainGuid, scene.Guid);
+        if (!Loader.ObjectExists(terrinPath))
+            Loader.SaveObj(terrinPath, scene.TerrainData);
     }
 
     public EditableTerrain LoadTerrain(Guid terrainGuid, Guid sceneGuid)
@@ -81,12 +84,57 @@ public class McManager : MonoBehaviour
         var scene = new EditableScene();
         scene.Guid = sceneGuid;
         LoadModelList(scene);
-        
+
         var data = Loader.LoadScene(sceneGuid.ToString());
         LoadTerrainOnScene(scene, data.TerrainGuid);
         LoadModelsOnScene(scene, data.Models);
 
         return scene;
+    }
+
+    public McData CreateModel()
+    {
+        var data = ModelGenerator.GetNewEmptyData();
+        return data;
+    }
+    public McData CreateTerrain()
+    {
+        var data = TerrainGenerator.GetNewEmptyData();
+        return data;
+    }
+    public EditableScene CreateScene()
+    {
+        var scene = new EditableScene();
+        scene.Guid = new Guid();
+
+        scene.Models = new Dictionary<Guid, GameObject>();
+        scene.ModelsData = new Dictionary<Guid, McData>();
+        scene.ModelsOnTerrain = new Dictionary<Guid, GameObject>();
+
+        var terrainData = CreateTerrain();
+        scene.TerrainGuid = terrainData.Guid;
+        scene.Terrain = TerrainGenerator.GenerateMeshes(terrainData);
+        scene.Terrain.name = McConsts.TerrainPrefix + scene.TerrainGuid.ToString();
+        scene.Terrain.transform.parent = scene.transform;
+
+        return scene;
+    }
+
+    public GameObject LoadTerrainMeshes(Guid terrainGuid, Guid sceneGuid)
+    {
+        var path = GetTerrainPath(terrainGuid, sceneGuid);
+        var data = Loader.LoadObj(path);
+        var meshes = TerrainGenerator.GenerateMeshes(data);
+
+        return meshes;
+    }
+    public GameObject LoadModelMeshes(Guid modelGuid, Guid sceneGuid)
+    {
+        var path = GetModelPath(modelGuid, sceneGuid);
+        var data = Loader.LoadObj(path);
+        var meshes = ModelGenerator.GenerateMeshes(data);
+
+        return meshes;
     }
 
     private void LoadModelList(EditableScene scene)
@@ -143,51 +191,6 @@ public class McManager : MonoBehaviour
             scene.ModelsOnTerrain.Add(modelSceneData.Guid, modelObj);
         }
     }
-
-    public McData CreateModel()
-    {
-        var data = ModelGenerator.GetNewEmptyData();
-        return data;
-    }
-    public McData CreateTerrain()
-    {
-        var data = TerrainGenerator.GetNewEmptyData();
-        return data;
-    }
-    public EditableScene CreateScene()
-    {
-        var scene = new EditableScene();
-        scene.Guid = new Guid();
-
-        scene.Models = new Dictionary<Guid, GameObject>();
-        scene.ModelsData = new Dictionary<Guid, McData>();
-        scene.ModelsOnTerrain = new Dictionary<Guid, GameObject>();
-
-        var terrainData = CreateTerrain();
-        scene.Terrain = TerrainGenerator.GenerateMeshes(terrainData);
-        scene.Terrain.name = McConsts.TerrainPrefix + scene.TerrainGuid.ToString();
-        scene.Terrain.transform.parent = scene.transform;
-
-        return scene;
-    }
-
-    public GameObject LoadTerrainMeshes(Guid terrainGuid, Guid sceneGuid)
-    {
-        var path = GetTerrainPath(terrainGuid, sceneGuid);
-        var data = Loader.LoadObj(path);
-        var meshes = TerrainGenerator.GenerateMeshes(data);
-
-        return meshes;
-    }
-    public GameObject LoadModelMeshes(Guid modelGuid, Guid sceneGuid)
-    {
-        var path = GetModelPath(modelGuid, sceneGuid);
-        var data = Loader.LoadObj(path);
-        var meshes = ModelGenerator.GenerateMeshes(data);
-
-        return meshes;
-    }
-
 
     private string GetModelDirPath(Guid sceneGuid)
     {

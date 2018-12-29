@@ -35,6 +35,7 @@ public class EditableScene : MonoBehaviour
     public McSceneData GetData()
     {
         var data = new McSceneData();
+        data.Guid = Guid;
         data.TerrainGuid = TerrainGuid;
         data.Models = ModelsOnTerrain.Select(x => new McSceneModelData()
         {

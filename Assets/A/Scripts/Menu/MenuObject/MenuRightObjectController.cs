@@ -36,7 +36,7 @@ public class MenuRightObjectController : MonoBehaviour
 
 	public void CloseMenu()
 	{
-		Debug.Log("close menu");
+		Debug.Log("close menu");   
 		gameObject.SetActive(false);
 		isMenuActive = false;
 	}

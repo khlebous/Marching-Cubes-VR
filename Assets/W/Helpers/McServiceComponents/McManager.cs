@@ -139,12 +139,12 @@ public class McManager : MonoBehaviour
 
         return models;
     }
-
     public GameObject LoadTerrainMeshes(Guid terrainGuid, Guid sceneGuid)
     {
         var path = GetTerrainPath(terrainGuid, sceneGuid);
         var data = _loader.LoadObj(path);
         var meshes = _terrainGenerator.GenerateMeshes(data);
+
         return meshes;
     }
     public GameObject LoadModelMeshes(Guid modelGuid, Guid sceneGuid)
@@ -152,6 +152,7 @@ public class McManager : MonoBehaviour
         var path = GetModelPath(modelGuid, sceneGuid);
         var data = _loader.LoadObj(path);
         var meshes = _modelGenerator.GenerateMeshes(data);
+
         return meshes;
     }
 

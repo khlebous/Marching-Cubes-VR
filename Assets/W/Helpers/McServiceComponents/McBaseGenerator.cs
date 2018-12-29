@@ -161,7 +161,7 @@ public abstract class McBaseGenerator
     {
         Mesh mesh = new Mesh();
         mesh.bounds = new Bounds(new Vector3(0, N / 2, 0), new Vector3(N, N, N)); //what is it for?
-
+        
         GameObject go = new GameObject("Marching Mesh");
         go.AddComponent<MeshFilter>();
         go.AddComponent<MeshRenderer>();

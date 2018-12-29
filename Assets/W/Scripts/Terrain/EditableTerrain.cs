@@ -108,7 +108,7 @@ namespace MarchingCubesGPUProject
         {
             _dataColorBuffer = new ComputeBuffer(N * N * 4, 4 * sizeof(float));
             var data = new Vector4[N * N];
-
+            
             for (int x = 0; x < N; x++)
                 for (int z = 0; z < N; z++)
                 {

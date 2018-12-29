@@ -108,7 +108,7 @@ namespace MarchingCubesGPUProject
         {
             _dataColorBuffer = new ComputeBuffer(N * N * 4, 4 * sizeof(float));
             var data = new Vector4[N * N];
-            
+
             for (int x = 0; x < N; x++)
                 for (int z = 0; z < N; z++)
                 {
@@ -292,7 +292,7 @@ namespace MarchingCubesGPUProject
             marchingShader.SetVector("_Scale", this.transform.lossyScale);
             marchingShader.SetVector("_BrushColor", brush.color);
             marchingShader.SetInt("_Border", 0); // strange but works
-                                                  //m_marchingCubes.SetInt("_Border", 1);
+                                                 //m_marchingCubes.SetInt("_Border", 1);
             marchingShader.SetFloat("_Target", 0.5f);//!!!!! values [0,1]
             marchingShader.SetBuffer(0, "_Voxels", _dataBuffer);
             marchingShader.SetBuffer(0, "_VoxelColors", _dataColorBuffer);
@@ -313,6 +313,7 @@ namespace MarchingCubesGPUProject
             _cubeEdgeFlags.Release();
             _triangleConnectionTable.Release();
             _normalsBuffer.Release();
+            _extremeValueBuffer.Release();
         }
 
         //private Matrix4x4 GetToMcMatrix()

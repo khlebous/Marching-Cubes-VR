@@ -9,14 +9,8 @@ public class EditableScene : MonoBehaviour
 {
     public Guid Guid { get; set; }
 
-    //public Guid TerrainGuid { get; set; }
-    //public McData TerrainData { get; set; }
-    //public GameObject Terrain { get; set; }
-
     public McGameObjData Terrain { get; set; }
-
     public List<McObject> ModelsOnTerrain { get; set; }
-
     public Dictionary<Guid, McGameObjData> Models { get; set; }
 
     public GameObject InstantiateModel(Guid guid)

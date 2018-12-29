@@ -28,10 +28,6 @@ public class McManager : MonoBehaviour
         TerrainGenerator = new McTerrainGenerator(modelMarching, modelNormals, clearBuffer, material);
     }
 
-    public void Update()
-    {
-    }
-
     public void OnDestroy()
     {
         TerrainGenerator.ReleaseBuffers();
@@ -60,25 +56,33 @@ public class McManager : MonoBehaviour
             Loader.SaveObj(terrinPath, scene.Terrain.Data);
     }
 
+    public EditableModel LoadModel(McData data)
+    {
+        var model = new EditableModel();
+        model.SetData(data);
+
+        return model;
+    }
     public EditableModel LoadModel(Guid modelGuid, Guid sceneGuid)
     {
         var path = GetModelPath(modelGuid, sceneGuid);
         var data = Loader.LoadObj(path);
 
-        var model = new EditableModel();
-        model.SetData(data);
+        return LoadModel(data);
+    }
+    public EditableTerrain LoadTerrain(McData data)
+    {
+        var terrain = new EditableTerrain();
+        terrain.SetData(data);
 
-        return model;
+        return terrain;
     }
     public EditableTerrain LoadTerrain(Guid terrainGuid, Guid sceneGuid)
     {
         var path = GetTerrainPath(terrainGuid, sceneGuid);
         var data = Loader.LoadObj(path);
 
-        var terrain = new EditableTerrain();
-        terrain.SetData(data);
-
-        return terrain;
+        return LoadTerrain(data);
     }
     public EditableScene LoadScene(Guid sceneGuid)
     {

@@ -9,18 +9,19 @@ public class EditableScene : MonoBehaviour
 {
     public Guid Guid { get; set; }
 
-    public Guid TerrainGuid { get; set; }
-    public McData TerrainData { get; set; }
-    public GameObject Terrain { get; set; }
+    //public Guid TerrainGuid { get; set; }
+    //public McData TerrainData { get; set; }
+    //public GameObject Terrain { get; set; }
+
+    public McGameObjData Terrain { get; set; }
 
     public List<McObject> ModelsOnTerrain { get; set; }
 
-    public Dictionary<Guid, McData> ModelsData { get; set; }
-    public Dictionary<Guid, GameObject> Models { get; set; }
+    public Dictionary<Guid, McGameObjData> Models { get; set; }
 
     public GameObject InstantiateModel(Guid guid)
     {
-        var obj = GameObject.Instantiate(Models[guid]);
+        var obj = GameObject.Instantiate(Models[guid].GameObject);
         ModelsOnTerrain.Add(new McObject(guid, obj));
         obj.SetActive(true);
 
@@ -41,7 +42,7 @@ public class EditableScene : MonoBehaviour
     {
         var data = new McSceneData();
         data.Guid = Guid;
-        data.TerrainGuid = TerrainGuid;
+        data.TerrainGuid = Terrain.Data.Guid;
         data.Models = ModelsOnTerrain.Select(x => new McSceneModelData()
         {
             Guid = x.Guid,

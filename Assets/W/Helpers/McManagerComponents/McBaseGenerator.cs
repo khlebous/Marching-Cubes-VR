@@ -82,7 +82,6 @@ public abstract class McBaseGenerator
 
         CreateMeshes(meshesObject.transform);
 
-
         return meshesObject;
     }
     public void ReleaseBuffers()

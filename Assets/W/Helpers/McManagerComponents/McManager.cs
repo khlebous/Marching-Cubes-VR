@@ -55,21 +55,11 @@ public class McManager : MonoBehaviour
         var data = scene.GetData();
         Loader.SaveScene(scene.Guid.ToString(), data);
 
-        var terrinPath = GetTerrainPath(scene.TerrainGuid, scene.Guid);
+        var terrinPath = GetTerrainPath(scene.Terrain.Data.Guid, scene.Guid);
         if (!Loader.ObjectExists(terrinPath))
-            Loader.SaveObj(terrinPath, scene.TerrainData);
+            Loader.SaveObj(terrinPath, scene.Terrain.Data);
     }
 
-    public EditableTerrain LoadTerrain(Guid terrainGuid, Guid sceneGuid)
-    {
-        var path = GetTerrainPath(terrainGuid, sceneGuid);
-        var data = Loader.LoadObj(path);
-
-        var terrain = new EditableTerrain();
-        terrain.SetData(data);
-
-        return terrain;
-    }
     public EditableModel LoadModel(Guid modelGuid, Guid sceneGuid)
     {
         var path = GetModelPath(modelGuid, sceneGuid);
@@ -80,6 +70,16 @@ public class McManager : MonoBehaviour
 
         return model;
     }
+    public EditableTerrain LoadTerrain(Guid terrainGuid, Guid sceneGuid)
+    {
+        var path = GetTerrainPath(terrainGuid, sceneGuid);
+        var data = Loader.LoadObj(path);
+
+        var terrain = new EditableTerrain();
+        terrain.SetData(data);
+
+        return terrain;
+    }
     public EditableScene LoadScene(Guid sceneGuid)
     {
         var scene = new EditableScene();
@@ -87,99 +87,80 @@ public class McManager : MonoBehaviour
         LoadModelList(scene);
 
         var data = Loader.LoadScene(sceneGuid.ToString());
-        LoadTerrainOnScene(scene, data.TerrainGuid);
         LoadModelsOnScene(scene, data.Models);
+
+        scene.Terrain = LoadTerrainMeshes(data.TerrainGuid, sceneGuid);
+        scene.Terrain.GameObject.transform.parent = scene.transform;
 
         return scene;
     }
 
-    public McData CreateModel()
+    public McGameObjData CreateModel()
     {
-        var data = ModelGenerator.GetNewEmptyData();
-        return data;
+        var god = new McGameObjData();
+        god.Data = ModelGenerator.GetNewEmptyData();
+        god.GameObject = ModelGenerator.GenerateMeshes(god.Data);
+        god.GameObject.name = McConsts.ModelPrefix + god.Data.Guid.ToString();
+
+        return god;
     }
-    public McData CreateTerrain()
+    public McGameObjData CreateTerrain()
     {
-        var data = TerrainGenerator.GetNewEmptyData();
-        return data;
+        var god = new McGameObjData();
+        god.Data = TerrainGenerator.GetNewEmptyData();
+        god.GameObject = TerrainGenerator.GenerateMeshes(god.Data);
+        god.GameObject.name = McConsts.TerrainPrefix + god.Data.Guid.ToString();
+
+        return god;
     }
     public EditableScene CreateScene()
     {
         var scene = new EditableScene();
         scene.Guid = new Guid();
 
-        scene.Models = new Dictionary<Guid, GameObject>();
-        scene.ModelsData = new Dictionary<Guid, McData>();
+        scene.Models = new Dictionary<Guid, McGameObjData>();
         scene.ModelsOnTerrain = new List<McObject>();
 
-        var terrainData = CreateTerrain();
-        scene.TerrainGuid = terrainData.Guid;
-        scene.Terrain = TerrainGenerator.GenerateMeshes(terrainData);
-        scene.Terrain.name = McConsts.TerrainPrefix + scene.TerrainGuid.ToString();
-        scene.Terrain.transform.parent = scene.transform;
+        scene.Terrain = CreateTerrain();
+        scene.Terrain.GameObject.transform.parent = scene.transform;
 
         return scene;
     }
 
-    public GameObject LoadTerrainMeshes(Guid terrainGuid, Guid sceneGuid)
+    public McGameObjData LoadTerrainMeshes(Guid terrainGuid, Guid sceneGuid)
     {
+        var god = new McGameObjData();
         var path = GetTerrainPath(terrainGuid, sceneGuid);
-        var data = Loader.LoadObj(path);
-        var meshes = TerrainGenerator.GenerateMeshes(data);
+        god.Data = Loader.LoadObj(path);
+        god.GameObject = TerrainGenerator.GenerateMeshes(god.Data);
+        god.GameObject.name = McConsts.TerrainPrefix + terrainGuid.ToString();
 
-        return meshes;
+        return god;
     }
-    public GameObject LoadModelMeshes(Guid modelGuid, Guid sceneGuid)
-    {
-        var path = GetModelPath(modelGuid, sceneGuid);
-        var data = Loader.LoadObj(path);
-        var meshes = ModelGenerator.GenerateMeshes(data);
-
-        return meshes;
-    }
-
     private void LoadModelList(EditableScene scene)
     {
-        scene.Models = new Dictionary<Guid, GameObject>();
-        scene.ModelsData = new Dictionary<Guid, McData>();
-
-        foreach (var modelData in LoadModelDataList(scene.Guid))
-        {
-            scene.ModelsData.Add(modelData.Guid, modelData);
-            var modelObj = ModelGenerator.GenerateMeshes(modelData);
-            modelObj.name = McConsts.ModelPrefix + modelData.Guid;
-            modelObj.SetActive(false);
-            scene.Models.Add(modelData.Guid, modelObj);
-        }
-    }
-    private List<McData> LoadModelDataList(Guid sceneGuid)
-    {
-        var dirPath = GetModelDirPath(sceneGuid);
+        var dirPath = GetModelDirPath(scene.Guid);
         var guids = Loader.GetAllObjGuids(dirPath);
 
-        var models = new List<McData>();
-
+        scene.Models = new Dictionary<Guid, McGameObjData>();
         foreach (var guid in guids)
         {
-            var model = Loader.LoadObj(GetModelPath(guid, sceneGuid));
-            models.Add(model);
-        }
+            var god = new McGameObjData();
 
-        return models;
-    }
-    private void LoadTerrainOnScene(EditableScene scene, Guid terrainGuid)
-    {
-        scene.TerrainGuid = terrainGuid;
-        var terrain = LoadTerrainMeshes(scene.TerrainGuid, scene.Guid);
-        terrain.name = McConsts.TerrainPrefix + scene.TerrainGuid.ToString();
-        terrain.transform.parent = scene.transform;
+            god.Data = Loader.LoadObj(GetModelPath(guid, scene.Guid));
+            god.GameObject = ModelGenerator.GenerateMeshes(god.Data);
+            god.GameObject.name = McConsts.ModelPrefix + guid.ToString();
+            god.GameObject.SetActive(false);
+
+            scene.Models.Add(guid, god);
+        }
     }
     private void LoadModelsOnScene(EditableScene scene, List<McSceneModelData> Models)
     {
         scene.ModelsOnTerrain = new List<McObject>();
         foreach (var modelSceneData in Models)
         {
-            var modelObj = GameObject.Instantiate(scene.Models[modelSceneData.Guid]);
+            var modelObj = GameObject.Instantiate(scene.Models[modelSceneData.Guid].GameObject);
             modelObj.name = McConsts.ObjectPrefix + modelSceneData.Guid.ToString();
 
             modelObj.transform.parent = scene.transform;
@@ -188,8 +169,8 @@ public class McManager : MonoBehaviour
             modelObj.transform.localScale = modelSceneData.Scale;
 
             modelObj.SetActive(true);
-            
-            scene.ModelsOnTerrain.Add(new Tuple<Guid, GameObject>(modelSceneData.Guid, modelObj));
+
+            scene.ModelsOnTerrain.Add(new McObject(modelSceneData.Guid, modelObj));
         }
     }
 

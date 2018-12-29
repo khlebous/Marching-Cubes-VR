@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 4322401420116426}
   - component: {fileID: 114599607318118394}
   m_Layer: 0
-  m_Name: MenuController
+  m_Name: MenuExample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1822,9 +1822,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 0}
+  stopEditingItemButton: 8388608
   slider: {fileID: 0}
   sliderStep: 0.1
-  active: 0
+  decreaseValueButton: 67108864
+  increaseButton: 134217728
 --- !u!114 &114028337471968388
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1848,8 +1850,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114917316299604122}
-  active: 0
-  color: {fileID: 114821232418769308}
+  stopEditingItemButton: 8388608
+  colorHuePicker: {fileID: 0}
+  colorIndicator: {fileID: 0}
+  decreaseValueButton: 67108864
+  increaseValueButton: 134217728
 --- !u!114 &114088858537589508
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1889,9 +1894,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114809008659317016}
+  stopEditingItemButton: 8388608
   slider: {fileID: 114563395541675140}
   sliderStep: 0.1
-  active: 0
+  decreaseValueButton: 67108864
+  increaseButton: 134217728
 --- !u!114 &114116262849894660
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1931,10 +1938,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114695063260475056}
+  stopEditingItemButton: 8388608
   items:
   - {fileID: 114455249533919274}
   - {fileID: 114789966638369170}
-  active: 0
+  nextItemButton: 134217728
+  prevItemButton: 67108864
 --- !u!114 &114455249533919274
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1947,6 +1956,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114972978713396816}
+  stopEditingItemButton: 8388608
 --- !u!114 &114563395541675140
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2006,7 +2016,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14f88c356078eed478e62813b561cd50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuController: {fileID: 114618395852196742}
+  menuController: {fileID: 0}
+  showMenuButton: 67108864
+  hideMenuButton: 134217728
 --- !u!114 &114618395852196742
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2022,7 +2034,6 @@ MonoBehaviour:
   - {fileID: 114049490082744564}
   - {fileID: 114257965263616194}
   - {fileID: 114115938049020058}
-  active: 1
 --- !u!114 &114673636378424532
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2086,6 +2097,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0b483af689044d7afe98cea1bd80d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minBound: 0
+  maxBound: 0
   fixX: 0
   fixY: 0
   thumb: {fileID: 4231651841827084}
@@ -2128,6 +2141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114973845908711136}
+  stopEditingItemButton: 8388608
 --- !u!114 &114809008659317016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2154,6 +2168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0b483af689044d7afe98cea1bd80d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minBound: 0
+  maxBound: 0
   fixX: 0
   fixY: 1
   thumb: {fileID: 4448495965020430}

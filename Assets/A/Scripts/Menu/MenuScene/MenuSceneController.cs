@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class MenuSceneController : MonoBehaviour
 {
@@ -22,6 +22,25 @@ public class MenuSceneController : MonoBehaviour
 	{
 		menuLeftController.CloseMenu();
 		menuRightController.CloseMenu();
+
+		menuLeftController.ThubstickClickedStream.Subscribe(_ => SetInactive());
+
+		StartWaitForMenuOpen();
+	}
+
+	public void SetInactive()
+	{
+		StopListening();
+		menuLeftController.CloseMenu();
+		menuRightController.CloseMenu();
+		gameObject.SetActive(false);
+	}
+
+	public void SetActive()
+	{
+		menuLeftController.CloseMenu();
+		menuRightController.CloseMenu();
+		gameObject.SetActive(true);
 		StartWaitForMenuOpen();
 	}
 

@@ -13,30 +13,14 @@ public class McLoader
 
     public void SaveScene(string path, McSceneData data)
     {
-        var fileName = GetFilePath(path);
-        EnsureDirForFileExists(fileName);
-
-        BinaryFormatter bin = GetBinFormatter();
-        using (Stream stream = File.Open(fileName, FileMode.Create))
-        {
-            bin.Serialize(stream, data);
-        }
+        Save(path, data);
     }
-    public McSceneData LoadScene(string path)
-    {
-        var fileName = GetFilePath(path);
-        EnsureDirForFileExists(fileName);
-
-        BinaryFormatter bin = GetBinFormatter();
-        using (Stream stream = File.Open(fileName, FileMode.Open))
-        {
-            var data = (McSceneData)bin.Deserialize(stream);
-            return data;
-        }
-    }
-
     public void SaveObj(string path, McData data)
     {
+        Save(path, data);
+    }
+    private void Save(string path, object data)
+    {
         var fileName = GetFilePath(path);
         EnsureDirForFileExists(fileName);
 
@@ -45,16 +29,25 @@ public class McLoader
         {
             bin.Serialize(stream, data);
         }
+    }
+
+    public McSceneData LoadScene(string path)
+    {
+        return Load<McSceneData>(path);
     }
     public McData LoadObj(string path)
     {
+        return Load<McData>(path);
+    }
+    private T Load<T>(string path)
+    {
         var fileName = GetFilePath(path);
         EnsureDirForFileExists(fileName);
 
         BinaryFormatter bin = GetBinFormatter();
         using (Stream stream = File.Open(fileName, FileMode.Open))
         {
-            var data = (McData)bin.Deserialize(stream);
+            var data = (T)bin.Deserialize(stream);
             return data;
         }
     }

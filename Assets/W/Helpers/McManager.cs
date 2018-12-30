@@ -49,7 +49,7 @@ public class McManager : MonoBehaviour
     public void Save(EditableScene scene)
     {
         var data = scene.GetData();
-        Loader.SaveScene(scene.Guid.ToString(), data);
+        Loader.SaveScene(GetScenePath(scene.Guid), data);
 
         var terrinPath = GetTerrainPath(scene.Terrain.Data.Guid, scene.Guid);
         if (!Loader.ObjectExists(terrinPath))
@@ -193,6 +193,11 @@ public class McManager : MonoBehaviour
     private string GetTerrainPath(Guid terrainGuid, Guid sceneGuid)
     {
         var path = Path.Combine(sceneGuid.ToString(), terrainGuid.ToString());
+        return path;
+    }
+    private string GetScenePath(Guid sceneGuid)
+    {
+        var path = Path.Combine(sceneGuid.ToString(), sceneGuid.ToString());
         return path;
     }
 

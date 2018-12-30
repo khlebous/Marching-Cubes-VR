@@ -12,7 +12,13 @@ public class MenuSceneController : MonoBehaviour
 	[SerializeField] private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
 	[SerializeField] private OVRInput.Button showMenuRightButton = OVRInput.Button.SecondaryThumbstickLeft;
 	[SerializeField] private OVRInput.Button hideMenuRightButton = OVRInput.Button.SecondaryThumbstickRight;
-	
+
+	[Header("Other")]
+	[SerializeField] private GameObject sceneGO;
+
+	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
+	public IObservable<Unit> ModeExitedStream { get { return modeExitedSubject; } }
+
 	private Coroutine waitForMenuLeftOpenCoroutine;
 	private Coroutine waitForMenuLeftCloseCoroutine;
 	private Coroutine waitForMenuRightOpenCoroutine;
@@ -24,6 +30,7 @@ public class MenuSceneController : MonoBehaviour
 		menuRightController.CloseMenu();
 
 		menuLeftController.ThubstickClickedStream.Subscribe(_ => SetInactive());
+		menuLeftController.ThubstickClickedStream.Subscribe(modeExitedSubject.OnNext);
 
 		StartWaitForMenuOpen();
 	}
@@ -41,6 +48,7 @@ public class MenuSceneController : MonoBehaviour
 		menuLeftController.CloseMenu();
 		menuRightController.CloseMenu();
 		gameObject.SetActive(true);
+		sceneGO.SetActive(true);
 		StartWaitForMenuOpen();
 	}
 

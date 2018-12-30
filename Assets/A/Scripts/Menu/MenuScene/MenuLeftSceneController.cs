@@ -59,7 +59,6 @@ public class MenuLeftSceneController : MonoBehaviour
 			if (OVRInput.Get(selectItemButton))
 			{
 				isMenuActive = false;
-				//items[activeItemIndex].SetChoosen();
 				ItemSelected();
 			}
 			else

@@ -61,8 +61,8 @@ public class McManager : MonoBehaviour
 
     public EditableModel LoadModel(McData data)
     {
-        var a = data.Values.Where(x => x != 0).Take(100).ToList();
         var modelObj = new GameObject();
+        modelObj.name = "Editable Model";
         var model = modelObj.AddComponent<EditableModel>();
         model.Shaders = ModelShaders;
         model.material = material;
@@ -80,8 +80,12 @@ public class McManager : MonoBehaviour
     }
     public EditableTerrain LoadTerrain(McData data)
     {
-        var terrain = new EditableTerrain();
+        var terainObj = new GameObject();
+        terainObj.name = "Editable Terrain";
+        var terrain = terainObj.AddComponent<EditableTerrain>();
         terrain.Shaders = TerrainShaders;
+        terrain.material = material;
+        terrain.brush = TerrainBrush;
         terrain.SetData(data);
 
         return terrain;
@@ -95,7 +99,9 @@ public class McManager : MonoBehaviour
     }
     public EditableScene LoadScene(Guid sceneGuid)
     {
-        var scene = new EditableScene();
+        var sceneObj = new GameObject();
+        sceneObj.name = "Editable Scene";
+        var scene = sceneObj.AddComponent<EditableScene>();
         scene.Guid = sceneGuid;
         scene.Models = LoadModelList(sceneGuid);
 
@@ -128,7 +134,9 @@ public class McManager : MonoBehaviour
     }
     public EditableScene CreateScene()
     {
-        var scene = new EditableScene();
+        var sceneObj = new GameObject();
+        sceneObj.name = "Editable Scene";
+        var scene = sceneObj.AddComponent<EditableScene>();
         scene.Guid = new Guid();
 
         scene.Models = new Dictionary<Guid, McGameObjData>();

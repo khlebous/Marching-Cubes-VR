@@ -21,9 +21,7 @@ public abstract class McBaseGenerator
 
     private McVert[] _verts;
 
-    public ComputeShader marchingShader;
-    public ComputeShader normalsShader;
-    public ComputeShader clearShader;
+    public BaseShaders _shaders;
     public Material material;
 
     private ComputeBuffer dataBuffer;
@@ -33,12 +31,9 @@ public abstract class McBaseGenerator
     private ComputeBuffer cubeEdgeFlags;
     private ComputeBuffer triangleConnectionTable;
 
-
     public McBaseGenerator(BaseShaders shaders, Material material)
     {
-        marchingShader = shaders.marchingShader;
-        normalsShader = shaders.normalsShader;
-        clearShader = shaders.clearShader;
+        _shaders = shaders;
         this.material = material;
 
         //There are 8 threads run per group so N must be divisible by 8.
@@ -120,40 +115,40 @@ public abstract class McBaseGenerator
 
     private void CleanMeshBuffer()
     {
-        clearShader.SetInt("_Width", N);
-        clearShader.SetInt("_Height", N);
-        clearShader.SetInt("_Depth", N);
-        clearShader.SetBuffer(0, "_Buffer", meshBuffer);
+        _shaders.clearShader.SetInt("_Width", N);
+        _shaders.clearShader.SetInt("_Height", N);
+        _shaders.clearShader.SetInt("_Depth", N);
+        _shaders.clearShader.SetBuffer(0, "_Buffer", meshBuffer);
 
-        clearShader.Dispatch(0, N / 8, N / 8, N / 8);
+        _shaders.clearShader.Dispatch(0, N / 8, N / 8, N / 8);
     }
     private void CalculateNormals()
     {
-        normalsShader.SetInt("_Width", N);
-        normalsShader.SetInt("_Height", N);
-        normalsShader.SetInt("_Depth", N);
-        normalsShader.SetBuffer(0, "_Voxels", dataBuffer);
-        normalsShader.SetTexture(0, "_Result", normalsBuffer);
+        _shaders.normalsShader.SetInt("_Width", N);
+        _shaders.normalsShader.SetInt("_Height", N);
+        _shaders.normalsShader.SetInt("_Depth", N);
+        _shaders.normalsShader.SetBuffer(0, "_Voxels", dataBuffer);
+        _shaders.normalsShader.SetTexture(0, "_Result", normalsBuffer);
 
-        normalsShader.Dispatch(0, N / 8, N / 8, N / 8);
+        _shaders.normalsShader.Dispatch(0, N / 8, N / 8, N / 8);
     }
     private void CalculateMesh(Transform parent)
     {
-        marchingShader.SetInt("_Width", N);
-        marchingShader.SetInt("_Height", N);
-        marchingShader.SetInt("_Depth", N);
-        marchingShader.SetVector("_Scale", parent.transform.lossyScale);
-        marchingShader.SetInt("_Border", 0); // strange but works
+        _shaders.marchingShader.SetInt("_Width", N);
+        _shaders.marchingShader.SetInt("_Height", N);
+        _shaders.marchingShader.SetInt("_Depth", N);
+        _shaders.marchingShader.SetVector("_Scale", parent.transform.lossyScale);
+        _shaders.marchingShader.SetInt("_Border", 0); // strange but works
                                               //m_marchingCubes.SetInt("_Border", 1);
-        marchingShader.SetFloat("_Target", 0.5f);//!!!!! values [0,1]
-        marchingShader.SetBuffer(0, "_Voxels", dataBuffer);
-        marchingShader.SetBuffer(0, "_VoxelColors", dataColorBuffer);
-        marchingShader.SetTexture(0, "_Normals", normalsBuffer);
-        marchingShader.SetBuffer(0, "_Buffer", meshBuffer);
-        marchingShader.SetBuffer(0, "_CubeEdgeFlags", cubeEdgeFlags);
-        marchingShader.SetBuffer(0, "_TriangleConnectionTable", triangleConnectionTable);
+        _shaders.marchingShader.SetFloat("_Target", 0.5f);//!!!!! values [0,1]
+        _shaders.marchingShader.SetBuffer(0, "_Voxels", dataBuffer);
+        _shaders.marchingShader.SetBuffer(0, "_VoxelColors", dataColorBuffer);
+        _shaders.marchingShader.SetTexture(0, "_Normals", normalsBuffer);
+        _shaders.marchingShader.SetBuffer(0, "_Buffer", meshBuffer);
+        _shaders.marchingShader.SetBuffer(0, "_CubeEdgeFlags", cubeEdgeFlags);
+        _shaders.marchingShader.SetBuffer(0, "_TriangleConnectionTable", triangleConnectionTable);
 
-        marchingShader.Dispatch(0, N / 8, N / 8, N / 8);
+        _shaders.marchingShader.Dispatch(0, N / 8, N / 8, N / 8);
     }
 
     private Mesh InitMesh(Transform parent)

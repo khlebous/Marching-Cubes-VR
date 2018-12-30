@@ -5,7 +5,6 @@ using System.Runtime.Serialization;
 using System.Text;
 using UnityEngine;
 
-
 [System.Serializable]
 public class BaseShaders
 {

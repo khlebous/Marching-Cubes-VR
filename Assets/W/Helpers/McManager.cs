@@ -1,4 +1,5 @@
-﻿using MarchingCubesGPUProject;
+﻿using Assets.MarchingCubesGPU.Scripts;
+using MarchingCubesGPUProject;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,14 +8,12 @@ using System.Text;
 using UniRx;
 using UnityEngine;
 
+
 public class McManager : MonoBehaviour
 {
-    public ComputeShader terrainMarching;
-    public ComputeShader terrainNormals;
-    public ComputeShader modelMarching;
-    public ComputeShader modelNormals;
+    public ModelSchaders ModelShaders;
+    public TerrainShaders TerrainShaders;
 
-    public ComputeShader clearBuffer;
     public Material material;
 
     public McLoader Loader { get; set; }
@@ -24,8 +23,8 @@ public class McManager : MonoBehaviour
     public void Start()
     {
         Loader = new McLoader();
-        TerrainGenerator = new McTerrainGenerator(terrainMarching, terrainNormals, clearBuffer, material);
-        ModelGenerator = new McModelGenerator(modelMarching, modelNormals, clearBuffer, material);
+        TerrainGenerator = new McTerrainGenerator(TerrainShaders, material);
+        ModelGenerator = new McModelGenerator(ModelShaders, material);
     }
 
     public void OnDestroy()
@@ -59,6 +58,7 @@ public class McManager : MonoBehaviour
     public EditableModel LoadModel(McData data)
     {
         var model = new EditableModel();
+        model.Shaders = ModelShaders;
         model.SetData(data);
 
         return model;
@@ -73,6 +73,7 @@ public class McManager : MonoBehaviour
     public EditableTerrain LoadTerrain(McData data)
     {
         var terrain = new EditableTerrain();
+        terrain.Shaders = TerrainShaders;
         terrain.SetData(data);
 
         return terrain;

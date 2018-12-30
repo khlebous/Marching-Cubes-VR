@@ -20,10 +20,7 @@ namespace MarchingCubesGPUProject
         public Material drawBuffer;
         public ModelBrush brush;
 
-        public ComputeShader brushShader;
-        public ComputeShader marchingShader;
-        public ComputeShader normalsShader;
-        public ComputeShader clearShader;
+        public ModelSchaders Shaders;
         public Material material;
 
         private ComputeBuffer _dataBuffer;
@@ -153,61 +150,61 @@ namespace MarchingCubesGPUProject
 
         private void CleanMeshBuffer()
         {
-            clearShader.SetInt("_Width", N);
-            clearShader.SetInt("_Height", N);
-            clearShader.SetInt("_Depth", N);
-            clearShader.SetBuffer(0, "_Buffer", _meshBuffer);
+            Shaders.clearShader.SetInt("_Width", N);
+            Shaders.clearShader.SetInt("_Height", N);
+            Shaders.clearShader.SetInt("_Depth", N);
+            Shaders.clearShader.SetBuffer(0, "_Buffer", _meshBuffer);
 
-            clearShader.Dispatch(0, N / 8, N / 8, N / 8);
+            Shaders.clearShader.Dispatch(0, N / 8, N / 8, N / 8);
         }
         private void CalculateChanges()
         {
-            brushShader.SetInt("_Width", N);
-            brushShader.SetInt("_Height", N);
-            brushShader.SetInt("_Depth", N);
+            Shaders.brushShader.SetInt("_Width", N);
+            Shaders.brushShader.SetInt("_Height", N);
+            Shaders.brushShader.SetInt("_Depth", N);
 
-            brushShader.SetVector("_Scale", transform.lossyScale);
-            brushShader.SetBuffer(0, "_Voxels", _dataBuffer);
-            brushShader.SetBuffer(0, "_VoxelColors", _dataColorBuffer);
+            Shaders.brushShader.SetVector("_Scale", transform.lossyScale);
+            Shaders.brushShader.SetBuffer(0, "_Voxels", _dataBuffer);
+            Shaders.brushShader.SetBuffer(0, "_VoxelColors", _dataColorBuffer);
 
-            brushShader.SetVector("_BrushColor", brush.color);
-            brushShader.SetInt("_BrushMode", (int)brush.mode);
-            brushShader.SetInt("_BrushShape", (int)brush.shape);
+            Shaders.brushShader.SetVector("_BrushColor", brush.color);
+            Shaders.brushShader.SetInt("_BrushMode", (int)brush.mode);
+            Shaders.brushShader.SetInt("_BrushShape", (int)brush.shape);
 
             var fromMcToBrushMatrix = brush.GetToBrushMatrix() * GetFromMcMatrix();
-            brushShader.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
-            brushShader.SetVector("_BrushScale", brush.transform.lossyScale);
+            Shaders.brushShader.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
+            Shaders.brushShader.SetVector("_BrushScale", brush.transform.lossyScale);
 
-            brushShader.Dispatch(0, N / 8, N / 8, N / 8);
+            Shaders.brushShader.Dispatch(0, N / 8, N / 8, N / 8);
         }
         private void CalculateNormals()
         {
-            normalsShader.SetInt("_Width", N);
-            normalsShader.SetInt("_Height", N);
-            normalsShader.SetInt("_Depth", N);
-            normalsShader.SetBuffer(0, "_Voxels", _dataBuffer);
-            normalsShader.SetTexture(0, "_Result", _normalsBuffer);
+            Shaders.normalsShader.SetInt("_Width", N);
+            Shaders.normalsShader.SetInt("_Height", N);
+            Shaders.normalsShader.SetInt("_Depth", N);
+            Shaders.normalsShader.SetBuffer(0, "_Voxels", _dataBuffer);
+            Shaders.normalsShader.SetTexture(0, "_Result", _normalsBuffer);
 
-            normalsShader.Dispatch(0, N / 8, N / 8, N / 8);
+            Shaders.normalsShader.Dispatch(0, N / 8, N / 8, N / 8);
         }
         private void CalculateMesh()
         {
-            marchingShader.SetInt("_Width", N);
-            marchingShader.SetInt("_Height", N);
-            marchingShader.SetInt("_Depth", N);
-            marchingShader.SetVector("_Scale", this.transform.lossyScale);
-            marchingShader.SetVector("_BrushColor", brush.color);
-            marchingShader.SetInt("_Border", 0); // strange but works
-                                                  //m_marchingCubes.SetInt("_Border", 1);
-            marchingShader.SetFloat("_Target", 0.5f);//!!!!! values [0,1]
-            marchingShader.SetBuffer(0, "_Voxels", _dataBuffer);
-            marchingShader.SetBuffer(0, "_VoxelColors", _dataColorBuffer);
-            marchingShader.SetTexture(0, "_Normals", _normalsBuffer);
-            marchingShader.SetBuffer(0, "_Buffer", _meshBuffer);
-            marchingShader.SetBuffer(0, "_CubeEdgeFlags", _cubeEdgeFlags);
-            marchingShader.SetBuffer(0, "_TriangleConnectionTable", _triangleConnectionTable);
+            Shaders.marchingShader.SetInt("_Width", N);
+            Shaders.marchingShader.SetInt("_Height", N);
+            Shaders.marchingShader.SetInt("_Depth", N);
+            Shaders.marchingShader.SetVector("_Scale", this.transform.lossyScale);
+            Shaders.marchingShader.SetVector("_BrushColor", brush.color);
+            Shaders.marchingShader.SetInt("_Border", 0); // strange but works
+                                                         //m_marchingCubes.SetInt("_Border", 1);
+            Shaders.marchingShader.SetFloat("_Target", 0.5f);//!!!!! values [0,1]
+            Shaders.marchingShader.SetBuffer(0, "_Voxels", _dataBuffer);
+            Shaders.marchingShader.SetBuffer(0, "_VoxelColors", _dataColorBuffer);
+            Shaders.marchingShader.SetTexture(0, "_Normals", _normalsBuffer);
+            Shaders.marchingShader.SetBuffer(0, "_Buffer", _meshBuffer);
+            Shaders.marchingShader.SetBuffer(0, "_CubeEdgeFlags", _cubeEdgeFlags);
+            Shaders.marchingShader.SetBuffer(0, "_TriangleConnectionTable", _triangleConnectionTable);
 
-            marchingShader.Dispatch(0, N / 8, N / 8, N / 8);
+            Shaders.marchingShader.Dispatch(0, N / 8, N / 8, N / 8);
         }
 
         private void OnDestroy()

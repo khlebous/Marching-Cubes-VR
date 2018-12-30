@@ -34,11 +34,11 @@ public abstract class McBaseGenerator
     private ComputeBuffer triangleConnectionTable;
 
 
-    public McBaseGenerator(ComputeShader marchingSh, ComputeShader normalsSh, ComputeShader clearSh, Material material)
+    public McBaseGenerator(BaseShaders shaders, Material material)
     {
-        marchingShader = marchingSh;
-        normalsShader = normalsSh;
-        clearShader = clearSh;
+        marchingShader = shaders.marchingShader;
+        normalsShader = shaders.normalsShader;
+        clearShader = shaders.clearShader;
         this.material = material;
 
         //There are 8 threads run per group so N must be divisible by 8.

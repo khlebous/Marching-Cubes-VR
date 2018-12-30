@@ -19,8 +19,8 @@ public class McTerrainGenerator : McBaseGenerator
     { get { return N * N; } }
 
 
-    public McTerrainGenerator(ComputeShader marchingSh, ComputeShader normalsSh, ComputeShader clearSh, Material material)
-        : base(marchingSh, normalsSh, clearSh, material)
+    public McTerrainGenerator(BaseShaders shaders, Material material)
+        : base(shaders, material)
     {
     }
 }

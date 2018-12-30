@@ -19,8 +19,8 @@ public class McModelGenerator : McBaseGenerator
     { get { return N * N * N; } }
 
 
-    public McModelGenerator(ComputeShader marchingSh, ComputeShader normalsSh, ComputeShader clearSh, Material material)
-        : base(marchingSh, normalsSh, clearSh, material)
+    public McModelGenerator(BaseShaders shaders, Material material)
+        : base(shaders, material)
     {
     }
 }

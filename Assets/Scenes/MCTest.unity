@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45114607, g: 0.49976212, b: 0.5676568, a: 1}
+  m_IndirectSpecularColor: {r: 0.45114577, g: 0.49976164, b: 0.5676562, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -88,7 +88,6 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -546,6 +545,26 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114373886620178624, guid: 37daf0f734c63434e8f74c76a590b4ea,
+        type: 2}
+      propertyPath: brushShader
+      value: 
+      objectReference: {fileID: 7200000, guid: f354a092d260c9a4e9b9072f0ff17445, type: 3}
+    - target: {fileID: 114373886620178624, guid: 37daf0f734c63434e8f74c76a590b4ea,
+        type: 2}
+      propertyPath: normalsShader
+      value: 
+      objectReference: {fileID: 7200000, guid: 8f22bc50351139e4c8c6f8222864a4c2, type: 3}
+    - target: {fileID: 114373886620178624, guid: 37daf0f734c63434e8f74c76a590b4ea,
+        type: 2}
+      propertyPath: marchingShader
+      value: 
+      objectReference: {fileID: 7200000, guid: cbefffa4c1505b54689332f612d627e6, type: 3}
+    - target: {fileID: 114373886620178624, guid: 37daf0f734c63434e8f74c76a590b4ea,
+        type: 2}
+      propertyPath: clearShader
+      value: 
+      objectReference: {fileID: 7200000, guid: c01c61315f4438e489dca09da4ab47dc, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 37daf0f734c63434e8f74c76a590b4ea, type: 2}
   m_IsPrefabParent: 0

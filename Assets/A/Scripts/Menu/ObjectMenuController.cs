@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class ObjectMenuController : MonoBehaviour
 {
-	[SerializeField] private Assets.MarchingCubesGPU.Scripts.Brush brush;
+	[SerializeField] private Assets.MarchingCubesGPU.Scripts.ModelBrush brush;
 
 	[Header("Input")]
 	[SerializeField] private OVRInput.Button selectItemButton = OVRInput.Button.SecondaryThumbstick;

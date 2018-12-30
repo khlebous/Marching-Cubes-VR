@@ -13,22 +13,24 @@ public class TestScript : MonoBehaviour
     private Vector3 startRotation;
     private Vector3 startPosition;
 
+
+
     void Start()
     {
         startRotation = transform.rotation.eulerAngles;
         startPosition = transform.position;
-
     }
 
     void Update()
     {
+
         //var result = new RotationHelper().GetRotation(transform.position,
         //                                            startRotation,
         //                                            startCube.transform.position,
         //                                            currentCube.transform.position);
         //transform.rotation = Quaternion.Euler(result);
 
-        var result = new MovementService().GetPosition(startPosition, startCube.transform.position, currentCube.transform.position);
+        var result = new OperationService().GetPosition(startPosition, startCube.transform.position, currentCube.transform.position);
         transform.position = result;
     }
 }

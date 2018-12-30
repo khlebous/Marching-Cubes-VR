@@ -18,7 +18,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 		Cuboid = 2
 	}
 
-	public class Brush : MonoBehaviour
+	public class ModelBrush : MonoBehaviour
 	{
 		[SerializeField] private OVRInput.Button buttonX = OVRInput.Button.Three;
 		[SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Four;

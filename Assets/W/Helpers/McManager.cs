@@ -14,6 +14,9 @@ public class McManager : MonoBehaviour
     public ModelSchaders ModelShaders;
     public TerrainShaders TerrainShaders;
 
+    public TerrainBrush TerrainBrush;
+    public ModelBrush ModelBrush;
+
     public Material material;
 
     public McLoader Loader { get; set; }
@@ -25,6 +28,7 @@ public class McManager : MonoBehaviour
         Loader = new McLoader();
         TerrainGenerator = new McTerrainGenerator(TerrainShaders, material);
         ModelGenerator = new McModelGenerator(ModelShaders, material);
+        LoadModel(new Guid("35d4e59c-510c-4c30-94da-010e26df1896"), new Guid("bf8e21d5-a4ca-4425-9ef1-265d8d885ebc"));
     }
 
     public void OnDestroy()
@@ -57,8 +61,12 @@ public class McManager : MonoBehaviour
 
     public EditableModel LoadModel(McData data)
     {
-        var model = new EditableModel();
+        var a = data.Values.Where(x => x != 0).Take(100).ToList();
+        var modelObj = new GameObject();
+        var model = modelObj.AddComponent<EditableModel>();
         model.Shaders = ModelShaders;
+        model.material = material;
+        model.brush = ModelBrush;
         model.SetData(data);
 
         return model;

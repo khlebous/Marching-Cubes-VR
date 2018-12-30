@@ -75,6 +75,9 @@ namespace MarchingCubesGPUProject
         }
         private void InitDataBuffer()
         {
+            if (_dataBuffer != null)
+                return;
+
             _dataBuffer = new ComputeBuffer(N * N * N, sizeof(float));
             var data = new float[N * N * N];
 
@@ -96,6 +99,9 @@ namespace MarchingCubesGPUProject
         }
         private void InitDataColorBuffer()
         {
+            if (_dataColorBuffer != null)
+                return;
+
             _dataColorBuffer = new ComputeBuffer(N * N * N * 4, 4 * sizeof(float));
             var data = new Vector4[N * N * N];
 
@@ -294,6 +300,9 @@ namespace MarchingCubesGPUProject
 
         public void SetData(McData data)
         {
+            InitDataBuffer();
+            InitDataColorBuffer();
+
             Guid = data.Guid;
             _dataBuffer.SetData(data.Values);
             _dataColorBuffer.SetData(data.Colors);

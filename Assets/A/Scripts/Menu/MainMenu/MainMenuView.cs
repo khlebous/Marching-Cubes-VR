@@ -7,10 +7,12 @@ using System.Collections.Generic;
 public class MainMenuView : MonoBehaviour
 {
 	[Header("UI")]
-	[SerializeField] private Text scenesText;
+	[SerializeField]
+	private Text scenesText;
 
 	[Header("Controller")]
-	[SerializeField] private MainMenuController controller;
+	[SerializeField]
+	private MainMenuController controller;
 
 	private int ActiveItemIndex { get { return controller.ActiveItemIndex; } }
 	private int MaxItemIndex { get { return controller.MaxItemIndex; } }
@@ -29,9 +31,9 @@ public class MainMenuView : MonoBehaviour
 	private void UpdateUI()
 	{
 		if (ActiveItemIndex == 0)
-			scenesText.text = ActiveItemIndex + "/" + MaxItemIndex + "\n (New scene)";
+			scenesText.text = (ActiveItemIndex + 1) + "/" + MaxItemIndex + "\n (New scene)";
 		else
-			scenesText.text = ActiveItemIndex + "/" + MaxItemIndex + "\n " + SceneGuids[ActiveItemIndex];
+			scenesText.text = (ActiveItemIndex + 1) + "/" + MaxItemIndex + "\n " + SceneGuids[ActiveItemIndex - 1];
 	}
 
 	private void OnMenuEnable()

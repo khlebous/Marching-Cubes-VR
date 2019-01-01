@@ -1,7 +1,9 @@
-﻿using UniRx;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using System;
-public class MainModeController : MonoBehaviour, IModeController
+using UniRx;
+
+public class MainModeController : MonoBehaviour
 {
 	[SerializeField] private MainMenuController mainMenuController;
 
@@ -12,10 +14,10 @@ public class MainModeController : MonoBehaviour, IModeController
 	{
 		mainMenuController.ItemSelectedStream.Subscribe(itemSelectedSubject.OnNext);
 	}
-
-	public void TurnOn()
+	
+	public void TurnOnModeWithCurrentSceneGuids(List<Guid> sceneGuids)
 	{
-		mainMenuController.SetActive();
+		mainMenuController.SetActive(sceneGuids);
 	}
 
 	public void TurnOff()

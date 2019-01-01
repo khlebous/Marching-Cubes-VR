@@ -2288,8 +2288,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cb80f1e88faa8b47a97edd2d1df189b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainModeController: {fileID: 1557381027}
+  sceneModeController: {fileID: 1999632367}
   terrainModeController: {fileID: 613662810}
   objectModeController: {fileID: 1110817183}
+  mcManager: {fileID: 0}
 --- !u!1001 &878899637
 Prefab:
   m_ObjectHideFlags: 0
@@ -2949,6 +2952,7 @@ Transform:
   m_Children:
   - {fileID: 511243622}
   - {fileID: 166628296}
+  - {fileID: 1400500066}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3739,6 +3743,61 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 24.994001, y: -20.769001, z: 14.755001}
+--- !u!1 &1400500065
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1400500066}
+  - component: {fileID: 1400500067}
+  m_Layer: 0
+  m_Name: McManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1400500066
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1400500065}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1035343185}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1400500067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1400500065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf699004e4300b846a7eef32f9bf1a93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ModelShaders:
+    marchingShader: {fileID: 0}
+    normalsShader: {fileID: 0}
+    clearShader: {fileID: 0}
+    brushShader: {fileID: 0}
+  TerrainShaders:
+    marchingShader: {fileID: 0}
+    normalsShader: {fileID: 0}
+    clearShader: {fileID: 0}
+    brushColorShader: {fileID: 0}
+    brushShapeShader: {fileID: 0}
+    ExtremeValueShader: {fileID: 0}
+  TerrainBrush: {fileID: 0}
+  ModelBrush: {fileID: 0}
+  material: {fileID: 0}
 --- !u!1 &1402380936
 GameObject:
   m_ObjectHideFlags: 0
@@ -5773,7 +5832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5706beb11966834d8c123ad598b6d70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneGO: {fileID: 2116486952}
+  sceneContiner: {fileID: 0}
   menuSceneController: {fileID: 1590765280}
 --- !u!1 &2004942474
 GameObject:

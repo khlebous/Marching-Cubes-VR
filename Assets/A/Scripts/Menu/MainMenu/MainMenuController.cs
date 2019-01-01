@@ -13,7 +13,7 @@ public class MainMenuController : MonoBehaviour
 
 	public int ActiveItemIndex { get; private set; } 
 	public int MaxItemIndex { get; private set; }
-	public readonly List<Guid> ScenesGuids;
+	public List<Guid> ScenesGuids;
 
 	protected ISubject<Unit> itemChangedSubject = new Subject<Unit>();
 	public IObservable<Unit> ItemChangedStream { get { return itemChangedSubject; } }
@@ -32,22 +32,19 @@ public class MainMenuController : MonoBehaviour
 		SetInactive();
 	}
 
-	public void SetActive()
+	public void SetActive(List<Guid> sceneGuids)
 	{
-		SetupMenu();
+		SetupMenu(sceneGuids);
 		menuEnabledSubject.OnNext(Unit.Default);
+
 		StartCoroutine(WaitNextFrame());
 	}
 
-	private void SetupMenu()
+	private void SetupMenu(List<Guid> sceneGuids)
 	{
-		// TODO read scenes, set maxItemIndex
 		ActiveItemIndex = 0;
-		MaxItemIndex = UnityEngine.Random.Range(3, 8);
-
-		ScenesGuids.Add(Guid.Empty);
-		for (int i = 1; i < MaxItemIndex; i++)
-			ScenesGuids.Add(Guid.NewGuid());
+		ScenesGuids = sceneGuids;
+		MaxItemIndex = ScenesGuids.Count + 1;
 	}
 
 	IEnumerator WaitNextFrame()

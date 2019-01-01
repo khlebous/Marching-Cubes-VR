@@ -12,12 +12,13 @@ public class MenuLeftSceneController : MonoBehaviour
 	[Header("Menu items")]
 	[SerializeField] private MenuItemV saveExitItem;
 	[SerializeField] private MenuItemV dontSaveExitItem;
+	
+	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
+	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
 
-	[Header("Other")]
-	[SerializeField] private MainMenuController mainMenuController;
+	protected ISubject<Unit> saveAndExitToMainModeSubject = new Subject<Unit>();
+	public IObservable<Unit> SaveAndExitToMainModeStream { get { return saveAndExitToMainModeSubject; } }
 
-	protected ISubject<Unit> thubstickClickedSubject = new Subject<Unit>();
-	public IObservable<Unit> ThubstickClickedStream { get { return thubstickClickedSubject; } }
 
 	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;
@@ -98,14 +99,12 @@ public class MenuLeftSceneController : MonoBehaviour
 	{
 		if (activeItemIndex == 0)
 		{
-			Debug.Log("TODO: save and exit");
+			saveAndExitToMainModeSubject.OnNext(Unit.Default);
 		}
 		else if (activeItemIndex == 1)
 		{
-			Debug.Log("TODO: exit without saving");
+			exitToMainModeSubject.OnNext(Unit.Default);
 		}
-		mainMenuController.SetActive();
-		thubstickClickedSubject.OnNext(Unit.Default);
 	}
 
 	private void IncreaseActiveItemIndex()
@@ -119,6 +118,5 @@ public class MenuLeftSceneController : MonoBehaviour
 		if (activeItemIndex == 0)
 			activeItemIndex = items.Count;
 		activeItemIndex--;
-		activeItemIndex %= items.Count;
 	}
 }

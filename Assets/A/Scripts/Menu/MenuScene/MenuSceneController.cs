@@ -16,8 +16,11 @@ public class MenuSceneController : MonoBehaviour
 	[Header("Other")]
 	[SerializeField] private GameObject sceneGO;
 
-	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
-	public IObservable<Unit> ModeExitedStream { get { return modeExitedSubject; } }
+	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
+	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
+
+	protected ISubject<Unit> saveAndExitToMainModeSubject = new Subject<Unit>();
+	public IObservable<Unit> SaveAndExitToMainModeStream { get { return saveAndExitToMainModeSubject; } }
 
 	private Coroutine waitForMenuLeftOpenCoroutine;
 	private Coroutine waitForMenuLeftCloseCoroutine;
@@ -29,8 +32,11 @@ public class MenuSceneController : MonoBehaviour
 		menuLeftController.CloseMenu();
 		menuRightController.CloseMenu();
 
-		menuLeftController.ThubstickClickedStream.Subscribe(_ => SetInactive());
-		menuLeftController.ThubstickClickedStream.Subscribe(modeExitedSubject.OnNext);
+		menuLeftController.SaveAndExitToMainModeStream.Subscribe(_ => SetInactive());
+		menuLeftController.SaveAndExitToMainModeStream.Subscribe(saveAndExitToMainModeSubject.OnNext);
+
+		menuLeftController.ExitToMainModeStream.Subscribe(_ => SetInactive());
+		menuLeftController.ExitToMainModeStream.Subscribe(exitToMainModeSubject.OnNext);
 
 		StartWaitForMenuOpen();
 	}

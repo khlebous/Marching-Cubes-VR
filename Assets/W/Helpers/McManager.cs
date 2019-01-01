@@ -150,6 +150,11 @@ public class McManager : MonoBehaviour
         return scene;
     }
 
+    public List<Guid> GetAllSceneGuids()
+    {
+        return Loader.GetAllDirGuids("");
+    }
+
     private McGameObjData LoadTerrainMeshes(Guid terrainGuid, Guid sceneGuid)
     {
         var god = new McGameObjData();

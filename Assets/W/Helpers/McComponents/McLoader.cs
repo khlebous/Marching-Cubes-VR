@@ -57,10 +57,33 @@ public class McLoader
         var fileInfo = new FileInfo(GetFilePath(path));
         return fileInfo.Exists;
     }
+    public List<Guid> GetAllDirGuids(string path)
+    {
+        var dirPath = Path.Combine(GetRootPath(), path);
+        var dirInfo = new DirectoryInfo(dirPath);
+
+        var guids = new List<Guid>();
+        if (dirInfo.Exists)
+        {
+            foreach (var dir in dirInfo.GetDirectories())
+            {
+                try
+                {
+                    var guid = new Guid(Path.GetFileName(dir.Name));
+                    guids.Add(guid);
+                }
+                catch (Exception)
+                {
+                }
+            }
+        }
+
+        return guids;
+    }
     public List<Guid> GetAllObjGuids(string path)
     {
         var dirPath = Path.Combine(GetRootPath(), path);
-        var dirInfo = new DirectoryInfo(GetFilePath(path));
+        var dirInfo = new DirectoryInfo(dirPath);
 
         var guids = new List<Guid>();
         if (dirInfo.Exists)

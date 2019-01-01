@@ -28,7 +28,6 @@ public class McManager : MonoBehaviour
         Loader = new McLoader();
         TerrainGenerator = new McTerrainGenerator(TerrainShaders, material);
         ModelGenerator = new McModelGenerator(ModelShaders, material);
-        LoadModel(new Guid("35d4e59c-510c-4c30-94da-010e26df1896"), new Guid("bf8e21d5-a4ca-4425-9ef1-265d8d885ebc"));
     }
 
     public void OnDestroy()
@@ -62,7 +61,7 @@ public class McManager : MonoBehaviour
     public EditableModel LoadModel(McData data)
     {
         var modelObj = new GameObject();
-        modelObj.name = "Editable Model";
+        modelObj.name = McConsts.EditableModelPrefix + data.Guid.ToString();
         var model = modelObj.AddComponent<EditableModel>();
         model.Shaders = ModelShaders;
         model.material = material;
@@ -81,7 +80,7 @@ public class McManager : MonoBehaviour
     public EditableTerrain LoadTerrain(McData data)
     {
         var terainObj = new GameObject();
-        terainObj.name = "Editable Terrain";
+        terainObj.name = McConsts.EditableTerrainPrefix + data.Guid.ToString();
         var terrain = terainObj.AddComponent<EditableTerrain>();
         terrain.Shaders = TerrainShaders;
         terrain.material = material;
@@ -99,10 +98,13 @@ public class McManager : MonoBehaviour
     }
     public EditableScene LoadScene(Guid sceneGuid)
     {
+        if (sceneGuid == Guid.Empty)
+            return CreateScene();
+
         var sceneObj = new GameObject();
-        sceneObj.name = "Editable Scene";
         var scene = sceneObj.AddComponent<EditableScene>();
         scene.Guid = sceneGuid;
+        sceneObj.name = McConsts.EditableScenePrefix + scene.Guid.ToString();
         scene.Models = LoadModelList(sceneGuid);
 
         var sceneData = Loader.LoadScene(sceneGuid.ToString());
@@ -135,9 +137,9 @@ public class McManager : MonoBehaviour
     public EditableScene CreateScene()
     {
         var sceneObj = new GameObject();
-        sceneObj.name = "Editable Scene";
         var scene = sceneObj.AddComponent<EditableScene>();
         scene.Guid = new Guid();
+        sceneObj.name = McConsts.EditableScenePrefix + scene.Guid.ToString();
 
         scene.Models = new Dictionary<Guid, McGameObjData>();
         scene.ModelsOnTerrain = new List<McObject>();

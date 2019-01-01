@@ -2,24 +2,28 @@ using UnityEngine;
 
 public class Draggable : MonoBehaviour
 {
-	public bool fixX;
-	public bool fixY;
-	public Transform thumb;
-	bool dragging;
+	[SerializeField] private float minBound;
+	[SerializeField] private float maxBound;
+
+	[SerializeField] private bool fixX;
+	[SerializeField] private bool fixY;
+
+	[SerializeField] private Transform thumb;
+
+	private bool dragging;
 
 	public void Input(ButtonState state)
 	{
-		Debug.Log("deaggable get input: " + state);
 		if (state == ButtonState.Left)
 		{
-			if (thumb.localPosition.x > -100)
+			if (thumb.localPosition.x > minBound)
 				SetThumbPosition(thumb.localPosition - new Vector3(1, 0, 0));
 			else
 				SetThumbPosition(thumb.localPosition);
 		}
 		else if (state == ButtonState.Right)
 		{
-			if (thumb.localPosition.x < 100)
+			if (thumb.localPosition.x < maxBound)
 				SetThumbPosition(thumb.localPosition + new Vector3(1, 0, 0));
 			else
 				SetThumbPosition(thumb.localPosition);
@@ -38,5 +42,4 @@ public class Draggable : MonoBehaviour
 		thumb.localPosition = new Vector3(fixX ? thumb.localPosition.x : point.x, fixY ? thumb.localPosition.y : point.y, thumb.localPosition.z);
 		SendMessage("OnDrag", Vector3.one - (thumb.position - GetComponent<Collider>().bounds.min) / GetComponent<Collider>().bounds.size.x);
 	}
-
 }

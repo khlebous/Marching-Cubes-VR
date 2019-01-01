@@ -22,16 +22,6 @@ public class EditableScene : MonoBehaviour
         return obj;
     }
 
-    public void Start()
-    {
-
-    }
-
-    private void Update()
-    {
-
-    }
-
     public McSceneData GetData()
     {
         var data = new McSceneData();

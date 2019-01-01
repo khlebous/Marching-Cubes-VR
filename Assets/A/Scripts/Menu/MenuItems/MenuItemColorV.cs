@@ -58,5 +58,4 @@ public class MenuItemColorV : MenuItemV
 	{
 		colorChangedSubject.OnNext(colorIndicator.GetColor());
 	}
-
 }

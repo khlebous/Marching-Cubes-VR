@@ -11,7 +11,6 @@ public class BaseShaders
     public ComputeShader marchingShader;
     public ComputeShader normalsShader;
     public ComputeShader clearShader;
-
 }
 
 [System.Serializable]
@@ -27,6 +26,3 @@ public class TerrainShaders : BaseShaders
     public ComputeShader brushShapeShader;
     public ComputeShader ExtremeValueShader;
 }
-
-
-

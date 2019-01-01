@@ -3,7 +3,7 @@ using UnityEngine;
 using UniRx;
 using System.Collections.Generic;
 
-public class ObjectMenuController : MonoBehaviour
+public class MenuRightObjectController : MonoBehaviour
 {
 	[SerializeField] private Assets.MarchingCubesGPU.Scripts.ModelBrush brush;
 
@@ -29,14 +29,12 @@ public class ObjectMenuController : MonoBehaviour
 
 	public void OpenMenu()
 	{
-		Debug.Log("open menu");
 		gameObject.SetActive(true);
 		isMenuActive = true;
 	}
 
 	public void CloseMenu()
 	{
-		Debug.Log("close menu");
 		gameObject.SetActive(false);
 		isMenuActive = false;
 	}
@@ -94,10 +92,8 @@ public class ObjectMenuController : MonoBehaviour
 					if (currThumbstickState == ButtonState.Normal)
 					{
 						currThumbstickState = ButtonState.Up;
-						Debug.Log("Up");
 						items[activeItemIndex].SetInactive();
 						DecreaseActiveItemIndex();
-						Debug.Log("new curr index: " + activeItemIndex);
 						items[activeItemIndex].SetActive();
 					}
 				}
@@ -106,10 +102,8 @@ public class ObjectMenuController : MonoBehaviour
 					if (currThumbstickState == ButtonState.Normal)
 					{
 						currThumbstickState = ButtonState.Down;
-						Debug.Log("Down");
 						items[activeItemIndex].SetInactive();
 						IncreaseActiveItemIndex();
-						Debug.Log("new curr index: " + activeItemIndex);
 						items[activeItemIndex].SetActive();
 					}
 				}
@@ -118,7 +112,6 @@ public class ObjectMenuController : MonoBehaviour
 					if (currThumbstickState != ButtonState.Normal)
 					{
 						currThumbstickState = ButtonState.Normal;
-						Debug.Log("Normal");
 					}
 				}
 			}

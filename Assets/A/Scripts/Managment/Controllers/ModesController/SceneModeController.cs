@@ -1,9 +1,10 @@
 ﻿using UniRx;
 using UnityEngine;
+using System;
 
-public class SceneModeController : MonoBehaviour, IModeController
+public class SceneModeController : MonoBehaviour/*, IModeController*/
 {
-	[SerializeField] private GameObject sceneGO;
+	[SerializeField] private GameObject sceneContiner;
 	[SerializeField] private MenuSceneController menuSceneController;
 
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
@@ -14,17 +15,17 @@ public class SceneModeController : MonoBehaviour, IModeController
 		menuSceneController.ModeExitedStream.Subscribe(exitToMainModeSubject.OnNext);
 	}
 
-	public void TurnOn()
+	public void TurnOn(Guid guid)
 	{
 		Debug.Log("SceneModeController  turn on");
-		sceneGO.SetActive(true);
+		sceneContiner.SetActive(true);
 		menuSceneController.SetActive();
 	}
 
 	public void TurnOff()
 	{
 		Debug.Log("SceneModeController  turn off");
-		sceneGO.SetActive(false);
+		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
 	}
 }

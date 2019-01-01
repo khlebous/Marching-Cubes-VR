@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UniRx;
+using System;
 
 public class ModesController : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class ModesController : MonoBehaviour
 
 	private void Start()
 	{
-		mainModeController.ItemSelectedStream.Subscribe(_ => TurnOnSceneMode());
+		mainModeController.ItemSelectedStream.Subscribe(TurnOnSceneMode);
 		sceneModeController.ExitToMainModeStream.Subscribe(_ => TurnOnMainMode());
 	}
 
@@ -22,12 +23,12 @@ public class ModesController : MonoBehaviour
 		objectModeController.TurnOff();
 	}
 
-	private void TurnOnSceneMode()
+	private void TurnOnSceneMode(Guid sceneGuid)
 	{
 		mainModeController.TurnOff();
-		sceneModeController.TurnOn();
-		terrainModeController.TurnOff();
-		objectModeController.TurnOff();
+		sceneModeController.TurnOn(sceneGuid);
+		//terrainModeController.TurnOff();
+		//objectModeController.TurnOff();
 	}
 
 	private void TurnOnTerrainMode()

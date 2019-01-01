@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UniRx;
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -9,11 +11,9 @@ public class MainMenuController : MonoBehaviour
 	[SerializeField] private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickRight;
 	[SerializeField] private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickLeft;
 
-	//[Header("Other")]
-	//[SerializeField] private MenuSceneController menuSceneController;
-
 	public int ActiveItemIndex { get; private set; } 
 	public int MaxItemIndex { get; private set; }
+	public readonly List<Guid> ScenesGuids;
 
 	protected ISubject<Unit> itemChangedSubject = new Subject<Unit>();
 	public IObservable<Unit> ItemChangedStream { get { return itemChangedSubject; } }
@@ -21,8 +21,8 @@ public class MainMenuController : MonoBehaviour
 	protected ISubject<Unit> menuEnabledSubject = new Subject<Unit>();
 	public IObservable<Unit> MenuEnabledStream { get { return menuEnabledSubject; } }
 
-	protected ISubject<Unit> itemSelectedSubject = new Subject<Unit>();
-	public IObservable<Unit> ItemSelectedStream { get { return itemSelectedSubject; } }
+	protected ISubject<Guid> itemSelectedSubject = new Subject<Guid>();
+	public IObservable<Guid> ItemSelectedStream { get { return itemSelectedSubject; } }
 
 	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;
@@ -43,7 +43,11 @@ public class MainMenuController : MonoBehaviour
 	{
 		// TODO read scenes, set maxItemIndex
 		ActiveItemIndex = 0;
-		MaxItemIndex = Random.Range(3, 8);
+		MaxItemIndex = UnityEngine.Random.Range(3, 8);
+
+		ScenesGuids.Add(Guid.Empty);
+		for (int i = 1; i < MaxItemIndex; i++)
+			ScenesGuids.Add(Guid.NewGuid());
 	}
 
 	IEnumerator WaitNextFrame()
@@ -100,9 +104,7 @@ public class MainMenuController : MonoBehaviour
 
 	private void ItemSelected()
 	{
-		Debug.Log("TODO: load scene, nr: " + ActiveItemIndex);
-		Debug.Log("if 0 create new one");
-		itemSelectedSubject.OnNext(Unit.Default);
+		itemSelectedSubject.OnNext(ScenesGuids[ActiveItemIndex]);
 	}
 
 	private void IncreaseActiveItemIndex()
@@ -116,6 +118,5 @@ public class MainMenuController : MonoBehaviour
 		if (ActiveItemIndex == 0)
 			ActiveItemIndex = MaxItemIndex;
 		ActiveItemIndex--;
-		ActiveItemIndex %= MaxItemIndex;
 	}
 }

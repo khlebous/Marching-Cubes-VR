@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45114607, g: 0.49976212, b: 0.5676568, a: 1}
+  m_IndirectSpecularColor: {r: 0.45114577, g: 0.49976164, b: 0.5676562, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -2288,8 +2288,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cb80f1e88faa8b47a97edd2d1df189b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainModeController: {fileID: 1557381027}
-  sceneModeController: {fileID: 1999632367}
   terrainModeController: {fileID: 613662810}
   objectModeController: {fileID: 1110817183}
 --- !u!1001 &878899637
@@ -2932,7 +2930,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1035343185}
-  - component: {fileID: 1035343184}
   m_Layer: 0
   m_Name: Managment
   m_TagString: Untagged
@@ -2940,18 +2937,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1035343184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1035343183}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b05aeb7c43a68d545838c690f2f15ee0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  modeText: {fileID: 0}
 --- !u!4 &1035343185
 Transform:
   m_ObjectHideFlags: 0

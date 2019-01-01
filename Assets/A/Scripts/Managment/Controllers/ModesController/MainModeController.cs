@@ -1,12 +1,12 @@
 ﻿using UniRx;
 using UnityEngine;
-
+using System;
 public class MainModeController : MonoBehaviour, IModeController
 {
 	[SerializeField] private MainMenuController mainMenuController;
 
-	protected ISubject<Unit> itemSelectedSubject = new Subject<Unit>();
-	public IObservable<Unit> ItemSelectedStream { get { return itemSelectedSubject; } }
+	protected ISubject<Guid> itemSelectedSubject = new Subject<Guid>();
+	public IObservable<Guid> ItemSelectedStream { get { return itemSelectedSubject; } }
 
 	private void Start()
 	{

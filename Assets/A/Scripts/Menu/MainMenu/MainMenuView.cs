@@ -1,6 +1,8 @@
 ﻿using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Collections.Generic;
 
 public class MainMenuView : MonoBehaviour
 {
@@ -12,6 +14,8 @@ public class MainMenuView : MonoBehaviour
 
 	private int ActiveItemIndex { get { return controller.ActiveItemIndex; } }
 	private int MaxItemIndex { get { return controller.MaxItemIndex; } }
+
+	private List<Guid> SceneGuids { get { return controller.ScenesGuids; } }
 
 	void Start()
 	{
@@ -25,9 +29,9 @@ public class MainMenuView : MonoBehaviour
 	private void UpdateUI()
 	{
 		if (ActiveItemIndex == 0)
-			scenesText.text = ActiveItemIndex + "/" + MaxItemIndex + "\n(New scene)";
+			scenesText.text = ActiveItemIndex + "/" + MaxItemIndex + "\n (New scene)";
 		else
-			scenesText.text = ActiveItemIndex + "/" + MaxItemIndex + "\n";
+			scenesText.text = ActiveItemIndex + "/" + MaxItemIndex + "\n " + SceneGuids[ActiveItemIndex];
 	}
 
 	private void OnMenuEnable()

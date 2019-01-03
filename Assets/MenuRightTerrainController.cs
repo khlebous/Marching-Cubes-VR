@@ -1,27 +1,137 @@
-﻿using System;
+﻿using UnityEngine;
+using UniRx;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class MenuRightTerrainController : MonoBehaviour {
+public class MenuRightTerrainController : MonoBehaviour
+{
+	// TODO Should be higher?
+	[SerializeField] private Assets.MarchingCubesGPU.Scripts.TerrainBrush brush;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	[Header("Menu items")]
+	[SerializeField] MenuItemHMenuV modeItem;
+	[SerializeField] MenuItemHMenuV modificationTypeItem;
+	[SerializeField] MenuItemHMenuV brushShapeItem;
+	[SerializeField] MenuItemSliderV brushSizeItem;
+	[SerializeField] MenuItemColorV brushColorItem;
 
-	internal void CloseMenu()
+	private ISubject<bool> itemIsActiveStream = new Subject<bool>();
+	public IObservable<bool> ItemIsActiveSubject { get { return itemIsActiveStream; } }
+
+	private OVRInput.Button selectItemButton = OVRInput.Button.SecondaryThumbstick;
+	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickDown;
+	private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickUp;
+
+	private ButtonState currThumbstickState = ButtonState.Normal;
+	private bool isMenuActive;
+	private int activeItemIndex = 0;
+
+	private List<MenuItemV> items;
+	public void OpenMenu()
 	{
-		throw new NotImplementedException();
+		gameObject.SetActive(true);
+		isMenuActive = true;
 	}
 
-	internal void OpenMenu()
+	public void CloseMenu()
 	{
-		throw new NotImplementedException();
+		gameObject.SetActive(false);
+		isMenuActive = false;
+	}
+
+	private void Start()
+	{
+		items = new List<MenuItemV>
+		{
+			modeItem,
+			modificationTypeItem,
+			brushShapeItem,
+			brushSizeItem,
+			brushColorItem
+		};
+
+		foreach (var item in items)
+		{
+			item.SetInactive();
+			item.ThubstickClickedStream.Subscribe(_ => SetMenuActive());
+		}
+		items[activeItemIndex].SetActive();
+
+		// TODO A implement in terrain brush
+		//modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
+		//modificationTypeItem.ChoosenItemSubject.Subscribe(brush.SetModificationType);
+		//brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
+		//brushSizeItem.ValueChangedStream.Subscribe(brush.SetSizeChanged);
+		//brushColorItem.ColorChangedStream.Subscribe(brush.SetColor);
+	}
+
+	public void SetMenuActive()
+	{
+		StartCoroutine(WaitNextFrame());
+	}
+
+	IEnumerator WaitNextFrame()
+	{
+		yield return new WaitForSeconds(0.5f);
+
+		isMenuActive = true;
+		itemIsActiveStream.OnNext(false);
+	}
+
+	void Update()
+	{
+		if (isMenuActive)
+		{
+			if (OVRInput.Get(selectItemButton))
+			{
+				isMenuActive = false;
+				items[activeItemIndex].SetChoosen();
+				itemIsActiveStream.OnNext(true);
+			}
+			else
+			{
+				if (OVRInput.Get(prevItemButton))
+				{
+					if (currThumbstickState == ButtonState.Normal)
+					{
+						currThumbstickState = ButtonState.Up;
+						items[activeItemIndex].SetInactive();
+						DecreaseActiveItemIndex();
+						items[activeItemIndex].SetActive();
+					}
+				}
+				else if (OVRInput.Get(nextItemButton))
+				{
+					if (currThumbstickState == ButtonState.Normal)
+					{
+						currThumbstickState = ButtonState.Down;
+						items[activeItemIndex].SetInactive();
+						IncreaseActiveItemIndex();
+						items[activeItemIndex].SetActive();
+					}
+				}
+				else
+				{
+					if (currThumbstickState != ButtonState.Normal)
+					{
+						currThumbstickState = ButtonState.Normal;
+					}
+				}
+			}
+		}
+
+	}
+
+	private void IncreaseActiveItemIndex()
+	{
+		activeItemIndex++;
+		activeItemIndex %= items.Count;
+	}
+
+	private void DecreaseActiveItemIndex()
+	{
+		if (activeItemIndex == 0)
+			activeItemIndex = items.Count;
+		activeItemIndex--;
 	}
 }

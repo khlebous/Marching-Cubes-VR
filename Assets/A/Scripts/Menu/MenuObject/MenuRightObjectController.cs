@@ -1,16 +1,12 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
+using System.Collections;
 using System.Collections.Generic;
 
 public class MenuRightObjectController : MonoBehaviour
 {
+	// TODO Should be higher?
 	[SerializeField] private Assets.MarchingCubesGPU.Scripts.ModelBrush brush;
-
-	[Header("Input")]
-	[SerializeField] private OVRInput.Button selectItemButton = OVRInput.Button.SecondaryThumbstick;
-	[SerializeField] private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickDown;
-	[SerializeField] private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickUp;
 
 	[Header("Menu items")]
 	[SerializeField] MenuItemHMenuV modeItem;
@@ -20,6 +16,10 @@ public class MenuRightObjectController : MonoBehaviour
 
 	private ISubject<bool> itemIsActiveStream = new Subject<bool>();
 	public IObservable<bool> ItemIsActiveSubject { get { return itemIsActiveStream; } }
+
+	private OVRInput.Button selectItemButton = OVRInput.Button.SecondaryThumbstick;
+	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickDown;
+	private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickUp;
 
 	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;
@@ -130,6 +130,5 @@ public class MenuRightObjectController : MonoBehaviour
 		if (activeItemIndex == 0)
 			activeItemIndex = items.Count;
 		activeItemIndex--;
-		activeItemIndex %= items.Count;
 	}
 }

@@ -564,7 +564,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4912673698745850}
-  - component: {fileID: 114120483183129586}
+  - component: {fileID: 114866091133667686}
   m_Layer: 0
   m_Name: MenuRightTerrain
   m_TagString: Untagged
@@ -636,7 +636,7 @@ GameObject:
   - component: {fileID: 4616596660465028}
   - component: {fileID: 114441477719225762}
   m_Layer: 0
-  m_Name: BrushMode
+  m_Name: BrushShape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1065,7 +1065,7 @@ GameObject:
   - component: {fileID: 4553683197987844}
   - component: {fileID: 114241571835650308}
   m_Layer: 0
-  m_Name: ModifyingMode
+  m_Name: ModificationType
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3608,25 +3608,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Sphere
---- !u!114 &114120483183129586
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1482618563597042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40b8323f9b0a5f745ab23a2be5d26348, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  brush: {fileID: 0}
-  selectItemButton: 8388608
-  nextItemButton: 33554432
-  prevItemButton: 16777216
-  modeItem: {fileID: 114889267528943634}
-  brushShapeItem: {fileID: 114441477719225762}
-  brushSizeItem: {fileID: 114532059861640906}
-  brushColorItem: {fileID: 114587940380617024}
 --- !u!114 &114135164626302528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4768,6 +4749,23 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114866091133667686
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1482618563597042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42ec6f71363410542888216c147b10e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brush: {fileID: 0}
+  modeItem: {fileID: 114889267528943634}
+  modificationTypeItem: {fileID: 114241571835650308}
+  brushShapeItem: {fileID: 114441477719225762}
+  brushSizeItem: {fileID: 114532059861640906}
+  brushColorItem: {fileID: 114587940380617024}
 --- !u!114 &114889267528943634
 MonoBehaviour:
   m_ObjectHideFlags: 1

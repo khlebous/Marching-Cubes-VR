@@ -12,7 +12,7 @@ public class MainModeController : MonoBehaviour
 
 	private void Start()
 	{
-		mainMenuController.ItemSelectedStream.Subscribe(itemSelectedSubject.OnNext);
+		mainMenuController.ItemSelectedStream.Subscribe(ExitModeLoadSceneModeWithGuid);
 	}
 	
 	public void TurnOnModeWithCurrentSceneGuids(List<Guid> sceneGuids)
@@ -20,8 +20,9 @@ public class MainModeController : MonoBehaviour
 		mainMenuController.SetActive(sceneGuids);
 	}
 
-	public void TurnOff()
+	public void ExitModeLoadSceneModeWithGuid(Guid guid)
 	{
 		mainMenuController.SetInactive();
+		itemSelectedSubject.OnNext(guid);
 	}
 }

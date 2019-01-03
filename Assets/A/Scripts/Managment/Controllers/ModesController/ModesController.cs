@@ -8,7 +8,7 @@ public class ModesController : MonoBehaviour
 	[SerializeField] private MainModeController mainModeController;
 	[SerializeField] private SceneModeController sceneModeController;
 	[SerializeField] private TerrainModeController terrainModeController;
-	[SerializeField] private ObjectModeController objectModeController;
+	[SerializeField] private ModelModeController objectModeController;
 
 	[Header("Mangers")]
 	[SerializeField] private McManager mcManager;

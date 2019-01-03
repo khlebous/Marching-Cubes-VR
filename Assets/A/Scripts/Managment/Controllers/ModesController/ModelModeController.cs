@@ -1,33 +1,33 @@
 ﻿using UnityEngine;
 using UniRx;
 
-public class ObjectModeController : MonoBehaviour
+public class ModelModeController : MonoBehaviour
 {
-	[SerializeField] private GameObject objectContiner;
-	[SerializeField] private MenuObjectController menuObjectController;
+	[SerializeField] private GameObject modelContiner;
+	[SerializeField] private MenuModelController menuModelController;
 
 	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
 	public IObservable<Unit> ModeExitedStream { get { return modeExitedSubject; } }
 
 	private void Start()
 	{
-		menuObjectController.ExitToSceneModeStream.Subscribe(_ => ExitMode());
-		menuObjectController.SaveAndExitToSceneModeStream.Subscribe(_ => SaveObjectAndExitMode());
+		menuModelController.ExitToSceneModeStream.Subscribe(_ => ExitMode());
+		menuModelController.SaveAndExitToSceneModeStream.Subscribe(_ => SaveObjectAndExitMode());
 	}
 
 	public void TurnOnMode()
 	{
 		Debug.Log("TerrainModeController  turn on");
 		Debug.Log("TODO smth: ");
-		objectContiner.SetActive(true);
-		menuObjectController.SetActive();
+		modelContiner.SetActive(true);
+		menuModelController.SetActive();
 	}
 
 	private void ExitMode()
 	{
 		Debug.Log("SceneModeController  turn off");
-		objectContiner.SetActive(false);
-		menuObjectController.SetInactive();
+		modelContiner.SetActive(false);
+		menuModelController.SetInactive();
 
 		modeExitedSubject.OnNext(Unit.Default);
 	}

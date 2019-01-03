@@ -3,7 +3,7 @@ using UniRx;
 using System.Collections;
 using System.Collections.Generic;
 
-public class MenuRightObjectController : MonoBehaviour
+public class MenuRightModelController : MonoBehaviour
 {
 	// TODO Should be higher?
 	[SerializeField] private Assets.MarchingCubesGPU.Scripts.ModelBrush brush;

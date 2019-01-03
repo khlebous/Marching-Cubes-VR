@@ -38,7 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4920010554703346}
   m_Layer: 8
-  m_Name: ObjectContainer
+  m_Name: ModelContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

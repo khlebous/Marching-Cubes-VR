@@ -2,7 +2,7 @@
 using UniRx;
 using System.Collections.Generic;
 
-public class MenuLeftObjectController : MonoBehaviour
+public class MenuLeftModelController : MonoBehaviour
 {
 	[Header("Menu items")]
 	[SerializeField] private MenuItemV saveExitItem;

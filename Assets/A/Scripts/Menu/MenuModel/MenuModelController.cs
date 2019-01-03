@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
-
 using UniRx;
 
-public class MenuObjectController : MonoBehaviour
+public class MenuModelController : MonoBehaviour
 {
-	[SerializeField] private MenuLeftObjectController menuLeftController;
-	[SerializeField] private MenuRightObjectController menuRightController;
+	[SerializeField] private MenuLeftModelController menuLeftController;
+	[SerializeField] private MenuRightModelController menuRightController;
 
 	protected ISubject<Unit> exitToSceneModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToSceneModeStream { get { return exitToSceneModeSubject; } }

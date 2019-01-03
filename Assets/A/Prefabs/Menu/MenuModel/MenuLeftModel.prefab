@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 4878732804171978}
   - component: {fileID: 114569657506434896}
   m_Layer: 0
-  m_Name: MenuLeftObject
+  m_Name: MenuLeftModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

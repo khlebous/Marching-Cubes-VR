@@ -26,12 +26,18 @@ float GetDistToBrush(float3 pos) {
 
 	if (_BrushShape == 1) {
 		//sphere
-		return max(0, distance(pos, 0) - 0.5);
+		if (length(pos) <= 0.5)
+			return 0;
+
+		float3 offset = (pos / length(pos)) * (length(pos) - 0.5); 
+		float3 distVector = float3(offset.x * _BrushScale.x, offset.y * _BrushScale.y, offset.z * _BrushScale.z);
+		return length(distVector);
 	}
 	else {
 		//cuboid
-		float3 closestPointInCuboid = float3(clamp(pos, -0.5, 0.5));
-		return distance(pos, closestPointInCuboid);
+		float3 unscaledPos = float3(pos.x * _BrushScale.x, pos.y * _BrushScale.y, pos.z * _BrushScale.z);
+		float3 closestPointInCuboid = float3(clamp(unscaledPos, -0.5 * _BrushScale, 0.5* _BrushScale));
+		return distance(unscaledPos, closestPointInCuboid);
 	}
 }
 

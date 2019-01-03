@@ -11,16 +11,16 @@ StructuredBuffer<float> _ExtremeValue;
 float3 _Scale;
 uint _Width, _Height, _Depth;
 
-float GetDistToBrush(float2 pos) {
+bool IsPointInBrush(float2 pos) {
 
 	if (_BrushShape == 1) {
 		//wheel
-		return max(0, distance(pos, 0) - 0.5);
+		return distance(pos, 0) <= 0.5;
 	}
 	else {
 		//rectangle
 		float2 closestPointInRectangle = clamp(pos, -0.5, 0.5);
-		return distance(pos, closestPointInRectangle);
+		return closestPointInRectangle == pos;
 	}
 }
 
@@ -33,7 +33,9 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 	int idx = id.x + id.z * _Width;
 	float4 rawPosition = float4(id, 1);
 	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
-	float dist = GetDistToBrush(position.xz);
+
+	if (!IsPointInBrush(position.xz))
+		return;
 
 
 	float newHeight = _Voxels[idx];
@@ -49,7 +51,6 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 			newHeight = min(newHeight, extreme + _HeightChange);
 	}
 
-	if (dist <= 0) // 1 is cube size
-		_Voxels[idx] = max(2, min(newHeight, _Height - 1));
+	_Voxels[idx] = max(2, min(newHeight, _Height - 1));
 }
 

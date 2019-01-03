@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UniRx;
 using System;
-using System.Collections.Generic;
 
 public class ModesController : MonoBehaviour
 {

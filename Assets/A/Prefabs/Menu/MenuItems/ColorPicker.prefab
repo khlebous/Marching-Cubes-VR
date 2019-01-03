@@ -526,6 +526,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0b483af689044d7afe98cea1bd80d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minBound: 0
+  maxBound: 0
   fixX: 0
   fixY: 0
   thumb: {fileID: 400004}
@@ -540,6 +542,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0b483af689044d7afe98cea1bd80d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minBound: 0
+  maxBound: 0
   fixX: 0
   fixY: 1
   thumb: {fileID: 400014}

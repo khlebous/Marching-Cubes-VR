@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
 
 public class TerrainModeController : MonoBehaviour

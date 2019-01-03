@@ -19,6 +19,7 @@ public class ModesController : MonoBehaviour
 		mainModeController.ItemSelectedStream.Subscribe(LoadSceneWithGuid);
 		sceneModeController.ExitToMainModeStream.Subscribe(_ => TurnOnMainModeFromSceneMode());
 		terrainModeController.ModeExitedStream.Subscribe(_ => TurnOnSceneModeFromTerrainMode());
+		objectModeController.ModeExitedStream.Subscribe(_ => TurnOnSceneModeFromObjectMode());
 	}
 
 	// Exit main menu mode
@@ -36,5 +37,11 @@ public class ModesController : MonoBehaviour
 	private void TurnOnSceneModeFromTerrainMode()
 	{
 		sceneModeController.TurnOnCurrentMode(); 
+	}
+
+	// Exit obj mode
+	private void TurnOnSceneModeFromObjectMode() // TODO same as exit terrain?
+	{
+		sceneModeController.TurnOnCurrentMode();
 	}
 }

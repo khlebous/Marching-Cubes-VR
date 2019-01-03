@@ -3748,9 +3748,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   brush: {fileID: 0}
-  selectItemButton: 8388608
-  nextItemButton: 33554432
-  prevItemButton: 16777216
   modeItem: {fileID: 114026043475097302}
   brushShapeItem: {fileID: 114499157194677538}
   brushSizeItem: {fileID: 114333701891646138}

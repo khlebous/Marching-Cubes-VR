@@ -5,77 +5,147 @@ using UniRx;
 
 public class MenuObjectController : MonoBehaviour
 {
-	// TODO add left menu 
+	[SerializeField] private MenuLeftObjectController menuLeftController;
+	[SerializeField] private MenuRightObjectController menuRightController;
 
-	[SerializeField] private MenuRightObjectController menuController;
+	protected ISubject<Unit> exitToSceneModeSubject = new Subject<Unit>();
+	public IObservable<Unit> ExitToSceneModeStream { get { return exitToSceneModeSubject; } }
 
-	[Header("Input")]
-	[SerializeField] private OVRInput.Button showMenuButton = OVRInput.Button.SecondaryThumbstickLeft;
-	[SerializeField] private OVRInput.Button hideMenuButton = OVRInput.Button.SecondaryThumbstickRight;
+	protected ISubject<Unit> saveAndExitToSceneModeSubject = new Subject<Unit>();
+	public IObservable<Unit> SaveAndExitToSceneModeStream { get { return saveAndExitToSceneModeSubject; } }
 
-	private Coroutine waitForOpenCoroutine;
-	private Coroutine waitForCloseCoroutine;
+	private OVRInput.Button showMenuLeftButton = OVRInput.Button.PrimaryThumbstickRight;
+	private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
+	private OVRInput.Button showMenuRightButton = OVRInput.Button.SecondaryThumbstickLeft;
+	private OVRInput.Button hideMenuRightButton = OVRInput.Button.SecondaryThumbstickRight;
+
+	private Coroutine waitForMenuLeftOpenCoroutine;
+	private Coroutine waitForMenuLeftCloseCoroutine;
+	private Coroutine waitForMenuRightOpenCoroutine;
+	private Coroutine waitForMenuRightCloseCoroutine;
 
 	void Start()
 	{
-		menuController.ItemIsActiveSubject.Subscribe(ItemChoosen);
-		menuController.CloseMenu();
-		StartWaitForOpen();
+		menuLeftController.CloseMenu();
+		menuRightController.CloseMenu();
+
+		menuLeftController.SaveAndExitToSceneModeStream.Subscribe(_ => SetInactive());
+		menuLeftController.SaveAndExitToSceneModeStream.Subscribe(saveAndExitToSceneModeSubject.OnNext);
+
+		menuLeftController.ExitToSceneModeStream.Subscribe(_ => SetInactive());
+		menuLeftController.ExitToSceneModeStream.Subscribe(exitToSceneModeSubject.OnNext);
+
+		StartWaitForMenuOpen();
 	}
 
-	private void ItemChoosen(bool value)
-	{
-		if (value)
-			StopListening();
-		else
-			StartWaitForClose();
-	}
-
-	private void StartWaitForOpen()
-	{
-		StopListening();
-		waitForOpenCoroutine = StartCoroutine(WaitForOpenMenu());
-	}
-
-	public void StartWaitForClose()
+	public void SetInactive()
 	{
 		StopListening();
-		waitForCloseCoroutine = StartCoroutine(WaitForCloseMenu());
+
+		menuLeftController.CloseMenu();
+		menuRightController.CloseMenu();
+
+		gameObject.SetActive(false);
+	}
+
+	public void SetActive()
+	{
+		menuLeftController.CloseMenu();
+		menuRightController.CloseMenu();
+
+		gameObject.SetActive(true);
+
+		StartWaitForMenuOpen();
+	}
+
+	private void StartWaitForMenuOpen()
+	{
+		StopListening();
+		waitForMenuLeftOpenCoroutine = StartCoroutine(WaitForOpenMenuLeft());
+		waitForMenuRightOpenCoroutine = StartCoroutine(WaitForOpenMenuRight());
+	}
+
+	public void StartWaitForMenuRightClose()
+	{
+		StopListening();
+		waitForMenuRightCloseCoroutine = StartCoroutine(WaitForCloseMenuRight());
+	}
+
+	public void StartWaitForMenuLeftClose()
+	{
+		StopListening();
+		waitForMenuLeftCloseCoroutine = StartCoroutine(WaitForCloseMenuLeft());
 	}
 
 	private void StopListening()
 	{
-		if (null != waitForOpenCoroutine)
-			StopCoroutine(waitForOpenCoroutine);
+		if (null != waitForMenuLeftOpenCoroutine)
+			StopCoroutine(waitForMenuLeftOpenCoroutine);
 
-		if (null != waitForCloseCoroutine)
-			StopCoroutine(waitForCloseCoroutine);
+		if (null != waitForMenuLeftCloseCoroutine)
+			StopCoroutine(waitForMenuLeftCloseCoroutine);
+
+		if (null != waitForMenuRightOpenCoroutine)
+			StopCoroutine(waitForMenuRightOpenCoroutine);
+
+		if (null != waitForMenuRightCloseCoroutine)
+			StopCoroutine(waitForMenuRightCloseCoroutine);
 	}
 
-	private IEnumerator WaitForOpenMenu()
+	private IEnumerator WaitForOpenMenuLeft()
 	{
 		while (true)
 		{
-			if (OVRInput.Get(showMenuButton))
+			if (OVRInput.Get(showMenuLeftButton))
 			{
-				StopCoroutine(waitForOpenCoroutine);
-				menuController.OpenMenu();
-				waitForCloseCoroutine = StartCoroutine(WaitForCloseMenu());
+				StopCoroutine(waitForMenuLeftOpenCoroutine);
+				menuLeftController.OpenMenu();
+				waitForMenuLeftCloseCoroutine = StartCoroutine(WaitForCloseMenuLeft());
 			}
 
 			yield return new WaitForEndOfFrame();
 		}
 	}
 
-	private IEnumerator WaitForCloseMenu()
+	private IEnumerator WaitForCloseMenuLeft()
 	{
 		while (true)
 		{
-			if (OVRInput.Get(hideMenuButton))
+			if (OVRInput.Get(hideMenuLeftButton))
 			{
-				StopCoroutine(waitForCloseCoroutine);
-				menuController.CloseMenu();
-				waitForOpenCoroutine = StartCoroutine(WaitForOpenMenu());
+				StopCoroutine(waitForMenuLeftCloseCoroutine);
+				menuLeftController.CloseMenu();
+				waitForMenuLeftOpenCoroutine = StartCoroutine(WaitForOpenMenuLeft());
+			}
+
+			yield return new WaitForEndOfFrame();
+		}
+	}
+
+	private IEnumerator WaitForOpenMenuRight()
+	{
+		while (true)
+		{
+			if (OVRInput.Get(showMenuRightButton))
+			{
+				StopCoroutine(waitForMenuRightOpenCoroutine);
+				menuRightController.OpenMenu();
+				waitForMenuRightCloseCoroutine = StartCoroutine(WaitForCloseMenuRight());
+			}
+
+			yield return new WaitForEndOfFrame();
+		}
+	}
+
+	private IEnumerator WaitForCloseMenuRight()
+	{
+		while (true)
+		{
+			if (OVRInput.Get(hideMenuRightButton))
+			{
+				StopCoroutine(waitForMenuRightCloseCoroutine);
+				menuRightController.CloseMenu();
+				waitForMenuRightOpenCoroutine = StartCoroutine(WaitForOpenMenuRight());
 			}
 
 			yield return new WaitForEndOfFrame();

@@ -812,6 +812,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c11cef5a14080f4b98b4614510ef2d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  saveExitItem: {fileID: 114915481739304640}
+  dontSaveExitItem: {fileID: 114274667708654858}
 --- !u!114 &114587705233400810
 MonoBehaviour:
   m_ObjectHideFlags: 1

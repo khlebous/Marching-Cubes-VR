@@ -116,7 +116,6 @@ public class MenuRightObjectController : MonoBehaviour
 				}
 			}
 		}
-
 	}
 
 	private void IncreaseActiveItemIndex()

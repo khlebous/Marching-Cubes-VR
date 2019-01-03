@@ -2,17 +2,17 @@
 using UniRx;
 using System.Collections.Generic;
 
-public class MenuLeftSceneController : MonoBehaviour
+public class MenuLeftTerrainController : MonoBehaviour
 {
 	[Header("Menu items")]
 	[SerializeField] private MenuItemV saveExitItem;
 	[SerializeField] private MenuItemV dontSaveExitItem;
 
-	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
-	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
+	protected ISubject<Unit> exitToSceneModeSubject = new Subject<Unit>();
+	public IObservable<Unit> ExitToSceneModeStream { get { return exitToSceneModeSubject; } }
 
-	protected ISubject<Unit> saveAndExitToMainModeSubject = new Subject<Unit>();
-	public IObservable<Unit> SaveAndExitToMainModeStream { get { return saveAndExitToMainModeSubject; } }
+	protected ISubject<Unit> saveAndExitToSceneModeSubject = new Subject<Unit>();
+	public IObservable<Unit> SaveAndExitToSceneModeStream { get { return saveAndExitToSceneModeSubject; } }
 
 	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickUp;
 	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickDown;
@@ -95,9 +95,9 @@ public class MenuLeftSceneController : MonoBehaviour
 	private void ItemSelected()
 	{
 		if (activeItemIndex == 0)
-			saveAndExitToMainModeSubject.OnNext(Unit.Default);
+			saveAndExitToSceneModeSubject.OnNext(Unit.Default);
 		else if (activeItemIndex == 1)
-			exitToMainModeSubject.OnNext(Unit.Default);
+			exitToSceneModeSubject.OnNext(Unit.Default);
 	}
 
 	private void IncreaseActiveItemIndex()

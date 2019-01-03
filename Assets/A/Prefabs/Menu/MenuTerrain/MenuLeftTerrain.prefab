@@ -71,14 +71,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4217357706249100}
-  - component: {fileID: 114921002218583296}
+  - component: {fileID: 114999278078681714}
   m_Layer: 0
   m_Name: MenuLeftTerrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1461911872462078
 GameObject:
   m_ObjectHideFlags: 0
@@ -949,7 +949,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &114921002218583296
+--- !u!114 &114999278078681714
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -957,9 +957,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1248268016779156}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c11cef5a14080f4b98b4614510ef2d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 71ce0506207f3d44f99318ba4a005cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  saveExitItem: {fileID: 114584502807644454}
+  dontSaveExitItem: {fileID: 114236845593125272}
 --- !u!222 &222215979184737850
 CanvasRenderer:
   m_ObjectHideFlags: 1

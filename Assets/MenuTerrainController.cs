@@ -1,17 +1,17 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
+using System.Collections;
 
-public class MenuSceneController : MonoBehaviour
+public class MenuTerrainController : MonoBehaviour
 {
-	[SerializeField] private MenuLeftSceneController menuLeftController;
-	[SerializeField] private MenuRightSceneController menuRightController;
+	[SerializeField] private MenuLeftTerrainController menuLeftController;
+	[SerializeField] private MenuRightTerrainController menuRightController;
 
-	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
-	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
+	protected ISubject<Unit> exitToSceneModeSubject = new Subject<Unit>();
+	public IObservable<Unit> ExitToSceneModeStream { get { return exitToSceneModeSubject; } }
 
-	protected ISubject<Unit> saveAndExitToMainModeSubject = new Subject<Unit>();
-	public IObservable<Unit> SaveAndExitToMainModeStream { get { return saveAndExitToMainModeSubject; } }
+	protected ISubject<Unit> saveAndExitToSceneModeSubject = new Subject<Unit>();
+	public IObservable<Unit> SaveAndExitToSceneModeStream { get { return saveAndExitToSceneModeSubject; } }
 
 	private OVRInput.Button showMenuLeftButton = OVRInput.Button.PrimaryThumbstickRight;
 	private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
@@ -28,11 +28,11 @@ public class MenuSceneController : MonoBehaviour
 		menuLeftController.CloseMenu();
 		menuRightController.CloseMenu();
 
-		menuLeftController.SaveAndExitToMainModeStream.Subscribe(_ => SetInactive());
-		menuLeftController.SaveAndExitToMainModeStream.Subscribe(saveAndExitToMainModeSubject.OnNext);
+		menuLeftController.SaveAndExitToSceneModeStream.Subscribe(_ => SetInactive());
+		menuLeftController.SaveAndExitToSceneModeStream.Subscribe(saveAndExitToSceneModeSubject.OnNext);
 
-		menuLeftController.ExitToMainModeStream.Subscribe(_ => SetInactive());
-		menuLeftController.ExitToMainModeStream.Subscribe(exitToMainModeSubject.OnNext);
+		menuLeftController.ExitToSceneModeStream.Subscribe(_ => SetInactive());
+		menuLeftController.ExitToSceneModeStream.Subscribe(exitToSceneModeSubject.OnNext);
 
 		StartWaitForMenuOpen();
 	}
@@ -40,8 +40,10 @@ public class MenuSceneController : MonoBehaviour
 	public void SetInactive()
 	{
 		StopListening();
+
 		menuLeftController.CloseMenu();
 		menuRightController.CloseMenu();
+
 		gameObject.SetActive(false);
 	}
 

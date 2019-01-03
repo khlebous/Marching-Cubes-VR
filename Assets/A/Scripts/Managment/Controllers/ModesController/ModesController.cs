@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UniRx;
 using System;
+using System.Collections.Generic;
 
 public class ModesController : MonoBehaviour
 {
@@ -16,28 +17,24 @@ public class ModesController : MonoBehaviour
 	private void Start()
 	{
 		mainModeController.ItemSelectedStream.Subscribe(LoadSceneWithGuid);
-
 		sceneModeController.ExitToMainModeStream.Subscribe(_ => TurnOnMainModeFromSceneMode());
-		sceneModeController.ExitToMainModeStream.Subscribe(_ => SaveSceneAndTurnOnMainMode());
+		terrainModeController.ModeExitedStream.Subscribe(_ => TurnOnSceneModeFromTerrainMode());
 	}
 
-	private void TurnOnMainModeFromSceneMode()
-	{
-		sceneModeController.ExitMode();
-		mainModeController.TurnOnModeWithCurrentSceneGuids(mcManager.GetAllSceneGuids());
-	}
-
-	private void SaveSceneAndTurnOnMainMode()
-	{
-		sceneModeController.SaveSceneAndExitMode();
-		mainModeController.TurnOnModeWithCurrentSceneGuids(mcManager.GetAllSceneGuids());
-	}
-
+	// Exit main menu mode
 	private void LoadSceneWithGuid(Guid sceneGuid)
 	{
-		mainModeController.TurnOff();
-		sceneModeController.TurnOn(sceneGuid);
+		sceneModeController.TurnOnModeWith(sceneGuid);
+	}
+	// Exit scene mode
+	private void TurnOnMainModeFromSceneMode()
+	{
+		mainModeController.TurnOnModeWithCurrentSceneGuids(mcManager.GetAllSceneGuids());
 	}
 
-	
+	// Exit terrain mode
+	private void TurnOnSceneModeFromTerrainMode()
+	{
+		sceneModeController.TurnOnCurrentMode(); 
+	}
 }

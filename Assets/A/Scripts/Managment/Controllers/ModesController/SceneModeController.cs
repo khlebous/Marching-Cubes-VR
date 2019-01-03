@@ -1,6 +1,6 @@
-﻿using UniRx;
+﻿using System;
 using UnityEngine;
-using System;
+using UniRx;
 
 public class SceneModeController : MonoBehaviour
 {
@@ -10,16 +10,15 @@ public class SceneModeController : MonoBehaviour
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
 
-	protected ISubject<Unit> saveAndExitToMainModeSubject = new Subject<Unit>();
-	public IObservable<Unit> SaveAndExitToMainModeStream { get { return saveAndExitToMainModeSubject; } }
+	private Guid currentGuid;
 
 	private void Start()
 	{
-		menuSceneController.ExitToMainModeStream.Subscribe(exitToMainModeSubject.OnNext);
-		menuSceneController.SaveAndExitToMainModeStream.Subscribe(saveAndExitToMainModeSubject.OnNext);
+		menuSceneController.ExitToMainModeStream.Subscribe(_ => ExitToMainMode());
+		menuSceneController.SaveAndExitToMainModeStream.Subscribe(_ => SaveSceneAndExitToMainMode());
 	}
 
-	public void TurnOn(Guid guid)
+	public void TurnOnModeWith(Guid guid)
 	{
 		Debug.Log("SceneModeController  turn on");
 		Debug.Log("TODO load scene: "+ guid.ToString());
@@ -27,16 +26,26 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.SetActive();
 	}
 
-	public void ExitMode()
+	private void ExitToMainMode()
 	{
 		Debug.Log("SceneModeController  turn off");
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
+
+		currentGuid = Guid.Empty; //?
+
+		exitToMainModeSubject.OnNext(Unit.Default);
 	}
 
-	internal void SaveSceneAndExitMode()
+	private void SaveSceneAndExitToMainMode()
 	{
 		Debug.Log("TODO save scene");
-		ExitMode();
+		ExitToMainMode();
+	}
+
+	public void TurnOnCurrentMode()
+	{
+		TurnOnModeWith(currentGuid);
+		Debug.Log("TODO load current");
 	}
 }

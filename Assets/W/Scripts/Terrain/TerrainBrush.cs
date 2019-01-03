@@ -31,6 +31,9 @@ namespace Assets.MarchingCubesGPU.Scripts
 		public TerrainBrushMode mode = TerrainBrushMode.Change;
         public TerrainBrushShape shape = TerrainBrushShape.Wheel;
 
+        private const float _minScale = McConsts.ModelN / 50f;
+        private const float _maxScale = McConsts.ModelN / 5f;
+
         public Matrix4x4 GetToBrushMatrix(Vector3 position)
         {
             var brushPosition = Matrix4x4.Translate(-position);
@@ -112,5 +115,63 @@ namespace Assets.MarchingCubesGPU.Scripts
                 yield return new WaitForEndOfFrame();
             }
         }
+
+
+        private void SetChangeMode()
+        {
+            //StopListening();
+            mode = TerrainBrushMode.Inactive;
+            //StartListening(BrushMode.Create);
+        }
+
+        private void SetColorMode()
+        {
+            //StopListening();
+            mode = TerrainBrushMode.Inactive;
+            //buttonA_down = StartCoroutine(WaitForButtonA_Down(BrushMode.Color));
+        }
+
+        public void SetColor(Color color)
+        {
+            this.color = color;
+        }
+
+        public void SetMode(int newMode)
+        {
+            if (newMode == 0)
+                SetChangeMode();
+            else if (newMode == 1)
+                SetColorMode();
+
+            Debug.Log("new mode: " + newMode);
+
+        }
+
+        public void SetShape(int newShape)
+        {
+            if (newShape == 0)
+                shape  = TerrainBrushShape.Wheel;
+            else if (newShape == 1)
+                shape = TerrainBrushShape.Rectangle;
+
+            Debug.Log("new brush shape: " + newShape);
+        }
+
+        public void SetModificationType(int modificationType)
+        {
+            //TODO separate shaping mode and mode
+
+            Debug.Log("new brush shape: " + modificationType);
+        }
+
+
+        public void SetSizeChanged(float newValue)
+        {
+            Debug.Log("new brush size: " + newValue);
+
+            var scale = newValue * (_maxScale - _minScale) + _minScale;
+            this.transform.localScale = scale * Vector3.one;
+        }
+
     }
 }

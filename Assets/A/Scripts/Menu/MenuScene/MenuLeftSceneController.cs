@@ -4,21 +4,19 @@ using UnityEngine;
 
 public class MenuLeftSceneController : MonoBehaviour
 {
-	[Header("Input")]
-	[SerializeField] private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
-	[SerializeField] private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickDown;
-	[SerializeField] private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickUp;
-
 	[Header("Menu items")]
 	[SerializeField] private MenuItemV saveExitItem;
 	[SerializeField] private MenuItemV dontSaveExitItem;
-	
+
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
 
 	protected ISubject<Unit> saveAndExitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> SaveAndExitToMainModeStream { get { return saveAndExitToMainModeSubject; } }
 
+	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickUp;
+	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickDown;
+	private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
 
 	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;
@@ -35,9 +33,8 @@ public class MenuLeftSceneController : MonoBehaviour
 		};
 
 		foreach (var item in items)
-		{
 			item.SetInactive();
-		}
+
 		items[activeItemIndex].SetActive();
 	}
 

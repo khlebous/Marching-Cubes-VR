@@ -815,9 +815,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4f3691c01974934a9bf4f9f7c719095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectItemButton: 32768
-  nextItemButton: 131072
-  prevItemButton: 65536
   saveExitItem: {fileID: 114568567139748016}
   dontSaveExitItem: {fileID: 114778246159010098}
 --- !u!114 &114778246159010098

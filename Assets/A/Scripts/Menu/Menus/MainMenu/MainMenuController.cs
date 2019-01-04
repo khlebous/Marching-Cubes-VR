@@ -6,11 +6,6 @@ using System.Collections.Generic;
 
 public class MainMenuController : MonoBehaviour
 {
-	[Header("Input")]
-	[SerializeField] private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
-	[SerializeField] private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickRight;
-	[SerializeField] private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickLeft;
-
 	public int ActiveItemIndex { get; private set; } 
 	public int MaxItemIndex { get; private set; }
 	public List<Guid> ScenesGuids;
@@ -23,6 +18,10 @@ public class MainMenuController : MonoBehaviour
 
 	protected ISubject<Guid> itemSelectedSubject = new Subject<Guid>();
 	public IObservable<Guid> ItemSelectedStream { get { return itemSelectedSubject; } }
+
+	private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
+	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickRight;
+	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickLeft;
 
 	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;

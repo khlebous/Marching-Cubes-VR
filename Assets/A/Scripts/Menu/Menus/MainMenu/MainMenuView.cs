@@ -7,12 +7,10 @@ using System.Collections.Generic;
 public class MainMenuView : MonoBehaviour
 {
 	[Header("UI")]
-	[SerializeField]
-	private Text scenesText;
+	[SerializeField] private Text scenesText;
 
 	[Header("Controller")]
-	[SerializeField]
-	private MainMenuController controller;
+	[SerializeField] private MainMenuController controller;
 
 	private int ActiveItemIndex { get { return controller.ActiveItemIndex; } }
 	private int MaxItemIndex { get { return controller.MaxItemIndex; } }

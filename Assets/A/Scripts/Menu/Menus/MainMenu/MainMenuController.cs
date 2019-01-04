@@ -26,15 +26,13 @@ public class MainMenuController : MonoBehaviour
 	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;
 
-	private void Start()
-	{
-		SetInactive();
-	}
 
 	public void SetActive(List<Guid> sceneGuids)
 	{
 		SetupMenu(sceneGuids);
 		menuEnabledSubject.OnNext(Unit.Default);
+
+		gameObject.SetActive(true);
 
 		StartCoroutine(WaitNextFrame());
 	}
@@ -55,6 +53,7 @@ public class MainMenuController : MonoBehaviour
 
 	public void SetInactive()
 	{
+		gameObject.SetActive(false);
 		isMenuActive = false;
 	}
 

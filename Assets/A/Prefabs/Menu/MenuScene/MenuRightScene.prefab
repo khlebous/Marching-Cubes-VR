@@ -1994,6 +1994,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f59b7b517db0a2a488c0d2cc5c84e99c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  terrainMode: {fileID: 114974615226526720}
+  newModel: {fileID: 114483617228409546}
+  addModelFromList: {fileID: 114353753451301040}
+  editModel: {fileID: 114337127084095358}
+  deleteModel: {fileID: 114683766877995854}
 --- !u!114 &114232663327521466
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2005,6 +2010,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f59b7b517db0a2a488c0d2cc5c84e99c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  terrainMode: {fileID: 0}
+  newModel: {fileID: 0}
+  addModelFromList: {fileID: 0}
+  editModel: {fileID: 0}
+  deleteModel: {fileID: 0}
 --- !u!114 &114337127084095358
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2381,7 +2391,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Dodaj istniej\u0105cy model"
+  m_Text: "Dodaj istniej\u0105cy model do sceny"
 --- !u!114 &114911751044568848
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -3669,7 +3669,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Menu Right Scene
+  m_Text: Menu Right Object
 --- !u!114 &114872634785138304
 MonoBehaviour:
   m_ObjectHideFlags: 1

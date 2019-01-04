@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UniRx;
+using System;
 
 public class MenuSceneController : MonoBehaviour
 {
@@ -12,6 +13,12 @@ public class MenuSceneController : MonoBehaviour
 
 	protected ISubject<Unit> saveAndExitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> SaveAndExitToMainModeStream { get { return saveAndExitToMainModeSubject; } }
+
+	protected ISubject<Unit> suspendAndExitToTerrainModeSubject = new Subject<Unit>();
+	public IObservable<Unit> SuspendAndExitToTerrainModeStream { get { return suspendAndExitToTerrainModeSubject; } }
+
+	protected ISubject<Guid> suspendAndExitToObjectModeSubject = new Subject<Guid>();
+	public IObservable<Guid> SuspendAndExitToObjectModeStream { get { return suspendAndExitToObjectModeSubject; } }
 
 	private OVRInput.Button showMenuLeftButton = OVRInput.Button.PrimaryThumbstickRight;
 	private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
@@ -34,7 +41,22 @@ public class MenuSceneController : MonoBehaviour
 		menuLeftController.ExitToMainModeStream.Subscribe(_ => SetInactive());
 		menuLeftController.ExitToMainModeStream.Subscribe(exitToMainModeSubject.OnNext);
 
+		menuRightController.ExitToTerrainModeStream.Subscribe(_ => Suspend());
+		menuRightController.ExitToTerrainModeStream.Subscribe(suspendAndExitToTerrainModeSubject.OnNext);
+
+		menuRightController.ExitToObjectModeStream.Subscribe(_ => Suspend());
+		menuRightController.ExitToObjectModeStream.Subscribe(suspendAndExitToObjectModeSubject.OnNext);
+
 		StartWaitForMenuOpen();
+	}
+
+	private void Suspend()
+	{
+		// TODO same as inactive
+		StopListening();
+		menuLeftController.CloseMenu();
+		menuRightController.CloseMenu();
+		gameObject.SetActive(false);
 	}
 
 	public void SetInactive()

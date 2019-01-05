@@ -24,21 +24,25 @@ void Draw(int idx, float distanceToBrush) {
 
 float GetDistToBrush(float3 pos) {
 
+	//TODO: fix scales
+	float3 distVector = float3(0, 0, 0);
+
 	if (_BrushShape == 1) {
 		//sphere
-		if (length(pos) <= 0.5)
-			return 0;
-
-		float3 offset = (pos / length(pos)) * (length(pos) - 0.5); 
-		float3 distVector = float3(offset.x * _BrushScale.x, offset.y * _BrushScale.y, offset.z * _BrushScale.z);
-		return length(distVector);
+		if (length(pos) > 0.5) {
+			float3 offset = (pos / length(pos)) * (length(pos) - 0.5);
+			distVector = float3(offset.x * _BrushScale.x, offset.y * _BrushScale.y, offset.z * _BrushScale.z);
+		}
 	}
 	else {
 		//cuboid
 		float3 unscaledPos = float3(pos.x * _BrushScale.x, pos.y * _BrushScale.y, pos.z * _BrushScale.z);
 		float3 closestPointInCuboid = float3(clamp(unscaledPos, -0.5 * _BrushScale, 0.5* _BrushScale));
-		return distance(unscaledPos, closestPointInCuboid);
+		distVector = unscaledPos - closestPointInCuboid;
 	}
+
+	float3 unscaledDistvector = float3(distVector.x / _Scale.x, distVector.y / _Scale.y, distVector.z / _Scale.z);
+	return length(unscaledDistvector);
 }
 
 void ChangeColor(uint3 id)

@@ -31,7 +31,6 @@ namespace Assets.MarchingCubesGPU.Scripts
 
 		public Matrix4x4 GetToBrushMatrix()
 		{
-			Debug.Log(transform.lossyScale.x);
 			var brushPosition = Matrix4x4.Translate(-this.transform.position);
 			var brushRotation = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation));
 			var scale = Matrix4x4.Scale(this.transform.lossyScale).inverse;

@@ -19,8 +19,8 @@ namespace Assets.MarchingCubesGPU.Scripts
 
     public class ModelBrush : MonoBehaviour
     {
-        [SerializeField] private OVRInput.Button buttonX = OVRInput.Button.Three;
-        [SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Four;
+        [SerializeField] private OVRInput.Button buttonX = OVRInput.Button.Two;
+        [SerializeField] private OVRInput.Button buttonY = OVRInput.Button.One;
         public Color color;
 
         public BrushMode mode = BrushMode.Inactive;
@@ -38,47 +38,52 @@ namespace Assets.MarchingCubesGPU.Scripts
             var result = scale * brushRotation * brushPosition;
             return result;
         }
-        //public Matrix4x4 GetFromBrushMatrix()
-        //{
-        //	var scale = Matrix4x4.Scale(this.transform.lossyScale);
-        //	var brushRotation = Matrix4x4.Rotate(this.transform.rotation);
-        //	var brushPosition = Matrix4x4.Translate(this.transform.position);
+		//public Matrix4x4 GetFromBrushMatrix()
+		//{
+		//	var scale = Matrix4x4.Scale(this.transform.lossyScale);
+		//	var brushRotation = Matrix4x4.Rotate(this.transform.rotation);
+		//	var brushPosition = Matrix4x4.Translate(this.transform.position);
 
-        //	var result = brushPosition * brushRotation * scale;
-        //	return result;
-        //}
+		//	var result = brushPosition * brushRotation * scale;
+		//	return result;
+		//}
 
 
-        // TODO A remove comments (ja to zrobie jak sprawdze ze dziala -A)
-        //private Coroutine buttonA_down;
-        //private Coroutine buttonA_up;
+		// TODO A remove comments (ja to zrobie jak sprawdze ze dziala -A)
+		private Coroutine buttonA_down;
+		private Coroutine buttonA_up;
 
-        //private Coroutine buttonB_down;
-        //private Coroutine buttonB_up;
+		private Coroutine buttonB_down;
+		private Coroutine buttonB_up;
 
-        //private void Start()
-        //{
-        //	StartListening(BrushMode.Create);
-        //}
+		public void SetActive()
+		{
+			StartListening(BrushMode.Create);
+		}
 
-        //private void StartListening(BrushMode brushMode)
-        //{
-        //	buttonA_down = StartCoroutine(WaitForButtonA_Down(brushMode));
-        //	buttonB_down = StartCoroutine(WaitForButtonB_Down()); // automaticalu delele
-        //}
+		public void SetInactive()
+		{
+			StopListening();
+		}
 
-        private void SetChangeMode()
+		private void StartListening(BrushMode brushMode)
+		{
+			buttonA_down = StartCoroutine(WaitForButtonA_Down(brushMode));
+			buttonB_down = StartCoroutine(WaitForButtonB_Down()); // automaticaly delele
+		}
+
+		private void SetChangeMode()
         {
-            //StopListening();
+            StopListening();
             mode = BrushMode.Inactive;
-            //StartListening(BrushMode.Create);
+            StartListening(BrushMode.Create);
         }
 
         private void SetColorMode()
         {
-            //StopListening();
+            StopListening();
             mode = BrushMode.Inactive;
-            //buttonA_down = StartCoroutine(WaitForButtonA_Down(BrushMode.Color));
+            buttonA_down = StartCoroutine(WaitForButtonA_Down(BrushMode.Color));
         }
 
         public void SetColor(Color color)
@@ -109,84 +114,84 @@ namespace Assets.MarchingCubesGPU.Scripts
 
         public void SetSizeChanged(float newValue)
         {
-            Debug.Log("new brush size: " + newValue);
+           // Debug.Log("new brush size: " + newValue);
 
             var scale = newValue * (_maxScale - _minScale) + _minScale;
             this.transform.localScale = scale * Vector3.one;
         }
 
-        //private void StopListening()
-        //{
-        //	if (null != buttonA_down)
-        //		StopCoroutine(buttonA_down);
-        //	if (null != buttonB_down)
-        //		StopCoroutine(buttonB_down);
+		private void StopListening()
+		{
+			if (null != buttonA_down)
+				StopCoroutine(buttonA_down);
+			if (null != buttonB_down)
+				StopCoroutine(buttonB_down);
 
-        //	if (null != buttonA_up)
-        //		StopCoroutine(buttonA_up);
-        //	if (null != buttonB_up)
-        //		StopCoroutine(buttonB_up);
-        //}
+			if (null != buttonA_up)
+				StopCoroutine(buttonA_up);
+			if (null != buttonB_up)
+				StopCoroutine(buttonB_up);
+		}
 
-        //private IEnumerator WaitForButtonA_Down(BrushMode brushMode)
-        //{
-        //	while (true)
-        //	{
-        //		if (OVRInput.GetDown(buttonX))
-        //		{
-        //			StopCoroutine(buttonA_down);
-        //			mode = brushMode;
-        //			buttonA_up = StartCoroutine(WaitForButtonA_Up(brushMode));
-        //		}
+		private IEnumerator WaitForButtonA_Down(BrushMode brushMode)
+		{
+			while (true)
+			{
+				if (OVRInput.GetDown(buttonX))
+				{
+					StopCoroutine(buttonA_down);
+					mode = brushMode;
+					buttonA_up = StartCoroutine(WaitForButtonA_Up(brushMode));
+				}
 
-        //		yield return new WaitForEndOfFrame();
-        //	}
-        //}
+				yield return new WaitForEndOfFrame();
+			}
+		}
 
-        //private IEnumerator WaitForButtonA_Up(BrushMode brushMode)
-        //{
-        //	while (true)
-        //	{
-        //		if (OVRInput.GetUp(buttonX))
-        //		{
-        //			StopCoroutine(buttonA_up);
-        //			mode = BrushMode.Inactive;
-        //			buttonA_down = StartCoroutine(WaitForButtonA_Down(brushMode));
-        //		}
+		private IEnumerator WaitForButtonA_Up(BrushMode brushMode)
+		{
+			while (true)
+			{
+				if (OVRInput.GetUp(buttonX))
+				{
+					StopCoroutine(buttonA_up);
+					mode = BrushMode.Inactive;
+					buttonA_down = StartCoroutine(WaitForButtonA_Down(brushMode));
+				}
 
-        //		yield return new WaitForEndOfFrame();
-        //	}
-        //}
+				yield return new WaitForEndOfFrame();
+			}
+		}
 
-        //private IEnumerator WaitForButtonB_Down()
-        //{
-        //	while (true)
-        //	{
-        //		if (OVRInput.GetDown(buttonY))
-        //		{
-        //			StopCoroutine(buttonB_down);
-        //			mode = BrushMode.Remove;
-        //			buttonB_up = StartCoroutine(WaitForButtonB_Up());
-        //		}
+		private IEnumerator WaitForButtonB_Down()
+		{
+			while (true)
+			{
+				if (OVRInput.GetDown(buttonY))
+				{
+					StopCoroutine(buttonB_down);
+					mode = BrushMode.Remove;
+					buttonB_up = StartCoroutine(WaitForButtonB_Up());
+				}
 
-        //		yield return new WaitForEndOfFrame();
-        //	}
-        //}
+				yield return new WaitForEndOfFrame();
+			}
+		}
 
-        //private IEnumerator WaitForButtonB_Up()
-        //{
-        //	while (true)
-        //	{
-        //		if (OVRInput.GetUp(buttonY))
-        //		{
-        //			StopCoroutine(buttonB_up);
-        //			mode = BrushMode.Inactive;
-        //			buttonB_down = StartCoroutine(WaitForButtonB_Down());
-        //		}
+		private IEnumerator WaitForButtonB_Up()
+		{
+			while (true)
+			{
+				if (OVRInput.GetUp(buttonY))
+				{
+					StopCoroutine(buttonB_up);
+					mode = BrushMode.Inactive;
+					buttonB_down = StartCoroutine(WaitForButtonB_Down());
+				}
 
-        //		yield return new WaitForEndOfFrame();
-        //	}
-        //}
-    }
+				yield return new WaitForEndOfFrame();
+			}
+		}
+	}
 
 }

@@ -15,8 +15,11 @@ public class MenuRightTerrainController : MonoBehaviour
 	[SerializeField] MenuItemSliderV brushSizeItem;
 	[SerializeField] MenuItemColorV brushColorItem;
 
-	private ISubject<bool> itemIsActiveStream = new Subject<bool>();
-	public IObservable<bool> ItemIsActiveSubject { get { return itemIsActiveStream; } }
+	private ISubject<Unit> itemIsActiveSubject = new Subject<Unit>();
+	public IObservable<Unit> ItemIsActiveStream { get { return itemIsActiveSubject; } }
+
+	private ISubject<Unit> itemNotActiveSubject = new Subject<Unit>();
+	public IObservable<Unit> ItemNotActiveStream { get { return itemNotActiveSubject; } }
 
 	private OVRInput.Button selectItemButton = OVRInput.Button.SecondaryThumbstick;
 	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickDown;
@@ -57,12 +60,11 @@ public class MenuRightTerrainController : MonoBehaviour
 		}
 		items[activeItemIndex].SetActive();
 
-		// TODO A implement in terrain brush
-		//modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
-		//modificationTypeItem.ChoosenItemSubject.Subscribe(brush.SetModificationType);
-		//brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
-		//brushSizeItem.ValueChangedStream.Subscribe(brush.SetSizeChanged);
-		//brushColorItem.ColorChangedStream.Subscribe(brush.SetColor);
+		modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
+		modificationTypeItem.ChoosenItemSubject.Subscribe(brush.SetModificationType);
+		brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
+		brushSizeItem.ValueChangedStream.Subscribe(brush.SetSizeChanged);
+		brushColorItem.ColorChangedStream.Subscribe(brush.SetColor);
 	}
 
 	public void SetMenuActive()
@@ -75,7 +77,7 @@ public class MenuRightTerrainController : MonoBehaviour
 		yield return new WaitForSeconds(0.5f);
 
 		isMenuActive = true;
-		itemIsActiveStream.OnNext(false);
+		itemNotActiveSubject.OnNext(Unit.Default);
 	}
 
 	void Update()
@@ -86,7 +88,7 @@ public class MenuRightTerrainController : MonoBehaviour
 			{
 				isMenuActive = false;
 				items[activeItemIndex].SetChoosen();
-				itemIsActiveStream.OnNext(true);
+				itemIsActiveSubject.OnNext(Unit.Default);
 			}
 			else
 			{

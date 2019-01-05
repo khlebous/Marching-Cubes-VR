@@ -14,8 +14,11 @@ public class MenuRightModelController : MonoBehaviour
 	[SerializeField] MenuItemSliderV brushSizeItem;
 	[SerializeField] MenuItemColorV brushColorItem;
 
-	private ISubject<bool> itemIsActiveStream = new Subject<bool>();
-	public IObservable<bool> ItemIsActiveSubject { get { return itemIsActiveStream; } }
+	private ISubject<Unit> itemIsActiveSubject = new Subject<Unit>();
+	public IObservable<Unit> ItemIsActiveStream { get { return itemIsActiveSubject; } }
+
+	private ISubject<Unit> itemNotActiveSubject = new Subject<Unit>();
+	public IObservable<Unit> ItemNotActiveStream { get { return itemNotActiveSubject; } }
 
 	private OVRInput.Button selectItemButton = OVRInput.Button.SecondaryThumbstick;
 	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickDown;
@@ -72,7 +75,7 @@ public class MenuRightModelController : MonoBehaviour
 		yield return new WaitForSeconds(0.5f);
 
 		isMenuActive = true;
-		itemIsActiveStream.OnNext(false);
+		itemNotActiveSubject.OnNext(Unit.Default);
 	}
 
 	void Update()
@@ -83,7 +86,7 @@ public class MenuRightModelController : MonoBehaviour
 			{
 				isMenuActive = false;
 				items[activeItemIndex].SetChoosen();
-				itemIsActiveStream.OnNext(true);
+				itemIsActiveSubject.OnNext(Unit.Default);
 			}
 			else
 			{

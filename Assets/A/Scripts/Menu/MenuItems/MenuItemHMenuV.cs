@@ -45,7 +45,6 @@ public class MenuItemHMenuV : MenuItemV
 				if (thumbstick == ButtonState.Normal)
 				{
 					thumbstick = ButtonState.Left;
-					Debug.Log("Left");
 
 					items[activeItemIndex].SetInactive();
 					DecreaseActiveItemIndex();
@@ -59,7 +58,6 @@ public class MenuItemHMenuV : MenuItemV
 				if (thumbstick == ButtonState.Normal)
 				{
 					thumbstick = ButtonState.Right;
-					Debug.Log("Right");
 					items[activeItemIndex].SetInactive();
 					IncreaseActiveItemIndex();
 					ModeChanged();
@@ -90,7 +88,6 @@ public class MenuItemHMenuV : MenuItemV
 		if (activeItemIndex == 0)
 			activeItemIndex = items.Count;
 		activeItemIndex--;
-		activeItemIndex %= items.Count;
 	}
 }
 

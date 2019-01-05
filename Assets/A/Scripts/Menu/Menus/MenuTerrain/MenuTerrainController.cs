@@ -34,6 +34,9 @@ public class MenuTerrainController : MonoBehaviour
 		menuLeftController.ExitToSceneModeStream.Subscribe(_ => SetInactive());
 		menuLeftController.ExitToSceneModeStream.Subscribe(exitToSceneModeSubject.OnNext);
 
+		menuRightController.ItemIsActiveStream.Subscribe(_ => StopListeningForRight());
+		menuRightController.ItemNotActiveStream.Subscribe(_ => StartListeningForRight());
+
 		StartWaitForMenuOpen();
 	}
 
@@ -74,6 +77,20 @@ public class MenuTerrainController : MonoBehaviour
 	{
 		StopListening();
 		waitForMenuLeftCloseCoroutine = StartCoroutine(WaitForCloseMenuLeft());
+	}
+
+	private void StopListeningForRight()
+	{
+		if (null != waitForMenuRightOpenCoroutine)
+			StopCoroutine(waitForMenuRightOpenCoroutine);
+
+		if (null != waitForMenuRightCloseCoroutine)
+			StopCoroutine(waitForMenuRightCloseCoroutine);
+	}
+
+	private void StartListeningForRight()
+	{
+		waitForMenuRightCloseCoroutine = StartCoroutine(WaitForCloseMenuRight());
 	}
 
 	private void StopListening()

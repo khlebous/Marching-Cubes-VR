@@ -4,6 +4,7 @@ using UniRx;
 public class ModelModeController : MonoBehaviour
 {
 	[SerializeField] private GameObject modelContiner;
+	[SerializeField] private Assets.MarchingCubesGPU.Scripts.ModelBrush brush;
 	[SerializeField] private MenuModelController menuModelController;
 
 	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
@@ -21,11 +22,13 @@ public class ModelModeController : MonoBehaviour
 		Debug.Log("TODO smth: ");
 		modelContiner.SetActive(true);
 		menuModelController.SetActive();
+		brush.SetActive();
 	}
 
 	private void ExitMode()
 	{
 		Debug.Log("SceneModeController  turn off");
+		brush.SetInactive();
 		modelContiner.SetActive(false);
 		menuModelController.SetInactive();
 

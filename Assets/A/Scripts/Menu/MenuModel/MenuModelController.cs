@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UniRx;
+using System;
 
 public class MenuModelController : MonoBehaviour
 {
@@ -33,6 +34,9 @@ public class MenuModelController : MonoBehaviour
 
 		menuLeftController.ExitToSceneModeStream.Subscribe(_ => SetInactive());
 		menuLeftController.ExitToSceneModeStream.Subscribe(exitToSceneModeSubject.OnNext);
+
+		menuRightController.ItemIsActiveStream.Subscribe(_ => StopListeningForRight());
+		menuRightController.ItemNotActiveStream.Subscribe(_ => StartListeningForRight());
 
 		StartWaitForMenuOpen();
 	}
@@ -74,6 +78,20 @@ public class MenuModelController : MonoBehaviour
 	{
 		StopListening();
 		waitForMenuLeftCloseCoroutine = StartCoroutine(WaitForCloseMenuLeft());
+	}
+
+	private void StopListeningForRight()
+	{
+		if (null != waitForMenuRightOpenCoroutine)
+			StopCoroutine(waitForMenuRightOpenCoroutine);
+
+		if (null != waitForMenuRightCloseCoroutine)
+			StopCoroutine(waitForMenuRightCloseCoroutine);
+	}
+
+	private void StartListeningForRight()
+	{
+		waitForMenuRightCloseCoroutine = StartCoroutine(WaitForCloseMenuRight());
 	}
 
 	private void StopListening()

@@ -83,6 +83,8 @@ public class McManager : MonoBehaviour
         terrain.brush = TerrainBrush;
         terrain.SetData(data);
 
+        TerrainBrush.terrain = terrain;
+
         return terrain;
     }
     public EditableTerrain LoadTerrain(Guid terrainGuid, Guid sceneGuid)

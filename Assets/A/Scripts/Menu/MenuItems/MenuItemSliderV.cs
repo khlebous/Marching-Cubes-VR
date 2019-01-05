@@ -51,4 +51,9 @@ public class MenuItemSliderV : MenuItemV
 	{
 		valueChangedSubject.OnNext(slider.value);
 	}
+
+	private void Start()
+	{
+		valueChangedSubject.OnNext(slider.value);
+	}
 }

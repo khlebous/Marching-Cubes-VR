@@ -13,9 +13,6 @@ RWStructuredBuffer<float4> _VoxelColors;
 float3 _Scale;
 uint _Width, _Height, _Depth;
 
-private const float _minScale = McConsts.ModelN / 50f;
-private const float _maxScale = McConsts.ModelN / 5f;
-
 
 void Draw(int idx, float distanceToBrush) {
 	if (_BrushMode == 2)

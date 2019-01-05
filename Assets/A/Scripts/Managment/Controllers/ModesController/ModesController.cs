@@ -8,7 +8,7 @@ public class ModesController : MonoBehaviour
 	[SerializeField] private MainModeController mainModeController;
 	[SerializeField] private SceneModeController sceneModeController;
 	[SerializeField] private TerrainModeController terrainModeController;
-	[SerializeField] private ObjectModeController objectModeController;
+	[SerializeField] private ModelModeController objectModeController;
 
 	[Header("Mangers")]
 	[SerializeField] private McManager mcManager;
@@ -16,28 +16,43 @@ public class ModesController : MonoBehaviour
 	private void Start()
 	{
 		mainModeController.ItemSelectedStream.Subscribe(LoadSceneWithGuid);
-
 		sceneModeController.ExitToMainModeStream.Subscribe(_ => TurnOnMainModeFromSceneMode());
-		sceneModeController.ExitToMainModeStream.Subscribe(_ => SaveSceneAndTurnOnMainMode());
+		sceneModeController.ExitToTerrainModeStream.Subscribe(_ => TurnOnTerrainModeFromSceneMode());
+		sceneModeController.ExitToObjectModeStream.Subscribe(_ => TurnOnObjectModeFromSceneMode());
+		terrainModeController.ModeExitedStream.Subscribe(_ => TurnOnSceneModeFromTerrainMode());
+		objectModeController.ModeExitedStream.Subscribe(_ => TurnOnSceneModeFromObjectMode());
 	}
 
-	private void TurnOnMainModeFromSceneMode()
-	{
-		sceneModeController.ExitMode();
-		mainModeController.TurnOnModeWithCurrentSceneGuids(mcManager.GetAllSceneGuids());
-	}
-
-	private void SaveSceneAndTurnOnMainMode()
-	{
-		sceneModeController.SaveSceneAndExitMode();
-		mainModeController.TurnOnModeWithCurrentSceneGuids(mcManager.GetAllSceneGuids());
-	}
-
+	// Exit main menu mode
 	private void LoadSceneWithGuid(Guid sceneGuid)
 	{
-		mainModeController.TurnOff();
-		sceneModeController.TurnOn(sceneGuid);
+		sceneModeController.TurnOnModeWith(sceneGuid);
+	}
+	// Exit scene mode
+	private void TurnOnMainModeFromSceneMode()
+	{
+		mainModeController.TurnOnModeWithCurrentSceneGuids(mcManager.GetAllSceneGuids());
 	}
 
-	
+	private void TurnOnTerrainModeFromSceneMode()
+	{
+		terrainModeController.TurnOnMode();
+	}
+
+	private void TurnOnObjectModeFromSceneMode()
+	{
+		objectModeController.TurnOnMode();
+	}
+
+	// Exit terrain mode
+	private void TurnOnSceneModeFromTerrainMode()
+	{
+		sceneModeController.TurnOnCurrentMode(); 
+	}
+
+	// Exit obj mode
+	private void TurnOnSceneModeFromObjectMode() // TODO same as exit terrain?
+	{
+		sceneModeController.TurnOnCurrentMode();
+	}
 }

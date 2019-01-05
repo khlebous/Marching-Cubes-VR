@@ -150,7 +150,12 @@ public class McManager : MonoBehaviour
 
     public List<Guid> GetAllSceneGuids()
     {
-        return Loader.GetAllDirGuids("");
+		List<Guid> guids = new List<Guid>();
+		guids.Add(Guid.NewGuid());
+		guids.Add(Guid.NewGuid());
+		guids.Add(Guid.NewGuid());
+
+		return guids;// Loader.GetAllDirGuids("");
     }
 
     private McGameObjData LoadTerrainMeshes(Guid terrainGuid, Guid sceneGuid)

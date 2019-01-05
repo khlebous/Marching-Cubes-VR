@@ -30,9 +30,9 @@ public class MenuItemColorV : MenuItemV
 		active = true;
 	}
 
-	public override void SetUnChoosen()
+	public override void SetNormal()
 	{
-		base.SetUnChoosen();
+		base.SetNormal();
 		active = false;
 	}
 

@@ -86,4 +86,9 @@ public class EditableScene : MonoBehaviour
 
         return data;
     }
+
+	public void Destroy()
+	{
+		GameObject.Destroy(gameObject);
+	}
 }

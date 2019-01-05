@@ -24,7 +24,7 @@ namespace Assets.MarchingCubesGPU.Scripts
     public class TerrainBrush : MonoBehaviour
     {
         public Color color;
-        [SerializeField] private MarchingCubesGPUProject.EditableTerrain terrain;
+        public MarchingCubesGPUProject.EditableTerrain terrain;
         [SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Four;
         [SerializeField] private OVRInput.Button buttonX = OVRInput.Button.Three;
 

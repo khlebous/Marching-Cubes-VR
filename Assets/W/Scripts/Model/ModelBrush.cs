@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Assets.MarchingCubesGPU.Scripts
 {
-
 	public enum BrushMode
 	{
 		Color = 3,

@@ -11,16 +11,16 @@ float3 _Scale;
 uint _Width, _Height, _Depth;
 
 
-float GetDistToBrush(float2 pos) {
+bool IsPointInBrush(float2 pos) {
 
 	if (_BrushShape == 1) {
 		//wheel
-		return max(0, distance(pos, 0) - 0.5);
+		return distance(pos, 0) <= 0.5;
 	}
 	else {
 		//rectangle
 		float2 closestPointInRectangle = clamp(pos, -0.5, 0.5);
-		return distance(pos, closestPointInRectangle);
+		return closestPointInRectangle.x == pos.x && closestPointInRectangle.y == pos.y;
 	}
 }
 
@@ -30,9 +30,8 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 	int idx = id.x + id.z * _Width;
 	float4 rawPosition = float4(id, 1);
 	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
-	float dist = GetDistToBrush(position.xz);
 
-	if (dist <= 0)
+	if (IsPointInBrush(position.xz))
 		_VoxelColors[idx] = _BrushColor;
 }
 

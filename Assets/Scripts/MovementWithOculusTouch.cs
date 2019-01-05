@@ -7,9 +7,9 @@ public class MovementWithOculusTouch : MonoBehaviour
 	[Tooltip("Button to move")]
 	[SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Start;
 	[Tooltip("Controller to follow")]
-	[SerializeField] private OVRInput.Controller controllerToFollow = OVRInput.Controller.LTouch;
+    [SerializeField] private Transform controllerToFollow;
 
-	[Header("Rotatation multipliers")]
+    [Header("Rotatation multipliers")]
 	[SerializeField] private int speed = 10;
 	[SerializeField] private int bound = 20;
 
@@ -47,9 +47,9 @@ public class MovementWithOculusTouch : MonoBehaviour
 		{
 			if (OVRInput.GetDown(buttonY))
 			{
-				startPosA = OVRInput.GetLocalControllerPosition(controllerToFollow);
+                startPosA = controllerToFollow.position;
 
-				StopCoroutine(buttonA_down);
+                StopCoroutine(buttonA_down);
 				buttonA_up = StartCoroutine(WaitForButtonA_Up());
 			}
 
@@ -61,8 +61,8 @@ public class MovementWithOculusTouch : MonoBehaviour
 	{
 		while (true)
 		{
-			Vector3 currentPos = OVRInput.GetLocalControllerPosition(controllerToFollow);
-			Vector3 diff = startPosA - currentPos;
+			Vector3 currentPos = controllerToFollow.position;
+            Vector3 diff = startPosA - currentPos;
 			startPosA = currentPos;
 			transform.Translate(-diff*speed);
 

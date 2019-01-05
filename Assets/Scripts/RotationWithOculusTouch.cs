@@ -8,14 +8,14 @@ public class RotationWithOculusTouch : MonoBehaviour
 	[SerializeField] private OVRInput.Button buttonY = OVRInput.Button.One;
 	[Tooltip("Button to rotate around X and Z axis")]
 	[SerializeField] private OVRInput.Button buttonXZ = OVRInput.Button.Two;
-	[Tooltip("Controller to follow")]
-	[SerializeField] private OVRInput.Controller controllerToFollow = OVRInput.Controller.RTouch;
+    [Tooltip("Controller to follow")]
+    [SerializeField] private Transform controllerToFollow;
 
 	[Header("Rotatation multipliers")]
 	[SerializeField] private int speed = 500;
 	[SerializeField] private int bound = 20;
 
-	private new Transform transform;
+    private new Transform transform;
 	private Vector3 startPosA;
 	private Vector3 startPosB;
 
@@ -58,7 +58,7 @@ public class RotationWithOculusTouch : MonoBehaviour
 		{
 			if (OVRInput.GetDown(buttonY))
 			{
-				startPosA = OVRInput.GetLocalControllerPosition(controllerToFollow);
+                startPosA = controllerToFollow.position;
 
 				StopCoroutine(buttonA_down);
 				buttonA_up = StartCoroutine(WaitForButtonA_Up());
@@ -72,8 +72,8 @@ public class RotationWithOculusTouch : MonoBehaviour
 	{
 		while (true)
 		{
-			Vector3 currentPos = OVRInput.GetLocalControllerPosition(controllerToFollow);
-			Vector3 diff = startPosA - currentPos;
+			Vector3 currentPos = controllerToFollow.position;
+            Vector3 diff = startPosA - currentPos;
 			startPosA = currentPos;
 			transform.Rotate(new Vector3(0, diff.x * speed, 0), Space.World);
 
@@ -94,9 +94,9 @@ public class RotationWithOculusTouch : MonoBehaviour
 		{
 			if (OVRInput.GetDown(buttonXZ))
 			{
-				startPosB = OVRInput.GetLocalControllerPosition(controllerToFollow);
+				startPosB = controllerToFollow.position;
 
-				StopCoroutine(buttonB_down);
+                StopCoroutine(buttonB_down);
 				buttonB_up = StartCoroutine(WaitForButtonB_Up());
 			}
 
@@ -108,8 +108,9 @@ public class RotationWithOculusTouch : MonoBehaviour
 	{
 		while (true)
 		{
-			Vector3 currentPos = OVRInput.GetLocalControllerPosition(controllerToFollow);
-			Vector3 diff = startPosB - currentPos;
+            Vector3 currentPos = controllerToFollow.position;
+
+            Vector3 diff = startPosB - currentPos;
 			startPosB = currentPos;
 			transform.Rotate(new Vector3(-speed * diff.y, 0, 0), Space.World);
 

@@ -5,16 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OperationService
+public static class RotationHelper
 {
-    public Vector3 GetPosition(Vector3 objPos, Vector3 startConPos, Vector3 currentConPos)
-    {
-        var positionChange = currentConPos - startConPos;
-
-        return objPos + positionChange;
-    }
-
-    public Vector3 GetRotation_1(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
+    public static Vector3 GetRotation_1(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
         var startVec = startConPos - objPos;
         var currentVec = currentConPos - objPos;
@@ -24,7 +17,7 @@ public class OperationService
 
         return rotation;
     }
-    public Vector3 GetRotation_2(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
+    public static Vector3 GetRotation_2(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
         var startVec = startConPos - objPos;
         var currentVec = currentConPos - objPos;
@@ -34,7 +27,7 @@ public class OperationService
 
         return rotation;
     }
-    public Vector3 GetRotation_3(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
+    public static Vector3 GetRotation_3(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
         var startVec = startConPos - objPos;
         var currentVec = currentConPos - objPos;
@@ -53,7 +46,7 @@ public class OperationService
             return rotation;
         }
     }
-    public Vector3 GetRotation_4(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
+    public static Vector3 GetRotation_4(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
         var startVec = startConPos - objPos;
         var currentVec = currentConPos - objPos;
@@ -80,7 +73,7 @@ public class OperationService
             return rotation;
         }
     }
-    public Vector3 GetRotation(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
+    public static Vector3 GetRotation(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
         var startVec = startConPos - objPos;
         var currentVec = currentConPos - objPos;
@@ -113,7 +106,7 @@ public class OperationService
         }
     }
 
-    private Vector3 GetHorizontalRotation(Vector3 startVec, Vector3 currentVec)
+    private static Vector3 GetHorizontalRotation(Vector3 startVec, Vector3 currentVec)
     {
         var horCurrVec = Vector3.ProjectOnPlane(currentVec, Vector3.up);
         var horStartVec = Vector3.ProjectOnPlane(startVec, Vector3.up);
@@ -122,7 +115,7 @@ public class OperationService
 
         return horChange;
     }
-    private Vector3 GetVerticalRotation(Vector3 startVec, Vector3 currentVec)
+    private static Vector3 GetVerticalRotation(Vector3 startVec, Vector3 currentVec)
     {
         var verPlaneNormal = Vector3.Cross(Vector3.up, startVec);
         var verCurrVec = Vector3.ProjectOnPlane(currentVec, verPlaneNormal);
@@ -132,13 +125,13 @@ public class OperationService
         return verChange;
     }
 
-    private Vector3 ComposeRotations(Vector3 r1, Vector3 r2)
+    private static Vector3 ComposeRotations(Vector3 r1, Vector3 r2)
     {
         var rotation = (Quaternion.Euler(r1) * Quaternion.Euler(r2)).eulerAngles;
         return rotation;
     }
 
-    private Vector3 NormalizeRotation(Vector3 rotation)
+    private static Vector3 NormalizeRotation(Vector3 rotation)
     {
         var normalizedRotation = new Vector3();
         normalizedRotation.x = NormalizeAngle(rotation.x);
@@ -155,7 +148,7 @@ public class OperationService
 
         return normalizedRotation;
     }
-    private float NormalizeAngle(float angle)
+    private static float NormalizeAngle(float angle)
     {
         while (angle <= -180) angle += 360;
         while (angle > 180) angle -= 360;

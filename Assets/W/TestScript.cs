@@ -30,7 +30,7 @@ public class TestScript : MonoBehaviour
         //                                            currentCube.transform.position);
         //transform.rotation = Quaternion.Euler(result);
 
-        var result = new OperationService().GetPosition(startPosition, startCube.transform.position, currentCube.transform.position);
+        var result = new RotationHelper().GetPosition(startPosition, startCube.transform.position, currentCube.transform.position);
         transform.position = result;
     }
 }

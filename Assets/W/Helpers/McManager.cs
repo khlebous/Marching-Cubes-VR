@@ -114,23 +114,9 @@ public class McManager : MonoBehaviour
         return scene;
     }
 
-    public McGameObjData CreateModel()
+    public McData CreateModel()
     {
-        var god = new McGameObjData();
-        god.Data = ModelGenerator.GetNewEmptyData();
-        god.GameObject = ModelGenerator.GenerateMeshes(god.Data);
-        god.GameObject.name = McConsts.ModelPrefix + god.Data.Guid.ToString();
-
-        return god;
-    }
-    public McGameObjData CreateTerrain()
-    {
-        var god = new McGameObjData();
-        god.Data = TerrainGenerator.GetNewEmptyData();
-        god.GameObject = TerrainGenerator.GenerateMeshes(god.Data);
-        god.GameObject.name = McConsts.TerrainPrefix + god.Data.Guid.ToString();
-
-        return god;
+        return ModelGenerator.GetNewEmptyData();
     }
     public EditableScene CreateScene()
     {
@@ -173,6 +159,14 @@ public class McManager : MonoBehaviour
         return gameObject;
     }
 
+    private McGameObjData CreateTerrain()
+    {
+        var god = new McGameObjData();
+        god.Data = TerrainGenerator.GetNewEmptyData();
+        god.GameObject = LoadTerrainMeshes(god.Data);
+
+        return god;
+    }
     private McGameObjData LoadTerrainMeshes(Guid terrainGuid, Guid sceneGuid)
     {
         var god = new McGameObjData();

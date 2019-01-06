@@ -22,7 +22,6 @@ public class EditableScene : MonoBehaviour
 
         return obj;
     }
-
     public void SetOrUpdateTerrain(McGameObjData data)
     {
         var newTransform = data.GameObject.transform;
@@ -41,7 +40,6 @@ public class EditableScene : MonoBehaviour
 
         Terrain = data;
     }
-
     public void SetOrUpdateModel(McGameObjData data)
     {
         var guid = data.Data.Guid;
@@ -58,7 +56,6 @@ public class EditableScene : MonoBehaviour
             UpdateModelsOnTerrain(guid);
         }
     }
-
     public void UpdateModelsOnTerrain(Guid modelGuid)
     {
         var toUpdate = ModelsOnTerrain.Where(x => x.Guid == modelGuid);

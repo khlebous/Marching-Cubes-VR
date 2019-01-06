@@ -108,8 +108,7 @@ public class McManager : MonoBehaviour
         var sceneData = Loader.LoadScene(sceneGuid.ToString());
         LoadModelsOnScene(scene, sceneData.Models);
 
-        scene.Terrain = LoadTerrainMeshes(sceneData.TerrainGuid, sceneGuid);
-        scene.Terrain.GameObject.transform.parent = scene.transform;
+        scene.SetOrUpdateTerrain( LoadTerrainMeshes(sceneData.TerrainGuid, sceneGuid));
 
         return scene;
     }

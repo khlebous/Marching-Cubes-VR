@@ -150,12 +150,27 @@ public class McManager : MonoBehaviour
 
     public List<Guid> GetAllSceneGuids()
     {
-		List<Guid> guids = new List<Guid>();
-		guids.Add(Guid.NewGuid());
-		guids.Add(Guid.NewGuid());
-		guids.Add(Guid.NewGuid());
+        List<Guid> guids = new List<Guid>();
+        guids.Add(Guid.NewGuid());
+        guids.Add(Guid.NewGuid());
+        guids.Add(Guid.NewGuid());
 
-		return guids;// Loader.GetAllDirGuids("");
+        return guids;// Loader.GetAllDirGuids("");
+    }
+
+    public GameObject LoadTerrainMeshes(McData data)
+    {
+        var gameObject = TerrainGenerator.GenerateMeshes(data);
+        gameObject.name = McConsts.TerrainPrefix + data.Guid.ToString();
+
+        return gameObject;
+    }
+    public GameObject LoadModelMeshes(McData data)
+    {
+        var gameObject = ModelGenerator.GenerateMeshes(data);
+        gameObject.name = McConsts.ModelPrefix + data.Guid.ToString();
+
+        return gameObject;
     }
 
     private McGameObjData LoadTerrainMeshes(Guid terrainGuid, Guid sceneGuid)
@@ -163,8 +178,7 @@ public class McManager : MonoBehaviour
         var god = new McGameObjData();
         var path = GetTerrainPath(terrainGuid, sceneGuid);
         god.Data = Loader.LoadObj(path);
-        god.GameObject = TerrainGenerator.GenerateMeshes(god.Data);
-        god.GameObject.name = McConsts.TerrainPrefix + terrainGuid.ToString();
+        god.GameObject = LoadTerrainMeshes(god.Data);
 
         return god;
     }

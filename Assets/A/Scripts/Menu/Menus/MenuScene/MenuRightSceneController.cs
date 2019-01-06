@@ -6,14 +6,17 @@ using System;
 public class MenuRightSceneController : MonoBehaviour
 {
 	[Header("Menu items")]
-	[SerializeField] private MenuItemV terrainMode;
+	[SerializeField]
+	private MenuItemV terrainMode;
 	[SerializeField] private MenuItemV newModel;
-	[SerializeField] private ModelMenuItemV addModelFromList;
-	[SerializeField] private ModelMenuItemV editModel;
+	[SerializeField] private ModelsMenuV modelsList;
+	[SerializeField] private MenuItemV addModelFromList;
+	[SerializeField] private MenuItemV editModel;
 	[SerializeField] private MenuItemV deleteModel;
 
 	[Header("Other")]
-	[SerializeField] private McManager mcManager;
+	[SerializeField]
+	private McManager mcManager;
 
 	protected ISubject<Unit> exitToTerrainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToTerrainModeStream { get { return exitToTerrainModeSubject; } }
@@ -26,6 +29,9 @@ public class MenuRightSceneController : MonoBehaviour
 
 	private ISubject<Guid> modelToEditSelectedSubject = new Subject<Guid>();
 	public IObservable<Guid> ModelToEditSelectedStream { get { return modelToEditSelectedSubject; } }
+
+	private ISubject<Guid> modelToDeleteSelectedSubject = new Subject<Guid>();
+	public IObservable<Guid> ModelToDeleteSelectedStream { get { return modelToDeleteSelectedSubject; } }
 
 	protected ISubject<Unit> itemSelectedSubject = new Subject<Unit>();
 	public IObservable<Unit> ItemSelectedStream { get { return itemSelectedSubject; } }
@@ -55,9 +61,6 @@ public class MenuRightSceneController : MonoBehaviour
 			item.SetInactive();
 
 		items[activeItemIndex].SetActive();
-
-		addModelFromList.ModelSelectedStream.Subscribe(modelToAddSelectedSubject.OnNext);
-		editModel.ModelSelectedStream.Subscribe(modelToEditSelectedSubject.OnNext);
 
 		CloseMenu();
 	}
@@ -118,7 +121,7 @@ public class MenuRightSceneController : MonoBehaviour
 
 	public void UpdateModelsGuids(List<Guid> modelsGuids)
 	{
-		addModelFromList.SetModelsGuids(modelsGuids);
+		modelsList.SetModelsGuids(modelsGuids);
 	}
 
 	private void ItemSelected()
@@ -131,16 +134,21 @@ public class MenuRightSceneController : MonoBehaviour
 			case 1: // Nowy obiekt
 				exitToObjectModeSubject.OnNext(Guid.Empty);
 				break;
-			case 2: // addModelFromList
+			case 2: // modelsList
+				itemSelectedSubject.OnNext(Unit.Default);
 				addModelFromList.SetChoosen();
 				break;
-			case 3: // Edit model
-				editModel.SetChoosen();
-				//exitToObjectModeSubject.OnNext(Guid.NewGuid());
+			case 3: // Add model to scene
+				if (modelsList.AtLeastOneObjectExist())
+					modelToAddSelectedSubject.OnNext(modelsList.GetChoosenGuid());
 				break;
-			case 4: // Delete Model
-					// TODO Show models menu
-					// TODO delete model
+			case 4: // Edit model
+				if (modelsList.AtLeastOneObjectExist())
+					modelToEditSelectedSubject.OnNext(modelsList.GetChoosenGuid());
+				break;
+			case 5: // Delete Model
+				if (modelsList.AtLeastOneObjectExist())
+					modelToDeleteSelectedSubject.OnNext(modelsList.GetChoosenGuid());
 				break;
 			default:
 				break;

@@ -31,11 +31,18 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.SuspendAndExitToObjectModeStream.Subscribe(_ => SuspendAndExitToObjectMode());
 		menuSceneController.ModelToAddSelectedStream.Subscribe(AddModelToScene);
 		menuSceneController.ModelToEditSelectedStream.Subscribe(SuspendAndExitToObjectMode);
+		menuSceneController.ModelToDeleteSelectedStream.Subscribe(DeleteModelFromModelsList);
 	}
 
 	private void AddModelToScene(Guid modelGuid)
 	{
 		scene.InstantiateModel(modelGuid);
+	}
+
+	private void DeleteModelFromModelsList(Guid modelGuid)
+	{
+		scene.DeleteModel(modelGuid);
+		ModelsListChanged();
 	}
 
 	public void TurnOnModeWith(Guid guid)
@@ -50,7 +57,7 @@ public class SceneModeController : MonoBehaviour
 	private void ModelsListChanged()
 	{
 		List<Guid> modelGuids = scene.Models.Keys.ToList();
-		menuSceneController.UpdateModelsInfo(modelGuids);
+		menuSceneController.UpdateModelsGuids(modelGuids);
 	}
 
 	private void ExitToMainMode()

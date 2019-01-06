@@ -5,7 +5,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ModelMenuV : MonoBehaviour
+public class ModelsMenuV : MonoBehaviour
 {
 	[Header("UI")]
 	[SerializeField] private Text scenesText;
@@ -27,6 +27,19 @@ public class ModelMenuV : MonoBehaviour
 	public void SetActive()
 	{
 		StartCoroutine(WaitNextFrame());
+	}
+
+	public Guid GetChoosenGuid()
+	{
+		if (objectGuids.Count == 0)
+			return Guid.Empty;
+
+		return objectGuids[activeItemIndex];
+	}
+
+	public bool AtLeastOneObjectExist()
+	{
+		return objectGuids.Count > 0;
 	}
 
 	private void SetupMenu(List<Guid> objectGuids)

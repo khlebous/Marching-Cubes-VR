@@ -27,6 +27,9 @@ public class MenuSceneController : MonoBehaviour
 	private ISubject<Guid> modelToEditSelectedSubject = new Subject<Guid>();
 	public IObservable<Guid> ModelToEditSelectedStream { get { return modelToEditSelectedSubject; } }
 
+	private ISubject<Guid> modelToDeleteSelectedSubject = new Subject<Guid>();
+	public IObservable<Guid> ModelToDeleteSelectedStream { get { return modelToDeleteSelectedSubject; } }
+
 	private OVRInput.Button showMenuLeftButton = OVRInput.Button.PrimaryThumbstickRight;
 	private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
 	private OVRInput.Button showMenuRightButton = OVRInput.Button.SecondaryThumbstickLeft;
@@ -56,12 +59,13 @@ public class MenuSceneController : MonoBehaviour
 
 		menuRightController.ModelToAddSelectedStream.Subscribe(modelToAddSelectedSubject.OnNext);
 		menuRightController.ModelToEditSelectedStream.Subscribe(modelToEditSelectedSubject.OnNext);
+		menuRightController.ModelToDeleteSelectedStream.Subscribe(modelToDeleteSelectedSubject.OnNext);
 		menuRightController.ItemSelectedStream.Subscribe(_ => StopWaitForMenuRightClose());
 
 		StartWaitForMenuOpen();
 	}
 
-	public void UpdateModelsInfo(List<Guid> modelGuids)
+	public void UpdateModelsGuids(List<Guid> modelGuids)
 	{
 		menuRightController.UpdateModelsGuids(modelGuids);
 	}

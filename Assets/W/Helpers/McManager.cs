@@ -19,7 +19,7 @@ public class McManager : MonoBehaviour
     public McTerrainGenerator TerrainGenerator { get; set; }
     public McModelGenerator ModelGenerator { get; set; }
 
-    public void Start()
+    public void Awake()
     {
         Loader = new McLoader();
         TerrainGenerator = new McTerrainGenerator(TerrainShaders, material);
@@ -105,7 +105,7 @@ public class McManager : MonoBehaviour
         sceneObj.name = McConsts.EditableScenePrefix + scene.Guid.ToString();
         scene.Models = LoadModelList(sceneGuid);
 
-        var sceneData = Loader.LoadScene(sceneGuid.ToString());
+        var sceneData = Loader.LoadScene(GetScenePath( sceneGuid));
         LoadModelsOnScene(scene, sceneData.Models);
 
         scene.SetOrUpdateTerrain( LoadTerrainMeshes(sceneData.TerrainGuid, sceneGuid));
@@ -121,7 +121,7 @@ public class McManager : MonoBehaviour
     {
         var sceneObj = new GameObject();
         var scene = sceneObj.AddComponent<EditableScene>();
-        scene.Guid = new Guid();
+		scene.Guid = Guid.NewGuid();
         sceneObj.name = McConsts.EditableScenePrefix + scene.Guid.ToString();
 
         scene.Models = new Dictionary<Guid, McGameObjData>();
@@ -134,12 +134,7 @@ public class McManager : MonoBehaviour
 
     public List<Guid> GetAllSceneGuids()
     {
-        List<Guid> guids = new List<Guid>();
-        guids.Add(Guid.NewGuid());
-        guids.Add(Guid.NewGuid());
-        guids.Add(Guid.NewGuid());
-
-        return guids;// Loader.GetAllDirGuids("");
+		return Loader.GetAllDirGuids("");
     }
 
     public GameObject LoadTerrainMeshes(McData data)

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class MainMenuController : MonoBehaviour
 {
-	public int ActiveItemIndex { get; private set; } 
+	public int ActiveItemIndex { get; private set; }
 	public int MaxItemIndex { get; private set; }
 	public List<Guid> ScenesGuids;
 
@@ -20,12 +20,11 @@ public class MainMenuController : MonoBehaviour
 	public IObservable<Guid> ItemSelectedStream { get { return itemSelectedSubject; } }
 
 	private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
-	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickRight;
 	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickLeft;
+	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickRight;
 
 	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;
-
 
 	public void SetActive(List<Guid> sceneGuids)
 	{
@@ -99,7 +98,10 @@ public class MainMenuController : MonoBehaviour
 
 	private void ItemSelected()
 	{
-		itemSelectedSubject.OnNext(ScenesGuids[ActiveItemIndex]);
+		if (ActiveItemIndex == 0)
+			itemSelectedSubject.OnNext(Guid.Empty);
+		else
+			itemSelectedSubject.OnNext(ScenesGuids[ActiveItemIndex - 1]);
 	}
 
 	private void IncreaseActiveItemIndex()

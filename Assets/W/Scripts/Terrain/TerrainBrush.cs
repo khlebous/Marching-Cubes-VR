@@ -82,7 +82,6 @@ namespace Assets.MarchingCubesGPU.Scripts
                 if (OVRInput.GetDown(buttonY))
                 {
                     StopCoroutine(buttonA_down);
-                    Debug.Log("change");
                     mode = TerrainBrushMode.Change;
                     terrain.StartShaping();
                     buttonA_up = StartCoroutine(WaitForButtonA_Up(buttonY));
@@ -90,7 +89,6 @@ namespace Assets.MarchingCubesGPU.Scripts
 				else if (OVRInput.GetDown(buttonX))
 				{
 					StopCoroutine(buttonA_down);
-					Debug.Log("change");
 					mode = TerrainBrushMode.ExtremeChange;
 					terrain.StartShaping();
 					buttonA_up = StartCoroutine(WaitForButtonA_Up(buttonX));
@@ -106,7 +104,6 @@ namespace Assets.MarchingCubesGPU.Scripts
                 if (OVRInput.GetUp(button))
                 {
                     StopCoroutine(buttonA_up);
-                    Debug.Log("inactive");
                     mode = TerrainBrushMode.Inactive;
                     terrain.FinishShaping();
                     buttonA_down = StartCoroutine(WaitForButtonA_Down());
@@ -119,17 +116,17 @@ namespace Assets.MarchingCubesGPU.Scripts
 
         private void SetChangeMode()
         {
-            //StopListening();
-            mode = TerrainBrushMode.Inactive;
-            //StartListening(BrushMode.Create);
-        }
+			StopListening();
+			mode = TerrainBrushMode.Inactive;
+			StartListening();
+		}
 
         private void SetColorMode()
         {
-            //StopListening();
-            mode = TerrainBrushMode.Inactive;
-            //buttonA_down = StartCoroutine(WaitForButtonA_Down(BrushMode.Color));
-        }
+			StopListening();
+			mode = TerrainBrushMode.Inactive;
+			buttonA_down = StartCoroutine(WaitForButtonA_Down());
+		}
 
         public void SetColor(Color color)
         {

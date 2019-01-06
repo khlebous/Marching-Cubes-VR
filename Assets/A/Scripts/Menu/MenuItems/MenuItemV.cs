@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
+using System.Collections;
 
 public class MenuItemV : MonoBehaviour
 {
-	[SerializeField] MultiStateMaterial highlight;
+	[SerializeField] protected MultiStateMaterial highlight;
 
 	[Header("Input")]
 	[SerializeField] private OVRInput.Button stopEditingItemButton = OVRInput.Button.SecondaryThumbstick;
@@ -40,14 +40,14 @@ public class MenuItemV : MonoBehaviour
 			{
 				if (waitForEndEditing != null)
 					StopCoroutine(waitForEndEditing);
-				SetUnChoosen();
+				SetNormal();
 			}
 
 			yield return new WaitForEndOfFrame();
 		}
 	}
 
-	public virtual void SetUnChoosen()
+	public virtual void SetNormal()
 	{
 		highlight.SetState(1);
 		thubstickClickedSubject.OnNext(Unit.Default);

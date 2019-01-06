@@ -52,7 +52,7 @@ public abstract class McBaseGenerator
     public McData GetNewEmptyData()
     {
         var data = new McData();
-        data.Guid = new Guid();
+		data.Guid = Guid.NewGuid();
         data.Values = new float[DesiredBufferSize];
         data.Colors = Enumerable.Repeat(new Vector4(1, 1, 1, 1), DesiredBufferSize).ToArray();
 

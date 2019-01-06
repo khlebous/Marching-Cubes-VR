@@ -29,9 +29,9 @@ public class MainMenuView : MonoBehaviour
 	private void UpdateUI()
 	{
 		if (ActiveItemIndex == 0)
-			scenesText.text = (ActiveItemIndex + 1) + "/" + MaxItemIndex + "\n (New scene)";
+			scenesText.text = ActiveItemIndex + "/" + (MaxItemIndex-1) + "\n (New scene)";
 		else
-			scenesText.text = (ActiveItemIndex + 1) + "/" + MaxItemIndex + "\n " + SceneGuids[ActiveItemIndex - 1];
+			scenesText.text = ActiveItemIndex + "/" + (MaxItemIndex-1) + "\n " + SceneGuids[ActiveItemIndex - 1];
 	}
 
 	private void OnMenuEnable()

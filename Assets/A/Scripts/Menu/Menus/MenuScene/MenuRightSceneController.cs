@@ -6,18 +6,26 @@ using System;
 public class MenuRightSceneController : MonoBehaviour
 {
 	[Header("Menu items")]
-	[SerializeField]
-	private MenuItemV terrainMode;
+	[SerializeField] private MenuItemV terrainMode;
 	[SerializeField] private MenuItemV newModel;
-	[SerializeField] private MenuItemV addModelFromList;
+	[SerializeField] private ModelMenuItemV addModelFromList;
 	[SerializeField] private MenuItemV editModel;
 	[SerializeField] private MenuItemV deleteModel;
+
+	[Header("Other")]
+	[SerializeField] private McManager mcManager;
 
 	protected ISubject<Unit> exitToTerrainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToTerrainModeStream { get { return exitToTerrainModeSubject; } }
 
 	protected ISubject<Guid> exitToObjectModeSubject = new Subject<Guid>();
 	public IObservable<Guid> ExitToObjectModeStream { get { return exitToObjectModeSubject; } }
+
+	private ISubject<Guid> modelToAddSelectedSubject = new Subject<Guid>();
+	public IObservable<Guid> ModelToAddSelectedStream { get { return modelToAddSelectedSubject; } }
+
+	protected ISubject<Unit> itemSelectedSubject = new Subject<Unit>();
+	public IObservable<Unit> ItemSelectedStream { get { return itemSelectedSubject; } }
 
 	private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickUp;
 	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickDown;
@@ -44,12 +52,27 @@ public class MenuRightSceneController : MonoBehaviour
 			item.SetInactive();
 
 		items[activeItemIndex].SetActive();
+
+		addModelFromList.ModelToAddSelectedStream.Subscribe(modelToAddSelectedSubject.OnNext);
+
+		CloseMenu();
 	}
 
 	public void OpenMenu()
 	{
 		gameObject.SetActive(true);
 		isMenuActive = true;
+
+		//mcManager.getAllObjectGuids
+		List<Guid> guids = new List<Guid>
+		{
+			Guid.NewGuid(),
+			Guid.NewGuid(),
+			Guid.NewGuid(),
+			Guid.NewGuid()
+		};
+
+		addModelFromList.SetupMenu(guids);
 	}
 
 	public void CloseMenu()
@@ -111,6 +134,8 @@ public class MenuRightSceneController : MonoBehaviour
 				exitToObjectModeSubject.OnNext(Guid.Empty);
 				break;
 			case 2: // addModelFromList
+				addModelFromList.SetChoosen();
+				itemSelectedSubject.OnNext(Unit.Default);
 					// TODO Show models menu
 				break;
 			case 3: // Edit model

@@ -7,16 +7,20 @@ public class SceneModeController : MonoBehaviour
 	[SerializeField] private GameObject sceneContiner;
 	[SerializeField] private MenuSceneController menuSceneController;
 
+	[Header("Other")]
+	[SerializeField] private McManager mcManager;
+
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
 
-	protected ISubject<Unit> exitToTerrainModeSubject = new Subject<Unit>();
-	public IObservable<Unit> ExitToTerrainModeStream { get { return exitToTerrainModeSubject; } }
+	protected ISubject<TerrainLoadData> exitToTerrainModeSubject = new Subject<TerrainLoadData>();
+	public IObservable<TerrainLoadData> ExitToTerrainModeStream { get { return exitToTerrainModeSubject; } }
 
 	protected ISubject<Unit> exitToObjectModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToObjectModeStream { get { return exitToObjectModeSubject; } }
 
-	private Guid currentGuid;
+	//private Guid currentGuid;
+	private EditableScene scene;
 
 	private void Start()
 	{
@@ -28,47 +32,54 @@ public class SceneModeController : MonoBehaviour
 
 	public void TurnOnModeWith(Guid guid)
 	{
-		Debug.Log("SceneModeController  turn on");
-		Debug.Log("TODO load scene: "+ guid.ToString());
+		scene = mcManager.LoadScene(guid);
+		scene.gameObject.transform.parent = sceneContiner.transform;
+
 		sceneContiner.SetActive(true);
 		menuSceneController.SetActive();
 	}
 
 	private void ExitToMainMode()
 	{
-		Debug.Log("SceneModeController  turn off");
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
 
-		currentGuid = Guid.Empty; //?
+		scene.Destroy();
+		scene = null;
 
 		exitToMainModeSubject.OnNext(Unit.Default);
 	}
 
 	private void SaveSceneAndExitToMainMode()
 	{
-		Debug.Log("TODO save scene");
+		mcManager.Save(scene);
 		ExitToMainMode();
 	}
 
 	public void TurnOnCurrentMode()
 	{
-		TurnOnModeWith(currentGuid);
-		Debug.Log("TODO load current");
+		sceneContiner.SetActive(true);
+		menuSceneController.SetActive();
 	}
 
 	private void SuspendAndExitToTerrainMode()
 	{
-		Debug.Log("terrain sleep");
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
 
-		exitToTerrainModeSubject.OnNext(Unit.Default);
+		exitToTerrainModeSubject.OnNext
+			(new TerrainLoadData(scene.Guid, scene.Terrain.Data));
+	}
+
+	public void TurnOnCurrentModeWithUpdate(McData data)
+	{
+		//scene.Update(new McGameObjData(data), mcManager.
+		//mcManager.UpdateScene(McData );
+		//TurnOnCurrentMode();
 	}
 
 	private void SuspendAndExitToObjectMode()
 	{
-		Debug.Log("terrain sleep");
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
 

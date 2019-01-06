@@ -47,7 +47,15 @@ public class MenuSceneController : MonoBehaviour
 		menuRightController.ExitToObjectModeStream.Subscribe(_ => Suspend());
 		menuRightController.ExitToObjectModeStream.Subscribe(suspendAndExitToObjectModeSubject.OnNext);
 
+		menuRightController.ModelToAddSelectedStream.Subscribe(AddModelToScene);
+		menuRightController.ItemSelectedStream.Subscribe(_ => StopWaitForMenuRightClose());
+
 		StartWaitForMenuOpen();
+	}
+
+	private void AddModelToScene(Guid guid)
+	{
+		Debug.Log("add model");
 	}
 
 	private void Suspend()
@@ -88,6 +96,12 @@ public class MenuSceneController : MonoBehaviour
 	{
 		StopListening();
 		waitForMenuRightCloseCoroutine = StartCoroutine(WaitForCloseMenuRight());
+	}
+
+	public void StopWaitForMenuRightClose()
+	{
+		if (null != waitForMenuRightCloseCoroutine)
+			StopCoroutine(waitForMenuRightCloseCoroutine);
 	}
 
 	public void StartWaitForMenuLeftClose()

@@ -7,8 +7,13 @@ public class ModelModeController : MonoBehaviour
 	[SerializeField] private Assets.MarchingCubesGPU.Scripts.ModelBrush brush;
 	[SerializeField] private MenuModelController menuModelController;
 
+	[Header("Other")]
+	[SerializeField] private McManager mcManager;
+
 	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
 	public IObservable<Unit> ModeExitedStream { get { return modeExitedSubject; } }
+
+	MarchingCubesGPUProject.EditableModel model;
 
 	private void Start()
 	{
@@ -19,7 +24,11 @@ public class ModelModeController : MonoBehaviour
 	public void TurnOnMode()
 	{
 		Debug.Log("TerrainModeController  turn on");
-		Debug.Log("TODO smth: ");
+
+		model = mcManager.LoadModel(mcManager.CreateModel());
+		model.gameObject.transform.parent = modelContiner.transform;
+		model.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+
 		modelContiner.SetActive(true);
 		menuModelController.SetActive();
 		brush.SetActive();
@@ -31,6 +40,9 @@ public class ModelModeController : MonoBehaviour
 		brush.SetInactive();
 		modelContiner.SetActive(false);
 		menuModelController.SetInactive();
+
+		model.Destroy();
+		model = null;
 
 		modeExitedSubject.OnNext(Unit.Default);
 	}

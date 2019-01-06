@@ -25,7 +25,9 @@ public class ModelModeController : MonoBehaviour
 	{
 		Debug.Log("TerrainModeController  turn on");
 
-		//model = mcManager.LoadModel()
+		model = mcManager.LoadModel(mcManager.CreateModel());
+		model.gameObject.transform.parent = modelContiner.transform;
+		model.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
 
 		modelContiner.SetActive(true);
 		menuModelController.SetActive();
@@ -38,6 +40,9 @@ public class ModelModeController : MonoBehaviour
 		brush.SetInactive();
 		modelContiner.SetActive(false);
 		menuModelController.SetInactive();
+
+		model.Destroy();
+		model = null;
 
 		modeExitedSubject.OnNext(Unit.Default);
 	}

@@ -2,6 +2,7 @@
 using UnityEngine;
 using UniRx;
 using System;
+using System.Collections.Generic;
 
 public class MenuSceneController : MonoBehaviour
 {
@@ -19,6 +20,12 @@ public class MenuSceneController : MonoBehaviour
 
 	protected ISubject<Guid> suspendAndExitToObjectModeSubject = new Subject<Guid>();
 	public IObservable<Guid> SuspendAndExitToObjectModeStream { get { return suspendAndExitToObjectModeSubject; } }
+
+	private ISubject<Guid> modelToAddSelectedSubject = new Subject<Guid>();
+	public IObservable<Guid> ModelToAddSelectedStream { get { return modelToAddSelectedSubject; } }
+
+	private ISubject<Guid> modelToEditSelectedSubject = new Subject<Guid>();
+	public IObservable<Guid> ModelToEditSelectedStream { get { return modelToEditSelectedSubject; } }
 
 	private OVRInput.Button showMenuLeftButton = OVRInput.Button.PrimaryThumbstickRight;
 	private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
@@ -47,15 +54,16 @@ public class MenuSceneController : MonoBehaviour
 		menuRightController.ExitToObjectModeStream.Subscribe(_ => Suspend());
 		menuRightController.ExitToObjectModeStream.Subscribe(suspendAndExitToObjectModeSubject.OnNext);
 
-		menuRightController.ModelToAddSelectedStream.Subscribe(AddModelToScene);
+		menuRightController.ModelToAddSelectedStream.Subscribe(modelToAddSelectedSubject.OnNext);
+		menuRightController.ModelToEditSelectedStream.Subscribe(modelToEditSelectedSubject.OnNext);
 		menuRightController.ItemSelectedStream.Subscribe(_ => StopWaitForMenuRightClose());
 
 		StartWaitForMenuOpen();
 	}
 
-	private void AddModelToScene(Guid guid)
+	public void UpdateModelsInfo(List<Guid> modelGuids)
 	{
-		Debug.Log("add model");
+		menuRightController.UpdateModelsGuids(modelGuids);
 	}
 
 	private void Suspend()

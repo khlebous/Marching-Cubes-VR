@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UniRx;
+using System;
 
 public class ModelModeController : MonoBehaviour
 {
@@ -13,7 +14,11 @@ public class ModelModeController : MonoBehaviour
 	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
 	public IObservable<Unit> ModeExitedStream { get { return modeExitedSubject; } }
 
+	protected ISubject<McData> modeSavedAndExitedSubject = new Subject<McData>();
+	public IObservable<McData> ModeSavedAndExitedStream { get { return modeSavedAndExitedSubject; } }
+
 	MarchingCubesGPUProject.EditableModel model;
+	Guid sceneGuid;
 
 	private void Start()
 	{
@@ -21,11 +26,15 @@ public class ModelModeController : MonoBehaviour
 		menuModelController.SaveAndExitToSceneModeStream.Subscribe(_ => SaveObjectAndExitMode());
 	}
 
-	public void TurnOnMode()
+	public void TurnOnMode(LoadData loadData)
 	{
-		Debug.Log("TerrainModeController  turn on");
+		sceneGuid = loadData.sceneGuid;
 
-		model = mcManager.LoadModel(mcManager.CreateModel());
+		if (loadData.data == null)
+			model = mcManager.LoadModel(mcManager.CreateModel());
+		else
+			model = mcManager.LoadModel(loadData.data);
+
 		model.gameObject.transform.parent = modelContiner.transform;
 		model.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
 
@@ -36,7 +45,6 @@ public class ModelModeController : MonoBehaviour
 
 	private void ExitMode()
 	{
-		Debug.Log("SceneModeController  turn off");
 		brush.SetInactive();
 		modelContiner.SetActive(false);
 		menuModelController.SetInactive();
@@ -49,7 +57,14 @@ public class ModelModeController : MonoBehaviour
 
 	private void SaveObjectAndExitMode()
 	{
-		Debug.Log("TODO save scene");
-		ExitMode();
+		brush.SetInactive();
+		modelContiner.SetActive(false);
+		menuModelController.SetInactive();
+
+		mcManager.Save(model, sceneGuid);
+
+		modeSavedAndExitedSubject.OnNext(model.GetData());
+		model.Destroy();
+		model = null;
 	}
 }

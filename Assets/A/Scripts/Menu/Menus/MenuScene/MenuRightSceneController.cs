@@ -9,7 +9,7 @@ public class MenuRightSceneController : MonoBehaviour
 	[SerializeField] private MenuItemV terrainMode;
 	[SerializeField] private MenuItemV newModel;
 	[SerializeField] private ModelMenuItemV addModelFromList;
-	[SerializeField] private MenuItemV editModel;
+	[SerializeField] private ModelMenuItemV editModel;
 	[SerializeField] private MenuItemV deleteModel;
 
 	[Header("Other")]
@@ -23,6 +23,9 @@ public class MenuRightSceneController : MonoBehaviour
 
 	private ISubject<Guid> modelToAddSelectedSubject = new Subject<Guid>();
 	public IObservable<Guid> ModelToAddSelectedStream { get { return modelToAddSelectedSubject; } }
+
+	private ISubject<Guid> modelToEditSelectedSubject = new Subject<Guid>();
+	public IObservable<Guid> ModelToEditSelectedStream { get { return modelToEditSelectedSubject; } }
 
 	protected ISubject<Unit> itemSelectedSubject = new Subject<Unit>();
 	public IObservable<Unit> ItemSelectedStream { get { return itemSelectedSubject; } }
@@ -53,7 +56,8 @@ public class MenuRightSceneController : MonoBehaviour
 
 		items[activeItemIndex].SetActive();
 
-		addModelFromList.ModelToAddSelectedStream.Subscribe(modelToAddSelectedSubject.OnNext);
+		addModelFromList.ModelSelectedStream.Subscribe(modelToAddSelectedSubject.OnNext);
+		editModel.ModelSelectedStream.Subscribe(modelToEditSelectedSubject.OnNext);
 
 		CloseMenu();
 	}
@@ -62,17 +66,6 @@ public class MenuRightSceneController : MonoBehaviour
 	{
 		gameObject.SetActive(true);
 		isMenuActive = true;
-
-		//mcManager.getAllObjectGuids
-		List<Guid> guids = new List<Guid>
-		{
-			Guid.NewGuid(),
-			Guid.NewGuid(),
-			Guid.NewGuid(),
-			Guid.NewGuid()
-		};
-
-		addModelFromList.SetupMenu(guids);
 	}
 
 	public void CloseMenu()
@@ -123,6 +116,11 @@ public class MenuRightSceneController : MonoBehaviour
 		}
 	}
 
+	public void UpdateModelsGuids(List<Guid> modelsGuids)
+	{
+		addModelFromList.SetModelsGuids(modelsGuids);
+	}
+
 	private void ItemSelected()
 	{
 		switch (activeItemIndex)
@@ -135,12 +133,10 @@ public class MenuRightSceneController : MonoBehaviour
 				break;
 			case 2: // addModelFromList
 				addModelFromList.SetChoosen();
-				itemSelectedSubject.OnNext(Unit.Default);
-					// TODO Show models menu
 				break;
 			case 3: // Edit model
-					// TODO  Show models menu
-				exitToObjectModeSubject.OnNext(Guid.NewGuid());
+				editModel.SetChoosen();
+				//exitToObjectModeSubject.OnNext(Guid.NewGuid());
 				break;
 			case 4: // Delete Model
 					// TODO Show models menu

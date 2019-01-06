@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45114607, g: 0.49976212, b: 0.5676568, a: 1}
+  m_IndirectSpecularColor: {r: 0.45114577, g: 0.49976164, b: 0.5676562, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1750,9 +1750,87 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4241522826985032, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.0099
+      objectReference: {fileID: 0}
+    - target: {fileID: 224131047556602614, guid: 49ed7aa465a859d43894a0e160f463a9,
+        type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.0275
+      objectReference: {fileID: 0}
+    - target: {fileID: 4402127006410216, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.0950238
+      objectReference: {fileID: 0}
+    - target: {fileID: 4305749788875192, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.0815273
+      objectReference: {fileID: 0}
+    - target: {fileID: 4172209961209340, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.19099998
+      objectReference: {fileID: 0}
+    - target: {fileID: 4596443572503296, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.49787635
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357926094358814, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.02770001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207254045064296, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.08349999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4121371716016780, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.11649999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766897509567538, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.098
+      objectReference: {fileID: 0}
+    - target: {fileID: 4699735612953716, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.17650001
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114683766877995854, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1658597964 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114843722317634414, guid: 49ed7aa465a859d43894a0e160f463a9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1658597963}
+  m_Script: {fileID: 11500000, guid: f37dad3ca8990664c895eb28e2b5700f, type: 3}
+--- !u!114 &1658597965 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114498099383241784, guid: 49ed7aa465a859d43894a0e160f463a9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1658597963}
+  m_Script: {fileID: 11500000, guid: 253bd04b5697fd0418e4d7f7156b4506, type: 3}
+--- !u!1 &1658597966 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1791028333673960, guid: 49ed7aa465a859d43894a0e160f463a9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1658597963}
+--- !u!114 &1658597967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1658597966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb49f215301e1db4d90ea9260c8b3910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlight: {fileID: 1658597965}
+  stopEditingItemButton: 8388608
+  modelMenu: {fileID: 1658597964}
+  selectButton: 8388608
 --- !u!4 &1724395820 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4538947015068912, guid: 94fc449687b39624dbc217e4fb35ff3f,

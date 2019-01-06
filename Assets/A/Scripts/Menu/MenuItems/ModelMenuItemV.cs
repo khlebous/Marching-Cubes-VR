@@ -8,11 +8,10 @@ public class ModelMenuItemV : MenuItemV
 	[SerializeField] private ModelMenuV modelMenu;
 
 	[Header("Input")]
-	[SerializeField]
-	private OVRInput.Button selectButton = OVRInput.Button.SecondaryThumbstick;
+	[SerializeField] private OVRInput.Button selectButton = OVRInput.Button.SecondaryThumbstick;
 
-	private ISubject<Guid> modelToAddSelectedSubject = new Subject<Guid>();
-	public IObservable<Guid> ModelToAddSelectedStream { get { return modelToAddSelectedSubject; } }
+	private ISubject<Guid> modelSelectedSubject = new Subject<Guid>();
+	public IObservable<Guid> ModelSelectedStream { get { return modelSelectedSubject; } }
 
 	private ButtonState thumbstick = ButtonState.Normal;
 	private bool active;
@@ -20,31 +19,19 @@ public class ModelMenuItemV : MenuItemV
 	public void Start()
 	{
 		modelMenu.SetInactive();
-		modelMenu.ItemSelectedStream.Subscribe(ItemSelected);
-	}
-
-	private void ItemSelected(Guid guid)
-	{
-		modelToAddSelectedSubject.OnNext(guid);
+		modelMenu.ItemSelectedStream.Subscribe(modelSelectedSubject.OnNext);
 	}
 
 	public override void SetChoosen()
 	{
-		//highlight.SetState(2);
 		base.SetChoosen();
 		active = true;
 	}
 
 	public override void SetNormal()
 	{
-		//highlight.SetState(1);
 		base.SetNormal();
 		active = false;
-	}
-
-	public void SetupMenu(List<Guid> objGuids)
-	{
-		modelMenu.SetupMenu(objGuids);
 	}
 
 	void Update()
@@ -57,5 +44,10 @@ public class ModelMenuItemV : MenuItemV
 				modelMenu.SetActive();
 			}
 		}
+	}
+
+	public void SetModelsGuids(List<Guid> modelsGuids)
+	{
+		modelMenu.SetModelsGuids(modelsGuids);
 	}
 }

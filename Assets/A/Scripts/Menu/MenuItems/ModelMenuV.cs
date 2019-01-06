@@ -18,7 +18,7 @@ public class ModelMenuV : MonoBehaviour
 	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickRight;
 
 	private int activeItemIndex;
-	private List<Guid> objectGuids;
+	private List<Guid> objectGuids = new List<Guid>();
 
 	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;
@@ -29,7 +29,7 @@ public class ModelMenuV : MonoBehaviour
 		StartCoroutine(WaitNextFrame());
 	}
 
-	public void SetupMenu(List<Guid> objectGuids)
+	private void SetupMenu(List<Guid> objectGuids)
 	{
 		activeItemIndex = 0;
 		this.objectGuids = objectGuids;
@@ -52,8 +52,16 @@ public class ModelMenuV : MonoBehaviour
 
 	private void UpdateUI()
 	{
-		scenesText.text = (activeItemIndex + 1) + "/" + maxItemIndex 
-			+ "\n " + objectGuids[activeItemIndex];
+		if (maxItemIndex == 0)
+			scenesText.text = "create object to add to scene";
+		else
+			scenesText.text = (activeItemIndex + 1) + "/" + maxItemIndex
+				+ "\n " + objectGuids[activeItemIndex];
+	}
+
+	public void SetModelsGuids(List<Guid> modelsGuids)
+	{
+		SetupMenu(modelsGuids);
 	}
 
 	void Update()
@@ -63,7 +71,8 @@ public class ModelMenuV : MonoBehaviour
 			if (OVRInput.Get(selectItemButton))
 			{
 				isMenuActive = false;
-				ItemSelected();
+				if (maxItemIndex != 0)
+					ItemSelected();
 			}
 			else
 			{
@@ -103,14 +112,20 @@ public class ModelMenuV : MonoBehaviour
 
 	private void IncreaseActiveItemIndex()
 	{
-		activeItemIndex++;
-		activeItemIndex %= maxItemIndex;
+		if (maxItemIndex != 0)
+		{
+			activeItemIndex++;
+			activeItemIndex %= maxItemIndex;
+		}
 	}
 
 	private void DecreaseActiveItemIndex()
 	{
-		if (activeItemIndex == 0)
-			activeItemIndex = maxItemIndex;
-		activeItemIndex--;
+		if (maxItemIndex != 0)
+		{
+			if (activeItemIndex == 0)
+				activeItemIndex = maxItemIndex;
+			activeItemIndex--;
+		}
 	}
 }

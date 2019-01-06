@@ -419,7 +419,12 @@ namespace MarchingCubesGPUProject
 
             return data;
         }
-    }
+
+		public void Destroy()
+		{
+			GameObject.Destroy(gameObject);
+		}
+	}
 }
 
 

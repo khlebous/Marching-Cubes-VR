@@ -1,13 +1,23 @@
 ﻿using UnityEngine;
 using UniRx;
+using System;
 
 public class TerrainModeController : MonoBehaviour
 {
 	[SerializeField] private GameObject terrainContiner;
 	[SerializeField] private MenuTerrainController menuTerrainController;
 
+	[Header("Other")]
+	[SerializeField] private McManager mcManager;
+
 	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
 	public IObservable<Unit> ModeExitedStream { get { return modeExitedSubject; } }
+
+	protected ISubject<Unit> modeSavedAndExitedSubject = new Subject<Unit>();
+	public IObservable<Unit> ModeSavedAndExitedStream { get { return modeSavedAndExitedSubject; } }
+
+	MarchingCubesGPUProject.EditableTerrain terrain;
+	Guid sceneGuid;
 
 	private void Start()
 	{
@@ -15,26 +25,39 @@ public class TerrainModeController : MonoBehaviour
 		menuTerrainController.SaveAndExitToSceneModeStream.Subscribe(_ => SaveTerrainAndExitMode());
 	}
 
-	public void TurnOnMode()
+	public void TurnOnMode(TerrainLoadData loadData)
 	{
-		Debug.Log("TerrainModeController  turn on");
-		Debug.Log("TODO smth: ");
+		this.sceneGuid = loadData.sceneGuid;
+
+		terrain = mcManager.LoadTerrain(loadData.data);
+		terrain.gameObject.transform.parent = terrainContiner.transform;
+		terrain.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+
 		terrainContiner.SetActive(true);
 		menuTerrainController.SetActive();
 	}
 
 	private void ExitMode()
 	{
-		Debug.Log("SceneModeController  turn off");
 		terrainContiner.SetActive(false);
 		menuTerrainController.SetInactive();
+
+		terrain.Destroy();
+		terrain = null;
 
 		modeExitedSubject.OnNext(Unit.Default);
 	}
 
 	private void SaveTerrainAndExitMode()
 	{
-		Debug.Log("TODO save scene");
-		ExitMode();
+		mcManager.Save(terrain, sceneGuid);
+
+		terrainContiner.SetActive(false);
+		menuTerrainController.SetInactive();
+
+		terrain.Destroy();
+		terrain = null;
+
+		modeSavedAndExitedSubject.OnNext(Unit.Default);
 	}
 }

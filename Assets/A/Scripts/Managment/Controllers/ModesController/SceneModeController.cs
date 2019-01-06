@@ -13,8 +13,8 @@ public class SceneModeController : MonoBehaviour
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
 
-	protected ISubject<Unit> exitToTerrainModeSubject = new Subject<Unit>();
-	public IObservable<Unit> ExitToTerrainModeStream { get { return exitToTerrainModeSubject; } }
+	protected ISubject<TerrainLoadData> exitToTerrainModeSubject = new Subject<TerrainLoadData>();
+	public IObservable<TerrainLoadData> ExitToTerrainModeStream { get { return exitToTerrainModeSubject; } }
 
 	protected ISubject<Unit> exitToObjectModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToObjectModeStream { get { return exitToObjectModeSubject; } }
@@ -67,7 +67,15 @@ public class SceneModeController : MonoBehaviour
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
 
-		exitToTerrainModeSubject.OnNext(Unit.Default);
+		exitToTerrainModeSubject.OnNext
+			(new TerrainLoadData(scene.Guid, scene.Terrain.Data));
+	}
+
+	public void TurnOnCurrentModeWithUpdate(McData data)
+	{
+		//scene.Update(new McGameObjData(data), mcManager.
+		//mcManager.UpdateScene(McData );
+		//TurnOnCurrentMode();
 	}
 
 	private void SuspendAndExitToObjectMode()

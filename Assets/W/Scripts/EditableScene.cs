@@ -24,12 +24,13 @@ public class EditableScene : MonoBehaviour
 
     public void SetOrUpdateTerrain(McGameObjData data)
     {
+        var newTransform = data.GameObject.transform;
+        newTransform.parent = this.transform;
+
         if (Terrain != null)
         {
-            var newTransform = data.GameObject.transform;
             var currentTransform = Terrain.GameObject.transform;
 
-            newTransform.parent = currentTransform.parent;
             newTransform.position = currentTransform.position;
             newTransform.rotation = currentTransform.rotation;
             newTransform.localScale = currentTransform.localScale;
@@ -38,6 +39,28 @@ public class EditableScene : MonoBehaviour
         }
 
         Terrain = data;
+    }
+
+    public void SetOrUpdateModel(McGameObjData data)
+    {
+        var guid = data.Data.Guid;
+
+        if (!Models.ContainsKey(guid))
+        {
+            Models[guid] = data;
+        }
+        else
+        {
+            GameObject.Destroy(Models[guid].GameObject);
+
+            Models[guid] = data;
+            UpdateModelsOnTerrain(guid);
+        }
+    }
+
+    public void UpdateModelsOnTerrain(Guid modelGuid)
+    {
+        //TODO: Update models
     }
 
     public McSceneData GetData()

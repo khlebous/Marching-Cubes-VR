@@ -128,8 +128,7 @@ public class McManager : MonoBehaviour
         scene.Models = new Dictionary<Guid, McGameObjData>();
         scene.ModelsOnTerrain = new List<McObject>();
 
-        scene.Terrain = CreateTerrain();
-        scene.Terrain.GameObject.transform.parent = scene.transform;
+        scene.SetOrUpdateTerrain(CreateTerrain());
 
         return scene;
     }

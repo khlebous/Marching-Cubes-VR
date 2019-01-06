@@ -16,6 +16,7 @@ public class EditableScene : MonoBehaviour
     public GameObject InstantiateModel(Guid guid)
     {
         var obj = GameObject.Instantiate(Models[guid].GameObject);
+        obj.transform.parent = this.transform;
         ModelsOnTerrain.Add(new McObject(guid, obj));
         obj.SetActive(true);
 
@@ -29,11 +30,11 @@ public class EditableScene : MonoBehaviour
 
         if (Terrain != null)
         {
-            var currentTransform = Terrain.GameObject.transform;
+            var currTransform = Terrain.GameObject.transform;
 
-            newTransform.position = currentTransform.position;
-            newTransform.rotation = currentTransform.rotation;
-            newTransform.localScale = currentTransform.localScale;
+            newTransform.position = currTransform.position;
+            newTransform.rotation = currTransform.rotation;
+            newTransform.localScale = currTransform.localScale;
 
             GameObject.Destroy(Terrain.GameObject);
         }
@@ -60,7 +61,17 @@ public class EditableScene : MonoBehaviour
 
     public void UpdateModelsOnTerrain(Guid modelGuid)
     {
-        //TODO: Update models
+        var toUpdate = ModelsOnTerrain.Where(x => x.Guid == modelGuid);
+        foreach (var model in toUpdate)
+        {
+            var updatedObj = InstantiateModel(modelGuid);
+            updatedObj.transform.position = model.GameObject.transform.position;
+            updatedObj.transform.rotation = model.GameObject.transform.rotation;
+            updatedObj.transform.localScale = model.GameObject.transform.localScale;
+
+            GameObject.Destroy(model.GameObject);
+            model.GameObject = updatedObj;
+        }
     }
 
     public McSceneData GetData()

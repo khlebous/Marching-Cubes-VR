@@ -154,6 +154,7 @@ public class McManager : MonoBehaviour
     {
         var gameObject = ModelGenerator.GenerateMeshes(data);
         gameObject.name = McConsts.ModelPrefix + data.Guid.ToString();
+        gameObject.SetActive(false);
 
         return gameObject;
     }

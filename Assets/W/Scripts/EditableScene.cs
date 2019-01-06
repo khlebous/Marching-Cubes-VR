@@ -22,6 +22,24 @@ public class EditableScene : MonoBehaviour
         return obj;
     }
 
+    public void SetOrUpdateTerrain(McGameObjData data)
+    {
+        if (Terrain != null)
+        {
+            var newTransform = data.GameObject.transform;
+            var currentTransform = Terrain.GameObject.transform;
+
+            newTransform.parent = currentTransform.parent;
+            newTransform.position = currentTransform.position;
+            newTransform.rotation = currentTransform.rotation;
+            newTransform.localScale = currentTransform.localScale;
+
+            GameObject.Destroy(Terrain.GameObject);
+        }
+
+        Terrain = data;
+    }
+
     public McSceneData GetData()
     {
         var data = new McSceneData();

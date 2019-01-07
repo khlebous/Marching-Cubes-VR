@@ -5,7 +5,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ModelsMenuV : MonoBehaviour
+public class ModelsMenuV : MenuItemV
 {
 	[Header("UI")]
 	[SerializeField] private Text scenesText;
@@ -24,8 +24,9 @@ public class ModelsMenuV : MonoBehaviour
 	private bool isMenuActive;
 	private int maxItemIndex;
 
-	public void SetActive()
+	public override void SetActive()
 	{
+		base.SetActive();
 		StartCoroutine(WaitNextFrame());
 	}
 
@@ -58,8 +59,9 @@ public class ModelsMenuV : MonoBehaviour
 		isMenuActive = true;
 	}
 
-	public void SetInactive()
+	public override void SetInactive()
 	{
+		base.SetInactive();
 		isMenuActive = false;
 	}
 

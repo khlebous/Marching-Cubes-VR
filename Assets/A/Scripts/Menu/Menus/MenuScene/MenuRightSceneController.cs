@@ -52,6 +52,7 @@ public class MenuRightSceneController : MonoBehaviour
 		{
 			terrainMode,
 			newModel,
+			modelsList,
 			addModelFromList,
 			editModel,
 			deleteModel

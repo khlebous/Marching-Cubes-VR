@@ -9,6 +9,7 @@ public class TerrainModeController : MonoBehaviour
 
 	[Header("Other")]
 	[SerializeField] private McManager mcManager;
+	[SerializeField] private Assets.MarchingCubesGPU.Scripts.TerrainBrush terrainBrush;
 
 	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
 	public IObservable<Unit> ModeExitedStream { get { return modeExitedSubject; } }
@@ -31,11 +32,12 @@ public class TerrainModeController : MonoBehaviour
 
 		terrain = mcManager.LoadTerrain(loadData.data);
 		terrain.gameObject.transform.parent = terrainContiner.transform;
-		terrain.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+		terrain.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
 		
-		// TODO brush set active?
+		
 		terrainContiner.SetActive(true);
 		menuTerrainController.SetActive();
+		terrainBrush.SetActive();
 	}
 
 	private void ExitMode()
@@ -51,7 +53,7 @@ public class TerrainModeController : MonoBehaviour
 
 	private void SaveTerrainAndExitMode()
 	{
-		// TODO brush set incative?
+		terrainBrush.SetInactive();
 		mcManager.Save(terrain, sceneGuid);
 
 		terrainContiner.SetActive(false);

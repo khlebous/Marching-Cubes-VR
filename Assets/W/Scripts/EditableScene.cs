@@ -70,8 +70,18 @@ public class EditableScene : MonoBehaviour
             model.GameObject = updatedObj;
         }
     }
+	public void DeleteModel(Guid modelGuid)
+	{
+		var toDelete = ModelsOnTerrain.Where(x => x.Guid == modelGuid);
+		foreach (var model in toDelete)
+		{
+			GameObject.Destroy(model.GameObject);
+		}
 
-    public McSceneData GetData()
+		Models.Remove(modelGuid);
+	}
+
+	public McSceneData GetData()
     {
         var data = new McSceneData();
         data.Guid = Guid;

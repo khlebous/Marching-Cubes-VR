@@ -14,8 +14,7 @@ public class MenuRightSceneController : MonoBehaviour
 	[SerializeField] private MenuItemV deleteModel;
 
 	[Header("Other")]
-	[SerializeField]
-	private McManager mcManager;
+	[SerializeField] private McManager mcManager;
 
 	protected ISubject<Unit> exitToTerrainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToTerrainModeStream { get { return exitToTerrainModeSubject; } }
@@ -61,8 +60,6 @@ public class MenuRightSceneController : MonoBehaviour
 			item.SetInactive();
 
 		items[activeItemIndex].SetActive();
-
-		CloseMenu();
 	}
 
 	public void OpenMenu()

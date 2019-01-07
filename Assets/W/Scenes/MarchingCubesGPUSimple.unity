@@ -88,7 +88,6 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &5
@@ -334,6 +333,11 @@ Prefab:
       propertyPath: m_Name
       value: ModelBrush
       objectReference: {fileID: 0}
+    - target: {fileID: 114489407442787808, guid: dba7aa6f7ff36894eb0d2823ed0f5ebb,
+        type: 2}
+      propertyPath: mode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dba7aa6f7ff36894eb0d2823ed0f5ebb, type: 2}
   m_IsPrefabParent: 0
@@ -564,7 +568,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -967,7 +970,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1793658070833782, guid: 1eedfb13ed7f42e41ab53428f31546ca, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4950746919767436, guid: 1eedfb13ed7f42e41ab53428f31546ca, type: 2}
       propertyPath: m_LocalScale.x
@@ -1020,6 +1023,36 @@ Prefab:
     - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
         type: 2}
       propertyPath: ExtremeValueShader
+      value: 
+      objectReference: {fileID: 7200000, guid: 19a07a8ef9004a44cbba524635051b90, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: Shaders.clearShader
+      value: 
+      objectReference: {fileID: 7200000, guid: c01c61315f4438e489dca09da4ab47dc, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: Shaders.marchingShader
+      value: 
+      objectReference: {fileID: 7200000, guid: c55e30a151f4e45408487fc525630346, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: Shaders.brushColorShader
+      value: 
+      objectReference: {fileID: 7200000, guid: 61ac53158a236284aa73ce4b2e4fec87, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: Shaders.brushShapeShader
+      value: 
+      objectReference: {fileID: 7200000, guid: ed459d13947a75e469d5784c72165e70, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: Shaders.normalsShader
+      value: 
+      objectReference: {fileID: 7200000, guid: f9fdee0c5e89d4843b3e139b010ac71d, type: 3}
+    - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
+        type: 2}
+      propertyPath: Shaders.ExtremeValueShader
       value: 
       objectReference: {fileID: 7200000, guid: 19a07a8ef9004a44cbba524635051b90, type: 3}
     m_RemovedComponents: []
@@ -1169,6 +1202,26 @@ Prefab:
       propertyPath: normalsShader
       value: 
       objectReference: {fileID: 7200000, guid: 8f22bc50351139e4c8c6f8222864a4c2, type: 3}
+    - target: {fileID: 114373886620178624, guid: 37daf0f734c63434e8f74c76a590b4ea,
+        type: 2}
+      propertyPath: Shaders.clearShader
+      value: 
+      objectReference: {fileID: 7200000, guid: c01c61315f4438e489dca09da4ab47dc, type: 3}
+    - target: {fileID: 114373886620178624, guid: 37daf0f734c63434e8f74c76a590b4ea,
+        type: 2}
+      propertyPath: Shaders.brushShader
+      value: 
+      objectReference: {fileID: 7200000, guid: f354a092d260c9a4e9b9072f0ff17445, type: 3}
+    - target: {fileID: 114373886620178624, guid: 37daf0f734c63434e8f74c76a590b4ea,
+        type: 2}
+      propertyPath: Shaders.normalsShader
+      value: 
+      objectReference: {fileID: 7200000, guid: 8f22bc50351139e4c8c6f8222864a4c2, type: 3}
+    - target: {fileID: 114373886620178624, guid: 37daf0f734c63434e8f74c76a590b4ea,
+        type: 2}
+      propertyPath: Shaders.marchingShader
+      value: 
+      objectReference: {fileID: 7200000, guid: cbefffa4c1505b54689332f612d627e6, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 37daf0f734c63434e8f74c76a590b4ea, type: 2}
   m_IsPrefabParent: 0
@@ -1233,9 +1286,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Convex: 0
-  m_CookingOptions: 14
+  m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &1858550448

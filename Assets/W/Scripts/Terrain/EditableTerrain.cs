@@ -45,7 +45,6 @@ namespace MarchingCubesGPUProject
                 throw new System.ArgumentException("N must be divisible be 8");
 
             InitMeshes();
-
             InitDataBuffer();
             InitDataColorBuffer();
             InitNormalsBuffer();
@@ -53,9 +52,10 @@ namespace MarchingCubesGPUProject
             InitMarchingCubesTablesBuffors();
             InitExtremeValueBuffer();
 
-
-            //test
-            //StartShaping();
+            CleanMeshBuffer();
+            CalculateNormals();
+            CalculateMesh();
+            UpdateMeshes();
         }
 
         private void InitMeshes()

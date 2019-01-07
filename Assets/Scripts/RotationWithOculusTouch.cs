@@ -4,128 +4,82 @@ using UnityEngine;
 public class RotationWithOculusTouch : MonoBehaviour
 {
 	[Header("Oculus Touch input")]
-	[Tooltip("Button to rotate around Y axis")]
+	[Tooltip("Button to rotate")]
 	[SerializeField] private OVRInput.Button buttonY = OVRInput.Button.One;
-	[Tooltip("Button to rotate around X and Z axis")]
-	[SerializeField] private OVRInput.Button buttonXZ = OVRInput.Button.Two;
-    [Tooltip("Controller to follow")]
-    [SerializeField] private Transform controllerToFollow;
+	[Tooltip("Controller to follow")]
+	[SerializeField] private Transform controllerToFollow;
 
 	[Header("Rotatation multipliers")]
 	[SerializeField] private int speed = 500;
 	[SerializeField] private int bound = 20;
 
-    private new Transform transform;
-	private Vector3 startPosA;
-	private Vector3 startPosB;
+	private new Transform transform;
+	private Vector3 startControllerPosition;
+	private Vector3 startObjRotation;
 
-	private Coroutine buttonA_down;
-	private Coroutine buttonB_down;
-	private Coroutine buttonA_up;
-	private Coroutine buttonB_up;
+	private Coroutine button_down;
+	private Coroutine button_up;
 
 	private void Start()
 	{
 		transform = GetComponent<Transform>();
-		startPosA = Vector3.zero;
-		startPosB = Vector3.zero;
+		startControllerPosition = Vector3.zero;
+		startObjRotation = Vector3.zero;
 
 		StartListening();
 	}
 
 	private void StartListening()
 	{
-		buttonA_down = StartCoroutine(WaitForButtonA_Down());
-		buttonB_down = StartCoroutine(WaitForButtonB_Down());
+		button_down = StartCoroutine(WaitForButton_Down());
 	}
 
 	private void StopListening()
 	{
-		if (null != buttonA_down)
-			StopCoroutine(buttonA_down);
-		if (null != buttonB_down)
-			StopCoroutine(buttonB_down);
+		if (null != button_down)
+			StopCoroutine(button_down);
 
-		if (null != buttonA_up)
-			StopCoroutine(buttonA_up);
-		if (null != buttonB_up)
-			StopCoroutine(buttonB_up);
+		if (null != button_up)
+			StopCoroutine(button_up);
 	}
 
-	private IEnumerator WaitForButtonA_Down()
+	private IEnumerator WaitForButton_Down()
 	{
 		while (true)
 		{
 			if (OVRInput.GetDown(buttonY))
 			{
-                startPosA = controllerToFollow.position;
+				startControllerPosition = controllerToFollow.position;
+				startObjRotation = transform.rotation.eulerAngles;
 
-				StopCoroutine(buttonA_down);
-				buttonA_up = StartCoroutine(WaitForButtonA_Up());
+				StopCoroutine(button_down);
+				button_up = StartCoroutine(WaitForButton_Up());
 			}
 
 			yield return new WaitForEndOfFrame();
 		}
 	}
 
-	private IEnumerator WaitForButtonA_Up()
+	private IEnumerator WaitForButton_Up()
 	{
 		while (true)
 		{
-			Vector3 currentPos = controllerToFollow.position;
-            Vector3 diff = startPosA - currentPos;
-			startPosA = currentPos;
-			transform.Rotate(new Vector3(0, diff.x * speed, 0), Space.World);
+			var currentPos = controllerToFollow.position;
+			var rotation = RotationHelper.GetRotation(transform.position, startObjRotation, startControllerPosition, currentPos);
+			transform.rotation = Quaternion.Euler(rotation);
 
 			if (OVRInput.GetUp(buttonY))
 			{
-				StopCoroutine(buttonA_up);
+				StopCoroutine(button_up);
 
-				buttonA_down = StartCoroutine(WaitForButtonA_Down());
+				button_down = StartCoroutine(WaitForButton_Down());
 			}
 
 			yield return new WaitForEndOfFrame();
 		}
 	}
 
-	private IEnumerator WaitForButtonB_Down()
-	{
-		while (true)
-		{
-			if (OVRInput.GetDown(buttonXZ))
-			{
-				startPosB = controllerToFollow.position;
 
-                StopCoroutine(buttonB_down);
-				buttonB_up = StartCoroutine(WaitForButtonB_Up());
-			}
-
-			yield return new WaitForEndOfFrame();
-		}
-	}
-
-	private IEnumerator WaitForButtonB_Up()
-	{
-		while (true)
-		{
-            Vector3 currentPos = controllerToFollow.position;
-
-            Vector3 diff = startPosB - currentPos;
-			startPosB = currentPos;
-			transform.Rotate(new Vector3(-speed * diff.y, 0, 0), Space.World);
-
-			CorrectAnglesIfNeeded();
-
-			if (OVRInput.GetUp(buttonXZ))
-			{
-				StopCoroutine(buttonB_up);
-
-				buttonB_down = StartCoroutine(WaitForButtonB_Down());
-			}
-
-			yield return new WaitForEndOfFrame();
-		}
-	}
 
 	private void CorrectAnglesIfNeeded()
 	{

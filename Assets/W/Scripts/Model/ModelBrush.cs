@@ -97,9 +97,6 @@ namespace Assets.MarchingCubesGPU.Scripts
 				SetChangeMode();
 			else if (newMode == 1)
 				SetColorMode();
-
-			Debug.Log("new mode: " + newMode);
-
 		}
 
 		public void SetShape(int newShape)
@@ -108,8 +105,6 @@ namespace Assets.MarchingCubesGPU.Scripts
 				shape = BrushShape.Sphere;
 			else if (newShape == 1)
 				shape = BrushShape.Cuboid;
-
-			Debug.Log("new brush shape: " + newShape);
 		}
 
 		public void SetSizeChanged(float newValue)

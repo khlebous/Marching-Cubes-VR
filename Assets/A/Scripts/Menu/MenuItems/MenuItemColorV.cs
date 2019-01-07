@@ -40,13 +40,13 @@ public class MenuItemColorV : MenuItemV
 	{
 		if (active)
 		{
-			if (OVRInput.Get(decreaseValueButton))
+			if (OVRInput.Get(decreaseValueButton/*, OVRInput.Controller.RTouch*/))
 			{
 				colorHuePicker.Input(ButtonState.Left);
 				ColorChanged();
 
 			}
-			else if (OVRInput.Get(increaseValueButton))
+			else if (OVRInput.Get(increaseValueButton/*, OVRInput.Controller.RTouch*/))
 			{
 				colorHuePicker.Input(ButtonState.Right);
 				ColorChanged();

@@ -1725,7 +1725,7 @@ Transform:
   - {fileID: 4206607281647098}
   - {fileID: 4342404199969680}
   m_Father: {fileID: 4734574550878098}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4660336914857554
 Transform:
@@ -1808,8 +1808,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.0075, z: -0.0055}
   m_LocalScale: {x: 0.0005332039, y: 0.0005332038, z: 0.0005332038}
   m_Children:
-  - {fileID: 4659815121072658}
   - {fileID: 4765251950002702}
+  - {fileID: 4659815121072658}
   - {fileID: 4146839879646782}
   m_Father: {fileID: 4657601604290018}
   m_RootOrder: 3
@@ -1825,7 +1825,7 @@ Transform:
   m_LocalScale: {x: 90, y: 90, z: 1}
   m_Children: []
   m_Father: {fileID: 4734574550878098}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4768702983815470
 Transform:
@@ -3619,11 +3619,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0b483af689044d7afe98cea1bd80d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minBound: 0
-  maxBound: 0
+  minBound: -55
+  maxBound: 55
   fixX: 0
   fixY: 0
   thumb: {fileID: 4930442999695120}
+  colorHuePicker: {fileID: 114358943568560820}
+  colorSaturationBrightnessPicker: {fileID: 114651437905472566}
 --- !u!114 &114154580987164844
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4070,6 +4072,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 484c31f7164344e25ac2758e1fd18bb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorIndicator: {fileID: 114686858429204142}
+  colorSaturationBrightnessPicker: {fileID: 114651437905472566}
+  draggable1: {fileID: 114782308916703936}
+  draggable2: {fileID: 114135164626302528}
 --- !u!114 &114390120822493450
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4480,6 +4486,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundMaterial: {fileID: 2100000, guid: 66f4a11f0a14e4c3ab2f9a3a44450afb, type: 2}
+  colorIndicator: {fileID: 114686858429204142}
+  draggable1: {fileID: 114782308916703936}
+  draggable2: {fileID: 114135164626302528}
 --- !u!114 &114678217679260580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4505,6 +4514,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba3a77568665644dabfcbf0832fc5bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorHuePicker: {fileID: 114358943568560820}
+  colorSaturationBrightnessPicker: {fileID: 114651437905472566}
 --- !u!114 &114744022364963480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4604,6 +4615,8 @@ MonoBehaviour:
   fixX: 0
   fixY: 1
   thumb: {fileID: 4342404199969680}
+  colorHuePicker: {fileID: 114358943568560820}
+  colorSaturationBrightnessPicker: {fileID: 114651437905472566}
 --- !u!114 &114785120905411628
 MonoBehaviour:
   m_ObjectHideFlags: 1

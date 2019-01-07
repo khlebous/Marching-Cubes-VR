@@ -155,7 +155,7 @@ namespace MarchingCubesGPUProject
         }
 
         //shaping
-        public bool Shaping;
+        public bool Shaping = false;
         public Vector3 StartShapingBrushPosition;
         public Vector3 LastShapingBrushPosition;
 

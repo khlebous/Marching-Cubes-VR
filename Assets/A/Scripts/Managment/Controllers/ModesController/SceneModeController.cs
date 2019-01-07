@@ -32,6 +32,7 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.ModelToAddSelectedStream.Subscribe(AddModelToScene);
 		menuSceneController.ModelToEditSelectedStream.Subscribe(SuspendAndExitToObjectMode);
 		menuSceneController.ModelToDeleteSelectedStream.Subscribe(DeleteModelFromModelsList);
+
 	}
 
 	private void AddModelToScene(Guid modelGuid)
@@ -49,9 +50,12 @@ public class SceneModeController : MonoBehaviour
 	{
 		scene = mcManager.LoadScene(guid);
 		scene.gameObject.transform.parent = sceneContiner.transform;
+		scene.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
 		sceneContiner.SetActive(true);
 		menuSceneController.SetActive();
+
+		ModelsListChanged();
 	}
 
 	private void ModelsListChanged()

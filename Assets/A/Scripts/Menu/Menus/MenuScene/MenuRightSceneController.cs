@@ -6,8 +6,7 @@ using System;
 public class MenuRightSceneController : MonoBehaviour
 {
 	[Header("Menu items")]
-	[SerializeField]
-	private MenuItemV terrainMode;
+	[SerializeField] private MenuItemV terrainMode;
 	[SerializeField] private MenuItemV newModel;
 	[SerializeField] private ModelsMenuV modelsList;
 	[SerializeField] private MenuItemV addModelFromList;
@@ -82,14 +81,14 @@ public class MenuRightSceneController : MonoBehaviour
 	{
 		if (isMenuActive)
 		{
-			if (OVRInput.Get(selectItemButton))
+			if (OVRInput.Get(selectItemButton/*, OVRInput.Controller.RTouch*/))
 			{
 				isMenuActive = false;
 				ItemSelected();
 			}
 			else
 			{
-				if (OVRInput.Get(prevItemButton))
+				if (OVRInput.Get(prevItemButton/*, OVRInput.Controller.RTouch*/))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{
@@ -99,7 +98,7 @@ public class MenuRightSceneController : MonoBehaviour
 						items[activeItemIndex].SetActive();
 					}
 				}
-				else if (OVRInput.Get(nextItemButton))
+				else if (OVRInput.Get(nextItemButton/*, OVRInput.Controller.RTouch*/))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{
@@ -137,7 +136,7 @@ public class MenuRightSceneController : MonoBehaviour
 				break;
 			case 2: // modelsList
 				itemSelectedSubject.OnNext(Unit.Default);
-				addModelFromList.SetChoosen();
+				modelsList.SetChoosen();
 				break;
 			case 3: // Add model to scene
 				if (modelsList.AtLeastOneObjectExist())

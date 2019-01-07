@@ -10,6 +10,8 @@ public class Draggable : MonoBehaviour
 
 	[SerializeField] private Transform thumb;
 
+	[SerializeField] private ColorHuePicker colorHuePicker;
+	[SerializeField] private ColorSaturationBrightnessPicker colorSaturationBrightnessPicker;
 	private bool dragging;
 
 	public void Input(ButtonState state)
@@ -30,16 +32,18 @@ public class Draggable : MonoBehaviour
 		}
 	}
 
-	// TODO remove
-	void SetDragPoint(Vector3 point)
+	public void SetDragPoint(Vector3 point)
 	{
 		point = (Vector3.one - point) * GetComponent<Collider>().bounds.size.x + GetComponent<Collider>().bounds.min;
 		SetThumbPosition(point);
 	}
 
-	void SetThumbPosition(Vector3 point)
+	public void SetThumbPosition(Vector3 point)
 	{
 		thumb.localPosition = new Vector3(fixX ? thumb.localPosition.x : point.x, fixY ? thumb.localPosition.y : point.y, thumb.localPosition.z);
-		SendMessage("OnDrag", Vector3.one - (thumb.position - GetComponent<Collider>().bounds.min) / GetComponent<Collider>().bounds.size.x);
+		var point2 = Vector3.one - (thumb.position - GetComponent<Collider>().bounds.min) / GetComponent<Collider>().bounds.size.x;
+
+		colorHuePicker.OnDrag(point2);
+		colorSaturationBrightnessPicker.OnDrag(point2);
 	}
 }

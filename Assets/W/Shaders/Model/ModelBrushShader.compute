@@ -41,8 +41,7 @@ float GetDistToBrush(float3 pos) {
 		distVector = unscaledPos - closestPointInCuboid;
 	}
 
-	float3 unscaledDistvector = float3(distVector.x / _Scale.x, distVector.y / _Scale.y, distVector.z / _Scale.z);
-	return length(unscaledDistvector);
+	return length(distVector);
 }
 
 void ChangeColor(uint3 id)

@@ -36,6 +36,7 @@ namespace MarchingCubesGPUProject
         private ComputeBuffer _extremeValueBuffer;
 
         private Mesh[] _meshes;
+        private Transform[] _meshObjTransforms;
         private McVert[] _verts = new McVert[Size];
 
         private void Start()
@@ -61,6 +62,7 @@ namespace MarchingCubesGPUProject
         private void InitMeshes()
         {
             _meshes = new Mesh[meshCount];
+            _meshObjTransforms = new Transform[meshCount];
 
             for (int i = 0; i < meshCount; i++)
             {
@@ -78,8 +80,8 @@ namespace MarchingCubesGPUProject
                 collider.sharedMesh = mesh;
 
                 go.transform.parent = transform;
-                go.transform.localScale = new Vector3(1, 1, 1);
                 go.transform.SetPositionAndRotation(go.transform.parent.position, go.transform.parent.rotation);
+                _meshObjTransforms[i] = go.transform;
             }
         }
         private void InitDataBuffer()
@@ -227,8 +229,7 @@ namespace MarchingCubesGPUProject
             Shaders.brushColorShader.SetVector("_Scale", transform.lossyScale);
             Shaders.brushColorShader.SetBuffer(0, "_VoxelColors", _dataColorBuffer);
 
-            var fromMcToBrushMatrix = brush.GetToBrushMatrix(brush.transform.position) * GetFromMcMatrix();
-            Shaders.brushColorShader.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
+            Shaders.brushColorShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
 
             Shaders.brushColorShader.SetInt("_BrushShape", (int)brush.shape);
             Shaders.brushColorShader.SetVector("_BrushColor", brush.color);
@@ -243,9 +244,8 @@ namespace MarchingCubesGPUProject
 
             Shaders.brushShapeShader.SetVector("_Scale", transform.lossyScale);
             Shaders.brushShapeShader.SetBuffer(0, "_Voxels", _dataBuffer);
-
-            var fromMcToBrushMatrix = brush.GetToBrushMatrix(StartShapingBrushPosition) * GetFromMcMatrix();
-            Shaders.brushShapeShader.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
+            
+            Shaders.brushShapeShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
 
             Shaders.brushShapeShader.SetInt("_BrushShape", (int)brush.shape);
             Shaders.brushShapeShader.SetInt("_BrushMode", (int)brush.mode);
@@ -266,8 +266,7 @@ namespace MarchingCubesGPUProject
 
             Shaders.ExtremeValueShader.SetBuffer(0, "_Voxels", _dataBuffer);
 
-            var fromMcToBrushMatrix = brush.GetToBrushMatrix(StartShapingBrushPosition) * GetFromMcMatrix();
-            Shaders.ExtremeValueShader.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
+            Shaders.ExtremeValueShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
 
             Shaders.ExtremeValueShader.SetInt("_BrushShape", (int)brush.shape);
             Shaders.ExtremeValueShader.SetFloat("_HeightChange", GetShapingHeight());
@@ -304,6 +303,13 @@ namespace MarchingCubesGPUProject
             Shaders.marchingShader.SetBuffer(0, "_TriangleConnectionTable", _triangleConnectionTable);
 
             Shaders.marchingShader.Dispatch(0, N / 8, N / 8, N / 8);
+        }
+
+        private Matrix4x4 GetFromMcToBrushMatrix()
+        {
+            var adjustBrushScale = Matrix4x4.Scale(transform.lossyScale).inverse;
+            var fromMcToBrushMatrix = adjustBrushScale * brush.GetToBrushMatrix(brush.transform.position) * GetFromMcMatrix();
+            return fromMcToBrushMatrix;
         }
 
         private void OnDestroy()
@@ -348,6 +354,8 @@ namespace MarchingCubesGPUProject
 
         private void UpdateMeshes()
         {
+            EnsureProperMeshScaling();
+
             //Get the data out of the buffer.
             _meshBuffer.GetData(_verts);
             //var a = m_meshBuffer.GetNativeBufferPtr();
@@ -397,6 +405,16 @@ namespace MarchingCubesGPUProject
             _meshes[meshIdx].SetNormals(normals);
             _meshes[meshIdx].SetColors(colors);
             _meshes[meshIdx].SetTriangles(indexes, 0);
+        }
+        private void EnsureProperMeshScaling()
+        {
+            var scale = this.transform.localScale;
+            var meshScale = new Vector3(1 / scale.x, 1 / scale.y, 1 / scale.z);
+
+            foreach (var tran in _meshObjTransforms)
+            {
+                tran.localScale = meshScale;
+            }
         }
 
         public void SetData(McData data)

@@ -166,7 +166,6 @@ public abstract class McBaseGenerator
         collider.sharedMesh = mesh;
 
         go.transform.parent = parent;
-        go.transform.localScale = new Vector3(1, 1, 1);
         go.transform.SetPositionAndRotation(go.transform.parent.position, go.transform.parent.rotation);
 
 

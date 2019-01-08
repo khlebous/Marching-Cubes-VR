@@ -1,0 +1,114 @@
+#pragma kernel CSMain
+
+struct Vert
+{
+	float4 position;
+	float3 normal;
+	float4 color;
+};
+
+RWStructuredBuffer<Vert> _Buffer;
+
+int _Width, _Height, _Depth;
+
+//float3 GetNormalSum(uint3 id, float4 position, uint omitIdx) {
+//	uint idx = id.x + id.y * _Width + id.z * _Width * _Height * 3 * 5;
+//
+//	float3 sum = float3(0, 0, 0);
+//
+//	for (int i = 0; i < 5; i++)
+//	{
+//		if (_Buffer[idx].position.w == -1)
+//			break;
+//
+//		if (i != omitIdx)
+//			continue;
+//
+//		if ((_Buffer[idx].position.x == position.x && _Buffer[idx].position.y == position.y && _Buffer[idx].position.z == position.z)
+//			|| (_Buffer[idx + 1].position.x == position.x && _Buffer[idx + 1].position.y == position.y && _Buffer[idx + 1].position.z == position.z)
+//			|| (_Buffer[idx + 2].position.x == position.x && _Buffer[idx + 2].position.y == position.y && _Buffer[idx + 2].position.z == position.z))
+//		{
+//			float3 v = _Buffer[idx + 1].position - _Buffer[idx].position;
+//			float3 w = _Buffer[idx + 2].position - _Buffer[idx].position;
+//			float3 normal = normalize(float3(v.y*w.z - v.z*w.y, v.z*w.x - v.x*w.z, v.x*w.y - v.y*w.x));
+//			sum += normal;
+//		}
+//
+//		idx += 3;
+//	}
+//
+//	return sum;
+//
+//}
+
+
+[numthreads(8, 8, 8)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+	int i, j;
+	if (id.x == _Width - 1 || id.y == _Height - 1 || id.z == _Depth - 1)
+		return;
+
+	uint idx = id.x + id.y * _Width + id.z * _Width * _Height;
+
+	for (i = 0; i < 5; i++)
+	{
+		//float4 position = _Buffer[idx].position.w;
+
+		//if (position.w == -1)
+		//	break;
+
+		//float3 sum = float3(0, 0, 0);
+
+		for (j = 0; j < 3; j++)
+		{
+			//	//center
+			//	sum += GetNormalSum(float3(id.x, id.y, id.z), position, i);
+
+			//	//sides
+			//	if (id.x > 0)	sum += GetNormalSum(float3(id.x - 1, id.y, id.z), position, -1);
+			//	if (id.y > 0) sum += GetNormalSum(float3(id.x, id.y - 1, id.z), position, -1);
+			//	if (id.z > 0) sum += GetNormalSum(float3(id.x, id.y, id.z - 1), position, -1);
+
+			//	if (id.x < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y, id.z), position, -1);
+			//	if (id.y < _Width - 1) sum += GetNormalSum(float3(id.x, id.y + 1, id.z), position, -1);
+			//	if (id.z < _Width - 1) sum += GetNormalSum(float3(id.x, id.y, id.z + 1), position, -1);
+
+			//	//edges
+			//	if (id.x > 0 && id.y > 0) sum += GetNormalSum(float3(id.x - 1, id.y - 1, id.z), position, -1);
+			//	if (id.x > 0 && id.z > 0) sum += GetNormalSum(float3(id.x - 1, id.y, id.z - 1), position, -1);
+			//	if (id.y > 0 && id.z > 0) sum += GetNormalSum(float3(id.x, id.y - 1, id.z - 1), position, -1);
+
+			//	if (id.x < _Width - 1 && id.y > 0) sum += GetNormalSum(float3(id.x + 1, id.y - 1, id.z), position, -1);
+			//	if (id.x < _Width - 1 && id.z > 0) sum += GetNormalSum(float3(id.x + 1, id.y, id.z - 1), position, -1);
+			//	if (id.y < _Width - 1 && id.z > 0) sum += GetNormalSum(float3(id.x, id.y + 1, id.z - 1), position, -1);
+
+			//	if (id.x > 0 && id.y < _Width - 1) sum += GetNormalSum(float3(id.x - 1, id.y + 1, id.z), position, -1);
+			//	if (id.x > 0 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x - 1, id.y, id.z + 1), position, -1);
+			//	if (id.y > 0 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x, id.y - 1, id.z + 1), position, -1);
+
+			//	if (id.x < _Width - 1 && id.y < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y + 1, id.z), position, -1);
+			//	if (id.x < _Width - 1 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y, id.z + 1), position, -1);
+			//	if (id.y < _Width - 1 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x, id.y + 1, id.z + 1), position, -1);
+
+			//	//corners
+			//	if (id.x > 0 && id.y > 0 && id.z > 0) sum += GetNormalSum(float3(id.x - 1, id.y - 1, id.z - 1), position, -1);
+			//	if (id.x > 0 && id.y > 0 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x - 1, id.y - 1, id.z + 1), position, -1);
+			//	if (id.x > 0 && id.y < _Width - 1 && id.z > 0) sum += GetNormalSum(float3(id.x - 1, id.y + 1, id.z - 1), position, -1);
+			//	if (id.x > 0 && id.y < _Width - 1 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x - 1, id.y + 1, id.z + 1), position, -1);
+
+			//	if (id.x < _Width - 1 && id.y > 0 && id.z > 0) sum += GetNormalSum(float3(id.x + 1, id.y - 1, id.z - 1), position, -1);
+			//	if (id.x < _Width - 1 && id.y > 0 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y - 1, id.z + 1), position, -1);
+			//	if (id.x < _Width - 1 && id.y < _Width - 1 && id.z > 0) sum += GetNormalSum(float3(id.x + 1, id.y + 1, id.z - 1), position, -1);
+			//	if (id.x < _Width - 1 && id.y < _Width - 1 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y + 1, id.z + 1), position, -1);
+
+			//_Buffer[idx].normal = float3(0, 1, 0);
+			_Buffer[idx * 15 + 3 * i + j].normal = float3(0, 1, 0);
+			_Buffer[idx * 15 + 3 * i + j].color = float4(0, 1, 0, 1);
+
+			//idx += 1;
+		}
+		//_Result[id] = normalize(sum);
+
+	}
+}

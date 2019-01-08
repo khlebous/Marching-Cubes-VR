@@ -23,6 +23,8 @@ namespace MarchingCubesGPUProject
         public ModelSchaders Shaders;
         public Material material;
 
+        public ComputeShader normalsShader2;
+
         private ComputeBuffer _dataBuffer;
         private ComputeBuffer _dataColorBuffer;
         private ComputeBuffer _meshBuffer;
@@ -155,8 +157,9 @@ namespace MarchingCubesGPUProject
 
             CleanMeshBuffer();
             CalculateChanges();
-            CalculateNormals();
+            //CalculateNormals();
             CalculateMesh();
+            CalculateNormals2();
 
             UpdateMeshes();
         }
@@ -199,6 +202,15 @@ namespace MarchingCubesGPUProject
 
             Shaders.normalsShader.Dispatch(0, N / 8, N / 8, N / 8);
         }
+        private void CalculateNormals2()
+        {
+            normalsShader2.SetInt("_Width", N);
+            normalsShader2.SetInt("_Height", N);
+            normalsShader2.SetInt("_Depth", N);
+            normalsShader2.SetBuffer(0, "_Buffer", _meshBuffer);
+
+            normalsShader2.Dispatch(0, N / 8, N / 8, N / 8);
+        }
         private void CalculateMesh()
         {
             Shaders.marchingShader.SetInt("_Width", N);
@@ -211,7 +223,7 @@ namespace MarchingCubesGPUProject
             Shaders.marchingShader.SetFloat("_Target", 0.5f);//!!!!! values [0,1]
             Shaders.marchingShader.SetBuffer(0, "_Voxels", _dataBuffer);
             Shaders.marchingShader.SetBuffer(0, "_VoxelColors", _dataColorBuffer);
-            Shaders.marchingShader.SetTexture(0, "_Normals", _normalsBuffer);
+            //Shaders.marchingShader.SetTexture(0, "_Normals", _normalsBuffer);
             Shaders.marchingShader.SetBuffer(0, "_Buffer", _meshBuffer);
             Shaders.marchingShader.SetBuffer(0, "_CubeEdgeFlags", _cubeEdgeFlags);
             Shaders.marchingShader.SetBuffer(0, "_TriangleConnectionTable", _triangleConnectionTable);

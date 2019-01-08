@@ -20,7 +20,7 @@ bool IsPointInBrush(float2 pos) {
 	else {
 		//rectangle
 		float2 closestPointInRectangle = clamp(pos, -0.5, 0.5);
-		return closestPointInRectangle == pos;
+		return closestPointInRectangle.x == pos.x && closestPointInRectangle.y == pos.y;
 	}
 }
 

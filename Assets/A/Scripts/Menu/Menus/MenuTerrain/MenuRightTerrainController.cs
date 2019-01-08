@@ -10,7 +10,6 @@ public class MenuRightTerrainController : MonoBehaviour
 
 	[Header("Menu items")]
 	[SerializeField] MenuItemHMenuV modeItem;
-	[SerializeField] MenuItemHMenuV modificationTypeItem;
 	[SerializeField] MenuItemHMenuV brushShapeItem;
 	[SerializeField] MenuItemSliderV brushSizeItem;
 	[SerializeField] MenuItemColorV brushColorItem;
@@ -47,7 +46,6 @@ public class MenuRightTerrainController : MonoBehaviour
 		items = new List<MenuItemV>
 		{
 			modeItem,
-			modificationTypeItem,
 			brushShapeItem,
 			brushSizeItem,
 			brushColorItem
@@ -61,7 +59,6 @@ public class MenuRightTerrainController : MonoBehaviour
 		items[activeItemIndex].SetActive();
 
 		modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
-		modificationTypeItem.ChoosenItemSubject.Subscribe(brush.SetModificationType);
 		brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
 		brushSizeItem.ValueChangedStream.Subscribe(brush.SetSizeChanged);
 		brushColorItem.ColorChangedStream.Subscribe(brush.SetColor);

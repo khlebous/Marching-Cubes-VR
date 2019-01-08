@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UniRx;
+using System.Collections.Generic;
+using System.Linq;
 
 public class SceneModeController : MonoBehaviour
 {
@@ -13,13 +15,12 @@ public class SceneModeController : MonoBehaviour
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
 
-	protected ISubject<TerrainLoadData> exitToTerrainModeSubject = new Subject<TerrainLoadData>();
-	public IObservable<TerrainLoadData> ExitToTerrainModeStream { get { return exitToTerrainModeSubject; } }
+	protected ISubject<LoadData> exitToTerrainModeSubject = new Subject<LoadData>();
+	public IObservable<LoadData> ExitToTerrainModeStream { get { return exitToTerrainModeSubject; } }
 
-	protected ISubject<Unit> exitToObjectModeSubject = new Subject<Unit>();
-	public IObservable<Unit> ExitToObjectModeStream { get { return exitToObjectModeSubject; } }
+	protected ISubject<LoadData> exitToObjectModeSubject = new Subject<LoadData>();
+	public IObservable<LoadData> ExitToObjectModeStream { get { return exitToObjectModeSubject; } }
 
-	//private Guid currentGuid;
 	private EditableScene scene;
 
 	private void Start()
@@ -28,15 +29,39 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.SaveAndExitToMainModeStream.Subscribe(_ => SaveSceneAndExitToMainMode());
 		menuSceneController.SuspendAndExitToTerrainModeStream.Subscribe(_ => SuspendAndExitToTerrainMode());
 		menuSceneController.SuspendAndExitToObjectModeStream.Subscribe(_ => SuspendAndExitToObjectMode());
+		menuSceneController.ModelToAddSelectedStream.Subscribe(AddModelToScene);
+		menuSceneController.ModelToEditSelectedStream.Subscribe(SuspendAndExitToObjectMode);
+		menuSceneController.ModelToDeleteSelectedStream.Subscribe(DeleteModelFromModelsList);
+
+	}
+
+	private void AddModelToScene(Guid modelGuid)
+	{
+		scene.InstantiateModel(modelGuid);
+	}
+
+	private void DeleteModelFromModelsList(Guid modelGuid)
+	{
+		scene.DeleteModel(modelGuid);
+		ModelsListChanged();
 	}
 
 	public void TurnOnModeWith(Guid guid)
 	{
 		scene = mcManager.LoadScene(guid);
 		scene.gameObject.transform.parent = sceneContiner.transform;
+		scene.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
 		sceneContiner.SetActive(true);
 		menuSceneController.SetActive();
+
+		ModelsListChanged();
+	}
+
+	private void ModelsListChanged()
+	{
+		List<Guid> modelGuids = scene.Models.Keys.ToList();
+		menuSceneController.UpdateModelsGuids(modelGuids);
 	}
 
 	private void ExitToMainMode()
@@ -68,14 +93,19 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.SetInactive();
 
 		exitToTerrainModeSubject.OnNext
-			(new TerrainLoadData(scene.Guid, scene.Terrain.Data));
+			(new LoadData(scene.Guid, scene.Terrain.Data));
 	}
 
-	public void TurnOnCurrentModeWithUpdate(McData data)
+	public void TurnOnCurrentModeWithTerrainUpdate(McData data)
 	{
-		//scene.Update(new McGameObjData(data), mcManager.
-		//mcManager.UpdateScene(McData );
-		//TurnOnCurrentMode();
+		scene.SetOrUpdateTerrain(new McGameObjData(data, mcManager.LoadTerrainMeshes(data)));
+		TurnOnCurrentMode();
+	}
+
+	public void TurnOnCurrentModeWithObjectUpdate(McData data)
+	{
+		scene.SetOrUpdateModel(new McGameObjData(data, mcManager.LoadModelMeshes(data)));
+		TurnOnCurrentMode();
 	}
 
 	private void SuspendAndExitToObjectMode()
@@ -83,6 +113,14 @@ public class SceneModeController : MonoBehaviour
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
 
-		exitToObjectModeSubject.OnNext(Unit.Default);
+		exitToObjectModeSubject.OnNext(new LoadData(scene.Guid, null));
+	}
+
+	private void SuspendAndExitToObjectMode(Guid guid)
+	{
+		sceneContiner.SetActive(false);
+		menuSceneController.SetInactive();
+
+		exitToObjectModeSubject.OnNext(new LoadData(scene.Guid, scene.Models[guid].Data));
 	}
 }

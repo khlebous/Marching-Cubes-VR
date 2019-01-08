@@ -16,12 +16,16 @@ public class ModesController : MonoBehaviour
 	private void Start()
 	{
 		mainModeController.ItemSelectedStream.Subscribe(LoadSceneWithGuid);
+
 		sceneModeController.ExitToMainModeStream.Subscribe(_ => TurnOnMainModeFromSceneMode());
 		sceneModeController.ExitToTerrainModeStream.Subscribe(TurnOnTerrainModeFromSceneMode);
-		sceneModeController.ExitToObjectModeStream.Subscribe(_ => TurnOnObjectModeFromSceneMode());
+		sceneModeController.ExitToObjectModeStream.Subscribe(TurnOnObjectModeFromSceneMode);
+
 		terrainModeController.ModeExitedStream.Subscribe(_ => TurnOnSceneModeFromTerrainMode());
-		terrainModeController.ModeSavedAndExitedStream.Subscribe(_ => UpdateAndTurnOnSceneModeFromTerrainMode());
+		terrainModeController.ModeSavedAndExitedStream.Subscribe(UpdateAndTurnOnSceneModeFromTerrainMode);
+
 		objectModeController.ModeExitedStream.Subscribe(_ => TurnOnSceneModeFromObjectMode());
+		objectModeController.ModeSavedAndExitedStream.Subscribe(UpdateAndTurnOnSceneModeFromObjectMode);
 
 		LoadMainMode();
 	}
@@ -42,14 +46,14 @@ public class ModesController : MonoBehaviour
 		mainModeController.TurnOnModeWithCurrentSceneGuids(mcManager.GetAllSceneGuids());
 	}
 
-	private void TurnOnTerrainModeFromSceneMode(TerrainLoadData data)
+	private void TurnOnTerrainModeFromSceneMode(LoadData data)
 	{
 		terrainModeController.TurnOnMode(data);
 	}
 
-	private void TurnOnObjectModeFromSceneMode()
+	private void TurnOnObjectModeFromSceneMode(LoadData loadData)
 	{
-		objectModeController.TurnOnMode();
+		objectModeController.TurnOnMode(loadData);
 	}
 
 	// Exit terrain mode
@@ -58,11 +62,15 @@ public class ModesController : MonoBehaviour
 		sceneModeController.TurnOnCurrentMode(); 
 	}
 
-	private void UpdateAndTurnOnSceneModeFromTerrainMode()
+	private void UpdateAndTurnOnSceneModeFromTerrainMode(McData terrainData)
 	{
-		//sceneModeController.TurnOnCurrentModeWithUpdate();
+		sceneModeController.TurnOnCurrentModeWithTerrainUpdate(terrainData);
 	}
 
+	private void UpdateAndTurnOnSceneModeFromObjectMode(McData terrainData)
+	{
+		sceneModeController.TurnOnCurrentModeWithObjectUpdate(terrainData);
+	}
 
 	// Exit obj mode
 	private void TurnOnSceneModeFromObjectMode() // TODO same as exit terrain?

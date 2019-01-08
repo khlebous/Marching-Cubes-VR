@@ -1,18 +1,13 @@
 ﻿using System;
 
-public struct TerrainLoadData
+public struct LoadData
 {
 	public McData data;
 	public Guid sceneGuid;
 
-	public TerrainLoadData(Guid sceneGuid, McData data)
+	public LoadData(Guid sceneGuid, McData data)
 	{
 		this.sceneGuid = sceneGuid;
 		this.data = data;
 	}
-}
-
-public struct ModelLoaddata
-{
-
 }

@@ -5,7 +5,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ModelMenuV : MonoBehaviour
+public class ModelsMenuV : MenuItemV
 {
 	[Header("UI")]
 	[SerializeField] private Text scenesText;
@@ -18,18 +18,32 @@ public class ModelMenuV : MonoBehaviour
 	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickRight;
 
 	private int activeItemIndex;
-	private List<Guid> objectGuids;
+	private List<Guid> objectGuids = new List<Guid>();
 
 	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;
 	private int maxItemIndex;
 
-	public void SetActive()
+	public override void SetActive()
 	{
+		base.SetActive();
 		StartCoroutine(WaitNextFrame());
 	}
 
-	public void SetupMenu(List<Guid> objectGuids)
+	public Guid GetChoosenGuid()
+	{
+		if (objectGuids.Count == 0)
+			return Guid.Empty;
+
+		return objectGuids[activeItemIndex];
+	}
+
+	public bool AtLeastOneObjectExist()
+	{
+		return objectGuids.Count > 0;
+	}
+
+	private void SetupMenu(List<Guid> objectGuids)
 	{
 		activeItemIndex = 0;
 		this.objectGuids = objectGuids;
@@ -45,15 +59,24 @@ public class ModelMenuV : MonoBehaviour
 		isMenuActive = true;
 	}
 
-	public void SetInactive()
+	public override void SetInactive()
 	{
+		base.SetInactive();
 		isMenuActive = false;
 	}
 
 	private void UpdateUI()
 	{
-		scenesText.text = (activeItemIndex + 1) + "/" + maxItemIndex 
-			+ "\n " + objectGuids[activeItemIndex];
+		if (maxItemIndex == 0)
+			scenesText.text = "create object to add to scene";
+		else
+			scenesText.text = (activeItemIndex + 1) + "/" + maxItemIndex
+				+ "\n " + objectGuids[activeItemIndex];
+	}
+
+	public void SetModelsGuids(List<Guid> modelsGuids)
+	{
+		SetupMenu(modelsGuids);
 	}
 
 	void Update()
@@ -63,7 +86,8 @@ public class ModelMenuV : MonoBehaviour
 			if (OVRInput.Get(selectItemButton))
 			{
 				isMenuActive = false;
-				ItemSelected();
+				if (maxItemIndex != 0)
+					ItemSelected();
 			}
 			else
 			{
@@ -103,14 +127,20 @@ public class ModelMenuV : MonoBehaviour
 
 	private void IncreaseActiveItemIndex()
 	{
-		activeItemIndex++;
-		activeItemIndex %= maxItemIndex;
+		if (maxItemIndex != 0)
+		{
+			activeItemIndex++;
+			activeItemIndex %= maxItemIndex;
+		}
 	}
 
 	private void DecreaseActiveItemIndex()
 	{
-		if (activeItemIndex == 0)
-			activeItemIndex = maxItemIndex;
-		activeItemIndex--;
+		if (maxItemIndex != 0)
+		{
+			if (activeItemIndex == 0)
+				activeItemIndex = maxItemIndex;
+			activeItemIndex--;
+		}
 	}
 }

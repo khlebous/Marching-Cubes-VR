@@ -23,8 +23,6 @@ public class MovementWithOculusTouch : MonoBehaviour
     {
         transform = GetComponent<Transform>();
         startPos = Vector3.zero;
-
-        StartListening();
     }
 
     private void StartListening()
@@ -76,4 +74,14 @@ public class MovementWithOculusTouch : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
     }
+
+	private void OnEnable()
+	{
+		StartListening();
+	}
+
+	private void OnDisable()
+	{
+		StopListening();
+	}
 }

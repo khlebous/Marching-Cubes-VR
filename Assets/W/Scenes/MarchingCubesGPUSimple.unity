@@ -440,8 +440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccb2f4d8e6455644bb0f9d28a0760bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startCube: {fileID: 119335969}
-  currentCube: {fileID: 828129827}
 --- !u!1001 &481194129
 Prefab:
   m_ObjectHideFlags: 0
@@ -483,7 +481,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1306820466886690, guid: f859d026eea744d43bd3c3352200f47e, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4663750782470810, guid: f859d026eea744d43bd3c3352200f47e, type: 2}
       propertyPath: m_LocalScale.x
@@ -970,7 +968,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1793658070833782, guid: 1eedfb13ed7f42e41ab53428f31546ca, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4950746919767436, guid: 1eedfb13ed7f42e41ab53428f31546ca, type: 2}
       propertyPath: m_LocalScale.x
@@ -1176,7 +1174,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1504529321118100, guid: 37daf0f734c63434e8f74c76a590b4ea, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1504529321118100, guid: 37daf0f734c63434e8f74c76a590b4ea, type: 2}
       propertyPath: m_Name

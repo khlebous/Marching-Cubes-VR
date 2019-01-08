@@ -184,8 +184,7 @@ namespace MarchingCubesGPUProject
             Shaders.brushShader.SetInt("_BrushMode", (int)brush.mode);
             Shaders.brushShader.SetInt("_BrushShape", (int)brush.shape);
 
-            var fromMcToBrushMatrix = brush.GetToBrushMatrix() * GetFromMcMatrix();
-            Shaders.brushShader.SetFloats("_FromMcToBrushMatrix", fromMcToBrushMatrix.ToFloats());
+           Shaders.brushShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
             Shaders.brushShader.SetVector("_BrushScale", brush.transform.lossyScale);
 
             Shaders.brushShader.Dispatch(0, N / 8, N / 8, N / 8);
@@ -218,6 +217,15 @@ namespace MarchingCubesGPUProject
             Shaders.marchingShader.SetBuffer(0, "_TriangleConnectionTable", _triangleConnectionTable);
 
             Shaders.marchingShader.Dispatch(0, N / 8, N / 8, N / 8);
+        }
+
+        private Matrix4x4 GetFromMcToBrushMatrix()
+        {
+            //var adjustBrushScale = Matrix4x4.Scale(Vector3.one.Divide(transform.lossyScale));
+            var adjustBrushScale = Matrix4x4.Scale(transform.lossyScale).inverse;
+            var fromMcToBrushMatrix = adjustBrushScale * brush.GetToBrushMatrix() * GetFromMcMatrix();
+
+            return fromMcToBrushMatrix;
         }
 
         private void OnDestroy()

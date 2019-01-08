@@ -23,10 +23,14 @@ namespace Assets.MarchingCubesGPU.Scripts
 
 	public class TerrainBrush : MonoBehaviour
 	{
-		public Color color;
-		public MarchingCubesGPUProject.EditableTerrain terrain;
-		[SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Two;
+		[Header("Input")]
+		[SerializeField] private OVRInput.Button buttonB = OVRInput.Button.Two;
+		[SerializeField] private OVRInput.Button buttonA = OVRInput.Button.One;
+		[SerializeField] private OVRInput.Controller controller = OVRInput.Controller.RTouch;
 
+		[Header("Other")]
+		public MarchingCubesGPUProject.EditableTerrain terrain;
+		public Color color;
 		public TerrainBrushMode mode = TerrainBrushMode.Change;
 		public TerrainBrushShape shape = TerrainBrushShape.Wheel;
 
@@ -52,9 +56,11 @@ namespace Assets.MarchingCubesGPU.Scripts
 		//    return result;
 		//}
 
+		private Coroutine buttonB_down;
+		private Coroutine buttonB_up;
+
 		private Coroutine buttonA_down;
 		private Coroutine buttonA_up;
-
 
 		public void SetActive()
 		{
@@ -67,59 +73,87 @@ namespace Assets.MarchingCubesGPU.Scripts
 			StopListening();
 		}
 
-		private void StartListening(TerrainBrushMode terrainMode)
-		{
-			buttonA_down = StartCoroutine(WaitForButtonA_Down(terrainMode));
-		}
-
 		private void StopListening()
 		{
 			if (null != buttonA_down)
 				StopCoroutine(buttonA_down);
+			if (null != buttonB_down)
+				StopCoroutine(buttonB_down);
 
 			if (null != buttonA_up)
 				StopCoroutine(buttonA_up);
+			if (null != buttonB_up)
+				StopCoroutine(buttonB_up);
 		}
 
-		private IEnumerator WaitForButtonA_Down(TerrainBrushMode terrainMode)
+		private void StartListening(TerrainBrushMode terrainMode)
+		{
+			buttonB_down = StartCoroutine(WaitForButtonB_Down(terrainMode));
+			if (terrainMode != TerrainBrushMode.Color)
+				buttonA_down = StartCoroutine(WaitForButtonA_Down()); // automaticaly extreme change
+		}
+
+		private IEnumerator WaitForButtonB_Down(TerrainBrushMode terrainMode)
 		{
 			while (true)
 			{
-				if (OVRInput.GetDown(buttonY, OVRInput.Controller.RTouch))
+				if (OVRInput.GetDown(buttonB, controller))
 				{
-					StopCoroutine(buttonA_down);
-					mode = terrainMode; // TerrainBrushMode.Change;
+					StopCoroutine(buttonB_down);
+					mode = terrainMode;
 					terrain.StartShaping();
-					buttonA_up = StartCoroutine(WaitForButtonA_Up(terrainMode));
+					buttonB_up = StartCoroutine(WaitForButtonB_Up(terrainMode));
 				}
-				//else if (OVRInput.GetDown(buttonX))
-				//{
-				//	StopCoroutine(buttonA_down);
-				//	mode = terrainMode; // TerrainBrushMode.ExtremeChange;
-				//	terrain.StartShaping();
-				//	buttonA_up = StartCoroutine(WaitForButtonA_Up(buttonX));
-				//}
+
 				yield return new WaitForEndOfFrame();
 			}
 		}
 
-		private IEnumerator WaitForButtonA_Up(TerrainBrushMode terrainMode)
+		private IEnumerator WaitForButtonB_Up(TerrainBrushMode terrainMode)
 		{
 			while (true)
 			{
-				if (OVRInput.GetUp(buttonY))
+				if (OVRInput.GetUp(buttonB))
+				{
+					StopCoroutine(buttonB_up);
+					mode = TerrainBrushMode.Inactive;
+					terrain.FinishShaping();
+					buttonB_down = StartCoroutine(WaitForButtonB_Down(terrainMode));
+				}
+
+				yield return new WaitForEndOfFrame();
+			}
+		}
+
+		private IEnumerator WaitForButtonA_Down()
+		{
+			while (true)
+			{
+				if (OVRInput.GetDown(buttonA))
+				{
+					StopCoroutine(buttonA_down);
+					mode = TerrainBrushMode.ExtremeChange;
+					buttonA_up = StartCoroutine(WaitForButtonA_Up());
+				}
+
+				yield return new WaitForEndOfFrame();
+			}
+		}
+
+		private IEnumerator WaitForButtonA_Up()
+		{
+			while (true)
+			{
+				if (OVRInput.GetUp(buttonA))
 				{
 					StopCoroutine(buttonA_up);
 					mode = TerrainBrushMode.Inactive;
-					terrain.FinishShaping();
-
-					buttonA_down = StartCoroutine(WaitForButtonA_Down(terrainMode));
+					buttonA_down = StartCoroutine(WaitForButtonA_Down());
 				}
 
 				yield return new WaitForEndOfFrame();
 			}
 		}
-
 
 		private void SetChangeMode()
 		{
@@ -132,7 +166,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 		{
 			StopListening();
 			mode = TerrainBrushMode.Inactive;
-			buttonA_down = StartCoroutine(WaitForButtonA_Down(TerrainBrushMode.Color));
+			buttonB_down = StartCoroutine(WaitForButtonB_Down(TerrainBrushMode.Color));
 		}
 
 		public void SetColor(Color color)
@@ -155,30 +189,11 @@ namespace Assets.MarchingCubesGPU.Scripts
 			else if (newShape == 1)
 				shape = TerrainBrushShape.Rectangle;
 		}
-
-		public void SetModificationType(int modificationType)
-		{
-			//TODO separate shaping mode and mode
-			if (modificationType == 0)
-			{
-				StopListening();
-				mode = TerrainBrushMode.Inactive;
-				StartListening(TerrainBrushMode.Change);
-			}
-			else if (modificationType == 1)
-			{
-				StopListening();
-				mode = TerrainBrushMode.Inactive;
-				StartListening(TerrainBrushMode.ExtremeChange);
-			}
-		}
-
-
+			   
 		public void SetSizeChanged(float newValue)
 		{
 			var scale = newValue * (_maxScale - _minScale) + _minScale;
 			this.transform.localScale = scale * Vector3.one;
 		}
-
 	}
 }

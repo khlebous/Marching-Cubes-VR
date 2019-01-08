@@ -51,10 +51,13 @@ namespace MarchingCubesGPUProject
             InitMarchingCubesTablesBuffors();
             InitExtremeValueBuffer();
 
+            //first calculation
             CleanMeshBuffer();
             CalculateNormals();
             UpdateMeshes();
             CalculateMesh();
+
+            StartShaping();
         }
 
         private void InitMeshes()

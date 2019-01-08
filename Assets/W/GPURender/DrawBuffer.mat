@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: DrawBuffer
-  m_Shader: {fileID: 4800000, guid: c58a34b681f10d34daa94f89f74b66d0, type: 3}
+  m_Shader: {fileID: 4800000, guid: 7218a563ce9c09940998f1cf7042c9a2, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0

@@ -1093,7 +1093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
-  controllerToFollow: 1
+  controllerToFollow: {fileID: 830349226}
   speed: 10
   bound: 20
 --- !u!4 &1156782510 stripped
@@ -1118,7 +1118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
-  controllerToFollow: 1
+  controllerToFollow: {fileID: 830349226}
   speed: 10
   bound: 20
 --- !u!1001 &1158568074
@@ -1500,7 +1500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
-  controllerToFollow: 1
+  controllerToFollow: {fileID: 0}
   speed: 3
   bound: 20
 --- !u!1001 &1483279659
@@ -1841,7 +1841,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
-  controllerToFollow: 1
+  controllerToFollow: {fileID: 830349226}
   speed: 10
   bound: 20
 --- !u!114 &1762231444 stripped

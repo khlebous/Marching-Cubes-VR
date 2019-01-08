@@ -8,11 +8,6 @@ public class MenuItemColorV : MenuItemV
 	[SerializeField] Draggable colorHuePicker;
 	[SerializeField] Draggable intensity;
 
-	[Header("Input")]
-	[SerializeField] private OVRInput.Button decreaseValueButton = OVRInput.Button.SecondaryThumbstickLeft;
-	[SerializeField] private OVRInput.Button increaseValueButton = OVRInput.Button.SecondaryThumbstickRight;
-	[SerializeField] private OVRInput.Controller controller = OVRInput.Controller.RTouch;
-
 	protected ISubject<Color> colorChangedSubject = new Subject<Color>();
 	public IObservable<Color> ColorChangedStream { get { return colorChangedSubject; } }
 

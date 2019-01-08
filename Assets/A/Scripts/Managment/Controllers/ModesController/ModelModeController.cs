@@ -36,7 +36,7 @@ public class ModelModeController : MonoBehaviour
 			model = mcManager.LoadModel(loadData.data);
 
 		model.gameObject.transform.parent = modelContiner.transform;
-		model.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+		model.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
 
 		modelContiner.SetActive(true);
 		menuModelController.SetActive();

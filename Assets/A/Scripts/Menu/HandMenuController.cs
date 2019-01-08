@@ -7,6 +7,7 @@ public class HandMenuController : MonoBehaviour
 {
 	[SerializeField] private List<MenuItemV> items;
 
+	// TODO not used?
 	private ISubject<bool> itemIsActiveStream = new Subject<bool>();
 	public IObservable<bool> ItemIsActiveSubject { get { return itemIsActiveStream; } }
 

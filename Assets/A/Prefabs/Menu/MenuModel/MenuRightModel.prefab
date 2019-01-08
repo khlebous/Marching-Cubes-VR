@@ -1196,7 +1196,7 @@ Transform:
   - {fileID: 4878310932660192}
   - {fileID: 4471350686917078}
   m_Father: {fileID: 4707753527769734}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4214355294829536
 Transform:
@@ -1435,8 +1435,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.0075, z: -0.0055}
   m_LocalScale: {x: 0.0005332039, y: 0.0005332038, z: 0.0005332038}
   m_Children:
-  - {fileID: 4160950269027332}
   - {fileID: 4879392751557076}
+  - {fileID: 4160950269027332}
   - {fileID: 4372064671830636}
   m_Father: {fileID: 4854609848255094}
   m_RootOrder: 3
@@ -1521,7 +1521,7 @@ Transform:
   m_LocalScale: {x: 90, y: 90, z: 1}
   m_Children: []
   m_Father: {fileID: 4707753527769734}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4899990220037840
 Transform:
@@ -2919,6 +2919,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 484c31f7164344e25ac2758e1fd18bb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorIndicator: {fileID: 114246922919959046}
+  colorSaturationBrightnessPicker: {fileID: 114090605669365892}
+  draggable1: {fileID: 114160833839042624}
+  draggable2: {fileID: 114843012828479808}
 --- !u!114 &114090605669365892
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2931,6 +2935,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundMaterial: {fileID: 2100000, guid: 66f4a11f0a14e4c3ab2f9a3a44450afb, type: 2}
+  colorIndicator: {fileID: 114246922919959046}
+  draggable1: {fileID: 114160833839042624}
+  draggable2: {fileID: 114843012828479808}
 --- !u!114 &114110710361928274
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2977,6 +2984,8 @@ MonoBehaviour:
   fixX: 0
   fixY: 1
   thumb: {fileID: 4471350686917078}
+  colorHuePicker: {fileID: 114087706104993784}
+  colorSaturationBrightnessPicker: {fileID: 114090605669365892}
 --- !u!114 &114174503957839144
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3152,6 +3161,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba3a77568665644dabfcbf0832fc5bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorHuePicker: {fileID: 114087706104993784}
+  colorSaturationBrightnessPicker: {fileID: 114090605669365892}
 --- !u!114 &114319267506913620
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3426,10 +3437,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlight: {fileID: 114041653667448198}
   stopEditingItemButton: 8388608
-  colorHuePicker: {fileID: 114160833839042624}
   colorIndicator: {fileID: 114246922919959046}
-  decreaseValueButton: 67108864
-  increaseValueButton: 134217728
+  colorHuePicker: {fileID: 114160833839042624}
+  intensity: {fileID: 114843012828479808}
 --- !u!114 &114552177619944530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3637,6 +3647,8 @@ MonoBehaviour:
   fixX: 0
   fixY: 0
   thumb: {fileID: 4410046450353824}
+  colorHuePicker: {fileID: 114087706104993784}
+  colorSaturationBrightnessPicker: {fileID: 114090605669365892}
 --- !u!114 &114853196958263212
 MonoBehaviour:
   m_ObjectHideFlags: 1

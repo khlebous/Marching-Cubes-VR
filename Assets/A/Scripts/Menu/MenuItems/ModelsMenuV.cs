@@ -24,11 +24,11 @@ public class ModelsMenuV : MenuItemV
 	private bool isMenuActive;
 	private int maxItemIndex;
 
-	public override void SetActive()
-	{
-		base.SetActive();
-		StartCoroutine(WaitNextFrame());
-	}
+	//public override void SetActive()
+	//{
+	//	base.SetActive();
+	//	StartCoroutine(WaitNextFrame());
+	//}
 
 	public Guid GetChoosenGuid()
 	{
@@ -57,6 +57,13 @@ public class ModelsMenuV : MenuItemV
 		yield return new WaitForSeconds(0.5f);
 
 		isMenuActive = true;
+	}
+
+	public override void SetChoosen()
+	{
+		base.SetChoosen();
+
+		StartCoroutine(WaitNextFrame());
 	}
 
 	public override void SetInactive()

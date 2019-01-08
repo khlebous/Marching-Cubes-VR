@@ -2,6 +2,7 @@
 using UniRx;
 using System.Collections.Generic;
 using System;
+using System.Collections;
 
 public class MenuRightSceneController : MonoBehaviour
 {
@@ -60,7 +61,22 @@ public class MenuRightSceneController : MonoBehaviour
 			item.SetInactive();
 
 		items[activeItemIndex].SetActive();
+
+		modelsList.ItemSelectedStream.Subscribe(OnSelected);
 	}
+
+	private void OnSelected(Guid guid)
+	{
+		StartCoroutine(WaitNextFrame());
+	}
+
+	IEnumerator WaitNextFrame()
+	{
+		yield return new WaitForSeconds(0.5f);
+
+		isMenuActive = true;
+	}
+
 
 	public void OpenMenu()
 	{
@@ -78,14 +94,14 @@ public class MenuRightSceneController : MonoBehaviour
 	{
 		if (isMenuActive)
 		{
-			if (OVRInput.Get(selectItemButton/*, OVRInput.Controller.RTouch*/))
+			if (OVRInput.Get(selectItemButton))
 			{
 				isMenuActive = false;
 				ItemSelected();
 			}
 			else
 			{
-				if (OVRInput.Get(prevItemButton/*, OVRInput.Controller.RTouch*/))
+				if (OVRInput.Get(prevItemButton))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{
@@ -95,7 +111,7 @@ public class MenuRightSceneController : MonoBehaviour
 						items[activeItemIndex].SetActive();
 					}
 				}
-				else if (OVRInput.Get(nextItemButton/*, OVRInput.Controller.RTouch*/))
+				else if (OVRInput.Get(nextItemButton))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{

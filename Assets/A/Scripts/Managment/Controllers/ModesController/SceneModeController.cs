@@ -105,6 +105,7 @@ public class SceneModeController : MonoBehaviour
 	public void TurnOnCurrentModeWithObjectUpdate(McData data)
 	{
 		scene.SetOrUpdateModel(new McGameObjData(data, mcManager.LoadModelMeshes(data)));
+		ModelsListChanged();
 		TurnOnCurrentMode();
 	}
 

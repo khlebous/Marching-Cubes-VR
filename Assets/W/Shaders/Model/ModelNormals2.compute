@@ -61,45 +61,44 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 			//	//center
 			sum = GetNormalSum(float3(id.x, id.y, id.z), position, i);
 
-			//	//sides
-			//	if (id.x > 0)	sum += GetNormalSum(float3(id.x - 1, id.y, id.z), position, -1);
-			//	if (id.y > 0) sum += GetNormalSum(float3(id.x, id.y - 1, id.z), position, -1);
-			//	if (id.z > 0) sum += GetNormalSum(float3(id.x, id.y, id.z - 1), position, -1);
+				//sides
+				if (id.x > 0)	sum += GetNormalSum(float3(id.x - 1, id.y, id.z), position, -1);
+				if (id.y > 0) sum += GetNormalSum(float3(id.x, id.y - 1, id.z), position, -1);
+				if (id.z > 0) sum += GetNormalSum(float3(id.x, id.y, id.z - 1), position, -1);
 
-			//	if (id.x < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y, id.z), position, -1);
-			//	if (id.y < _Width - 1) sum += GetNormalSum(float3(id.x, id.y + 1, id.z), position, -1);
-			//	if (id.z < _Width - 1) sum += GetNormalSum(float3(id.x, id.y, id.z + 1), position, -1);
+				if (id.x < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y, id.z), position, -1);
+				if (id.y < _Width - 1) sum += GetNormalSum(float3(id.x, id.y + 1, id.z), position, -1);
+				if (id.z < _Width - 1) sum += GetNormalSum(float3(id.x, id.y, id.z + 1), position, -1);
 
-			//	//edges
-			//	if (id.x > 0 && id.y > 0) sum += GetNormalSum(float3(id.x - 1, id.y - 1, id.z), position, -1);
-			//	if (id.x > 0 && id.z > 0) sum += GetNormalSum(float3(id.x - 1, id.y, id.z - 1), position, -1);
-			//	if (id.y > 0 && id.z > 0) sum += GetNormalSum(float3(id.x, id.y - 1, id.z - 1), position, -1);
+				//edges
+				if (id.x > 0 && id.y > 0) sum += GetNormalSum(float3(id.x - 1, id.y - 1, id.z), position, -1);
+				if (id.x > 0 && id.z > 0) sum += GetNormalSum(float3(id.x - 1, id.y, id.z - 1), position, -1);
+				if (id.y > 0 && id.z > 0) sum += GetNormalSum(float3(id.x, id.y - 1, id.z - 1), position, -1);
 
-			//	if (id.x < _Width - 1 && id.y > 0) sum += GetNormalSum(float3(id.x + 1, id.y - 1, id.z), position, -1);
-			//	if (id.x < _Width - 1 && id.z > 0) sum += GetNormalSum(float3(id.x + 1, id.y, id.z - 1), position, -1);
-			//	if (id.y < _Width - 1 && id.z > 0) sum += GetNormalSum(float3(id.x, id.y + 1, id.z - 1), position, -1);
+				if (id.x < _Width - 1 && id.y > 0) sum += GetNormalSum(float3(id.x + 1, id.y - 1, id.z), position, -1);
+				if (id.x < _Width - 1 && id.z > 0) sum += GetNormalSum(float3(id.x + 1, id.y, id.z - 1), position, -1);
+				if (id.y < _Width - 1 && id.z > 0) sum += GetNormalSum(float3(id.x, id.y + 1, id.z - 1), position, -1);
 
-			//	if (id.x > 0 && id.y < _Width - 1) sum += GetNormalSum(float3(id.x - 1, id.y + 1, id.z), position, -1);
-			//	if (id.x > 0 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x - 1, id.y, id.z + 1), position, -1);
-			//	if (id.y > 0 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x, id.y - 1, id.z + 1), position, -1);
+				if (id.x > 0 && id.y < _Width - 1) sum += GetNormalSum(float3(id.x - 1, id.y + 1, id.z), position, -1);
+				if (id.x > 0 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x - 1, id.y, id.z + 1), position, -1);
+				if (id.y > 0 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x, id.y - 1, id.z + 1), position, -1);
 
-			//	if (id.x < _Width - 1 && id.y < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y + 1, id.z), position, -1);
-			//	if (id.x < _Width - 1 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y, id.z + 1), position, -1);
-			//	if (id.y < _Width - 1 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x, id.y + 1, id.z + 1), position, -1);
+				if (id.x < _Width - 1 && id.y < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y + 1, id.z), position, -1);
+				if (id.x < _Width - 1 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y, id.z + 1), position, -1);
+				if (id.y < _Width - 1 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x, id.y + 1, id.z + 1), position, -1);
 
-			//	//corners
-			//	if (id.x > 0 && id.y > 0 && id.z > 0) sum += GetNormalSum(float3(id.x - 1, id.y - 1, id.z - 1), position, -1);
-			//	if (id.x > 0 && id.y > 0 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x - 1, id.y - 1, id.z + 1), position, -1);
-			//	if (id.x > 0 && id.y < _Width - 1 && id.z > 0) sum += GetNormalSum(float3(id.x - 1, id.y + 1, id.z - 1), position, -1);
-			//	if (id.x > 0 && id.y < _Width - 1 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x - 1, id.y + 1, id.z + 1), position, -1);
+				//corners
+				if (id.x > 0 && id.y > 0 && id.z > 0) sum += GetNormalSum(float3(id.x - 1, id.y - 1, id.z - 1), position, -1);
+				if (id.x > 0 && id.y > 0 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x - 1, id.y - 1, id.z + 1), position, -1);
+				if (id.x > 0 && id.y < _Width - 1 && id.z > 0) sum += GetNormalSum(float3(id.x - 1, id.y + 1, id.z - 1), position, -1);
+				if (id.x > 0 && id.y < _Width - 1 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x - 1, id.y + 1, id.z + 1), position, -1);
 
-			//	if (id.x < _Width - 1 && id.y > 0 && id.z > 0) sum += GetNormalSum(float3(id.x + 1, id.y - 1, id.z - 1), position, -1);
-			//	if (id.x < _Width - 1 && id.y > 0 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y - 1, id.z + 1), position, -1);
-			//	if (id.x < _Width - 1 && id.y < _Width - 1 && id.z > 0) sum += GetNormalSum(float3(id.x + 1, id.y + 1, id.z - 1), position, -1);
-			//	if (id.x < _Width - 1 && id.y < _Width - 1 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y + 1, id.z + 1), position, -1);
+				if (id.x < _Width - 1 && id.y > 0 && id.z > 0) sum += GetNormalSum(float3(id.x + 1, id.y - 1, id.z - 1), position, -1);
+				if (id.x < _Width - 1 && id.y > 0 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y - 1, id.z + 1), position, -1);
+				if (id.x < _Width - 1 && id.y < _Width - 1 && id.z > 0) sum += GetNormalSum(float3(id.x + 1, id.y + 1, id.z - 1), position, -1);
+				if (id.x < _Width - 1 && id.y < _Width - 1 && id.z < _Width - 1) sum += GetNormalSum(float3(id.x + 1, id.y + 1, id.z + 1), position, -1);
 
 			_Buffer[idx * 15 + 3 * i + j].normal = normalize(sum);
-			_Buffer[idx * 15 + 3 * i + j].color = float4(0, 1, 0, 1);
 
 		}
 

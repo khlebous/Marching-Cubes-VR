@@ -6,7 +6,7 @@ public class ColorIndicator : MonoBehaviour
 	[SerializeField] private ColorHuePicker colorHuePicker;
 	[SerializeField] private ColorSaturationBrightnessPicker colorSaturationBrightnessPicker;
 
-	void Start()
+	void Awake()
 	{
 		color = HSBColor.FromColor(GetComponent<Renderer>().sharedMaterial.GetColor("_Color"));
 

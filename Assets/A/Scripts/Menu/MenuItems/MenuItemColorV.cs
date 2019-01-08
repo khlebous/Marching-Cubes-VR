@@ -16,6 +16,7 @@ public class MenuItemColorV : MenuItemV
 	public void Start()
 	{
 		active = false;
+		ColorChanged();
 	}
 
 	public override void SetChoosen()

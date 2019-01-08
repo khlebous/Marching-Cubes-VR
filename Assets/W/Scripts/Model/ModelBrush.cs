@@ -42,18 +42,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 			var result = scale * brushRotation * brushPosition;
 			return result;
 		}
-		//public Matrix4x4 GetFromBrushMatrix()
-		//{
-		//	var scale = Matrix4x4.Scale(this.transform.lossyScale);
-		//	var brushRotation = Matrix4x4.Rotate(this.transform.rotation);
-		//	var brushPosition = Matrix4x4.Translate(this.transform.position);
 
-		//	var result = brushPosition * brushRotation * scale;
-		//	return result;
-		//}
-
-
-		// TODO A remove comments (ja to zrobie jak sprawdze ze dziala -A)
 		private Coroutine buttonA_down;
 		private Coroutine buttonA_up;
 

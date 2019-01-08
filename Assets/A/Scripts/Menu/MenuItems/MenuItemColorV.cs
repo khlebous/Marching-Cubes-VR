@@ -3,20 +3,19 @@ using UniRx;
 
 public class MenuItemColorV : MenuItemV
 {
-	[SerializeField] Draggable colorHuePicker;
+	[Header("Colors")]
 	[SerializeField] ColorIndicator colorIndicator;
-	// TODO [SerializeField] Draggable intensity;
+	[SerializeField] Draggable colorHuePicker;
+	[SerializeField] Draggable intensity;
 
 	[Header("Input")]
 	[SerializeField] private OVRInput.Button decreaseValueButton = OVRInput.Button.SecondaryThumbstickLeft;
 	[SerializeField] private OVRInput.Button increaseValueButton = OVRInput.Button.SecondaryThumbstickRight;
+	[SerializeField] private OVRInput.Controller controller = OVRInput.Controller.RTouch;
 
 	protected ISubject<Color> colorChangedSubject = new Subject<Color>();
 	public IObservable<Color> ColorChangedStream { get { return colorChangedSubject; } }
 
-	private bool colorIsChoosing = true;
-
-	private ButtonState thumbstick = ButtonState.Normal;
 	private bool active;
 
 	public void Start()
@@ -40,15 +39,37 @@ public class MenuItemColorV : MenuItemV
 	{
 		if (active)
 		{
-			if (OVRInput.Get(decreaseValueButton/*, OVRInput.Controller.RTouch*/))
+			if (OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
 			{
-				colorHuePicker.Input(ButtonState.Left);
+				colorHuePicker.Input(ButtonState.Right);
 				ColorChanged();
 
 			}
-			else if (OVRInput.Get(increaseValueButton/*, OVRInput.Controller.RTouch*/))
+			else if (OVRInput.Get(OVRInput.Button.SecondaryHandTrigger))
 			{
-				colorHuePicker.Input(ButtonState.Right);
+				colorHuePicker.Input(ButtonState.Left);
+				ColorChanged();
+			}
+			else if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickLeft))
+			{
+				intensity.Input(ButtonState.Left);
+				ColorChanged();
+
+			}
+			else if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickRight))
+			{
+				intensity.Input(ButtonState.Right);
+				ColorChanged();
+			}
+			else if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickUp))
+			{
+				intensity.Input(ButtonState.Up);
+				ColorChanged();
+
+			}
+			else if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickDown))
+			{
+				intensity.Input(ButtonState.Down);
 				ColorChanged();
 			}
 		}

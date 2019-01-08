@@ -46,15 +46,6 @@ namespace Assets.MarchingCubesGPU.Scripts
 			var result = scale * brushRotation * brushPosition;
 			return result;
 		}
-		//public Matrix4x4 GetFromBrushMatrix(Vector3 position)
-		//{
-		//    var scale = Matrix4x4.Scale(this.transform.lossyScale);
-		//    var brushRotation = Matrix4x4.Rotate(this.transform.rotation);
-		//    var brushPosition = Matrix4x4.Translate(position);
-
-		//    var result = brushPosition * brushRotation * scale;
-		//    return result;
-		//}
 
 		private Coroutine buttonB_down;
 		private Coroutine buttonB_up;

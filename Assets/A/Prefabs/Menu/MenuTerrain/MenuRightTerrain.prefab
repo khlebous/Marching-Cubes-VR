@@ -2863,8 +2863,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0b483af689044d7afe98cea1bd80d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minBound: -55
-  maxBound: 55
+  minBound: -39
+  maxBound: 40
   fixX: 0
   fixY: 0
   thumb: {fileID: 4930442999695120}
@@ -3477,10 +3477,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlight: {fileID: 114455436311749080}
   stopEditingItemButton: 8388608
-  colorHuePicker: {fileID: 114782308916703936}
   colorIndicator: {fileID: 114686858429204142}
+  colorHuePicker: {fileID: 114782308916703936}
+  intensity: {fileID: 114135164626302528}
   decreaseValueButton: 67108864
   increaseValueButton: 134217728
+  controller: 2
 --- !u!114 &114651437905472566
 MonoBehaviour:
   m_ObjectHideFlags: 1

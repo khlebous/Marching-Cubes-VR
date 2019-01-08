@@ -16,20 +16,55 @@ public class Draggable : MonoBehaviour
 
 	public void Input(ButtonState state)
 	{
-		if (state == ButtonState.Left)
+		if (!fixX && !fixY)
 		{
-			if (thumb.localPosition.x > minBound)
-				SetThumbPosition(thumb.localPosition - new Vector3(1, 0, 0));
-			else
-				SetThumbPosition(thumb.localPosition);
+			if (state == ButtonState.Left)
+			{
+				if (thumb.localPosition.x > minBound)
+					SetThumbPosition(thumb.localPosition - new Vector3(1, 0, 0));
+				else
+					SetThumbPosition(thumb.localPosition);
+			}
+			else if (state == ButtonState.Right)
+			{
+				if (thumb.localPosition.x < maxBound)
+					SetThumbPosition(thumb.localPosition + new Vector3(1, 0, 0));
+				else
+					SetThumbPosition(thumb.localPosition);
+			}
+			else if (state == ButtonState.Down)
+			{
+				if (thumb.localPosition.y > minBound)
+					SetThumbPosition(thumb.localPosition - new Vector3(0, 1, 0));
+				else
+					SetThumbPosition(thumb.localPosition);
+			}
+			else if (state == ButtonState.Up)
+			{
+				if (thumb.localPosition.y < maxBound)
+					SetThumbPosition(thumb.localPosition + new Vector3(0, 1, 0));
+				else
+					SetThumbPosition(thumb.localPosition);
+			}
 		}
-		else if (state == ButtonState.Right)
+		else
 		{
-			if (thumb.localPosition.x < maxBound)
-				SetThumbPosition(thumb.localPosition + new Vector3(1, 0, 0));
-			else
-				SetThumbPosition(thumb.localPosition);
+			if (state == ButtonState.Left)
+			{
+				if (thumb.localPosition.x > minBound)
+					SetThumbPosition(thumb.localPosition - new Vector3(1, 0, 0));
+				else
+					SetThumbPosition(thumb.localPosition);
+			}
+			else if (state == ButtonState.Right)
+			{
+				if (thumb.localPosition.x < maxBound)
+					SetThumbPosition(thumb.localPosition + new Vector3(1, 0, 0));
+				else
+					SetThumbPosition(thumb.localPosition);
+			}
 		}
+
 	}
 
 	public void SetDragPoint(Vector3 point)
@@ -43,7 +78,9 @@ public class Draggable : MonoBehaviour
 		thumb.localPosition = new Vector3(fixX ? thumb.localPosition.x : point.x, fixY ? thumb.localPosition.y : point.y, thumb.localPosition.z);
 		var point2 = Vector3.one - (thumb.position - GetComponent<Collider>().bounds.min) / GetComponent<Collider>().bounds.size.x;
 
-		colorHuePicker.OnDrag(point2);
-		colorSaturationBrightnessPicker.OnDrag(point2);
+		if (!fixX && !fixY)
+			colorSaturationBrightnessPicker.OnDrag(point2);
+		else
+			colorHuePicker.OnDrag(point2);
 	}
 }

@@ -27,7 +27,6 @@ public abstract class McBaseGenerator
     private ComputeBuffer dataBuffer;
     private ComputeBuffer dataColorBuffer;
     private ComputeBuffer meshBuffer;
-    private RenderTexture normalsBuffer;
     private ComputeBuffer cubeEdgeFlags;
     private ComputeBuffer triangleConnectionTable;
 
@@ -45,7 +44,6 @@ public abstract class McBaseGenerator
         dataBuffer = new ComputeBuffer(DesiredBufferSize, sizeof(float));
         dataColorBuffer = new ComputeBuffer(4 * DesiredBufferSize, 4 * sizeof(float));
 
-        InitNormalsBuffer();
         InitMeshBuffer();
         InitMarchingCubesTablesBuffors();
     }
@@ -64,8 +62,8 @@ public abstract class McBaseGenerator
         GameObject meshesObject = new GameObject("Marching Meshes");
 
         CleanMeshBuffer();
-        CalculateNormals();
         CalculateMesh(meshesObject.transform);
+        CalculateNormals();
 
         CreateMeshes(meshesObject.transform);
 
@@ -76,21 +74,10 @@ public abstract class McBaseGenerator
         dataBuffer.Release();
         dataColorBuffer.Release();
         meshBuffer.Release();
-        normalsBuffer.Release();
         cubeEdgeFlags.Release();
         triangleConnectionTable.Release();
     }
 
-    private void InitNormalsBuffer()
-    {
-        //Holds the normals of the voxels.
-        normalsBuffer = new RenderTexture(N, N, 0, RenderTextureFormat.ARGBHalf, RenderTextureReadWrite.Linear);
-        normalsBuffer.dimension = TextureDimension.Tex3D;
-        normalsBuffer.enableRandomWrite = true;
-        normalsBuffer.useMipMap = false;
-        normalsBuffer.volumeDepth = N;
-        normalsBuffer.Create();
-    }
     private void InitMeshBuffer()
     {
         meshBuffer = new ComputeBuffer(Size, sizeof(float) * 11);
@@ -114,16 +101,6 @@ public abstract class McBaseGenerator
 
         _shaders.clearShader.Dispatch(0, N / 8, N / 8, N / 8);
     }
-    private void CalculateNormals()
-    {
-        _shaders.normalsShader.SetInt("_Width", N);
-        _shaders.normalsShader.SetInt("_Height", N);
-        _shaders.normalsShader.SetInt("_Depth", N);
-        _shaders.normalsShader.SetBuffer(0, "_Voxels", dataBuffer);
-        _shaders.normalsShader.SetTexture(0, "_Result", normalsBuffer);
-
-        _shaders.normalsShader.Dispatch(0, N / 8, N / 8, N / 8);
-    }
     private void CalculateMesh(Transform parent)
     {
         _shaders.marchingShader.SetInt("_Width", N);
@@ -135,12 +112,20 @@ public abstract class McBaseGenerator
         _shaders.marchingShader.SetFloat("_Target", 0.5f);//!!!!! values [0,1]
         _shaders.marchingShader.SetBuffer(0, "_Voxels", dataBuffer);
         _shaders.marchingShader.SetBuffer(0, "_VoxelColors", dataColorBuffer);
-        _shaders.marchingShader.SetTexture(0, "_Normals", normalsBuffer);
         _shaders.marchingShader.SetBuffer(0, "_Buffer", meshBuffer);
         _shaders.marchingShader.SetBuffer(0, "_CubeEdgeFlags", cubeEdgeFlags);
         _shaders.marchingShader.SetBuffer(0, "_TriangleConnectionTable", triangleConnectionTable);
 
         _shaders.marchingShader.Dispatch(0, N / 8, N / 8, N / 8);
+    }
+    private void CalculateNormals()
+    {
+        _shaders.normalsShader.SetInt("_Width", N);
+        _shaders.normalsShader.SetInt("_Height", N);
+        _shaders.normalsShader.SetInt("_Depth", N);
+        _shaders.normalsShader.SetBuffer(0, "_Buffer", meshBuffer);
+
+        _shaders.normalsShader.Dispatch(0, N / 8, N / 8, N / 8);
     }
 
     private Mesh InitMesh(Transform parent)

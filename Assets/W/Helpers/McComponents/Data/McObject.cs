@@ -7,16 +7,16 @@ using UnityEngine;
 
 public class McObject
 {
-    public Guid Guid { get; set; }
+    public Guid ModelGuid { get; set; }
     public GameObject GameObject { get; set; }
 
     public McObject()
     {
     }
 
-    public McObject(Guid guid, GameObject gameObject)
+    public McObject(Guid modelGuid, GameObject gameObject)
     {
-        Guid = guid;
+        ModelGuid = modelGuid;
         GameObject = gameObject;
     }
 }

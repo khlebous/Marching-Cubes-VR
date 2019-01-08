@@ -58,7 +58,7 @@ public class EditableScene : MonoBehaviour
     }
     public void UpdateModelsOnTerrain(Guid modelGuid)
     {
-        var toUpdate = ModelsOnTerrain.Where(x => x.Guid == modelGuid);
+        var toUpdate = ModelsOnTerrain.Where(x => x.ModelGuid == modelGuid);
         foreach (var model in toUpdate)
         {
             var updatedObj = InstantiateModel(modelGuid);
@@ -72,7 +72,7 @@ public class EditableScene : MonoBehaviour
     }
 	public void DeleteModel(Guid modelGuid)
 	{
-		var toDelete = ModelsOnTerrain.Where(x => x.Guid == modelGuid);
+		var toDelete = ModelsOnTerrain.Where(x => x.ModelGuid == modelGuid);
 		foreach (var model in toDelete)
 		{
 			GameObject.Destroy(model.GameObject);
@@ -80,6 +80,12 @@ public class EditableScene : MonoBehaviour
 
 		Models.Remove(modelGuid);
 	}
+    public void DeleteModelFromTerrain(GameObject gameObject)
+    {
+        var toDelete = ModelsOnTerrain.First(x => x.GameObject == gameObject);
+        GameObject.Destroy(toDelete.GameObject);
+        ModelsOnTerrain.Remove(toDelete);
+    }
 
 	public McSceneData GetData()
     {
@@ -88,7 +94,7 @@ public class EditableScene : MonoBehaviour
         data.TerrainGuid = Terrain.Data.Guid;
         data.Models = ModelsOnTerrain.Select(x => new McSceneModelData()
         {
-            Guid = x.Guid,
+            Guid = x.ModelGuid,
             Position = x.GameObject.transform.position,
             Rotation = x.GameObject.transform.rotation.eulerAngles,
             Scale = x.GameObject.transform.localScale,

@@ -49,15 +49,7 @@ public abstract class McBaseGenerator
         InitMeshBuffer();
         InitMarchingCubesTablesBuffors();
     }
-    public McData GetNewEmptyData()
-    {
-        var data = new McData();
-		data.Guid = Guid.NewGuid();
-        data.Values = new float[DesiredBufferSize];
-        data.Colors = Enumerable.Repeat(new Vector4(1, 1, 1, 1), DesiredBufferSize).ToArray();
-
-        return data;
-    }
+    public abstract McData GetDefaultData();
     public GameObject GenerateMeshes(McData data)
     {
         if (data.Values.Length != DesiredBufferSize)

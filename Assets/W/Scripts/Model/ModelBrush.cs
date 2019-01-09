@@ -75,9 +75,9 @@ namespace Assets.MarchingCubesGPU.Scripts
 
 		private void StartListening(BrushMode brushMode)
 		{
-			buttonA_down = StartCoroutine(WaitForButtonB_Down(brushMode));
+			buttonB_down = StartCoroutine(WaitForButtonB_Down(brushMode));
 			if (brushMode != BrushMode.Color)
-				buttonB_down = StartCoroutine(WaitForButtonA_Down()); // automaticaly delele
+				buttonA_down = StartCoroutine(WaitForButtonA_Down()); // automaticaly delele
 		}
 
 		private IEnumerator WaitForButtonB_Down(BrushMode brushMode)

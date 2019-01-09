@@ -107,6 +107,13 @@ public class McLoader
         return guids;
     }
 
+    public void DeleteFile(string path)
+    {
+        var filePAth = GetFilePath(path);
+        var fileInfo = new FileInfo(filePAth);
+        fileInfo.Delete();
+    }
+
     private BinaryFormatter GetBinFormatter()
     {
         var bin = new BinaryFormatter();

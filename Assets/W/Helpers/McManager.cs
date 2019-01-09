@@ -1,4 +1,4 @@
-﻿using Assets.MarchingCubesGPU.Scripts;
+using Assets.MarchingCubesGPU.Scripts;
 using MarchingCubesGPUProject;
 using System;
 using System.Collections.Generic;
@@ -52,6 +52,11 @@ public class McManager : MonoBehaviour
         var terrinPath = GetTerrainPath(scene.Terrain.Data.Guid, scene.Guid);
         if (!Loader.ObjectExists(terrinPath))
             Loader.SaveObj(terrinPath, scene.Terrain.Data);
+    }
+
+    public void DeleteModel(Guid modelGuid, Guid SceneGuid)
+    {
+        Loader.DeleteFile(GetModelPath(modelGuid, SceneGuid));
     }
 
     public EditableModel LoadModel(McData data)

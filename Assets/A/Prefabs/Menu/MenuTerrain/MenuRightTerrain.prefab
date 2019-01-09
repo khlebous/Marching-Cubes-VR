@@ -3480,9 +3480,6 @@ MonoBehaviour:
   colorIndicator: {fileID: 114686858429204142}
   colorHuePicker: {fileID: 114782308916703936}
   intensity: {fileID: 114135164626302528}
-  decreaseValueButton: 67108864
-  increaseValueButton: 134217728
-  controller: 2
 --- !u!114 &114651437905472566
 MonoBehaviour:
   m_ObjectHideFlags: 1

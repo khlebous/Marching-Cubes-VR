@@ -51,7 +51,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		scene = mcManager.LoadScene(guid);
 		scene.gameObject.transform.parent = sceneContiner.transform;
-		scene.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+		scene.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
 
 		sceneContiner.SetActive(true);
 		menuSceneController.SetActive();

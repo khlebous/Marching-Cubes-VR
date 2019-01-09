@@ -24,7 +24,8 @@ namespace Assets.MarchingCubesGPU.Scripts
 	public class TerrainBrush : MonoBehaviour
 	{
 		[Header("Input")]
-		[SerializeField] private OVRInput.Button buttonB = OVRInput.Button.Two;
+		[SerializeField]
+		private OVRInput.Button buttonB = OVRInput.Button.Two;
 		[SerializeField] private OVRInput.Button buttonA = OVRInput.Button.One;
 		[SerializeField] private OVRInput.Controller controller = OVRInput.Controller.RTouch;
 
@@ -34,8 +35,8 @@ namespace Assets.MarchingCubesGPU.Scripts
 		public TerrainBrushMode mode = TerrainBrushMode.Change;
 		public TerrainBrushShape shape = TerrainBrushShape.Wheel;
 
-		private const float _minScale = McConsts.ModelN / 50f;
-		private const float _maxScale = McConsts.ModelN / 5f;
+		private const float _minScale = 1;
+		private const float _maxScale = McConsts.ModelN / 2f;
 
 		public Matrix4x4 GetToBrushMatrix(Vector3 position)
 		{
@@ -180,7 +181,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 			else if (newShape == 1)
 				shape = TerrainBrushShape.Rectangle;
 		}
-			   
+
 		public void SetSizeChanged(float newValue)
 		{
 			var scale = newValue * (_maxScale - _minScale) + _minScale;

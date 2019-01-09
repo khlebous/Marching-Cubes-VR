@@ -53,11 +53,10 @@ namespace MarchingCubesGPUProject
 
             //first calculation
             CleanMeshBuffer();
+            CalculateMesh();
             CalculateNormals();
             UpdateMeshes();
-            CalculateMesh();
 
-            StartShaping();
         }
 
         private void InitMeshes()
@@ -182,7 +181,6 @@ namespace MarchingCubesGPUProject
                 CalculateChanges();
                 CalculateMesh();
                 CalculateNormals();
-
                 UpdateMeshes();
             }
 

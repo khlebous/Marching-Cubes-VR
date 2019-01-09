@@ -26,7 +26,6 @@ StructuredBuffer<float> _Voxels;
 
 StructuredBuffer<float4> _VoxelColors;
 
-Texture3D<float3> _Normals;
 
 RWStructuredBuffer<Vert> _Buffer;
 
@@ -130,11 +129,7 @@ Vert CreateVertex(float3 position, float4 color, float3 centre, float3 size)
 	float3 locPos = position - centre;
 	vert.position = float4(locPos.x * _Scale.x, locPos.y * _Scale.y, locPos.z * _Scale.z, 1.0);
 
-	float3 uv = position / size;
-	float3 locNormal = _Normals.SampleLevel(_LinearClamp, uv, 0);
-
-	vert.normal = normalize(float3(locNormal.x * _Scale.x, locNormal.y * _Scale.y, locNormal.z * _Scale.z));
-
+	vert.normal = float3(0, 0, 0);//must be set
 
 	return vert;
 }

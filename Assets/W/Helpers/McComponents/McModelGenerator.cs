@@ -23,4 +23,28 @@ public class McModelGenerator : McBaseGenerator
         : base(shaders, material)
     {
     }
+
+    public override McData GetDefaultData()
+    {
+        var data = new McData();
+        data.Guid = Guid.NewGuid();
+        data.Colors = Enumerable.Repeat(new Vector4(1, 1, 1, 1), DesiredBufferSize).ToArray();
+        data.Values = new float[DesiredBufferSize];
+
+        for (int z = 0; z < N; z++)
+            for (int y = 0; y < N; y++)
+                for (int x = 0; x < N; x++)
+                {
+                    data.Values[x + y * N + z * N * N] = 0;
+
+                    if (x != 0 && y != 0 && z != 0 && x != N - 1 && y != N - 1 && z != N - 1)
+                    {
+                        if (y > 0 && y < 2 && x > 1 && x < N && z > 1 && z < N)
+                            data.Values[x + y * N + z * N * N] = 1.0f;
+                    }
+                }
+
+
+        return data;
+    }
 }

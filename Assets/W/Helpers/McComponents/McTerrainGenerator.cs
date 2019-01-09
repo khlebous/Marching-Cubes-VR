@@ -23,4 +23,25 @@ public class McTerrainGenerator : McBaseGenerator
         : base(shaders, material)
     {
     }
+
+    public override McData GetDefaultData()
+    {
+        var data = new McData();
+        data.Guid = Guid.NewGuid();
+        data.Colors = Enumerable.Repeat(new Vector4(1, 1, 1, 1), DesiredBufferSize).ToArray();
+        data.Values = new float[DesiredBufferSize];
+
+        for (int z = 0; z < N; z++)
+            for (int x = 0; x < N; x++)
+            {
+                data.Values[x + z * N] = 0;
+
+                if (x != 0 && z != 0 && x != N - 1 && z != N - 1)
+                {
+                    data.Values[x + z * N] = 2;
+                }
+            }
+
+        return data;
+    }
 }

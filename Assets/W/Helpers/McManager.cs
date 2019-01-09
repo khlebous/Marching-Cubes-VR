@@ -120,7 +120,7 @@ public class McManager : MonoBehaviour
 
     public McData CreateModel()
     {
-        return ModelGenerator.GetNewEmptyData();
+        return ModelGenerator.GetDefaultData();
     }
     public EditableScene CreateScene()
     {
@@ -161,7 +161,7 @@ public class McManager : MonoBehaviour
     private McGameObjData CreateTerrain()
     {
         var god = new McGameObjData();
-        god.Data = TerrainGenerator.GetNewEmptyData();
+        god.Data = TerrainGenerator.GetDefaultData();
         god.GameObject = LoadTerrainMeshes(god.Data);
 
         return god;

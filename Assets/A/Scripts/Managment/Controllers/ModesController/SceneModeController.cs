@@ -43,6 +43,7 @@ public class SceneModeController : MonoBehaviour
 	private void DeleteModelFromModelsList(Guid modelGuid)
 	{
 		scene.DeleteModel(modelGuid);
+		mcManager.DeleteModel(modelGuid, scene.Guid);
 		ModelsListChanged();
 	}
 

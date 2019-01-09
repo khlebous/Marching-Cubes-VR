@@ -316,8 +316,8 @@ namespace MarchingCubesGPUProject
             InitDataColorBuffer();
 
             Guid = data.Guid;
-            //_dataBuffer.SetData(data.Values);
-            _dataColorBuffer.SetData(data.Colors);
+			_dataBuffer.SetData(data.Values);
+			_dataColorBuffer.SetData(data.Colors);
         }
         public McData GetData()
         {

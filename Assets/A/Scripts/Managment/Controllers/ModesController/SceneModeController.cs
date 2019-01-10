@@ -43,6 +43,7 @@ public class SceneModeController : MonoBehaviour
 	private void DeleteModelFromModelsList(Guid modelGuid)
 	{
 		scene.DeleteModel(modelGuid);
+		mcManager.DeleteModel(modelGuid, scene.Guid);
 		ModelsListChanged();
 	}
 
@@ -50,7 +51,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		scene = mcManager.LoadScene(guid);
 		scene.gameObject.transform.parent = sceneContiner.transform;
-		scene.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+		scene.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
 
 		sceneContiner.SetActive(true);
 		menuSceneController.SetActive();
@@ -105,6 +106,7 @@ public class SceneModeController : MonoBehaviour
 	public void TurnOnCurrentModeWithObjectUpdate(McData data)
 	{
 		scene.SetOrUpdateModel(new McGameObjData(data, mcManager.LoadModelMeshes(data)));
+		ModelsListChanged();
 		TurnOnCurrentMode();
 	}
 

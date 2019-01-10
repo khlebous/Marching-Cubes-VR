@@ -30,8 +30,8 @@ namespace Assets.MarchingCubesGPU.Scripts
 		public BrushMode mode = BrushMode.Inactive;
 		public BrushShape shape = BrushShape.Sphere;
 
-		private const float _minScale = McConsts.ModelN / 400f;
-		private const float _maxScale = McConsts.ModelN / 25f;
+		private const float _minScale = 1;
+		private const float _maxScale = McConsts.ModelN / 2f;
 
 		public Matrix4x4 GetToBrushMatrix()
 		{
@@ -75,9 +75,9 @@ namespace Assets.MarchingCubesGPU.Scripts
 
 		private void StartListening(BrushMode brushMode)
 		{
-			buttonA_down = StartCoroutine(WaitForButtonB_Down(brushMode));
+			buttonB_down = StartCoroutine(WaitForButtonB_Down(brushMode));
 			if (brushMode != BrushMode.Color)
-				buttonB_down = StartCoroutine(WaitForButtonA_Down()); // automaticaly delele
+				buttonA_down = StartCoroutine(WaitForButtonA_Down()); // automaticaly delele
 		}
 
 		private IEnumerator WaitForButtonB_Down(BrushMode brushMode)
@@ -151,7 +151,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 		{
 			StopListening();
 			mode = BrushMode.Inactive;
-			buttonA_down = StartCoroutine(WaitForButtonB_Down(BrushMode.Color));
+			buttonB_down = StartCoroutine(WaitForButtonB_Down(BrushMode.Color));
 		}
 
 		public void SetColor(Color color)

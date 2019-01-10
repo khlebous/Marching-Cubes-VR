@@ -3,14 +3,17 @@ using UnityEngine;
 using UniRx;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 public class SceneModeController : MonoBehaviour
 {
 	[SerializeField] private GameObject sceneContiner;
 	[SerializeField] private MenuSceneController menuSceneController;
+	[SerializeField] private Transform controllerToFollow;
 
 	[Header("Other")]
-	[SerializeField] private McManager mcManager;
+	[SerializeField]
+	private McManager mcManager;
 
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
@@ -22,6 +25,7 @@ public class SceneModeController : MonoBehaviour
 	public IObservable<LoadData> ExitToObjectModeStream { get { return exitToObjectModeSubject; } }
 
 	private EditableScene scene;
+	private GameObject newObject;
 
 	private void Start()
 	{
@@ -37,7 +41,35 @@ public class SceneModeController : MonoBehaviour
 
 	private void AddModelToScene(Guid modelGuid)
 	{
-		scene.InstantiateModel(modelGuid);
+		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = false;
+
+		newObject = scene.InstantiateModel(modelGuid);
+		newObject.AddComponent<MovementWithOculusTouch>();
+		newObject.GetComponent<MovementWithOculusTouch>()
+			.SetControllerToFollow(controllerToFollow);
+
+		menuSceneController.SetInactive();
+		waitForMenuLeftOpenCoroutine = StartCoroutine(WaitForNewObjectMovementEnd());
+	}
+
+	private Coroutine waitForMenuLeftOpenCoroutine;
+
+	private IEnumerator WaitForNewObjectMovementEnd()
+	{
+		while (true)
+		{
+			if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick))
+			{
+				StopCoroutine(waitForMenuLeftOpenCoroutine);
+
+				newObject.GetComponent<MovementWithOculusTouch>().enabled = false;
+				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
+				newObject = null;
+				menuSceneController.SetActive();
+			}
+
+			yield return new WaitForEndOfFrame();
+		}
 	}
 
 	private void DeleteModelFromModelsList(Guid modelGuid)

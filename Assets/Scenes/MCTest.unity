@@ -612,6 +612,41 @@ Prefab:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224919972557609064, guid: 5302d74ef6b10d24a9dd05c9bb60ae7d,
+        type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.0050527877
+      objectReference: {fileID: 0}
+    - target: {fileID: 224919972557609064, guid: 5302d74ef6b10d24a9dd05c9bb60ae7d,
+        type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.0050527877
+      objectReference: {fileID: 0}
+    - target: {fileID: 224919972557609064, guid: 5302d74ef6b10d24a9dd05c9bb60ae7d,
+        type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.050527878
+      objectReference: {fileID: 0}
+    - target: {fileID: 224514648165434896, guid: 5302d74ef6b10d24a9dd05c9bb60ae7d,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224919972557609064, guid: 5302d74ef6b10d24a9dd05c9bb60ae7d,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 751.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 114999123289732266, guid: 5302d74ef6b10d24a9dd05c9bb60ae7d,
+        type: 2}
+      propertyPath: m_FontData.m_FontSize
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 114999123289732266, guid: 5302d74ef6b10d24a9dd05c9bb60ae7d,
+        type: 2}
+      propertyPath: m_FontData.m_MaxSize
+      value: 215
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5302d74ef6b10d24a9dd05c9bb60ae7d, type: 2}
   m_IsPrefabParent: 0
@@ -1886,7 +1921,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4615074040246620, guid: dba7aa6f7ff36894eb0d2823ed0f5ebb, type: 2}
       propertyPath: m_LocalScale.z
-      value: 0.07
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114489407442787808, guid: dba7aa6f7ff36894eb0d2823ed0f5ebb,
         type: 2}
@@ -2110,6 +2145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneContiner: {fileID: 1156782511}
   menuSceneController: {fileID: 1590765280}
+  controllerToFollow: {fileID: 830349226}
   mcManager: {fileID: 1400500067}
 --- !u!1001 &2019302081
 Prefab:

@@ -60,7 +60,7 @@ public class EditableScene : MonoBehaviour
 	}
 	public void UpdateModelsOnTerrain(Guid modelGuid)
 	{
-		var toUpdate = ModelsOnTerrain.Where(x => x.ModelGuid == modelGuid);
+		var toUpdate = ModelsOnTerrain.Where(x => x.ModelGuid == modelGuid).ToList();
 		foreach (var model in toUpdate)
 		{
 			var updatedObj = InstantiateModel(modelGuid);
@@ -123,8 +123,8 @@ public class EditableScene : MonoBehaviour
 		data.Models = ModelsOnTerrain.Select(x => new McSceneModelData()
 		{
 			Guid = x.ModelGuid,
-			Position = x.GameObject.transform.position,
-			Rotation = x.GameObject.transform.rotation.eulerAngles,
+			Position = x.GameObject.transform.localPosition,
+			Rotation = x.GameObject.transform.localRotation.eulerAngles,
 			Scale = x.GameObject.transform.localScale,
 		}).ToList();
 

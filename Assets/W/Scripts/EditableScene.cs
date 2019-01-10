@@ -70,16 +70,16 @@ public class EditableScene : MonoBehaviour
             model.GameObject = updatedObj;
         }
     }
-	public void DeleteModel(Guid modelGuid)
-	{
-		var toDelete = ModelsOnTerrain.Where(x => x.ModelGuid == modelGuid);
-		foreach (var model in toDelete)
-		{
-			GameObject.Destroy(model.GameObject);
-		}
+    public void DeleteModel(Guid modelGuid)
+    {
+        var toDelete = ModelsOnTerrain.Where(x => x.ModelGuid == modelGuid);
+        foreach (var model in toDelete)
+        {
+            GameObject.Destroy(model.GameObject);
+        }
 
-		Models.Remove(modelGuid);
-	}
+        Models.Remove(modelGuid);
+    }
     public void DeleteModelFromTerrain(GameObject gameObject)
     {
         var toDelete = ModelsOnTerrain.First(x => x.GameObject == gameObject);
@@ -87,7 +87,26 @@ public class EditableScene : MonoBehaviour
         ModelsOnTerrain.Remove(toDelete);
     }
 
-	public McSceneData GetData()
+    public void LoadModelsOnScene(List<McSceneModelData> ModelsToLoad)
+    {
+        ModelsOnTerrain = new List<McObject>();
+        foreach (var modelSceneData in ModelsToLoad)
+        {
+            var modelObj = GameObject.Instantiate(Models[modelSceneData.Guid].GameObject);
+            modelObj.name = McConsts.ObjectPrefix + modelSceneData.Guid.ToString();
+
+            modelObj.transform.parent = transform;
+            modelObj.transform.position = modelSceneData.Position;
+            modelObj.transform.rotation = Quaternion.Euler(modelSceneData.Rotation);
+            modelObj.transform.localScale = modelSceneData.Scale;
+
+            modelObj.SetActive(true);
+
+            ModelsOnTerrain.Add(new McObject(modelSceneData.Guid, modelObj));
+        }
+    }
+
+    public McSceneData GetData()
     {
         var data = new McSceneData();
         data.Guid = Guid;
@@ -103,8 +122,8 @@ public class EditableScene : MonoBehaviour
         return data;
     }
 
-	public void Destroy()
-	{
-		GameObject.Destroy(gameObject);
-	}
+    public void Destroy()
+    {
+        GameObject.Destroy(gameObject);
+    }
 }

@@ -25,7 +25,8 @@ public class SceneModeController : MonoBehaviour
 	public IObservable<LoadData> ExitToObjectModeStream { get { return exitToObjectModeSubject; } }
 
 	private EditableScene scene;
-	private GameObject newObject;
+	private GameObject selectedObject;
+	private Coroutine waitForMenuLeftOpenCoroutine;
 
 	private void Start()
 	{
@@ -43,16 +44,29 @@ public class SceneModeController : MonoBehaviour
 	{
 		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = false;
 
-		newObject = scene.InstantiateModel(modelGuid);
-		newObject.AddComponent<MovementWithOculusTouch>();
-		newObject.GetComponent<MovementWithOculusTouch>()
+		GameObject newObject = scene.InstantiateModel(modelGuid);
+		SetObjectSelected(newObject);
+	}
+
+	private void SetObjectSelected(GameObject go)
+	{
+		if (selectedObject != null)
+			SetObjectNormal(selectedObject);
+		selectedObject = go;
+
+		go.GetComponent<MovementWithOculusTouch>().enabled = true;
+		go.GetComponent<MovementWithOculusTouch>()
 			.SetControllerToFollow(controllerToFollow);
 
 		menuSceneController.SetInactive();
 		waitForMenuLeftOpenCoroutine = StartCoroutine(WaitForNewObjectMovementEnd());
 	}
 
-	private Coroutine waitForMenuLeftOpenCoroutine;
+	private void SetObjectNormal(GameObject go)
+	{
+		go.GetComponent<MovementWithOculusTouch>().enabled = false;
+		selectedObject = null;
+	}
 
 	private IEnumerator WaitForNewObjectMovementEnd()
 	{
@@ -62,9 +76,8 @@ public class SceneModeController : MonoBehaviour
 			{
 				StopCoroutine(waitForMenuLeftOpenCoroutine);
 
-				newObject.GetComponent<MovementWithOculusTouch>().enabled = false;
+				SetObjectNormal(selectedObject);
 				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
-				newObject = null;
 				menuSceneController.SetActive();
 			}
 

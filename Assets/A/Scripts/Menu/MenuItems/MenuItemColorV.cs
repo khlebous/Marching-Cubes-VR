@@ -4,7 +4,8 @@ using UniRx;
 public class MenuItemColorV : MenuItemV
 {
 	[Header("Colors")]
-	[SerializeField] ColorIndicator colorIndicator;
+	[SerializeField]
+	ColorIndicator colorIndicator;
 	[SerializeField] Draggable colorHuePicker;
 	[SerializeField] Draggable intensity;
 
@@ -27,6 +28,7 @@ public class MenuItemColorV : MenuItemV
 
 	public override void SetNormal()
 	{
+		ColorChanged();
 		base.SetNormal();
 		active = false;
 	}
@@ -38,35 +40,28 @@ public class MenuItemColorV : MenuItemV
 			if (OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
 			{
 				colorHuePicker.Input(ButtonState.Right);
-				ColorChanged();
-
 			}
 			else if (OVRInput.Get(OVRInput.Button.SecondaryHandTrigger))
 			{
 				colorHuePicker.Input(ButtonState.Left);
-				ColorChanged();
 			}
 			else if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickLeft))
 			{
 				intensity.Input(ButtonState.Left);
-				ColorChanged();
 
 			}
 			else if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickRight))
 			{
 				intensity.Input(ButtonState.Right);
-				ColorChanged();
 			}
 			else if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickUp))
 			{
 				intensity.Input(ButtonState.Up);
-				ColorChanged();
 
 			}
 			else if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickDown))
 			{
 				intensity.Input(ButtonState.Down);
-				ColorChanged();
 			}
 		}
 	}

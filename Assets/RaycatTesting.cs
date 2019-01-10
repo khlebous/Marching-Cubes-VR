@@ -39,7 +39,7 @@ public class RaycatTesting : MonoBehaviour
 		if (Physics.Raycast(ray, out raycastHit, length))
 		{
 			endPosition = raycastHit.point;
-			Debug.Log(raycastHit.collider.gameObject.name);
+			//Debug.Log(raycastHit.collider.gameObject.name);
 		}
 
 		laserLineRenderer.SetPosition(0, targetPosition);

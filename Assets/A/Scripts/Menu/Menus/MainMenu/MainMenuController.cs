@@ -22,6 +22,7 @@ public class MainMenuController : MonoBehaviour
 	private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
 	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickLeft;
 	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickRight;
+	private OVRInput.Controller controller = OVRInput.Controller.LTouch;
 
 	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;
@@ -60,14 +61,14 @@ public class MainMenuController : MonoBehaviour
 	{
 		if (isMenuActive)
 		{
-			if (OVRInput.Get(selectItemButton))
+			if (OVRInput.Get(selectItemButton, controller))
 			{
 				isMenuActive = false;
 				ItemSelected();
 			}
 			else
 			{
-				if (OVRInput.Get(prevItemButton))
+				if (OVRInput.Get(prevItemButton, controller))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{
@@ -76,7 +77,7 @@ public class MainMenuController : MonoBehaviour
 						itemChangedSubject.OnNext(Unit.Default);
 					}
 				}
-				else if (OVRInput.Get(nextItemButton))
+				else if (OVRInput.Get(nextItemButton, controller))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{

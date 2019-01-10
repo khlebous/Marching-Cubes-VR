@@ -16,6 +16,7 @@ public class MenuModelController : MonoBehaviour
 
 	private OVRInput.Button showMenuLeftButton = OVRInput.Button.PrimaryThumbstickRight;
 	private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
+	private OVRInput.Controller leftController = OVRInput.Controller.LTouch;
 	private OVRInput.Button showMenuRightButton = OVRInput.Button.SecondaryThumbstickLeft;
 	private OVRInput.Button hideMenuRightButton = OVRInput.Button.SecondaryThumbstickRight;
 
@@ -113,7 +114,7 @@ public class MenuModelController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(showMenuLeftButton))
+			if (OVRInput.Get(showMenuLeftButton, leftController))
 			{
 				StopCoroutine(waitForMenuLeftOpenCoroutine);
 				menuLeftController.OpenMenu();
@@ -128,7 +129,7 @@ public class MenuModelController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(hideMenuLeftButton))
+			if (OVRInput.Get(hideMenuLeftButton, leftController))
 			{
 				StopCoroutine(waitForMenuLeftCloseCoroutine);
 				menuLeftController.CloseMenu();

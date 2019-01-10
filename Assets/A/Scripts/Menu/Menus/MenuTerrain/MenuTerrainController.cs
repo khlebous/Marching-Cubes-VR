@@ -15,7 +15,7 @@ public class MenuTerrainController : MonoBehaviour
 
 	private OVRInput.Button showMenuLeftButton = OVRInput.Button.PrimaryThumbstickRight;
 	private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
-	private OVRInput.Controller leftMenuController = OVRInput.Controller.LTouch;
+	private OVRInput.Controller leftController = OVRInput.Controller.LTouch;
 	private OVRInput.Button showMenuRightButton = OVRInput.Button.SecondaryThumbstickLeft;
 	private OVRInput.Button hideMenuRightButton = OVRInput.Button.SecondaryThumbstickRight;
 
@@ -58,7 +58,7 @@ public class MenuTerrainController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(showMenuLeftButton, leftMenuController))
+			if (OVRInput.Get(showMenuLeftButton, leftController))
 			{
 				StopCoroutine(waitForMenuLeftOpenCoroutine);
 				menuLeftController.OpenMenu();
@@ -73,7 +73,7 @@ public class MenuTerrainController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(hideMenuLeftButton, leftMenuController))
+			if (OVRInput.Get(hideMenuLeftButton, leftController))
 			{
 				StopCoroutine(waitForMenuLeftCloseCoroutine);
 				menuLeftController.CloseMenu();

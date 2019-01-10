@@ -72,7 +72,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick))
+			if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick, OVRInput.Controller.LTouch))
 			{
 				StopCoroutine(waitForMenuLeftOpenCoroutine);
 

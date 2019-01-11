@@ -23,7 +23,7 @@ namespace MarchingCubesGPUProject
         public Material material;
 
         private GPURenderer _renderer;
-        
+
         private Mesh[] _meshes;
         private Transform[] _meshObjTransforms;
         private McVert[] _verts = new McVert[Size];
@@ -35,7 +35,8 @@ namespace MarchingCubesGPUProject
                 throw new System.ArgumentException("N must be divisible be 8");
 
             InitMeshes();
-            _renderer = new GPURenderer(Shaders, N, N * N * N);
+            if (_renderer == null)
+                _renderer = new GPURenderer(Shaders, N, N * N * N);
 
             //first calculation
             _renderer.CleanMeshBuffer();
@@ -206,8 +207,11 @@ namespace MarchingCubesGPUProject
         {
             Guid = data.Guid;
 
-            _renderer.InitDataBuffer();
-            _renderer.InitDataColorBuffer();
+            if (Shaders == null)
+                throw new ArgumentException("renderer");
+
+            if (_renderer == null)
+                _renderer = new GPURenderer(Shaders, N, N * N * N);
 
             _renderer.dataBuffer.SetData(data.Values);
             _renderer.dataColorBuffer.SetData(data.Colors);

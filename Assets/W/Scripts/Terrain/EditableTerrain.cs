@@ -21,17 +21,16 @@ namespace MarchingCubesGPUProject
         const int meshCount = McConsts.MeshCount;
         const int Size = N * N * N * 3 * 5;
 
-        public Material drawBuffer;
         public TerrainBrush brush;
 
         public TerrainShaders Shaders;
         public Material material;
 
-        private ComputeBuffer extremeValueBuffer;
-
+        private ComputeBuffer _extremeValueBuffer;
         private GPURenderer _renderer;
-        private Mesh[] _meshes;
+
         private Transform[] _meshObjTransforms;
+        private Mesh[] _meshes;
         private McVert[] _verts = new McVert[Size];
 
         private void Start()
@@ -41,6 +40,7 @@ namespace MarchingCubesGPUProject
                 throw new System.ArgumentException("N must be divisible be 8");
 
             _renderer = new GPURenderer(Shaders, N, N * N);
+            InitMeshes();
             InitExtremeValueBuffer();
 
             //first calculation
@@ -50,10 +50,34 @@ namespace MarchingCubesGPUProject
             UpdateMeshes();
 
         }
-        
+        private void InitMeshes()
+        {
+            _meshes = new Mesh[meshCount];
+            _meshObjTransforms = new Transform[meshCount];
+
+            for (int i = 0; i < meshCount; i++)
+            {
+                Mesh mesh = new Mesh();
+                mesh.bounds = new Bounds(new Vector3(0, N / 2, 0), new Vector3(N, N, N)); //what is it for?
+                _meshes[i] = mesh;
+
+                GameObject go = new GameObject("Marching Mesh");
+                go.AddComponent<MeshFilter>();
+                go.AddComponent<MeshRenderer>();
+                go.GetComponent<Renderer>().material = material;
+                go.GetComponent<MeshFilter>().mesh = mesh;
+
+                MeshCollider collider = go.AddComponent<MeshCollider>();
+                collider.sharedMesh = mesh;
+
+                go.transform.parent = transform;
+                go.transform.SetPositionAndRotation(go.transform.parent.position, go.transform.parent.rotation);
+                _meshObjTransforms[i] = go.transform;
+            }
+        }
         private void InitExtremeValueBuffer()
         {
-            extremeValueBuffer = new ComputeBuffer(1, sizeof(float));
+            _extremeValueBuffer = new ComputeBuffer(1, sizeof(float));
         }
 
         //shaping
@@ -85,7 +109,6 @@ namespace MarchingCubesGPUProject
         {
             if (brush.mode != TerrainBrushMode.Inactive)
             {
-
                 UpdateBrushRotation();
                 _renderer.CleanMeshBuffer();
                 CalculateChanges();
@@ -144,7 +167,7 @@ namespace MarchingCubesGPUProject
             if (brush.mode == TerrainBrushMode.ExtremeChange)
             {
                 CalculateExtremeValue();
-                Shaders.brushShapeShader.SetBuffer(0, "ExtremeValue", extremeValueBuffer);
+                Shaders.brushShapeShader.SetBuffer(0, "ExtremeValue", _extremeValueBuffer);
             }
             Shaders.brushShapeShader.Dispatch(0, N / 8, 1, N / 8);
         }
@@ -160,7 +183,7 @@ namespace MarchingCubesGPUProject
 
             Shaders.ExtremeValueShader.SetInt("BrushShape", (int)brush.shape);
             Shaders.ExtremeValueShader.SetFloat("HeightChange", GetShapingHeight());
-            Shaders.ExtremeValueShader.SetBuffer(0, "ExtremeValue", extremeValueBuffer);
+            Shaders.ExtremeValueShader.SetBuffer(0, "ExtremeValue", _extremeValueBuffer);
 
             Shaders.ExtremeValueShader.Dispatch(0, 1, 1, 1);
         }
@@ -176,7 +199,7 @@ namespace MarchingCubesGPUProject
         private void OnDestroy()
         {
             _renderer.ReleaseBuffers();
-            extremeValueBuffer.Release();
+            _extremeValueBuffer.Release();
         }
 
         //private Matrix4x4 GetToMcMatrix()

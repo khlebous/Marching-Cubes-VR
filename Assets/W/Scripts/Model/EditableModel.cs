@@ -17,7 +17,6 @@ namespace MarchingCubesGPUProject
         const int meshCount = McConsts.MeshCount;
         const int Size = N * N * N * 3 * 5;
 
-        public Material drawBuffer;
         public ModelBrush brush;
 
         public ModelSchaders Shaders;
@@ -36,6 +35,7 @@ namespace MarchingCubesGPUProject
                 throw new System.ArgumentException("N must be divisible be 8");
 
             _renderer = new GPURenderer(Shaders, N, N * N * N);
+            InitMeshes();
 
             //first calculation
             _renderer.CleanMeshBuffer();
@@ -44,6 +44,31 @@ namespace MarchingCubesGPUProject
             UpdateMeshes();
         }
 
+        private void InitMeshes()
+        {
+            _meshes = new Mesh[meshCount];
+            _meshObjTransforms = new Transform[meshCount];
+
+            for (int i = 0; i < meshCount; i++)
+            {
+                Mesh mesh = new Mesh();
+                mesh.bounds = new Bounds(new Vector3(0, N / 2, 0), new Vector3(N, N, N)); //what is it for?
+                _meshes[i] = mesh;
+
+                GameObject go = new GameObject("Marching Mesh");
+                go.AddComponent<MeshFilter>();
+                go.AddComponent<MeshRenderer>();
+                go.GetComponent<Renderer>().material = material;
+                go.GetComponent<MeshFilter>().mesh = mesh;
+
+                MeshCollider collider = go.AddComponent<MeshCollider>();
+                collider.sharedMesh = mesh;
+
+                go.transform.parent = transform;
+                go.transform.SetPositionAndRotation(go.transform.parent.position, go.transform.parent.rotation);
+                _meshObjTransforms[i] = go.transform;
+            }
+        }
 
         private void Update()
         {

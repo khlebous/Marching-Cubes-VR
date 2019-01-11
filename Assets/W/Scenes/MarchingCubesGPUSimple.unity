@@ -493,7 +493,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1306820466886690, guid: f859d026eea744d43bd3c3352200f47e, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4663750782470810, guid: f859d026eea744d43bd3c3352200f47e, type: 2}
       propertyPath: m_LocalScale.x
@@ -1069,7 +1069,7 @@ Prefab:
         type: 2}
       propertyPath: Shaders.normalsShader
       value: 
-      objectReference: {fileID: 7200000, guid: f9fdee0c5e89d4843b3e139b010ac71d, type: 3}
+      objectReference: {fileID: 7200000, guid: 80ecc8a540a8f374eb130bc52285e626, type: 3}
     - target: {fileID: 114716906415070472, guid: 1eedfb13ed7f42e41ab53428f31546ca,
         type: 2}
       propertyPath: Shaders.ExtremeValueShader
@@ -1093,7 +1093,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1774706613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1107,7 +1107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModelShaders:
     marchingShader: {fileID: 7200000, guid: cbefffa4c1505b54689332f612d627e6, type: 3}
-    normalsShader: {fileID: 7200000, guid: 8f22bc50351139e4c8c6f8222864a4c2, type: 3}
+    normalsShader: {fileID: 7200000, guid: 80ecc8a540a8f374eb130bc52285e626, type: 3}
     clearShader: {fileID: 7200000, guid: c01c61315f4438e489dca09da4ab47dc, type: 3}
     brushShader: {fileID: 7200000, guid: f354a092d260c9a4e9b9072f0ff17445, type: 3}
   TerrainShaders:
@@ -1236,7 +1236,7 @@ Prefab:
         type: 2}
       propertyPath: Shaders.normalsShader
       value: 
-      objectReference: {fileID: 7200000, guid: 8f22bc50351139e4c8c6f8222864a4c2, type: 3}
+      objectReference: {fileID: 7200000, guid: 80ecc8a540a8f374eb130bc52285e626, type: 3}
     - target: {fileID: 114373886620178624, guid: 37daf0f734c63434e8f74c76a590b4ea,
         type: 2}
       propertyPath: Shaders.marchingShader

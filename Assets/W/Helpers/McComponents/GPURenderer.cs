@@ -35,9 +35,8 @@ public class GPURenderer
         if (N % 8 != 0)
             throw new System.ArgumentException("N must be divisible be 8");
 
-        dataBuffer = new ComputeBuffer(DesiredBufferSize, sizeof(float));
-        dataColorBuffer = new ComputeBuffer(4 * DesiredBufferSize, 4 * sizeof(float));
-
+        InitDataBuffer();
+        InitDataColorBuffer();
         InitMeshBuffer();
         InitMarchingCubesTablesBuffors();
     }

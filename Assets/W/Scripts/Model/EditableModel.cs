@@ -34,8 +34,8 @@ namespace MarchingCubesGPUProject
             if (N % 8 != 0)
                 throw new System.ArgumentException("N must be divisible be 8");
 
-            _renderer = new GPURenderer(Shaders, N, N * N * N);
             InitMeshes();
+            _renderer = new GPURenderer(Shaders, N, N * N * N);
 
             //first calculation
             _renderer.CleanMeshBuffer();

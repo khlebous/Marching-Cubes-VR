@@ -135,34 +135,34 @@ namespace MarchingCubesGPUProject
         }
         private void CalculateColoring()
         {
-            Shaders.brushColorShader.SetInt("Width", N);
-            Shaders.brushColorShader.SetInt("Height", N);
-            Shaders.brushColorShader.SetInt("Depth", N);
+            Shaders.brushColorShader.SetInt("_Width", N);
+            Shaders.brushColorShader.SetInt("_Height", N);
+            Shaders.brushColorShader.SetInt("_Depth", N);
 
-            Shaders.brushColorShader.SetVector("Scale", transform.lossyScale);
-            Shaders.brushColorShader.SetBuffer(0, "VoxelColors", _renderer.dataColorBuffer);
+            Shaders.brushColorShader.SetVector("_Scale", transform.lossyScale);
+            Shaders.brushColorShader.SetBuffer(0, "_VoxelColors", _renderer.dataColorBuffer);
 
-            Shaders.brushColorShader.SetFloats("FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
+            Shaders.brushColorShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
 
-            Shaders.brushColorShader.SetInt("BrushShape", (int)brush.shape);
-            Shaders.brushColorShader.SetVector("BrushColor", brush.color);
+            Shaders.brushColorShader.SetInt("_BrushShape", (int)brush.shape);
+            Shaders.brushColorShader.SetVector("_BrushColor", brush.color);
 
             Shaders.brushColorShader.Dispatch(0, N / 8, 1, N / 8);
         }
         private void CalculateShaping()
         {
-            Shaders.brushShapeShader.SetInt("Width", N);
-            Shaders.brushShapeShader.SetInt("Height", N);
-            Shaders.brushShapeShader.SetInt("Depth", N);
+            Shaders.brushShapeShader.SetInt("_Width", N);
+            Shaders.brushShapeShader.SetInt("_Height", N);
+            Shaders.brushShapeShader.SetInt("_Depth", N);
 
-            Shaders.brushShapeShader.SetVector("Scale", transform.lossyScale);
-            Shaders.brushShapeShader.SetBuffer(0, "Voxels", _renderer.dataBuffer);
+            Shaders.brushShapeShader.SetVector("_Scale", transform.lossyScale);
+            Shaders.brushShapeShader.SetBuffer(0, "_Voxels", _renderer.dataBuffer);
 
-            Shaders.brushShapeShader.SetFloats("FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
+            Shaders.brushShapeShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
 
-            Shaders.brushShapeShader.SetInt("BrushShape", (int)brush.shape);
-            Shaders.brushShapeShader.SetInt("BrushMode", (int)brush.mode);
-            Shaders.brushShapeShader.SetFloat("HeightChange", GetShapingHeight());
+            Shaders.brushShapeShader.SetInt("_BrushShape", (int)brush.shape);
+            Shaders.brushShapeShader.SetInt("_BrushMode", (int)brush.mode);
+            Shaders.brushShapeShader.SetFloat("_HeightChange", GetShapingHeight());
 
             if (brush.mode == TerrainBrushMode.ExtremeChange)
             {
@@ -173,17 +173,17 @@ namespace MarchingCubesGPUProject
         }
         private void CalculateExtremeValue()
         {
-            Shaders.ExtremeValueShader.SetInt("Width", N);
-            Shaders.ExtremeValueShader.SetInt("Height", N);
-            Shaders.ExtremeValueShader.SetInt("Depth", N);
+            Shaders.ExtremeValueShader.SetInt("_Width", N);
+            Shaders.ExtremeValueShader.SetInt("_Height", N);
+            Shaders.ExtremeValueShader.SetInt("_Depth", N);
 
-            Shaders.ExtremeValueShader.SetBuffer(0, "Voxels", _renderer.dataBuffer);
+            Shaders.ExtremeValueShader.SetBuffer(0, "_Voxels", _renderer.dataBuffer);
 
-            Shaders.ExtremeValueShader.SetFloats("FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
+            Shaders.ExtremeValueShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
 
-            Shaders.ExtremeValueShader.SetInt("BrushShape", (int)brush.shape);
-            Shaders.ExtremeValueShader.SetFloat("HeightChange", GetShapingHeight());
-            Shaders.ExtremeValueShader.SetBuffer(0, "ExtremeValue", _extremeValueBuffer);
+            Shaders.ExtremeValueShader.SetInt("_BrushShape", (int)brush.shape);
+            Shaders.ExtremeValueShader.SetFloat("_HeightChange", GetShapingHeight());
+            Shaders.ExtremeValueShader.SetBuffer(0, "_ExtremeValue", _extremeValueBuffer);
 
             Shaders.ExtremeValueShader.Dispatch(0, 1, 1, 1);
         }

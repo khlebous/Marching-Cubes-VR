@@ -84,20 +84,20 @@ namespace MarchingCubesGPUProject
 
         private void CalculateChanges()
         {
-            Shaders.brushShader.SetInt("Width", N);
-            Shaders.brushShader.SetInt("Height", N);
-            Shaders.brushShader.SetInt("Depth", N);
+            Shaders.brushShader.SetInt("_Width", N);
+            Shaders.brushShader.SetInt("_Height", N);
+            Shaders.brushShader.SetInt("_Depth", N);
 
-            Shaders.brushShader.SetVector("Scale", transform.lossyScale);
-            Shaders.brushShader.SetBuffer(0, "Voxels", _renderer.dataBuffer);
-            Shaders.brushShader.SetBuffer(0, "VoxelColors", _renderer.dataColorBuffer);
+            Shaders.brushShader.SetVector("_Scale", transform.lossyScale);
+            Shaders.brushShader.SetBuffer(0, "_Voxels", _renderer.dataBuffer);
+            Shaders.brushShader.SetBuffer(0, "_VoxelColors", _renderer.dataColorBuffer);
 
-            Shaders.brushShader.SetVector("BrushColor", brush.color);
-            Shaders.brushShader.SetInt("BrushMode", (int)brush.mode);
-            Shaders.brushShader.SetInt("BrushShape", (int)brush.shape);
+            Shaders.brushShader.SetVector("_BrushColor", brush.color);
+            Shaders.brushShader.SetInt("_BrushMode", (int)brush.mode);
+            Shaders.brushShader.SetInt("_BrushShape", (int)brush.shape);
 
-            Shaders.brushShader.SetFloats("FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
-            Shaders.brushShader.SetVector("BrushScale", brush.transform.lossyScale);
+            Shaders.brushShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
+            Shaders.brushShader.SetVector("_BrushScale", brush.transform.lossyScale);
 
             Shaders.brushShader.Dispatch(0, N / 8, N / 8, N / 8);
         }

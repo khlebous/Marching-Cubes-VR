@@ -20,6 +20,7 @@ public abstract class McBaseGenerator : GPURenderer
         if (data.Colors.Length != DesiredBufferSize)
             throw new System.ArgumentException("Colors array should have " + DesiredBufferSize + " elements");
 
+        _verts = new McVert[Size];
         dataBuffer.SetData(data.Values);
         dataColorBuffer.SetData(data.Colors);
 

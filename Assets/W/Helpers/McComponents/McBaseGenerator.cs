@@ -2,43 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class McBaseGenerator
+public abstract class McBaseGenerator : GPURenderer
 {
-    protected abstract int N { get; }
-    protected abstract int DesiredBufferSize { get; }
-
-    protected int Size
-    { get { return N * N * N * 3 * 5; } }
-
-
-    private McVert[] _verts;
-
-    public BaseShaders _shaders;
-    public Material material;
-
-    private ComputeBuffer dataBuffer;
-    private ComputeBuffer dataColorBuffer;
-    private ComputeBuffer meshBuffer;
-    private ComputeBuffer cubeEdgeFlags;
-    private ComputeBuffer triangleConnectionTable;
-
-    public McBaseGenerator(BaseShaders shaders, Material material)
+    public McBaseGenerator(BaseShaders shaders, int n, int desiredBufferSize, Material material) : base(shaders, n, desiredBufferSize)
     {
-        _shaders = shaders;
         this.material = material;
-
-        //There are 8 threads run per group so N must be divisible by 8.
-        if (N % 8 != 0)
-            throw new System.ArgumentException("N must be divisible be 8");
-
-        _verts = new McVert[Size];
-
-        dataBuffer = new ComputeBuffer(DesiredBufferSize, sizeof(float));
-        dataColorBuffer = new ComputeBuffer(4 * DesiredBufferSize, 4 * sizeof(float));
-
-        InitMeshBuffer();
-        InitMarchingCubesTablesBuffors();
     }
+    private Material material;
     public abstract McData GetDefaultData();
     public GameObject GenerateMeshes(McData data)
     {
@@ -61,70 +31,12 @@ public abstract class McBaseGenerator
 
         return meshesObject;
     }
-    public void ReleaseBuffers()
-    {
-        dataBuffer.Release();
-        dataColorBuffer.Release();
-        meshBuffer.Release();
-        cubeEdgeFlags.Release();
-        triangleConnectionTable.Release();
-    }
-
-    private void InitMeshBuffer()
-    {
-        meshBuffer = new ComputeBuffer(Size, sizeof(float) * 11);
-        CleanMeshBuffer();
-    }
-    private void InitMarchingCubesTablesBuffors()
-    {
-        //These two buffers are just some settings needed by the marching cubes.
-        cubeEdgeFlags = new ComputeBuffer(256, sizeof(int));
-        cubeEdgeFlags.SetData(MarchingCubesTables.CubeEdgeFlags);
-        triangleConnectionTable = new ComputeBuffer(256 * 16, sizeof(int));
-        triangleConnectionTable.SetData(MarchingCubesTables.TriangleConnectionTable);
-    }
-
-    private void CleanMeshBuffer()
-    {
-        _shaders.clearShader.SetInt("_Width", N);
-        _shaders.clearShader.SetInt("_Height", N);
-        _shaders.clearShader.SetInt("_Depth", N);
-        _shaders.clearShader.SetBuffer(0, "_Buffer", meshBuffer);
-
-        _shaders.clearShader.Dispatch(0, N / 8, N / 8, N / 8);
-    }
-    private void CalculateMesh(Transform parent)
-    {
-        _shaders.marchingShader.SetInt("_Width", N);
-        _shaders.marchingShader.SetInt("_Height", N);
-        _shaders.marchingShader.SetInt("_Depth", N);
-        _shaders.marchingShader.SetVector("_Scale", parent.transform.lossyScale);
-        _shaders.marchingShader.SetInt("_Border", 0); // strange but works
-                                              //m_marchingCubes.SetInt("_Border", 1);
-        _shaders.marchingShader.SetFloat("_Target", 0.5f);//!!!!! values [0,1]
-        _shaders.marchingShader.SetBuffer(0, "_Voxels", dataBuffer);
-        _shaders.marchingShader.SetBuffer(0, "_VoxelColors", dataColorBuffer);
-        _shaders.marchingShader.SetBuffer(0, "_Buffer", meshBuffer);
-        _shaders.marchingShader.SetBuffer(0, "_CubeEdgeFlags", cubeEdgeFlags);
-        _shaders.marchingShader.SetBuffer(0, "_TriangleConnectionTable", triangleConnectionTable);
-
-        _shaders.marchingShader.Dispatch(0, N / 8, N / 8, N / 8);
-    }
-    private void CalculateNormals()
-    {
-        _shaders.normalsShader.SetInt("_Width", N);
-        _shaders.normalsShader.SetInt("_Height", N);
-        _shaders.normalsShader.SetInt("_Depth", N);
-        _shaders.normalsShader.SetBuffer(0, "_Buffer", meshBuffer);
-
-        _shaders.normalsShader.Dispatch(0, N / 8, N / 8, N / 8);
-    }
 
     private Mesh InitMesh(Transform parent)
     {
         Mesh mesh = new Mesh();
         mesh.bounds = new Bounds(new Vector3(0, N / 2, 0), new Vector3(N, N, N)); //what is it for?
-        
+
         GameObject go = new GameObject("Marching Mesh");
         go.AddComponent<MeshFilter>();
         go.AddComponent<MeshRenderer>();

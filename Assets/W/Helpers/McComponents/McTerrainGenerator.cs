@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class McTerrainGenerator : McBaseGenerator
 {
-    protected override int N
-    { get { return McConsts.TerrN; } }
-
-    protected override int DesiredBufferSize
-    { get { return N * N; } }
-
-
     public McTerrainGenerator(BaseShaders shaders, Material material)
-        : base(shaders, material)
+        : base(shaders, McConsts.TerrN, McConsts.TerrN * McConsts.TerrN, material)
     {
     }
 

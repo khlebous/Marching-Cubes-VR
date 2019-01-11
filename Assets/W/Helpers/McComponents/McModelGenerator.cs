@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class McModelGenerator : McBaseGenerator
 {
-    protected override int N
-    { get { return McConsts.ModelN; } }
-
-    protected override int DesiredBufferSize
-    { get { return N * N * N; } }
-
-
     public McModelGenerator(BaseShaders shaders, Material material)
-        : base(shaders, material)
+        : base(shaders, McConsts.ModelN, McConsts.ModelN * McConsts.ModelN * McConsts.ModelN, material)
     {
     }
 

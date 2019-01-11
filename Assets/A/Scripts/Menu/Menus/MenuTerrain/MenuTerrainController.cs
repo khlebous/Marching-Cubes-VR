@@ -53,6 +53,30 @@ public class MenuTerrainController : MonoBehaviour
 		waitForMenuRightCloseCoroutine = StartCoroutine(WaitForCloseMenuRight());
 	}
 
+	private void StopListening()
+	{
+		StopListeningForLeft();
+		StopListeningForRight();
+	}
+
+	private void StopListeningForLeft()
+	{
+		if (null != waitForMenuLeftOpenCoroutine)
+			StopCoroutine(waitForMenuLeftOpenCoroutine);
+
+		if (null != waitForMenuLeftCloseCoroutine)
+			StopCoroutine(waitForMenuLeftCloseCoroutine);
+	}
+
+	private void StopListeningForRight()
+	{
+		if (null != waitForMenuRightOpenCoroutine)
+			StopCoroutine(waitForMenuRightOpenCoroutine);
+
+		if (null != waitForMenuRightCloseCoroutine)
+			StopCoroutine(waitForMenuRightCloseCoroutine);
+	}
+
 
 	private IEnumerator WaitForOpenMenuLeft()
 	{
@@ -115,49 +139,19 @@ public class MenuTerrainController : MonoBehaviour
 	}
 
 
-	private void StopListening()
-	{
-		StopListeningForLeft();
-		StopListeningForRight();
-	}
-
-	private void StopListeningForLeft()
-	{
-		if (null != waitForMenuLeftOpenCoroutine)
-			StopCoroutine(waitForMenuLeftOpenCoroutine);
-
-		if (null != waitForMenuLeftCloseCoroutine)
-			StopCoroutine(waitForMenuLeftCloseCoroutine);
-	}
-
-	private void StopListeningForRight()
-	{
-		if (null != waitForMenuRightOpenCoroutine)
-			StopCoroutine(waitForMenuRightOpenCoroutine);
-
-		if (null != waitForMenuRightCloseCoroutine)
-			StopCoroutine(waitForMenuRightCloseCoroutine);
-	}
-
-
-	public void SetInactive()
-	{
-		StopListening();
-
-		menuLeftController.CloseMenu();
-		menuRightController.CloseMenu();
-
-		gameObject.SetActive(false);
-	}
-
 	public void SetActive()
 	{
 		menuLeftController.CloseMenu();
 		menuRightController.CloseMenu();
-
 		gameObject.SetActive(true);
-
 		StartWaitForMenuOpen();
 	}
 
+	public void SetInactive()
+	{
+		StopListening();
+		menuLeftController.CloseMenu();
+		menuRightController.CloseMenu();
+		gameObject.SetActive(false);
+	}
 }

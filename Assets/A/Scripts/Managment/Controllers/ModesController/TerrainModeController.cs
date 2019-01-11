@@ -17,14 +17,16 @@ public class TerrainModeController : MonoBehaviour
 	protected ISubject<McData> modeSavedAndExitedSubject = new Subject<McData>();
 	public IObservable<McData> ModeSavedAndExitedStream { get { return modeSavedAndExitedSubject; } }
 
-	MarchingCubesGPUProject.EditableTerrain terrain;
 	Guid sceneGuid;
+	MarchingCubesGPUProject.EditableTerrain terrain;
+
 
 	private void Start()
 	{
 		menuTerrainController.ExitToSceneModeStream.Subscribe(_ => ExitMode());
 		menuTerrainController.SaveAndExitToSceneModeStream.Subscribe(_ => SaveTerrainAndExitMode());
 	}
+
 
 	public void TurnOnMode(LoadData loadData)
 	{

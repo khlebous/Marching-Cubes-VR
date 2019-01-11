@@ -18,11 +18,11 @@ public class MenuLeftModelController : MonoBehaviour
 	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickDown;
 	private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
 
-	private ButtonState currThumbstickState = ButtonState.Normal;
-	private bool isMenuActive;
-	private int activeItemIndex = 0;
-
 	private List<MenuItemV> items;
+	private ButtonState currThumbstickState;
+	private bool isMenuActive;
+	private int activeItemIndex;
+
 
 	private void Start()
 	{
@@ -31,6 +31,14 @@ public class MenuLeftModelController : MonoBehaviour
 			saveExitItem,
 			dontSaveExitItem
 		};
+		SetupMenu();
+	}
+
+	private void SetupMenu()
+	{
+		currThumbstickState = ButtonState.Normal;
+		isMenuActive = false;
+		activeItemIndex = 0;
 
 		foreach (var item in items)
 			item.SetInactive();
@@ -38,17 +46,6 @@ public class MenuLeftModelController : MonoBehaviour
 		items[activeItemIndex].SetActive();
 	}
 
-	public void OpenMenu()
-	{
-		gameObject.SetActive(true);
-		isMenuActive = true;
-	}
-
-	public void CloseMenu()
-	{
-		gameObject.SetActive(false);
-		isMenuActive = false;
-	}
 
 	void Update()
 	{
@@ -99,6 +96,20 @@ public class MenuLeftModelController : MonoBehaviour
 		else if (activeItemIndex == 1)
 			exitToSceneModeSubject.OnNext(Unit.Default);
 	}
+
+
+	public void OpenMenu()
+	{
+		gameObject.SetActive(true);
+		isMenuActive = true;
+	}
+
+	public void CloseMenu()
+	{
+		gameObject.SetActive(false);
+		isMenuActive = false;
+	}
+
 
 	private void IncreaseActiveItemIndex()
 	{

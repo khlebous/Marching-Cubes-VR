@@ -12,8 +12,7 @@ public class SceneModeController : MonoBehaviour
 	[SerializeField] private Transform controllerToFollow;
 
 	[Header("Other")]
-	[SerializeField]
-	private McManager mcManager;
+	[SerializeField] private McManager mcManager;
 
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
@@ -37,16 +36,84 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.ModelToAddSelectedStream.Subscribe(AddModelToScene);
 		menuSceneController.ModelToEditSelectedStream.Subscribe(SuspendAndExitToObjectMode);
 		menuSceneController.ModelToDeleteSelectedStream.Subscribe(DeleteModelFromModelsList);
-
 	}
 
-	private void AddModelToScene(Guid modelGuid)
+
+	public void TurnOnCurrentMode()
 	{
-		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = false;
-
-		GameObject newObject = scene.InstantiateModel(modelGuid);
-		SetObjectSelected(newObject);
+		sceneContiner.SetActive(true);
+		menuSceneController.SetActive();
 	}
+
+	public void TurnOnModeWith(Guid guid)
+	{
+		scene = mcManager.LoadScene(guid);
+		scene.gameObject.transform.parent = sceneContiner.transform;
+		scene.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+
+		sceneContiner.SetActive(true);
+		menuSceneController.SetActive();
+
+		ModelsListChanged();
+	}
+
+	public void TurnOnCurrentModeWithObjectUpdate(McData data)
+	{
+		scene.SetOrUpdateModel(new McGameObjData(data, mcManager.LoadModelMeshes(data)));
+		ModelsListChanged();
+		TurnOnCurrentMode();
+	}
+
+	public void TurnOnCurrentModeWithTerrainUpdate(McData data)
+	{
+		scene.SetOrUpdateTerrain(new McGameObjData(data, mcManager.LoadTerrainMeshes(data)));
+		TurnOnCurrentMode();
+	}
+
+
+	private void ExitToMainMode()
+	{
+		sceneContiner.SetActive(false);
+		menuSceneController.SetInactive();
+
+		scene.Destroy();
+		scene = null;
+
+		exitToMainModeSubject.OnNext(Unit.Default);
+	}
+
+	private void SaveSceneAndExitToMainMode()
+	{
+		mcManager.Save(scene);
+		ExitToMainMode();
+	}
+
+
+	private void SuspendAndExitToTerrainMode()
+	{
+		sceneContiner.SetActive(false);
+		menuSceneController.SetInactive();
+
+		exitToTerrainModeSubject.OnNext
+			(new LoadData(scene.Guid, scene.Terrain.Data));
+	}
+
+	private void SuspendAndExitToObjectMode()
+	{
+		sceneContiner.SetActive(false);
+		menuSceneController.SetInactive();
+
+		exitToObjectModeSubject.OnNext(new LoadData(scene.Guid, null));
+	}
+
+	private void SuspendAndExitToObjectMode(Guid guid)
+	{
+		sceneContiner.SetActive(false);
+		menuSceneController.SetInactive();
+
+		exitToObjectModeSubject.OnNext(new LoadData(scene.Guid, scene.Models[guid].Data));
+	}
+
 
 	private void SetObjectSelected(GameObject go)
 	{
@@ -60,12 +127,6 @@ public class SceneModeController : MonoBehaviour
 
 		menuSceneController.SetInactive();
 		waitForMenuLeftOpenCoroutine = StartCoroutine(WaitForNewObjectMovementEnd());
-	}
-
-	private void SetObjectNormal(GameObject go)
-	{
-		go.GetComponent<MovementWithOculusTouch>().enabled = false;
-		selectedObject = null;
 	}
 
 	private IEnumerator WaitForNewObjectMovementEnd()
@@ -85,24 +146,12 @@ public class SceneModeController : MonoBehaviour
 		}
 	}
 
-	private void DeleteModelFromModelsList(Guid modelGuid)
+	private void SetObjectNormal(GameObject go)
 	{
-		scene.DeleteModel(modelGuid);
-		mcManager.DeleteModel(modelGuid, scene.Guid);
-		ModelsListChanged();
+		go.GetComponent<MovementWithOculusTouch>().enabled = false;
+		selectedObject = null;
 	}
 
-	public void TurnOnModeWith(Guid guid)
-	{
-		scene = mcManager.LoadScene(guid);
-		scene.gameObject.transform.parent = sceneContiner.transform;
-		scene.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-
-		sceneContiner.SetActive(true);
-		menuSceneController.SetActive();
-
-		ModelsListChanged();
-	}
 
 	private void ModelsListChanged()
 	{
@@ -110,64 +159,18 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.UpdateModelsGuids(modelGuids);
 	}
 
-	private void ExitToMainMode()
+	private void AddModelToScene(Guid modelGuid)
 	{
-		sceneContiner.SetActive(false);
-		menuSceneController.SetInactive();
+		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = false;
 
-		scene.Destroy();
-		scene = null;
-
-		exitToMainModeSubject.OnNext(Unit.Default);
+		GameObject newObject = scene.InstantiateModel(modelGuid);
+		SetObjectSelected(newObject);
 	}
 
-	private void SaveSceneAndExitToMainMode()
+	private void DeleteModelFromModelsList(Guid modelGuid)
 	{
-		mcManager.Save(scene);
-		ExitToMainMode();
-	}
-
-	public void TurnOnCurrentMode()
-	{
-		sceneContiner.SetActive(true);
-		menuSceneController.SetActive();
-	}
-
-	private void SuspendAndExitToTerrainMode()
-	{
-		sceneContiner.SetActive(false);
-		menuSceneController.SetInactive();
-
-		exitToTerrainModeSubject.OnNext
-			(new LoadData(scene.Guid, scene.Terrain.Data));
-	}
-
-	public void TurnOnCurrentModeWithTerrainUpdate(McData data)
-	{
-		scene.SetOrUpdateTerrain(new McGameObjData(data, mcManager.LoadTerrainMeshes(data)));
-		TurnOnCurrentMode();
-	}
-
-	public void TurnOnCurrentModeWithObjectUpdate(McData data)
-	{
-		scene.SetOrUpdateModel(new McGameObjData(data, mcManager.LoadModelMeshes(data)));
+		scene.DeleteModel(modelGuid);
+		mcManager.DeleteModel(modelGuid, scene.Guid);
 		ModelsListChanged();
-		TurnOnCurrentMode();
-	}
-
-	private void SuspendAndExitToObjectMode()
-	{
-		sceneContiner.SetActive(false);
-		menuSceneController.SetInactive();
-
-		exitToObjectModeSubject.OnNext(new LoadData(scene.Guid, null));
-	}
-
-	private void SuspendAndExitToObjectMode(Guid guid)
-	{
-		sceneContiner.SetActive(false);
-		menuSceneController.SetInactive();
-
-		exitToObjectModeSubject.OnNext(new LoadData(scene.Guid, scene.Models[guid].Data));
 	}
 }

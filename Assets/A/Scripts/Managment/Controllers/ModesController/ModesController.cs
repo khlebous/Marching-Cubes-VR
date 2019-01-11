@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UniRx;
-using System;
 
 public class ModesController : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class ModesController : MonoBehaviour
 
 	[Header("Mangers")]
 	[SerializeField] private McManager mcManager;
+
 
 	private void Start()
 	{
@@ -35,28 +36,29 @@ public class ModesController : MonoBehaviour
 		mainModeController.TurnOnModeWithCurrentSceneGuids(mcManager.GetAllSceneGuids());
 	}
 
-	// Exit main menu mode
+
 	private void LoadSceneWithGuid(Guid sceneGuid)
 	{
 		sceneModeController.TurnOnModeWith(sceneGuid);
 	}
-	// Exit scene mode
+
+
 	private void TurnOnMainModeFromSceneMode()
 	{
 		mainModeController.TurnOnModeWithCurrentSceneGuids(mcManager.GetAllSceneGuids());
 	}
 
-	private void TurnOnTerrainModeFromSceneMode(LoadData data)
+	private void TurnOnTerrainModeFromSceneMode(LoadData terrainData)
 	{
-		terrainModeController.TurnOnMode(data);
+		terrainModeController.TurnOnMode(terrainData);
 	}
 
-	private void TurnOnObjectModeFromSceneMode(LoadData loadData)
+	private void TurnOnObjectModeFromSceneMode(LoadData objectData)
 	{
-		objectModeController.TurnOnMode(loadData);
+		objectModeController.TurnOnMode(objectData);
 	}
 
-	// Exit terrain mode
+
 	private void TurnOnSceneModeFromTerrainMode()
 	{
 		sceneModeController.TurnOnCurrentMode(); 
@@ -67,14 +69,14 @@ public class ModesController : MonoBehaviour
 		sceneModeController.TurnOnCurrentModeWithTerrainUpdate(terrainData);
 	}
 
-	private void UpdateAndTurnOnSceneModeFromObjectMode(McData terrainData)
-	{
-		sceneModeController.TurnOnCurrentModeWithObjectUpdate(terrainData);
-	}
 
-	// Exit obj mode
 	private void TurnOnSceneModeFromObjectMode() // TODO same as exit terrain?
 	{
 		sceneModeController.TurnOnCurrentMode();
+	}
+
+	private void UpdateAndTurnOnSceneModeFromObjectMode(McData terrainData)
+	{
+		sceneModeController.TurnOnCurrentModeWithObjectUpdate(terrainData);
 	}
 }

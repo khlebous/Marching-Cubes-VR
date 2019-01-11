@@ -24,7 +24,6 @@ void Draw(int idx, float distanceToBrush) {
 
 float GetDistToBrush(float3 pos) {
 
-	//TODO: fix scales
 	float3 distVector = float3(0, 0, 0);
 
 	if (_BrushShape == 1) {
@@ -51,7 +50,7 @@ void ChangeColor(uint3 id)
 	float4 position = mul(_FromMcToBrushMatrix, rawPosition);
 	float dist = GetDistToBrush(position.xyz);
 
-	if (dist <= 0)
+	if (dist <= 0.1) // 0 but is float
 		_VoxelColors[idx] = _BrushColor;
 }
 

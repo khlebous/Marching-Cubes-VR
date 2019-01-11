@@ -23,13 +23,8 @@ namespace MarchingCubesGPUProject
         public ModelSchaders Shaders;
         public Material material;
 
-
-        private ComputeBuffer _dataBuffer;
-        private ComputeBuffer _dataColorBuffer;
-        private ComputeBuffer _meshBuffer;
-        private ComputeBuffer _cubeEdgeFlags;
-        private ComputeBuffer _triangleConnectionTable;
-
+        private GPURenderer _renderer;
+        
         private Mesh[] _meshes;
         private Transform[] _meshObjTransforms;
         private McVert[] _verts = new McVert[Size];
@@ -40,169 +35,46 @@ namespace MarchingCubesGPUProject
             if (N % 8 != 0)
                 throw new System.ArgumentException("N must be divisible be 8");
 
-            InitMeshes();
-            InitDataBuffer();
-            InitDataColorBuffer();
-            InitMeshBuffer();
-            InitMarchingCubesTablesBuffors();
+            _renderer = new GPURenderer(Shaders, N, N * N * N);
 
             //first calculation
-            CleanMeshBuffer();
-            CalculateMesh();
-            CalculateNormals();
+            _renderer.CleanMeshBuffer();
+            _renderer.CalculateMesh(this.transform);
+            _renderer.CalculateNormals();
             UpdateMeshes();
         }
 
-
-        private void InitMeshes()
-        {
-            _meshes = new Mesh[meshCount];
-            _meshObjTransforms = new Transform[meshCount];
-
-            for (int i = 0; i < meshCount; i++)
-            {
-                Mesh mesh = new Mesh();
-                mesh.bounds = new Bounds(new Vector3(0, N / 2, 0), new Vector3(N, N, N)); //what is it for?
-                _meshes[i] = mesh;
-
-                GameObject go = new GameObject("Marching Mesh");
-                go.AddComponent<MeshFilter>();
-                go.AddComponent<MeshRenderer>();
-                go.GetComponent<Renderer>().material = material;
-                go.GetComponent<MeshFilter>().mesh = mesh;
-
-                MeshCollider collider = go.AddComponent<MeshCollider>();
-                collider.sharedMesh = mesh;
-
-                go.transform.parent = transform;
-                go.transform.SetPositionAndRotation(go.transform.parent.position, go.transform.parent.rotation);
-                _meshObjTransforms[i] = go.transform;
-            }
-        }
-        private void InitDataBuffer()
-        {
-            if (_dataBuffer != null)
-                return;
-
-            _dataBuffer = new ComputeBuffer(N * N * N, sizeof(float));
-            var data = new float[N * N * N];
-
-            for (int z = 0; z < N; z++)
-                for (int y = 0; y < N; y++)
-                    for (int x = 0; x < N; x++)
-                    {
-                        data[x + y * N + z * N * N] = 0;
-
-                        if (x != 0 && y != 0 && z != 0 && x != N - 1 && y != N - 1 && z != N - 1)
-                        {
-                            if (y > 0 && y < 2 && x > 1 && x < N && z > 1 && z < N)
-                                data[x + y * N + z * N * N] = 0.51f;
-                        }
-                    }
-
-
-            _dataBuffer.SetData(data);
-        }
-        private void InitDataColorBuffer()
-        {
-            if (_dataColorBuffer != null)
-                return;
-
-            _dataColorBuffer = new ComputeBuffer(N * N * N * 4, 4 * sizeof(float));
-            var data = new Vector4[N * N * N];
-
-            for (int z = 0; z < N; z++)
-                for (int y = 0; y < N; y++)
-                    for (int x = 0; x < N; x++)
-                    {
-                        data[x + y * N + z * N * N] = new Vector4(0.7f, 0.7f, 0.7f, 1);
-                        //if (x > 3)
-                        //    data[x + y * N + z * N * N] = new Vector4(1, 0, 0, 1);
-                    }
-
-            _dataColorBuffer.SetData(data);
-        }
-        private void InitMeshBuffer()
-        {
-            //m_meshBuffer = new ComputeBuffer(SIZE, sizeof(float) * 7);
-            _meshBuffer = new ComputeBuffer(Size, sizeof(float) * 11);
-            CleanMeshBuffer();
-        }
-        private void InitMarchingCubesTablesBuffors()
-        {
-            //These two buffers are just some settings needed by the marching cubes.
-            _cubeEdgeFlags = new ComputeBuffer(256, sizeof(int));
-            _cubeEdgeFlags.SetData(MarchingCubesTables.CubeEdgeFlags);
-            _triangleConnectionTable = new ComputeBuffer(256 * 16, sizeof(int));
-            _triangleConnectionTable.SetData(MarchingCubesTables.TriangleConnectionTable);
-        }
 
         private void Update()
         {
             if (brush.mode == BrushMode.Inactive)
                 return;
 
-            CleanMeshBuffer();
+            _renderer.CleanMeshBuffer();
             CalculateChanges();
-            CalculateMesh();
-            CalculateNormals();
+            _renderer.CalculateMesh(this.transform);
+            _renderer.CalculateNormals();
             UpdateMeshes();
         }
 
-        private void CleanMeshBuffer()
-        {
-            Shaders.clearShader.SetInt("_Width", N);
-            Shaders.clearShader.SetInt("_Height", N);
-            Shaders.clearShader.SetInt("_Depth", N);
-            Shaders.clearShader.SetBuffer(0, "_Buffer", _meshBuffer);
-
-            Shaders.clearShader.Dispatch(0, N / 8, N / 8, N / 8);
-        }
         private void CalculateChanges()
         {
-            Shaders.brushShader.SetInt("_Width", N);
-            Shaders.brushShader.SetInt("_Height", N);
-            Shaders.brushShader.SetInt("_Depth", N);
+            Shaders.brushShader.SetInt("Width", N);
+            Shaders.brushShader.SetInt("Height", N);
+            Shaders.brushShader.SetInt("Depth", N);
 
-            Shaders.brushShader.SetVector("_Scale", transform.lossyScale);
-            Shaders.brushShader.SetBuffer(0, "_Voxels", _dataBuffer);
-            Shaders.brushShader.SetBuffer(0, "_VoxelColors", _dataColorBuffer);
+            Shaders.brushShader.SetVector("Scale", transform.lossyScale);
+            Shaders.brushShader.SetBuffer(0, "Voxels", _renderer.dataBuffer);
+            Shaders.brushShader.SetBuffer(0, "VoxelColors", _renderer.dataColorBuffer);
 
-            Shaders.brushShader.SetVector("_BrushColor", brush.color);
-            Shaders.brushShader.SetInt("_BrushMode", (int)brush.mode);
-            Shaders.brushShader.SetInt("_BrushShape", (int)brush.shape);
+            Shaders.brushShader.SetVector("BrushColor", brush.color);
+            Shaders.brushShader.SetInt("BrushMode", (int)brush.mode);
+            Shaders.brushShader.SetInt("BrushShape", (int)brush.shape);
 
-           Shaders.brushShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
-            Shaders.brushShader.SetVector("_BrushScale", brush.transform.lossyScale);
+            Shaders.brushShader.SetFloats("FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
+            Shaders.brushShader.SetVector("BrushScale", brush.transform.lossyScale);
 
             Shaders.brushShader.Dispatch(0, N / 8, N / 8, N / 8);
-        }
-        private void CalculateMesh()
-        {
-            Shaders.marchingShader.SetInt("_Width", N);
-            Shaders.marchingShader.SetInt("_Height", N);
-            Shaders.marchingShader.SetInt("_Depth", N);
-            Shaders.marchingShader.SetVector("_Scale", this.transform.lossyScale);
-            Shaders.marchingShader.SetVector("_BrushColor", brush.color);
-            Shaders.marchingShader.SetInt("_Border", 0); // strange but works
-                                                         //m_marchingCubes.SetInt("_Border", 1);
-            Shaders.marchingShader.SetFloat("_Target", 0.5f);//!!!!! values [0,1]
-            Shaders.marchingShader.SetBuffer(0, "_Voxels", _dataBuffer);
-            Shaders.marchingShader.SetBuffer(0, "_VoxelColors", _dataColorBuffer);
-            Shaders.marchingShader.SetBuffer(0, "_Buffer", _meshBuffer);
-            Shaders.marchingShader.SetBuffer(0, "_CubeEdgeFlags", _cubeEdgeFlags);
-            Shaders.marchingShader.SetBuffer(0, "_TriangleConnectionTable", _triangleConnectionTable);
-
-            Shaders.marchingShader.Dispatch(0, N / 8, N / 8, N / 8);
-        }
-        private void CalculateNormals()
-        {
-            Shaders.normalsShader.SetInt("_Width", N);
-            Shaders.normalsShader.SetInt("_Height", N);
-            Shaders.normalsShader.SetInt("_Depth", N);
-            Shaders.normalsShader.SetBuffer(0, "_Buffer", _meshBuffer);
-
-            Shaders.normalsShader.Dispatch(0, N / 8, N / 8, N / 8);
         }
 
         private Matrix4x4 GetFromMcToBrushMatrix()
@@ -216,12 +88,7 @@ namespace MarchingCubesGPUProject
 
         private void OnDestroy()
         {
-            //MUST release buffers.
-            _dataBuffer.Release();
-            _dataColorBuffer.Release();
-            _meshBuffer.Release();
-            _cubeEdgeFlags.Release();
-            _triangleConnectionTable.Release();
+            _renderer.ReleaseBuffers();
         }
 
         //private Matrix4x4 GetToMcMatrix()
@@ -250,8 +117,8 @@ namespace MarchingCubesGPUProject
             EnsureProperMeshScaling();
 
             //Get the data out of the buffer.
-            _meshBuffer.GetData(_verts);
-            //var a = m_meshBuffer.GetNativeBufferPtr();
+            _renderer.meshBuffer.GetData(_verts);
+            //var a = mmeshBuffer.GetNativeBufferPtr();
 
             var positions = new List<Vector3>();
             var normals = new List<Vector3>();
@@ -312,12 +179,13 @@ namespace MarchingCubesGPUProject
 
         public void SetData(McData data)
         {
-            InitDataBuffer();
-            InitDataColorBuffer();
-
             Guid = data.Guid;
-			_dataBuffer.SetData(data.Values);
-			_dataColorBuffer.SetData(data.Colors);
+
+            _renderer.InitDataBuffer();
+            _renderer.InitDataColorBuffer();
+
+            _renderer.dataBuffer.SetData(data.Values);
+            _renderer.dataColorBuffer.SetData(data.Colors);
         }
         public McData GetData()
         {
@@ -326,17 +194,17 @@ namespace MarchingCubesGPUProject
             data.Values = new float[N * N * N];
             data.Colors = new Vector4[N * N * N];
 
-            _dataBuffer.GetData(data.Values);
-            _dataColorBuffer.GetData(data.Colors);
+            _renderer.dataBuffer.GetData(data.Values);
+            _renderer.dataColorBuffer.GetData(data.Colors);
 
             return data;
         }
 
-		public void Destroy()
-		{
-			GameObject.Destroy(gameObject);
-		}
-	}
+        public void Destroy()
+        {
+            GameObject.Destroy(gameObject);
+        }
+    }
 }
 
 

@@ -17,9 +17,6 @@ public class GPURenderer
 
     public int Size
     { get { return N * N * N * 3 * 5; } }
-
-    public McVert[] _verts;
-
     public BaseShaders shaders;
 
     public ComputeBuffer dataBuffer;
@@ -37,8 +34,6 @@ public class GPURenderer
         //There are 8 threads run per group so N must be divisible by 8.
         if (N % 8 != 0)
             throw new System.ArgumentException("N must be divisible be 8");
-
-        _verts = new McVert[Size];
 
         dataBuffer = new ComputeBuffer(DesiredBufferSize, sizeof(float));
         dataColorBuffer = new ComputeBuffer(4 * DesiredBufferSize, 4 * sizeof(float));

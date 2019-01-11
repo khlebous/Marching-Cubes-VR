@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class McBaseGenerator : GPURenderer
 {
+    public McVert[] _verts;
+
     public McBaseGenerator(BaseShaders shaders, int n, int desiredBufferSize, Material material) : base(shaders, n, desiredBufferSize)
     {
         this.material = material;

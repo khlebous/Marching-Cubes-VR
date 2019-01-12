@@ -21,9 +21,11 @@ public class EditableScene : MonoBehaviour
 		obj.transform.localPosition = Vector3.zero;
 		ModelsOnTerrain.Add(new McObject(guid, obj));
 
+		obj.AddComponent<ObjectController>();
 		obj.AddComponent<MovementWithOculusTouch>();
 		obj.GetComponent<MovementWithOculusTouch>().enabled = false;
 
+		obj.tag = Constants.OBJECT_TAG;
 		obj.SetActive(true);
 
 		return obj;

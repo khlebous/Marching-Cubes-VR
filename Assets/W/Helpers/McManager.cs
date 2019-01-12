@@ -24,8 +24,6 @@ public class McManager : MonoBehaviour
         Loader = new McLoader();
         TerrainGenerator = new McTerrainGenerator(TerrainShaders, material);
         ModelGenerator = new McModelGenerator(ModelShaders, material);
-
-        LoadScene(new Guid("febb98ce-3e07-4441-b7f1-7f2c42a3731f"));
     }
 
     public void OnDestroy()

@@ -13,6 +13,7 @@ public class SceneModeController : MonoBehaviour
 
 	[Header("Other")]
 	[SerializeField] private McManager mcManager;
+	[SerializeField] private ControllerRaycast controllerRaycast;
 
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
@@ -24,7 +25,7 @@ public class SceneModeController : MonoBehaviour
 	public IObservable<LoadData> ExitToObjectModeStream { get { return exitToObjectModeSubject; } }
 
 	private EditableScene scene;
-	private GameObject selectedObject;
+	private ObjectController selectedObject;
 	private Coroutine waitForMenuLeftOpenCoroutine;
 
 	private void Start()
@@ -43,6 +44,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		sceneContiner.SetActive(true);
 		menuSceneController.SetActive();
+		controllerRaycast.SetEnable(true);
 	}
 
 	public void TurnOnModeWith(Guid guid)
@@ -53,6 +55,7 @@ public class SceneModeController : MonoBehaviour
 
 		sceneContiner.SetActive(true);
 		menuSceneController.SetActive();
+		controllerRaycast.SetEnable(true);
 
 		ModelsListChanged();
 	}
@@ -62,12 +65,14 @@ public class SceneModeController : MonoBehaviour
 		scene.SetOrUpdateModel(new McGameObjData(data, mcManager.LoadModelMeshes(data)));
 		ModelsListChanged();
 		TurnOnCurrentMode();
+		controllerRaycast.SetEnable(true);
 	}
 
 	public void TurnOnCurrentModeWithTerrainUpdate(McData data)
 	{
 		scene.SetOrUpdateTerrain(new McGameObjData(data, mcManager.LoadTerrainMeshes(data)));
 		TurnOnCurrentMode();
+		controllerRaycast.SetEnable(true);
 	}
 
 
@@ -75,6 +80,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
+		controllerRaycast.SetEnable(false);
 
 		scene.Destroy();
 		scene = null;
@@ -86,6 +92,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		mcManager.Save(scene);
 		ExitToMainMode();
+		controllerRaycast.SetEnable(false);
 	}
 
 
@@ -93,6 +100,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
+		controllerRaycast.SetEnable(false);
 
 		exitToTerrainModeSubject.OnNext
 			(new LoadData(scene.Guid, scene.Terrain.Data));
@@ -102,6 +110,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
+		controllerRaycast.SetEnable(false);
 
 		exitToObjectModeSubject.OnNext(new LoadData(scene.Guid, null));
 	}
@@ -110,18 +119,21 @@ public class SceneModeController : MonoBehaviour
 	{
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
+		controllerRaycast.SetEnable(false);
 
 		exitToObjectModeSubject.OnNext(new LoadData(scene.Guid, scene.Models[guid].Data));
 	}
 
 
-	private void SetObjectSelected(GameObject go)
+	private void SetObjectSelected(ObjectController go)
 	{
+		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = false;
+
 		if (selectedObject != null)
 			SetObjectNormal(selectedObject);
 		selectedObject = go;
 
-		go.GetComponent<MovementWithOculusTouch>().enabled = true;
+		go.SetActive();
 		go.GetComponent<MovementWithOculusTouch>()
 			.SetControllerToFollow(controllerToFollow);
 
@@ -140,15 +152,17 @@ public class SceneModeController : MonoBehaviour
 				SetObjectNormal(selectedObject);
 				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
 				menuSceneController.SetActive();
+				controllerRaycast.SetEnable(true);
+
 			}
 
 			yield return new WaitForEndOfFrame();
 		}
 	}
 
-	private void SetObjectNormal(GameObject go)
+	private void SetObjectNormal(ObjectController go)
 	{
-		go.GetComponent<MovementWithOculusTouch>().enabled = false;
+		go.SetInactive();
 		selectedObject = null;
 	}
 
@@ -161,10 +175,11 @@ public class SceneModeController : MonoBehaviour
 
 	private void AddModelToScene(Guid modelGuid)
 	{
-		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = false;
-
 		GameObject newObject = scene.InstantiateModel(modelGuid);
-		SetObjectSelected(newObject);
+
+		ObjectController objectController = newObject.GetComponent<ObjectController>();
+		objectController.ObjectSelectedStream.Subscribe(_ => SetObjectSelected(objectController));
+		SetObjectSelected(objectController);
 	}
 
 	private void DeleteModelFromModelsList(Guid modelGuid)

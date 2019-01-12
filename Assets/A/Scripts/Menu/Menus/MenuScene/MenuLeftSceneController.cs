@@ -17,12 +17,13 @@ public class MenuLeftSceneController : MonoBehaviour
 	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickUp;
 	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickDown;
 	private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
-
-	private ButtonState currThumbstickState = ButtonState.Normal;
-	private bool isMenuActive;
-	private int activeItemIndex = 0;
+	private OVRInput.Controller controller = OVRInput.Controller.LTouch;
 
 	private List<MenuItemV> items;
+	private ButtonState currThumbstickState;
+	private bool isMenuActive;
+	private int activeItemIndex;
+
 
 	private void Start()
 	{
@@ -31,24 +32,20 @@ public class MenuLeftSceneController : MonoBehaviour
 			saveExitItem,
 			dontSaveExitItem
 		};
+		SetupMenu();
+	}
+
+	private void SetupMenu()
+	{
+		currThumbstickState = ButtonState.Normal;
+		isMenuActive = false;
+		activeItemIndex = 0;
 
 		foreach (var item in items)
 			item.SetInactive();
-
 		items[activeItemIndex].SetActive();
 	}
 
-	public void OpenMenu()
-	{
-		gameObject.SetActive(true);
-		isMenuActive = true;
-	}
-
-	public void CloseMenu()
-	{
-		gameObject.SetActive(false);
-		isMenuActive = false;
-	}
 
 	void Update()
 	{
@@ -61,7 +58,7 @@ public class MenuLeftSceneController : MonoBehaviour
 			}
 			else
 			{
-				if (OVRInput.Get(prevItemButton))
+				if (OVRInput.Get(prevItemButton, controller))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{
@@ -71,7 +68,7 @@ public class MenuLeftSceneController : MonoBehaviour
 						items[activeItemIndex].SetActive();
 					}
 				}
-				else if (OVRInput.Get(nextItemButton))
+				else if (OVRInput.Get(nextItemButton, controller))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{
@@ -99,6 +96,20 @@ public class MenuLeftSceneController : MonoBehaviour
 		else if (activeItemIndex == 1)
 			exitToMainModeSubject.OnNext(Unit.Default);
 	}
+
+
+	public void OpenMenu()
+	{
+		gameObject.SetActive(true);
+		isMenuActive = true;
+	}
+
+	public void CloseMenu()
+	{
+		gameObject.SetActive(false);
+		isMenuActive = false;
+	}
+
 
 	private void IncreaseActiveItemIndex()
 	{

@@ -120,7 +120,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4377020196189352}
-  - component: {fileID: 114431593748257798}
   m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
@@ -730,24 +729,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlight: {fileID: 114175504961955860}
   stopEditingItemButton: 8388608
---- !u!114 &114431593748257798
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1545236159105618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9c73640688eb9e4c91e72cb202e78a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  highlight: {fileID: 0}
-  stopEditingItemButton: 8388608
-  items:
-  - {fileID: 0}
-  - {fileID: 0}
-  nextItemButton: 134217728
-  prevItemButton: 67108864
 --- !u!114 &114504257389486284
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -842,7 +823,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Przejdz do trybu edycji scenu (bez zapisu zmian)
+  m_Text: Exit without saving
 --- !u!114 &114639063166552964
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -906,7 +887,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Zapisz zmiany \ni przejdz do trybu edycji sceny"
+  m_Text: Exit and save terrain
 --- !u!114 &114900131082866990
 MonoBehaviour:
   m_ObjectHideFlags: 1

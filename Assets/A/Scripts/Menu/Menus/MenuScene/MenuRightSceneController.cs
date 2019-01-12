@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using UniRx;
-using System.Collections.Generic;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using UniRx;
 
 public class MenuRightSceneController : MonoBehaviour
 {
@@ -39,11 +39,11 @@ public class MenuRightSceneController : MonoBehaviour
 	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickDown;
 	private OVRInput.Button selectItemButton = OVRInput.Button.SecondaryThumbstick;
 
-	private ButtonState currThumbstickState = ButtonState.Normal;
-	private bool isMenuActive;
-	private int activeItemIndex = 0;
-
 	private List<MenuItemV> items;
+	private ButtonState currThumbstickState;
+	private bool isMenuActive;
+	private int activeItemIndex;
+
 
 	private void Start()
 	{
@@ -56,39 +56,29 @@ public class MenuRightSceneController : MonoBehaviour
 			editModel,
 			deleteModel
 		};
+		SetupMenu();
+
+		modelsList.ItemSelectedStream.Subscribe(_ => StartCoroutine(WaitNextFrameAndSetMenuActive()));
+	}
+
+	private void SetupMenu()
+	{
+		currThumbstickState = ButtonState.Normal;
+		isMenuActive = false;
+		activeItemIndex = 0;
 
 		foreach (var item in items)
 			item.SetInactive();
-
 		items[activeItemIndex].SetActive();
-
-		modelsList.ItemSelectedStream.Subscribe(OnSelected);
 	}
 
-	private void OnSelected(Guid guid)
-	{
-		StartCoroutine(WaitNextFrame());
-	}
-
-	IEnumerator WaitNextFrame()
+	IEnumerator WaitNextFrameAndSetMenuActive()
 	{
 		yield return new WaitForSeconds(0.5f);
 
 		isMenuActive = true;
 	}
 
-
-	public void OpenMenu()
-	{
-		gameObject.SetActive(true);
-		isMenuActive = true;
-	}
-
-	public void CloseMenu()
-	{
-		gameObject.SetActive(false);
-		isMenuActive = false;
-	}
 
 	void Update()
 	{
@@ -132,11 +122,6 @@ public class MenuRightSceneController : MonoBehaviour
 		}
 	}
 
-	public void UpdateModelsGuids(List<Guid> modelsGuids)
-	{
-		modelsList.SetModelsGuids(modelsGuids);
-	}
-
 	private void ItemSelected()
 	{
 		switch (activeItemIndex)
@@ -167,6 +152,25 @@ public class MenuRightSceneController : MonoBehaviour
 				break;
 		}
 	}
+
+
+	public void OpenMenu()
+	{
+		gameObject.SetActive(true);
+		isMenuActive = true;
+	}
+
+	public void CloseMenu()
+	{
+		gameObject.SetActive(false);
+		isMenuActive = false;
+	}
+	
+	public void UpdateModelsGuids(List<Guid> modelsGuids)
+	{
+		modelsList.SetModelsGuids(modelsGuids);
+	}
+
 
 	private void IncreaseActiveItemIndex()
 	{

@@ -119,11 +119,14 @@ public class McLoader
         var bin = new BinaryFormatter();
 
         var ss = new SurrogateSelector();
-        ss.AddSurrogate(typeof(Vector4),
-                        new StreamingContext(StreamingContextStates.All),
-                        new Vector4SerializationSurrogate());
+		ss.AddSurrogate(typeof(Vector4),
+						new StreamingContext(StreamingContextStates.All),
+						new Vector4SerializationSurrogate());
+		ss.AddSurrogate(typeof(Vector3),
+						new StreamingContext(StreamingContextStates.All),
+						new Vector3SerializationSurrogate());
 
-        bin.SurrogateSelector = ss;
+		bin.SurrogateSelector = ss;
 
         return bin;
     }

@@ -24,22 +24,11 @@ public class MenuRightTerrainController : MonoBehaviour
 	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickDown;
 	private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickUp;
 
-	private ButtonState currThumbstickState = ButtonState.Normal;
-	private bool isMenuActive;
-	private int activeItemIndex = 0;
-
 	private List<MenuItemV> items;
-	public void OpenMenu()
-	{
-		gameObject.SetActive(true);
-		isMenuActive = true;
-	}
+	private ButtonState currThumbstickState;
+	private bool isMenuActive;
+	private int activeItemIndex;
 
-	public void CloseMenu()
-	{
-		gameObject.SetActive(false);
-		isMenuActive = false;
-	}
 
 	private void Start()
 	{
@@ -50,13 +39,7 @@ public class MenuRightTerrainController : MonoBehaviour
 			brushSizeItem,
 			brushColorItem
 		};
-
-		foreach (var item in items)
-		{
-			item.SetInactive();
-			item.ThubstickClickedStream.Subscribe(_ => SetMenuActive());
-		}
-		items[activeItemIndex].SetActive();
+		SetupMenu();
 
 		modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
 		brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
@@ -64,18 +47,28 @@ public class MenuRightTerrainController : MonoBehaviour
 		brushColorItem.ColorChangedStream.Subscribe(brush.SetColor);
 	}
 
-	public void SetMenuActive()
+	private void SetupMenu()
 	{
-		StartCoroutine(WaitNextFrame());
+		currThumbstickState = ButtonState.Normal;
+		isMenuActive = false;
+		activeItemIndex = 0;
+
+		foreach (var item in items)
+		{
+			item.SetInactive();
+			item.ThubstickClickedStream.Subscribe(_ => StartCoroutine(WaitNextFrameAndSetMenuActive()));
+		}
+		items[activeItemIndex].SetActive();
 	}
 
-	IEnumerator WaitNextFrame()
+	IEnumerator WaitNextFrameAndSetMenuActive()
 	{
 		yield return new WaitForSeconds(0.5f);
 
 		isMenuActive = true;
 		itemNotActiveSubject.OnNext(Unit.Default);
 	}
+
 
 	void Update()
 	{
@@ -120,6 +113,20 @@ public class MenuRightTerrainController : MonoBehaviour
 		}
 
 	}
+
+
+	public void OpenMenu()
+	{
+		gameObject.SetActive(true);
+		isMenuActive = true;
+	}
+
+	public void CloseMenu()
+	{
+		gameObject.SetActive(false);
+		isMenuActive = false;
+	}
+
 
 	private void IncreaseActiveItemIndex()
 	{

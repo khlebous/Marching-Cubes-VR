@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using UniRx;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
+using UniRx;
+using System.Collections;
 using System.Collections.Generic;
 
 public class MainMenuController : MonoBehaviour
 {
 	public int ActiveItemIndex { get; private set; }
 	public int MaxItemIndex { get; private set; }
-	public List<Guid> ScenesGuids;
+	public List<Guid> ScenesGuids { get; private set; }
 
 	protected ISubject<Unit> itemChangedSubject = new Subject<Unit>();
 	public IObservable<Unit> ItemChangedStream { get { return itemChangedSubject; } }
@@ -22,18 +22,24 @@ public class MainMenuController : MonoBehaviour
 	private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
 	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickLeft;
 	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickRight;
+	private OVRInput.Controller controller = OVRInput.Controller.LTouch;
 
-	private ButtonState currThumbstickState = ButtonState.Normal;
+	private ButtonState currThumbstickState;
 	private bool isMenuActive;
 
 	public void SetActive(List<Guid> sceneGuids)
 	{
 		SetupMenu(sceneGuids);
 		menuEnabledSubject.OnNext(Unit.Default);
-
+		currThumbstickState = ButtonState.Normal;
 		gameObject.SetActive(true);
+		StartCoroutine(WaitNextFrameAndSetMenuActive());
+	}
 
-		StartCoroutine(WaitNextFrame());
+	public void SetInactive()
+	{
+		gameObject.SetActive(false);
+		isMenuActive = false;
 	}
 
 	private void SetupMenu(List<Guid> sceneGuids)
@@ -43,31 +49,26 @@ public class MainMenuController : MonoBehaviour
 		MaxItemIndex = ScenesGuids.Count + 1;
 	}
 
-	IEnumerator WaitNextFrame()
+	IEnumerator WaitNextFrameAndSetMenuActive()
 	{
 		yield return new WaitForSeconds(0.5f);
 
 		isMenuActive = true;
 	}
 
-	public void SetInactive()
-	{
-		gameObject.SetActive(false);
-		isMenuActive = false;
-	}
 
 	void Update()
 	{
 		if (isMenuActive)
 		{
-			if (OVRInput.Get(selectItemButton))
+			if (OVRInput.Get(selectItemButton, controller))
 			{
 				isMenuActive = false;
 				ItemSelected();
 			}
 			else
 			{
-				if (OVRInput.Get(prevItemButton))
+				if (OVRInput.Get(prevItemButton, controller))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{
@@ -76,7 +77,7 @@ public class MainMenuController : MonoBehaviour
 						itemChangedSubject.OnNext(Unit.Default);
 					}
 				}
-				else if (OVRInput.Get(nextItemButton))
+				else if (OVRInput.Get(nextItemButton, controller))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{
@@ -104,6 +105,7 @@ public class MainMenuController : MonoBehaviour
 			itemSelectedSubject.OnNext(ScenesGuids[ActiveItemIndex - 1]);
 	}
 
+	 
 	private void IncreaseActiveItemIndex()
 	{
 		ActiveItemIndex++;

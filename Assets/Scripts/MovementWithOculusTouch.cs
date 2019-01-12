@@ -25,6 +25,11 @@ public class MovementWithOculusTouch : MonoBehaviour
         startPos = Vector3.zero;
     }
 
+	public void SetControllerToFollow(Transform toFollow)
+	{
+		controllerToFollow = toFollow;
+	}
+
     private void StartListening()
     {
         button_down = StartCoroutine(WaitForButton_Down());

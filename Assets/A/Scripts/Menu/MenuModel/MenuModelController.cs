@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
-using System;
+using System.Collections;
 
 public class MenuModelController : MonoBehaviour
 {
@@ -16,6 +15,7 @@ public class MenuModelController : MonoBehaviour
 
 	private OVRInput.Button showMenuLeftButton = OVRInput.Button.PrimaryThumbstickRight;
 	private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
+	private OVRInput.Controller leftController = OVRInput.Controller.LTouch;
 	private OVRInput.Button showMenuRightButton = OVRInput.Button.SecondaryThumbstickLeft;
 	private OVRInput.Button hideMenuRightButton = OVRInput.Button.SecondaryThumbstickRight;
 
@@ -23,6 +23,7 @@ public class MenuModelController : MonoBehaviour
 	private Coroutine waitForMenuLeftCloseCoroutine;
 	private Coroutine waitForMenuRightOpenCoroutine;
 	private Coroutine waitForMenuRightCloseCoroutine;
+
 
 	void Start()
 	{
@@ -40,27 +41,6 @@ public class MenuModelController : MonoBehaviour
 
 		StartWaitForMenuOpen();
 	}
-
-	public void SetInactive()
-	{
-		StopListening();
-
-		menuLeftController.CloseMenu();
-		menuRightController.CloseMenu();
-
-		gameObject.SetActive(false);
-	}
-
-	public void SetActive()
-	{
-		menuLeftController.CloseMenu();
-		menuRightController.CloseMenu();
-
-		gameObject.SetActive(true);
-
-		StartWaitForMenuOpen();
-	}
-
 	private void StartWaitForMenuOpen()
 	{
 		StopListening();
@@ -68,52 +48,12 @@ public class MenuModelController : MonoBehaviour
 		waitForMenuRightOpenCoroutine = StartCoroutine(WaitForOpenMenuRight());
 	}
 
-	public void StartWaitForMenuRightClose()
-	{
-		StopListening();
-		waitForMenuRightCloseCoroutine = StartCoroutine(WaitForCloseMenuRight());
-	}
-
-	public void StartWaitForMenuLeftClose()
-	{
-		StopListening();
-		waitForMenuLeftCloseCoroutine = StartCoroutine(WaitForCloseMenuLeft());
-	}
-
-	private void StopListeningForRight()
-	{
-		if (null != waitForMenuRightOpenCoroutine)
-			StopCoroutine(waitForMenuRightOpenCoroutine);
-
-		if (null != waitForMenuRightCloseCoroutine)
-			StopCoroutine(waitForMenuRightCloseCoroutine);
-	}
-
-	private void StartListeningForRight()
-	{
-		waitForMenuRightCloseCoroutine = StartCoroutine(WaitForCloseMenuRight());
-	}
-
-	private void StopListening()
-	{
-		if (null != waitForMenuLeftOpenCoroutine)
-			StopCoroutine(waitForMenuLeftOpenCoroutine);
-
-		if (null != waitForMenuLeftCloseCoroutine)
-			StopCoroutine(waitForMenuLeftCloseCoroutine);
-
-		if (null != waitForMenuRightOpenCoroutine)
-			StopCoroutine(waitForMenuRightOpenCoroutine);
-
-		if (null != waitForMenuRightCloseCoroutine)
-			StopCoroutine(waitForMenuRightCloseCoroutine);
-	}
 
 	private IEnumerator WaitForOpenMenuLeft()
 	{
 		while (true)
 		{
-			if (OVRInput.Get(showMenuLeftButton))
+			if (OVRInput.Get(showMenuLeftButton, leftController))
 			{
 				StopCoroutine(waitForMenuLeftOpenCoroutine);
 				menuLeftController.OpenMenu();
@@ -128,7 +68,7 @@ public class MenuModelController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(hideMenuLeftButton))
+			if (OVRInput.Get(hideMenuLeftButton, leftController))
 			{
 				StopCoroutine(waitForMenuLeftCloseCoroutine);
 				menuLeftController.CloseMenu();
@@ -168,4 +108,56 @@ public class MenuModelController : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 	}
+
+
+	public void SetInactive()
+	{
+		StopListening();
+
+		menuLeftController.CloseMenu();
+		menuRightController.CloseMenu();
+
+		gameObject.SetActive(false);
+	}
+
+	public void SetActive()
+	{
+		menuLeftController.CloseMenu();
+		menuRightController.CloseMenu();
+
+		gameObject.SetActive(true);
+
+		StartWaitForMenuOpen();
+	}
+
+	
+	private void StartListeningForRight()
+	{
+		waitForMenuRightCloseCoroutine = StartCoroutine(WaitForCloseMenuRight());
+	}
+
+	private void StopListening()
+	{
+		StopListeningForLeft();
+		StopListeningForRight();
+	}
+
+	private void StopListeningForLeft()
+	{
+		if (null != waitForMenuLeftOpenCoroutine)
+			StopCoroutine(waitForMenuLeftOpenCoroutine);
+
+		if (null != waitForMenuLeftCloseCoroutine)
+			StopCoroutine(waitForMenuLeftCloseCoroutine);
+	}
+
+	private void StopListeningForRight()
+	{
+		if (null != waitForMenuRightOpenCoroutine)
+			StopCoroutine(waitForMenuRightOpenCoroutine);
+
+		if (null != waitForMenuRightCloseCoroutine)
+			StopCoroutine(waitForMenuRightCloseCoroutine);
+	}
+
 }

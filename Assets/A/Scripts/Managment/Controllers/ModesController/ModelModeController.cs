@@ -17,14 +17,16 @@ public class ModelModeController : MonoBehaviour
 	protected ISubject<McData> modeSavedAndExitedSubject = new Subject<McData>();
 	public IObservable<McData> ModeSavedAndExitedStream { get { return modeSavedAndExitedSubject; } }
 
-	MarchingCubesGPUProject.EditableModel model;
 	Guid sceneGuid;
+	MarchingCubesGPUProject.EditableModel model;
+
 
 	private void Start()
 	{
 		menuModelController.ExitToSceneModeStream.Subscribe(_ => ExitMode());
 		menuModelController.SaveAndExitToSceneModeStream.Subscribe(_ => SaveObjectAndExitMode());
 	}
+
 
 	public void TurnOnMode(LoadData loadData)
 	{

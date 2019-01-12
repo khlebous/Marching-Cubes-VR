@@ -3,11 +3,13 @@ using UnityEngine;
 using UniRx;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 public class SceneModeController : MonoBehaviour
 {
 	[SerializeField] private GameObject sceneContiner;
 	[SerializeField] private MenuSceneController menuSceneController;
+	[SerializeField] private Transform controllerToFollow;
 
 	[Header("Other")]
 	[SerializeField] private McManager mcManager;
@@ -22,6 +24,8 @@ public class SceneModeController : MonoBehaviour
 	public IObservable<LoadData> ExitToObjectModeStream { get { return exitToObjectModeSubject; } }
 
 	private EditableScene scene;
+	private GameObject selectedObject;
+	private Coroutine waitForMenuLeftOpenCoroutine;
 
 	private void Start()
 	{
@@ -32,19 +36,13 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.ModelToAddSelectedStream.Subscribe(AddModelToScene);
 		menuSceneController.ModelToEditSelectedStream.Subscribe(SuspendAndExitToObjectMode);
 		menuSceneController.ModelToDeleteSelectedStream.Subscribe(DeleteModelFromModelsList);
-
 	}
 
-	private void AddModelToScene(Guid modelGuid)
-	{
-		scene.InstantiateModel(modelGuid);
-	}
 
-	private void DeleteModelFromModelsList(Guid modelGuid)
+	public void TurnOnCurrentMode()
 	{
-		scene.DeleteModel(modelGuid);
-		mcManager.DeleteModel(modelGuid, scene.Guid);
-		ModelsListChanged();
+		sceneContiner.SetActive(true);
+		menuSceneController.SetActive();
 	}
 
 	public void TurnOnModeWith(Guid guid)
@@ -59,11 +57,19 @@ public class SceneModeController : MonoBehaviour
 		ModelsListChanged();
 	}
 
-	private void ModelsListChanged()
+	public void TurnOnCurrentModeWithObjectUpdate(McData data)
 	{
-		List<Guid> modelGuids = scene.Models.Keys.ToList();
-		menuSceneController.UpdateModelsGuids(modelGuids);
+		scene.SetOrUpdateModel(new McGameObjData(data, mcManager.LoadModelMeshes(data)));
+		ModelsListChanged();
+		TurnOnCurrentMode();
 	}
+
+	public void TurnOnCurrentModeWithTerrainUpdate(McData data)
+	{
+		scene.SetOrUpdateTerrain(new McGameObjData(data, mcManager.LoadTerrainMeshes(data)));
+		TurnOnCurrentMode();
+	}
+
 
 	private void ExitToMainMode()
 	{
@@ -82,11 +88,6 @@ public class SceneModeController : MonoBehaviour
 		ExitToMainMode();
 	}
 
-	public void TurnOnCurrentMode()
-	{
-		sceneContiner.SetActive(true);
-		menuSceneController.SetActive();
-	}
 
 	private void SuspendAndExitToTerrainMode()
 	{
@@ -95,19 +96,6 @@ public class SceneModeController : MonoBehaviour
 
 		exitToTerrainModeSubject.OnNext
 			(new LoadData(scene.Guid, scene.Terrain.Data));
-	}
-
-	public void TurnOnCurrentModeWithTerrainUpdate(McData data)
-	{
-		scene.SetOrUpdateTerrain(new McGameObjData(data, mcManager.LoadTerrainMeshes(data)));
-		TurnOnCurrentMode();
-	}
-
-	public void TurnOnCurrentModeWithObjectUpdate(McData data)
-	{
-		scene.SetOrUpdateModel(new McGameObjData(data, mcManager.LoadModelMeshes(data)));
-		ModelsListChanged();
-		TurnOnCurrentMode();
 	}
 
 	private void SuspendAndExitToObjectMode()
@@ -124,5 +112,65 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.SetInactive();
 
 		exitToObjectModeSubject.OnNext(new LoadData(scene.Guid, scene.Models[guid].Data));
+	}
+
+
+	private void SetObjectSelected(GameObject go)
+	{
+		if (selectedObject != null)
+			SetObjectNormal(selectedObject);
+		selectedObject = go;
+
+		go.GetComponent<MovementWithOculusTouch>().enabled = true;
+		go.GetComponent<MovementWithOculusTouch>()
+			.SetControllerToFollow(controllerToFollow);
+
+		menuSceneController.SetInactive();
+		waitForMenuLeftOpenCoroutine = StartCoroutine(WaitForNewObjectMovementEnd());
+	}
+
+	private IEnumerator WaitForNewObjectMovementEnd()
+	{
+		while (true)
+		{
+			if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick, OVRInput.Controller.LTouch))
+			{
+				StopCoroutine(waitForMenuLeftOpenCoroutine);
+
+				SetObjectNormal(selectedObject);
+				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
+				menuSceneController.SetActive();
+			}
+
+			yield return new WaitForEndOfFrame();
+		}
+	}
+
+	private void SetObjectNormal(GameObject go)
+	{
+		go.GetComponent<MovementWithOculusTouch>().enabled = false;
+		selectedObject = null;
+	}
+
+
+	private void ModelsListChanged()
+	{
+		List<Guid> modelGuids = scene.Models.Keys.ToList();
+		menuSceneController.UpdateModelsGuids(modelGuids);
+	}
+
+	private void AddModelToScene(Guid modelGuid)
+	{
+		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = false;
+
+		GameObject newObject = scene.InstantiateModel(modelGuid);
+		SetObjectSelected(newObject);
+	}
+
+	private void DeleteModelFromModelsList(Guid modelGuid)
+	{
+		scene.DeleteModel(modelGuid);
+		mcManager.DeleteModel(modelGuid, scene.Guid);
+		ModelsListChanged();
 	}
 }

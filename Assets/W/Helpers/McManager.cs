@@ -199,6 +199,25 @@ public class McManager : MonoBehaviour
         return models;
     }
 
+    private void LoadModelsOnScene(EditableScene scene, List<McSceneModelData> Models)
+    {
+        scene.ModelsOnTerrain = new List<McObject>();
+        foreach (var modelSceneData in Models)
+        {
+            var modelObj = GameObject.Instantiate(scene.Models[modelSceneData.Guid].GameObject);
+            modelObj.name = McConsts.ObjectPrefix + modelSceneData.Guid.ToString();
+
+            modelObj.transform.parent = scene.transform;
+            modelObj.transform.localPosition= modelSceneData.Position;
+            modelObj.transform.localRotation = Quaternion.Euler(modelSceneData.Rotation);
+            modelObj.transform.localScale = modelSceneData.Scale;
+
+            modelObj.SetActive(true);
+
+            scene.ModelsOnTerrain.Add(new McObject(modelSceneData.Guid, modelObj));
+        }
+    }
+
     private string GetModelDirPath(Guid sceneGuid)
     {
         var path = Path.Combine(sceneGuid.ToString(), "models");

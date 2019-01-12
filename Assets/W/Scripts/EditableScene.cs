@@ -7,64 +7,70 @@ using UnityEngine;
 
 public class EditableScene : MonoBehaviour
 {
-    public Guid Guid { get; set; }
+	public Guid Guid { get; set; }
 
-    public McGameObjData Terrain { get; set; }
-    public List<McObject> ModelsOnTerrain { get; set; }
-    public Dictionary<Guid, McGameObjData> Models { get; set; }
+	public McGameObjData Terrain { get; set; }
+	public List<McObject> ModelsOnTerrain { get; set; }
+	public Dictionary<Guid, McGameObjData> Models { get; set; }
 
-    public GameObject InstantiateModel(Guid guid)
-    {
-        var obj = GameObject.Instantiate(Models[guid].GameObject);
-        obj.transform.parent = this.transform;
-        ModelsOnTerrain.Add(new McObject(guid, obj));
-        obj.SetActive(true);
+	public GameObject InstantiateModel(Guid guid)
+	{
+		var obj = GameObject.Instantiate(Models[guid].GameObject);
+		obj.transform.parent = this.transform;
+		obj.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+		obj.transform.localPosition = Vector3.zero;
+		ModelsOnTerrain.Add(new McObject(guid, obj));
 
-        return obj;
-    }
-    public void SetOrUpdateTerrain(McGameObjData data)
-    {
-        var newTransform = data.GameObject.transform;
-        newTransform.parent = this.transform;
+		obj.AddComponent<MovementWithOculusTouch>();
+		obj.GetComponent<MovementWithOculusTouch>().enabled = false;
 
-        if (Terrain != null)
-        {
-            var currTransform = Terrain.GameObject.transform;
+		obj.SetActive(true);
 
-            newTransform.position = currTransform.position;
-            newTransform.rotation = currTransform.rotation;
-            newTransform.localScale = currTransform.localScale;
+		return obj;
+	}
+	public void SetOrUpdateTerrain(McGameObjData data)
+	{
+		var newTransform = data.GameObject.transform;
+		newTransform.parent = this.transform;
 
-            GameObject.Destroy(Terrain.GameObject);
-        }
+		if (Terrain != null)
+		{
+			var currTransform = Terrain.GameObject.transform;
 
-        Terrain = data;
-    }
-    public void SetOrUpdateModel(McGameObjData data)
-    {
-        var guid = data.Data.Guid;
+			newTransform.position = currTransform.position;
+			newTransform.rotation = currTransform.rotation;
+			newTransform.localScale = currTransform.localScale;
 
-        if (!Models.ContainsKey(guid))
-        {
-            Models[guid] = data;
-        }
-        else
-        {
-            GameObject.Destroy(Models[guid].GameObject);
+			GameObject.Destroy(Terrain.GameObject);
+		}
 
-            Models[guid] = data;
-            UpdateModelsOnTerrain(guid);
-        }
-    }
-    public void UpdateModelsOnTerrain(Guid modelGuid)
-    {
-        var toUpdate = ModelsOnTerrain.Where(x => x.ModelGuid == modelGuid);
-        foreach (var model in toUpdate)
-        {
-            var updatedObj = InstantiateModel(modelGuid);
-            updatedObj.transform.position = model.GameObject.transform.position;
-            updatedObj.transform.rotation = model.GameObject.transform.rotation;
-            updatedObj.transform.localScale = model.GameObject.transform.localScale;
+		Terrain = data;
+	}
+	public void SetOrUpdateModel(McGameObjData data)
+	{
+		var guid = data.Data.Guid;
+
+		if (!Models.ContainsKey(guid))
+		{
+			Models[guid] = data;
+		}
+		else
+		{
+			GameObject.Destroy(Models[guid].GameObject);
+
+			Models[guid] = data;
+			UpdateModelsOnTerrain(guid);
+		}
+	}
+	public void UpdateModelsOnTerrain(Guid modelGuid)
+	{
+		var toUpdate = ModelsOnTerrain.Where(x => x.ModelGuid == modelGuid).ToList();
+		foreach (var model in toUpdate)
+		{
+			var updatedObj = InstantiateModel(modelGuid);
+			updatedObj.transform.position = model.GameObject.transform.position;
+			updatedObj.transform.rotation = model.GameObject.transform.rotation;
+			updatedObj.transform.localScale = model.GameObject.transform.localScale;
 
             GameObject.Destroy(model.GameObject);
             model.GameObject = updatedObj;
@@ -106,21 +112,21 @@ public class EditableScene : MonoBehaviour
         }
     }
 
-    public McSceneData GetData()
-    {
-        var data = new McSceneData();
-        data.Guid = Guid;
-        data.TerrainGuid = Terrain.Data.Guid;
-        data.Models = ModelsOnTerrain.Select(x => new McSceneModelData()
-        {
-            Guid = x.ModelGuid,
-            Position = x.GameObject.transform.position,
-            Rotation = x.GameObject.transform.rotation.eulerAngles,
-            Scale = x.GameObject.transform.localScale,
-        }).ToList();
+	public McSceneData GetData()
+	{
+		var data = new McSceneData();
+		data.Guid = Guid;
+		data.TerrainGuid = Terrain.Data.Guid;
+		data.Models = ModelsOnTerrain.Select(x => new McSceneModelData()
+		{
+			Guid = x.ModelGuid,
+			Position = x.GameObject.transform.localPosition,
+			Rotation = x.GameObject.transform.localRotation.eulerAngles,
+			Scale = x.GameObject.transform.localScale,
+		}).ToList();
 
-        return data;
-    }
+		return data;
+	}
 
     public void Destroy()
     {

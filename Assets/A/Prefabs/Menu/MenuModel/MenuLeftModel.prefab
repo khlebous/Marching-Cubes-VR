@@ -37,7 +37,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4024240605338458}
-  - component: {fileID: 114258541669238960}
   m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
@@ -698,24 +697,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Menu Left Object
---- !u!114 &114258541669238960
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1186136026501012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9c73640688eb9e4c91e72cb202e78a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  highlight: {fileID: 0}
-  stopEditingItemButton: 8388608
-  items:
-  - {fileID: 0}
-  - {fileID: 0}
-  nextItemButton: 134217728
-  prevItemButton: 67108864
 --- !u!114 &114274667708654858
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -846,7 +827,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Przejdz do trybu edycji scenu (bez zapisu zmian)
+  m_Text: Exit without saving
 --- !u!114 &114604903338712738
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -932,7 +913,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Zapisz zmiany \ni przejdz do trybu edycji sceny"
+  m_Text: Exit and save object
 --- !u!114 &114915481739304640
 MonoBehaviour:
   m_ObjectHideFlags: 1

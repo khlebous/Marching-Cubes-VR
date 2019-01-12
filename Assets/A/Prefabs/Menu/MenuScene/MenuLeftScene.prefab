@@ -893,7 +893,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Zapisz zmiany \ni przejdz do wyboru innej sceny"
+  m_Text: Exit and save scene
 --- !u!114 &114948390109052564
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -926,7 +926,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Przejdz do wyboru innej sceny (bez zapisu zmian)
+  m_Text: Exit without saving
 --- !u!114 &114976135212614300
 MonoBehaviour:
   m_ObjectHideFlags: 1

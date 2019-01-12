@@ -112,13 +112,6 @@ public class EditableScene : MonoBehaviour
         }
     }
 
-	public void DeleteModelFromTerrain(GameObject gameObject)
-	{
-		var toDelete = ModelsOnTerrain.First(x => x.GameObject == gameObject);
-		GameObject.Destroy(toDelete.GameObject);
-		ModelsOnTerrain.Remove(toDelete);
-	}
-
 	public McSceneData GetData()
 	{
 		var data = new McSceneData();

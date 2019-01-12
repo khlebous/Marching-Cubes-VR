@@ -3933,6 +3933,7 @@ MonoBehaviour:
   menuSceneController: {fileID: 1590765280}
   controllerToFollow: {fileID: 830349226}
   mcManager: {fileID: 1400500067}
+  controllerRaycast: {fileID: 398466545}
 --- !u!1001 &2019302081
 Prefab:
   m_ObjectHideFlags: 0

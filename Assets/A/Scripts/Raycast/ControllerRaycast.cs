@@ -5,6 +5,7 @@ public class ControllerRaycast : MonoBehaviour
 	public LineRenderer laserLineRenderer;
 	public float maxRayDistance = 20f;
 	public LayerMask activeLayers;
+	private bool rayEnabled = true;
 
 	void Start()
 	{
@@ -12,12 +13,22 @@ public class ControllerRaycast : MonoBehaviour
 		laserLineRenderer.SetPositions(initLaserPositions);
 		laserLineRenderer.startWidth = 0.1f;
 		laserLineRenderer.endWidth = 0.01f;
+
+		SetEnable(false);
+	}
+
+	public void SetEnable(bool enabled)
+	{
+		rayEnabled = enabled;
+		laserLineRenderer.enabled = enabled;
 	}
 
 	void Update()
 	{
-		ShootLaserFromTargetPosition(transform.position, transform.forward, maxRayDistance);
-		laserLineRenderer.enabled = true;
+		if (rayEnabled)
+		{
+			ShootLaserFromTargetPosition(transform.position, transform.forward, maxRayDistance);
+		}
 	}
 
 	void ShootLaserFromTargetPosition(Vector3 targetPosition, Vector3 direction, float length)
@@ -29,7 +40,18 @@ public class ControllerRaycast : MonoBehaviour
 		if (Physics.Raycast(ray, out raycastHit, length))
 		{
 			endPosition = raycastHit.point;
-			//Debug.Log(raycastHit.collider.gameObject.name);
+
+			if ((raycastHit.collider.gameObject.transform.parent.tag == Constants.OBJECT_TAG)
+				&& (OVRInput.Get(OVRInput.RawButton.A)))
+				{
+				var objcontroller
+					= raycastHit.collider.gameObject.transform.parent.GetComponent<ObjectController>();
+
+				objcontroller.ObjectSelected();
+
+				rayEnabled = false;
+				laserLineRenderer.enabled = false;
+			}
 		}
 
 		laserLineRenderer.SetPosition(0, targetPosition);

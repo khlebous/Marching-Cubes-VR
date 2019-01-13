@@ -137,6 +137,7 @@ public class MenuSceneController : MonoBehaviour
 
 	public void SetActive()
 	{
+		menuLeftController.LoadImage();
 		menuLeftController.CloseMenu();
 		menuRightController.CloseMenu();
 

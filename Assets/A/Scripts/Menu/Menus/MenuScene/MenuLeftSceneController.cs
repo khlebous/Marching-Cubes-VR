@@ -7,6 +7,7 @@ public class MenuLeftSceneController : MonoBehaviour
 	[Header("Menu items")]
 	[SerializeField] private MenuItemV saveExitItem;
 	[SerializeField] private MenuItemV dontSaveExitItem;
+	[SerializeField] private Renderer renderer;
 
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
@@ -33,6 +34,16 @@ public class MenuLeftSceneController : MonoBehaviour
 			dontSaveExitItem
 		};
 		SetupMenu();
+		LoadImage();
+	}
+
+	public void LoadImage()
+	{
+		Texture texture = Resources.Load<Texture>("2");
+		if (texture != null)
+			renderer.material.mainTexture = texture;
+		else
+			renderer.material.mainTexture = Resources.Load<Texture>("0");
 	}
 
 	private void SetupMenu()
@@ -95,6 +106,11 @@ public class MenuLeftSceneController : MonoBehaviour
 			saveAndExitToMainModeSubject.OnNext(Unit.Default);
 		else if (activeItemIndex == 1)
 			exitToMainModeSubject.OnNext(Unit.Default);
+		if(activeItemIndex == 2)
+		{
+			// take a photo
+			// update image
+		}
 	}
 
 

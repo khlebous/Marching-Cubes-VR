@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class CameraCapture : MonoBehaviour
 {
-	private int resWidth = 1024;
-	private int resHeight = 1024;
+	private int resWidth = 512;
+	private int resHeight = 512;
 
 	private bool takeHiResShot = false;
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UnityEngine;
 
 public class ControllerRaycast : MonoBehaviour
 {
@@ -6,6 +7,9 @@ public class ControllerRaycast : MonoBehaviour
 	public float maxRayDistance = 20f;
 	public LayerMask activeLayers;
 	private bool rayEnabled = true;
+
+	protected ISubject<ObjectController> objectSelectedSubject = new Subject<ObjectController>();
+	public IObservable<ObjectController> ObjectSelectedStream { get { return objectSelectedSubject; } }
 
 	void Start()
 	{
@@ -41,16 +45,12 @@ public class ControllerRaycast : MonoBehaviour
 		{
 			endPosition = raycastHit.point;
 
-			if ((raycastHit.collider.gameObject.transform.parent.tag == Constants.OBJECT_TAG)
-				&& (OVRInput.Get(OVRInput.RawButton.A)))
-				{
-				var objcontroller
-					= raycastHit.collider.gameObject.transform.parent.GetComponent<ObjectController>();
-
-				objcontroller.ObjectSelected();
-
-				rayEnabled = false;
-				laserLineRenderer.enabled = false;
+			if (OVRInput.Get(OVRInput.RawButton.A))
+			{
+				ObjectController objController = raycastHit.collider.gameObject.transform
+					.GetComponentInParent<ObjectController>();
+				if (objController != null)
+					objectSelectedSubject.OnNext(objController);
 			}
 		}
 

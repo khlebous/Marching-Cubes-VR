@@ -37,6 +37,8 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.ModelToAddSelectedStream.Subscribe(AddModelToScene);
 		menuSceneController.ModelToEditSelectedStream.Subscribe(SuspendAndExitToObjectMode);
 		menuSceneController.ModelToDeleteSelectedStream.Subscribe(DeleteModelFromModelsList);
+
+		controllerRaycast.ObjectSelectedStream.Subscribe(SetObjectSelected);
 	}
 
 
@@ -127,17 +129,15 @@ public class SceneModeController : MonoBehaviour
 
 	private void SetObjectSelected(ObjectController go)
 	{
+		menuSceneController.SetInactive();
 		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = false;
+		controllerRaycast.SetEnable(false);
 
 		if (selectedObject != null)
 			SetObjectNormal(selectedObject);
 		selectedObject = go;
-
 		go.SetActive();
-		go.GetComponent<MovementWithOculusTouch>()
-			.SetControllerToFollow(controllerToFollow);
 
-		menuSceneController.SetInactive();
 		waitForMenuLeftOpenCoroutine = StartCoroutine(WaitForNewObjectMovementEnd());
 	}
 
@@ -153,7 +153,6 @@ public class SceneModeController : MonoBehaviour
 				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
 				menuSceneController.SetActive();
 				controllerRaycast.SetEnable(true);
-
 			}
 
 			yield return new WaitForEndOfFrame();
@@ -178,7 +177,7 @@ public class SceneModeController : MonoBehaviour
 		GameObject newObject = scene.InstantiateModel(modelGuid);
 
 		ObjectController objectController = newObject.GetComponent<ObjectController>();
-		objectController.ObjectSelectedStream.Subscribe(_ => SetObjectSelected(objectController));
+		objectController.SetControllerToFollow(controllerToFollow);
 		SetObjectSelected(objectController);
 	}
 

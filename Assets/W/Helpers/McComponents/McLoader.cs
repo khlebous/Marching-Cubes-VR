@@ -57,7 +57,7 @@ public class McLoader
         var fileInfo = new FileInfo(GetFilePath(path));
         return fileInfo.Exists;
     }
-    public List<Guid> GetAllDirGuids(string path)
+    public List<Guid> GetAllScenesGuids(string path)
     {
         var dirPath = Path.Combine(GetRootPath(), path);
         var dirInfo = new DirectoryInfo(dirPath);
@@ -69,10 +69,13 @@ public class McLoader
             {
                 try
                 {
-                    var guid = new Guid(Path.GetFileName(dir.Name));
-                    guids.Add(guid);
+                    var filename = Path.GetFileName(dir.Name);
+                    var guid = new Guid(filename);
+                    var a = dir.GetFiles();
+                    if (dir.GetFiles().Any(x => x.Name == guid.ToString() + _extension))
+                        guids.Add(guid);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                 }
             }
@@ -126,14 +129,14 @@ public class McLoader
         var bin = new BinaryFormatter();
 
         var ss = new SurrogateSelector();
-		ss.AddSurrogate(typeof(Vector4),
-						new StreamingContext(StreamingContextStates.All),
-						new Vector4SerializationSurrogate());
-		ss.AddSurrogate(typeof(Vector3),
-						new StreamingContext(StreamingContextStates.All),
-						new Vector3SerializationSurrogate());
+        ss.AddSurrogate(typeof(Vector4),
+                        new StreamingContext(StreamingContextStates.All),
+                        new Vector4SerializationSurrogate());
+        ss.AddSurrogate(typeof(Vector3),
+                        new StreamingContext(StreamingContextStates.All),
+                        new Vector3SerializationSurrogate());
 
-		bin.SurrogateSelector = ss;
+        bin.SurrogateSelector = ss;
 
         return bin;
     }

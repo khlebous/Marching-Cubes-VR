@@ -9,9 +9,6 @@ public class ObjectController : MonoBehaviour
 	private Shader normalShader;
 	private Shader activeShader;
 
-	protected ISubject<Unit> objectSelectedSubject = new Subject<Unit>();
-	public IObservable<Unit> ObjectSelectedStream { get { return objectSelectedSubject; } }
-
 
 	private void Awake()
 	{
@@ -40,8 +37,8 @@ public class ObjectController : MonoBehaviour
 		}
 	}
 
-	public void ObjectSelected()
+	public void SetControllerToFollow(Transform controllerToFollow)
 	{
-		objectSelectedSubject.OnNext(Unit.Default);
+		move.SetControllerToFollow(controllerToFollow);
 	}
 }

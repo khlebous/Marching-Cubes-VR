@@ -1,18 +1,29 @@
 ﻿using UnityEngine;
 using UniRx;
 using System.Collections.Generic;
+using System.Collections;
+using System.IO;
 
 public class MenuLeftModelController : MonoBehaviour
 {
 	[Header("Menu items")]
-	[SerializeField] private MenuItemV saveExitItem;
+	[SerializeField]
+	private MenuItemV saveExitItem;
 	[SerializeField] private MenuItemV dontSaveExitItem;
+	[SerializeField] private MenuItemV modelPreviewItem;
+
+	[Header("Other")]
+	[SerializeField]
+	private Renderer renderer;
 
 	protected ISubject<Unit> exitToSceneModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToSceneModeStream { get { return exitToSceneModeSubject; } }
 
 	protected ISubject<Unit> saveAndExitToSceneModeSubject = new Subject<Unit>();
 	public IObservable<Unit> SaveAndExitToSceneModeStream { get { return saveAndExitToSceneModeSubject; } }
+
+	protected ISubject<Unit> photoRequesSubject = new Subject<Unit>();
+	public IObservable<Unit> PhotoRequestStream { get { return photoRequesSubject; } }
 
 	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickUp;
 	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickDown;
@@ -29,9 +40,25 @@ public class MenuLeftModelController : MonoBehaviour
 		items = new List<MenuItemV>
 		{
 			saveExitItem,
-			dontSaveExitItem
+			dontSaveExitItem,
+			modelPreviewItem
 		};
 		SetupMenu();
+	}
+
+	public void UpdatePhoto(string path)
+	{
+		FileInfo fi = new FileInfo(path);
+		Texture2D tex = TextureLoader.LoadTextureFromFile(path);
+		if (fi.Exists)
+			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
+		else
+		{
+			path = Application.dataPath + "/Resources/0.png";
+			tex = TextureLoader.LoadTextureFromFile(path);
+			renderer.material.mainTexture = tex;
+		}
+
 	}
 
 	private void SetupMenu()
@@ -95,6 +122,18 @@ public class MenuLeftModelController : MonoBehaviour
 			saveAndExitToSceneModeSubject.OnNext(Unit.Default);
 		else if (activeItemIndex == 1)
 			exitToSceneModeSubject.OnNext(Unit.Default);
+		if (activeItemIndex == 2)
+		{
+			photoRequesSubject.OnNext(Unit.Default);
+			StartCoroutine(WaitNextFrameAndSetMenuActive());
+		}
+	}
+
+	private IEnumerator WaitNextFrameAndSetMenuActive()
+	{
+		yield return new WaitForSeconds(0.5f);
+
+		isMenuActive = true;
 	}
 
 

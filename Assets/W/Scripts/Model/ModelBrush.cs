@@ -30,7 +30,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 		public BrushMode mode = BrushMode.Inactive;
 		public BrushShape shape = BrushShape.Sphere;
 
-		private const float _minScale = 1;
+		private const float _minScale = 0.5f;
 		private const float _maxScale = McConsts.ModelN / 2f;
 
 		public Matrix4x4 GetToBrushMatrix()

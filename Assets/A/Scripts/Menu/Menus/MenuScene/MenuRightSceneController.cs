@@ -166,9 +166,9 @@ public class MenuRightSceneController : MonoBehaviour
 		isMenuActive = false;
 	}
 	
-	public void UpdateModelsGuids(List<Guid> modelsGuids)
+	public void UpdateModelsGuids(Guid sceneGuid, List<Guid> modelsGuids)
 	{
-		modelsList.SetModelsGuids(modelsGuids);
+		modelsList.SetModelsGuids(sceneGuid, modelsGuids);
 	}
 
 

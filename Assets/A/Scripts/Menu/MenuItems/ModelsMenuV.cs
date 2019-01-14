@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,9 @@ using UnityEngine.UI;
 public class ModelsMenuV : MenuItemV
 {
 	[Header("UI")]
-	[SerializeField] private Text scenesText;
+	[SerializeField]
+	private Text scenesText;
+	[SerializeField] private Renderer renderer;
 
 	protected ISubject<Guid> itemSelectedSubject = new Subject<Guid>();
 	public IObservable<Guid> ItemSelectedStream { get { return itemSelectedSubject; } }
@@ -18,7 +21,8 @@ public class ModelsMenuV : MenuItemV
 	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickRight;
 
 	private int activeItemIndex;
-	private List<Guid> objectGuids = new List<Guid>();
+	private Guid sceneGuid;
+	private List<Guid> modelGuids = new List<Guid>();
 
 	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;
@@ -32,21 +36,22 @@ public class ModelsMenuV : MenuItemV
 
 	public Guid GetChoosenGuid()
 	{
-		if (objectGuids.Count == 0)
+		if (modelGuids.Count == 0)
 			return Guid.Empty;
 
-		return objectGuids[activeItemIndex];
+		return modelGuids[activeItemIndex];
 	}
 
 	public bool AtLeastOneObjectExist()
 	{
-		return objectGuids.Count > 0;
+		return modelGuids.Count > 0;
 	}
 
-	private void SetupMenu(List<Guid> objectGuids)
+	private void SetupMenu(Guid sceneGuid, List<Guid> objectGuids)
 	{
 		activeItemIndex = 0;
-		this.objectGuids = objectGuids;
+		this.sceneGuid = sceneGuid;
+		this.modelGuids = objectGuids;
 		maxItemIndex = objectGuids.Count;
 
 		UpdateUI();
@@ -75,15 +80,40 @@ public class ModelsMenuV : MenuItemV
 	private void UpdateUI()
 	{
 		if (maxItemIndex == 0)
-			scenesText.text = "create object to add to scene";
+		{
+			scenesText.text = "";
+			string path = Application.dataPath + "/Resources/"
+				+ "EmptyModelsList.png";
+			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
+		}
 		else
-			scenesText.text = (activeItemIndex + 1) + "/" + maxItemIndex
-				+ "\n " + objectGuids[activeItemIndex];
+		{
+			scenesText.text = (activeItemIndex + 1) + "/" + maxItemIndex;
+
+			string path = GetFullPath(sceneGuid, modelGuids[activeItemIndex]);
+			Texture2D tex = TextureLoader.LoadTextureFromFile(path);
+
+			FileInfo fi = new FileInfo(path);
+			if (fi.Exists)
+				renderer.material.mainTexture = tex;
+			else
+			{
+				path = Application.dataPath + "/Resources/0.png";
+				tex = TextureLoader.LoadTextureFromFile(path);
+				renderer.material.mainTexture = tex;
+			}
+		}
 	}
 
-	public void SetModelsGuids(List<Guid> modelsGuids)
+	private string GetFullPath(Guid sceneGuid, Guid modelGuid)
 	{
-		SetupMenu(modelsGuids);
+		return Application.dataPath + "/Resources/" + sceneGuid.ToString()
+			+ "/Models/" + modelGuid.ToString() + ".png";
+	}
+
+	public void SetModelsGuids(Guid sceneGuid, List<Guid> modelsGuids)
+	{
+		SetupMenu(sceneGuid, modelsGuids);
 	}
 
 	void Update()
@@ -103,8 +133,8 @@ public class ModelsMenuV : MenuItemV
 					if (currThumbstickState == ButtonState.Normal)
 					{
 						currThumbstickState = ButtonState.Up;
-						UpdateUI();
 						DecreaseActiveItemIndex();
+						UpdateUI();
 					}
 				}
 				else if (OVRInput.Get(nextItemButton))
@@ -112,8 +142,8 @@ public class ModelsMenuV : MenuItemV
 					if (currThumbstickState == ButtonState.Normal)
 					{
 						currThumbstickState = ButtonState.Down;
-						UpdateUI();
 						IncreaseActiveItemIndex();
+						UpdateUI();
 					}
 				}
 				else
@@ -129,7 +159,7 @@ public class ModelsMenuV : MenuItemV
 
 	private void ItemSelected()
 	{
-		itemSelectedSubject.OnNext(objectGuids[activeItemIndex]);
+		itemSelectedSubject.OnNext(modelGuids[activeItemIndex]);
 	}
 
 	private void IncreaseActiveItemIndex()

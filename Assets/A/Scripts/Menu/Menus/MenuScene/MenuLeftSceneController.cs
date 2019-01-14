@@ -1,12 +1,17 @@
 ﻿using UnityEngine;
 using UniRx;
 using System.Collections.Generic;
+using System.Collections;
+using System.IO;
 
 public class MenuLeftSceneController : MonoBehaviour
 {
 	[Header("Menu items")]
 	[SerializeField] private MenuItemV saveExitItem;
 	[SerializeField] private MenuItemV dontSaveExitItem;
+	[SerializeField] private MenuItemV scenePreviewItem;
+
+	[Header("Other")]
 	[SerializeField] private Renderer renderer;
 
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
@@ -14,6 +19,9 @@ public class MenuLeftSceneController : MonoBehaviour
 
 	protected ISubject<Unit> saveAndExitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> SaveAndExitToMainModeStream { get { return saveAndExitToMainModeSubject; } }
+
+	protected ISubject<Unit> photoRequesSubject = new Subject<Unit>();
+	public IObservable<Unit> PhotoRequestStream { get { return photoRequesSubject; } }
 
 	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickUp;
 	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickDown;
@@ -26,25 +34,40 @@ public class MenuLeftSceneController : MonoBehaviour
 	private int activeItemIndex;
 
 
-	private void Start()
+	private void Awake()
 	{
 		items = new List<MenuItemV>
 		{
 			saveExitItem,
-			dontSaveExitItem
+			dontSaveExitItem,
+			scenePreviewItem
 		};
 		SetupMenu();
-		LoadImage();
 	}
 
-	public void LoadImage()
+	public void UpdatePhoto(string path = "")
 	{
-		Texture texture = Resources.Load<Texture>("2");
-		if (texture != null)
-			renderer.material.mainTexture = texture;
+		FileInfo fi = new FileInfo(path);
+		Texture2D tex = TextureLoader.LoadTextureFromFile(path);
+		if (fi.Exists)
+			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
 		else
-			renderer.material.mainTexture = Resources.Load<Texture>("0");
+		{
+			path = Application.dataPath + "/Resources/0.png";
+			tex = TextureLoader.LoadTextureFromFile(path);
+			renderer.material.mainTexture = tex;
+		}
 	}
+
+	//IEnumerator TextureUpdate(string url)
+	//{
+	//	Texture2D tex;
+	//	tex = new Texture2D(4, 4, TextureFormat.DXT1, false);
+	//	WWW www = new WWW(url);
+	//	yield return www;
+	//	www.LoadImageIntoTexture(tex);
+	//	renderer.material.mainTexture = tex;
+	//}
 
 	private void SetupMenu()
 	{
@@ -106,13 +129,19 @@ public class MenuLeftSceneController : MonoBehaviour
 			saveAndExitToMainModeSubject.OnNext(Unit.Default);
 		else if (activeItemIndex == 1)
 			exitToMainModeSubject.OnNext(Unit.Default);
-		if(activeItemIndex == 2)
+		if (activeItemIndex == 2)
 		{
-			// take a photo
-			// update image
+			photoRequesSubject.OnNext(Unit.Default);
+			StartCoroutine(WaitNextFrameAndSetMenuActive());
 		}
 	}
 
+	private IEnumerator WaitNextFrameAndSetMenuActive()
+	{
+		yield return new WaitForSeconds(0.5f);
+
+		isMenuActive = true;
+	}
 
 	public void OpenMenu()
 	{

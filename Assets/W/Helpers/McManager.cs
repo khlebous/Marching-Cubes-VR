@@ -110,6 +110,7 @@ public class McManager : MonoBehaviour
         sceneObj.name = McConsts.EditableScenePrefix + scene.Guid.ToString();
         scene.Models = LoadModelList(sceneGuid, scene.transform);
 
+		// TODO add movement with oculus and set controller to follow
         var sceneData = Loader.LoadScene(GetScenePath(sceneGuid));
         scene.LoadModelsOnScene(sceneData.Models);
 

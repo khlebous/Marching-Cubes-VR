@@ -91,7 +91,7 @@ public static class RotationHelper
             var rotation = NormalizeRotation(ComposeRotations(verChange, objRotation));
 
 
-            var boundaryAngle = 10f;
+            var boundaryAngle = 5f;
             if (Math.Abs(rotation.x) < boundaryAngle && Math.Abs(rotation.z) < boundaryAngle)
             {
                 rotation.x = 0;
@@ -113,7 +113,7 @@ public static class RotationHelper
         var horChange = Quaternion.FromToRotation(horStartVec, horCurrVec).eulerAngles;
         horChange = NormalizeRotation(horChange);
 
-        return horChange;
+        return horChange * 5;
     }
     private static Vector3 GetVerticalRotation(Vector3 startVec, Vector3 currentVec)
     {
@@ -122,7 +122,7 @@ public static class RotationHelper
         var verChange = Quaternion.FromToRotation(startVec, verCurrVec).eulerAngles;
         verChange = NormalizeRotation(verChange);
 
-        return verChange;
+        return verChange * 5;
     }
 
     private static Vector3 ComposeRotations(Vector3 r1, Vector3 r2)

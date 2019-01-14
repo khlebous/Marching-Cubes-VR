@@ -261,7 +261,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4792488253354624}
   - component: {fileID: 33362464439642496}
-  - component: {fileID: 65579343291955568}
   - component: {fileID: 23269976384582182}
   m_Layer: 0
   m_Name: Background
@@ -542,7 +541,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 18f1de85c07416b4b99fb4339fb0cd1b, type: 2}
+  - {fileID: 2100000, guid: c19b9982b218731499158f6ba6d4080e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -817,18 +816,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &65579343291955568
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1871106822320160}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65637642906241754
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1031,6 +1018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   saveExitItem: {fileID: 114568567139748016}
   dontSaveExitItem: {fileID: 114619178160367198}
+  scenePreviewItem: {fileID: 114778246159010098}
   renderer: {fileID: 23269976384582182}
 --- !u!114 &114662586138441186
 MonoBehaviour:

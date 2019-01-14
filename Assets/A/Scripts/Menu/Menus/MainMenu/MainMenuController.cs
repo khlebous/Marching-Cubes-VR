@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class MainMenuController : MonoBehaviour
 {
+
 	public int ActiveItemIndex { get; private set; }
 	public int MaxItemIndex { get; private set; }
 	public List<Guid> ScenesGuids { get; private set; }

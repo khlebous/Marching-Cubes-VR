@@ -16,7 +16,8 @@ public class EditableScene : MonoBehaviour
 	public GameObject InstantiateModel(Guid guid)
 	{
 		var obj = GameObject.Instantiate(Models[guid].GameObject);
-		obj.transform.parent = this.transform;
+        obj.name = McConsts.ObjectPrefix + guid.ToString();
+        obj.transform.parent = this.transform;
 		obj.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 		obj.transform.localPosition = Vector3.zero;
 		ModelsOnTerrain.Add(new McObject(guid, obj));
@@ -102,10 +103,8 @@ public class EditableScene : MonoBehaviour
         ModelsOnTerrain = new List<McObject>();
         foreach (var modelSceneData in ModelsToLoad)
         {
-            var modelObj = GameObject.Instantiate(Models[modelSceneData.Guid].GameObject);
-            modelObj.name = McConsts.ObjectPrefix + modelSceneData.Guid.ToString();
+            var modelObj = InstantiateModel(modelSceneData.Guid);
 
-            modelObj.transform.parent = transform;
             modelObj.transform.position = modelSceneData.Position;
             modelObj.transform.rotation = Quaternion.Euler(modelSceneData.Rotation);
             modelObj.transform.localScale = modelSceneData.Scale;
@@ -115,9 +114,7 @@ public class EditableScene : MonoBehaviour
 			modelObj.GetComponent<MovementWithOculusTouch>().enabled = false;
 			modelObj.AddComponent<RotationWithOculusTouch>();
 			modelObj.GetComponent<RotationWithOculusTouch>().enabled = false;
-
 			modelObj.tag = Constants.OBJECT_TAG;
-
 			modelObj.SetActive(true);
 
             ModelsOnTerrain.Add(new McObject(modelSceneData.Guid, modelObj));

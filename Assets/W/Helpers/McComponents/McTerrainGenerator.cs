@@ -28,9 +28,9 @@ public class McTerrainGenerator : McBaseGenerator
     {
         var data = new McData();
         data.Guid = Guid.NewGuid();
-        data.Colors = Enumerable.Repeat(new Vector4(1, 1, 1, 1), DesiredBufferSize).ToArray();
-        data.Values = new float[DesiredBufferSize];
+        data.Colors = Enumerable.Repeat(new Vector4(0.4f, 0.2f, 0, 1), DesiredBufferSize).ToArray();
 
+        data.Values = new float[DesiredBufferSize];
         for (int z = 0; z < N; z++)
             for (int x = 0; x < N; x++)
             {

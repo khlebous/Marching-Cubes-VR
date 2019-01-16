@@ -3,6 +3,7 @@ using MarchingCubesGPUProject;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class McManager : MonoBehaviour
@@ -35,33 +36,36 @@ public class McManager : MonoBehaviour
     public void Save(EditableTerrain terrain, Guid sceneGuid)
     {
         var data = terrain.GetData();
-        var path = GetTerrainPath(data.Guid, sceneGuid);
+        var path = PathHelper.GetTerrainPath(data.Guid, sceneGuid);
         Loader.SaveObj(path, data);
     }
     public void Save(EditableModel model, Guid sceneGuid)
     {
         var data = model.GetData();
-        var path = GetModelPath(data.Guid, sceneGuid);
+        var path = PathHelper.GetModelPath(data.Guid, sceneGuid);
         Loader.SaveObj(path, data);
     }
     public void Save(EditableScene scene)
     {
         var data = scene.GetData();
-        Loader.SaveScene(GetScenePath(scene.Guid), data);
+        Loader.SaveScene(PathHelper.GetScenePath(scene.Guid), data);
 
-        var terrinPath = GetTerrainPath(scene.Terrain.Data.Guid, scene.Guid);
-        if (!Loader.ObjectExists(terrinPath))
+        var terrinPath = PathHelper.GetTerrainPath(scene.Terrain.Data.Guid, scene.Guid);
+        var terrainInfo = new FileInfo(terrinPath);
+        if (!terrainInfo.Exists)
             Loader.SaveObj(terrinPath, scene.Terrain.Data);
     }
 
     public void DeleteScene( Guid sceneGuid)
     {
-        Loader.DeleteDirectory(sceneGuid.ToString());
+        var dir = new DirectoryInfo(PathHelper.GetSceneDirPath( sceneGuid));
+        dir.Delete(true);
 
     }
     public void DeleteModel(Guid modelGuid, Guid sceneGuid)
     {
-        Loader.DeleteFile(GetModelPath(modelGuid, sceneGuid));
+        var fileInfo = new FileInfo(PathHelper.GetModelPath(modelGuid,sceneGuid));
+        fileInfo.Delete();
     }
 
     public EditableModel LoadModel(McData data)
@@ -78,7 +82,7 @@ public class McManager : MonoBehaviour
     }
     public EditableModel LoadModel(Guid modelGuid, Guid sceneGuid)
     {
-        var path = GetModelPath(modelGuid, sceneGuid);
+        var path = PathHelper.GetModelPath(modelGuid, sceneGuid);
         var data = Loader.LoadObj(path);
 
         return LoadModel(data);
@@ -99,7 +103,7 @@ public class McManager : MonoBehaviour
     }
     public EditableTerrain LoadTerrain(Guid terrainGuid, Guid sceneGuid)
     {
-        var path = GetTerrainPath(terrainGuid, sceneGuid);
+        var path = PathHelper.GetTerrainPath(terrainGuid, sceneGuid);
         var data = Loader.LoadObj(path);
 
         return LoadTerrain(data);
@@ -107,7 +111,7 @@ public class McManager : MonoBehaviour
     public EditableScene LoadScene(Guid sceneGuid)
     {
         if (sceneGuid == Guid.Empty)
-            return CreateScene();
+            return CreateAndLoadScene();
 
         var sceneObj = new GameObject();
         var scene = sceneObj.AddComponent<EditableScene>();
@@ -116,7 +120,7 @@ public class McManager : MonoBehaviour
         scene.Models = LoadModelList(sceneGuid, scene.transform);
 
 		// TODO add movement with oculus and set controller to follow
-        var sceneData = Loader.LoadScene(GetScenePath(sceneGuid));
+        var sceneData = Loader.LoadScene(PathHelper.GetScenePath(sceneGuid));
         scene.LoadModelsOnScene(sceneData.Models);
 
         scene.SetOrUpdateTerrain(LoadTerrainMeshes(sceneData.TerrainGuid, sceneGuid));
@@ -128,7 +132,15 @@ public class McManager : MonoBehaviour
     {
         return ModelGenerator.GetDefaultData();
     }
-    public EditableScene CreateScene()
+    private McGameObjData CreateAndRenderTerrain()
+    {
+        var god = new McGameObjData();
+        god.Data = TerrainGenerator.GetDefaultData();
+        god.GameObject = LoadTerrainMeshes(god.Data);
+
+        return god;
+    }
+    public EditableScene CreateAndLoadScene()
     {
         var sceneObj = new GameObject();
         var scene = sceneObj.AddComponent<EditableScene>();
@@ -138,16 +150,19 @@ public class McManager : MonoBehaviour
         scene.Models = new Dictionary<Guid, McGameObjData>();
         scene.ModelsOnTerrain = new List<McObject>();
 
-        scene.SetOrUpdateTerrain(CreateTerrain());
+        scene.SetOrUpdateTerrain(CreateAndRenderTerrain());
 
         return scene;
     }
 
-    public List<Guid> GetAllSceneGuids()
+    private McGameObjData LoadTerrainMeshes(Guid terrainGuid, Guid sceneGuid)
     {
-        return Loader.GetAllScenesGuids("");
-    }
+        var god = new McGameObjData();
+        god.Data = Loader.LoadObj(PathHelper.GetTerrainPath(terrainGuid, sceneGuid));
+        god.GameObject = LoadTerrainMeshes(god.Data);
 
+        return god;
+    }
     public GameObject LoadTerrainMeshes(McData data)
     {
         var gameObject = TerrainGenerator.GenerateMeshes(data);
@@ -164,34 +179,16 @@ public class McManager : MonoBehaviour
         return gameObject;
     }
 
-    private McGameObjData CreateTerrain()
-    {
-        var god = new McGameObjData();
-        god.Data = TerrainGenerator.GetDefaultData();
-        god.GameObject = LoadTerrainMeshes(god.Data);
-
-        return god;
-    }
-    private McGameObjData LoadTerrainMeshes(Guid terrainGuid, Guid sceneGuid)
-    {
-        var god = new McGameObjData();
-        var path = GetTerrainPath(terrainGuid, sceneGuid);
-        god.Data = Loader.LoadObj(path);
-        god.GameObject = LoadTerrainMeshes(god.Data);
-
-        return god;
-    }
     private Dictionary<Guid, McGameObjData> LoadModelList(Guid sceneGuid, Transform sceneTransform)
     {
-        var dirPath = GetModelDirPath(sceneGuid);
-        var guids = Loader.GetAllObjGuids(dirPath);
+        var guids = GetAllModelGuids(sceneGuid);
 
         var models = new Dictionary<Guid, McGameObjData>();
         foreach (var guid in guids)
         {
             var god = new McGameObjData();
 
-            god.Data = Loader.LoadObj(GetModelPath(guid, sceneGuid));
+            god.Data = Loader.LoadObj(PathHelper.GetModelPath(guid, sceneGuid));
             god.GameObject = ModelGenerator.GenerateMeshes(god.Data);
             god.GameObject.name = McConsts.ModelPrefix + guid.ToString();
             god.GameObject.transform.parent = sceneTransform;
@@ -202,7 +199,6 @@ public class McManager : MonoBehaviour
 
         return models;
     }
-
     private void LoadModelsOnScene(EditableScene scene, List<McSceneModelData> Models)
     {
         scene.ModelsOnTerrain = new List<McObject>();
@@ -222,25 +218,55 @@ public class McManager : MonoBehaviour
         }
     }
 
-    private string GetModelDirPath(Guid sceneGuid)
+    public List<Guid> GetAllSceneGuids()
     {
-        var path = Path.Combine(sceneGuid.ToString(), "models");
-        return path;
+        var dirInfo = new DirectoryInfo(PathHelper.GetRootPath());
+
+        var guids = new List<Guid>();
+        if (dirInfo.Exists)
+        {
+            foreach (var dir in dirInfo.GetDirectories())
+            {
+                try
+                {
+                    var filename = Path.GetFileName(dir.Name);
+                    var guid = new Guid(filename);
+                    var a = dir.GetFiles();
+                    if (dir.GetFiles().Any(x => x.Name == guid.ToString() + PathHelper.Extension))
+                        guids.Add(guid);
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+        }
+
+        return guids;
     }
-    private string GetModelPath(Guid modelGuid, Guid sceneGuid)
+    public List<Guid> GetAllModelGuids(Guid sceneGuid)
     {
-        var path = Path.Combine(GetModelDirPath(sceneGuid), modelGuid.ToString());
-        return path;
-    }
-    private string GetTerrainPath(Guid terrainGuid, Guid sceneGuid)
-    {
-        var path = Path.Combine(sceneGuid.ToString(), terrainGuid.ToString());
-        return path;
-    }
-    private string GetScenePath(Guid sceneGuid)
-    {
-        var path = Path.Combine(sceneGuid.ToString(), sceneGuid.ToString());
-        return path;
+        var dirInfo = new DirectoryInfo(PathHelper.GetModelDirPath(sceneGuid));
+
+        var guids = new List<Guid>();
+        if (dirInfo.Exists)
+        {
+            foreach (var file in dirInfo.GetFiles())
+            {
+                if (file.Extension != PathHelper.Extension)
+                    continue;
+
+                try
+                {
+                    var guid = new Guid(Path.GetFileNameWithoutExtension(file.Name));
+                    guids.Add(guid);
+                }
+                catch (Exception)
+                {
+                }
+            }
+        }
+
+        return guids;
     }
 
 }

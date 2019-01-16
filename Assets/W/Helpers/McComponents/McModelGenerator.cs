@@ -1,14 +1,6 @@
-﻿using MarchingCubesGPUProject;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class McModelGenerator : McBaseGenerator
 {

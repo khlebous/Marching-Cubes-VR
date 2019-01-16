@@ -25,7 +25,7 @@ public class MenuLeftTerrainController : MonoBehaviour
 	private int activeItemIndex;
 
 
-	private void Start()
+	private void Awake()
 	{
 		items = new List<MenuItemV>
 		{

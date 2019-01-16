@@ -7,8 +7,7 @@ using System.IO;
 public class MenuLeftModelController : MonoBehaviour
 {
 	[Header("Menu items")]
-	[SerializeField]
-	private MenuItemV saveExitItem;
+	[SerializeField] private MenuItemV saveExitItem;
 	[SerializeField] private MenuItemV dontSaveExitItem;
 	[SerializeField] private MenuItemV modelPreviewItem;
 
@@ -35,7 +34,7 @@ public class MenuLeftModelController : MonoBehaviour
 	private int activeItemIndex;
 
 
-	private void Start()
+	private void Awake()
 	{
 		items = new List<MenuItemV>
 		{
@@ -44,21 +43,6 @@ public class MenuLeftModelController : MonoBehaviour
 			modelPreviewItem
 		};
 		SetupMenu();
-	}
-
-	public void UpdatePhoto(string path)
-	{
-		FileInfo fi = new FileInfo(path);
-		Texture2D tex = TextureLoader.LoadTextureFromFile(path);
-		if (fi.Exists)
-			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
-		else
-		{
-			path = Application.dataPath + "/Resources/0.png";
-			tex = TextureLoader.LoadTextureFromFile(path);
-			renderer.material.mainTexture = tex;
-		}
-
 	}
 
 	private void SetupMenu()
@@ -161,5 +145,21 @@ public class MenuLeftModelController : MonoBehaviour
 		if (activeItemIndex == 0)
 			activeItemIndex = items.Count;
 		activeItemIndex--;
+	}
+
+
+	public void UpdatePhoto(string path)
+	{
+		FileInfo fi = new FileInfo(path);
+		Texture2D tex = TextureLoader.LoadTextureFromFile(path);
+		if (fi.Exists)
+			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
+		else
+		{
+			path = Application.dataPath + "/Resources/0.png";
+			tex = TextureLoader.LoadTextureFromFile(path);
+			renderer.material.mainTexture = tex;
+		}
+
 	}
 }

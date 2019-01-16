@@ -8,7 +8,7 @@ using UnityEngine;
 
 public static class PathHelper
 {
-    public const string _extension = ".bin";
+    public const string Extension = ".bin";
 
     public static void EnsureDirForFileExists(string path)
     {
@@ -18,16 +18,15 @@ public static class PathHelper
 
     public static string GetModelPath(Guid modelGuid, Guid sceneGuid)
     {
-        var path = Path.Combine(GetModelDirPath(sceneGuid), modelGuid.ToString() + _extension);
-        return path;
+        return Path.Combine(GetModelDirPath(sceneGuid), modelGuid.ToString() + Extension);
     }
     public static string GetTerrainPath(Guid terrainGuid, Guid sceneGuid)
     {
-        return Path.Combine(GetSceneDirPath(sceneGuid), terrainGuid.ToString() + _extension);
+        return Path.Combine(GetSceneDirPath(sceneGuid), terrainGuid.ToString() + Extension);
     }
     public static string GetScenePath(Guid sceneGuid)
     {
-        return Path.Combine(GetSceneDirPath(sceneGuid), sceneGuid.ToString() + _extension);
+        return Path.Combine(GetSceneDirPath(sceneGuid), sceneGuid.ToString() + Extension);
     }
 
     public static string GetModelDirPath(Guid sceneGuid)

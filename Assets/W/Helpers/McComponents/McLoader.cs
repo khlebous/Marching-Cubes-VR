@@ -80,6 +80,13 @@ public class McLoader
 
         return guids;
     }
+
+    public void DeleteDirectory(string path)
+    {
+        var dir = new DirectoryInfo(Path.Combine(GetRootPath(), path));
+        dir.Delete(true);
+    }
+
     public List<Guid> GetAllObjGuids(string path)
     {
         var dirPath = Path.Combine(GetRootPath(), path);

@@ -7,6 +7,7 @@ using UnityEngine;
 
 public static class RotationHelper
 {
+    private const float _rotationMultiplier = 3;
     public static Vector3 GetRotation_1(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
         var startVec = startConPos - objPos;
@@ -113,7 +114,7 @@ public static class RotationHelper
         var horChange = Quaternion.FromToRotation(horStartVec, horCurrVec).eulerAngles;
         horChange = NormalizeRotation(horChange);
 
-        return horChange * 5;
+        return _rotationMultiplier * horChange;
     }
     private static Vector3 GetVerticalRotation(Vector3 startVec, Vector3 currentVec)
     {
@@ -122,7 +123,7 @@ public static class RotationHelper
         var verChange = Quaternion.FromToRotation(startVec, verCurrVec).eulerAngles;
         verChange = NormalizeRotation(verChange);
 
-        return verChange * 5;
+        return _rotationMultiplier * verChange;
     }
 
     private static Vector3 ComposeRotations(Vector3 r1, Vector3 r2)

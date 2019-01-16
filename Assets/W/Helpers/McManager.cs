@@ -54,9 +54,14 @@ public class McManager : MonoBehaviour
             Loader.SaveObj(terrinPath, scene.Terrain.Data);
     }
 
-    public void DeleteModel(Guid modelGuid, Guid SceneGuid)
+    public void DeleteScene( Guid sceneGuid)
     {
-        Loader.DeleteFile(GetModelPath(modelGuid, SceneGuid));
+        Loader.DeleteDirectory(sceneGuid.ToString());
+
+    }
+    public void DeleteModel(Guid modelGuid, Guid sceneGuid)
+    {
+        Loader.DeleteFile(GetModelPath(modelGuid, sceneGuid));
     }
 
     public EditableModel LoadModel(McData data)

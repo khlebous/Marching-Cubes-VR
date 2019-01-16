@@ -35,7 +35,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-build_Data
+build_Data/
 build.exe
 UnityPlayer.dll
 saves/

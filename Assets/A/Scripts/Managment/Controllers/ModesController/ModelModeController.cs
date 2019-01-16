@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UniRx;
 using System;
+using System.IO;
 
 public class ModelModeController : MonoBehaviour
 {
@@ -43,7 +44,7 @@ public class ModelModeController : MonoBehaviour
 		model.transform.localScale = new Vector3(0.02f, 0.02f, 0.02f);
 
 		modelContiner.SetActive(true);
-		menuModelController.UpdatePhoto(GetFullPath());
+		menuModelController.UpdatePhoto(PathHelper.GetModelPngPath(model.Guid, sceneGuid));
 		menuModelController.ResetMenus();
 		brush.SetActive();
 	}
@@ -57,16 +58,23 @@ public class ModelModeController : MonoBehaviour
 		model.Destroy();
 		model = null;
 
+		string path = PathHelper.GetModelTmpPngPath(sceneGuid);
+		File.Delete(path);
+
 		modeExitedSubject.OnNext(Unit.Default);
 	}
 
 	private void SaveObjectAndExitMode()
 	{
+		mcManager.Save(model, sceneGuid);
 		brush.SetInactive();
 		modelContiner.SetActive(false);
 		menuModelController.SetInactive();
 
-		mcManager.Save(model, sceneGuid);
+		string path = PathHelper.GetModelPngPath(model.Guid, sceneGuid);
+		File.Delete(path);
+		string tmpPath = PathHelper.GetModelTmpPngPath(sceneGuid);
+		File.Move(tmpPath, path);
 
 		modeSavedAndExitedSubject.OnNext(model.GetData());
 		model.Destroy();
@@ -75,17 +83,10 @@ public class ModelModeController : MonoBehaviour
 
 	private void TakePhoto()
 	{
-		string fullPath = GetFullPath();
-		var fileInfo = new System.IO.FileInfo(fullPath);
-		fileInfo.Directory.Create();
+		string path = PathHelper.GetModelTmpPngPath(sceneGuid);
+		PathHelper.EnsureDirForFileExists(path);
 
-		cameraCapture.TakeShot(fullPath);
-		menuModelController.UpdatePhoto(GetFullPath());
-	}
-
-	private string GetFullPath()
-	{
-		return Application.dataPath + "/Resources/" + sceneGuid.ToString()
-			+ "/Models/" + model.Guid.ToString() + ".png";
+		cameraCapture.TakeShot(path);
+		menuModelController.UpdatePhoto(path);
 	}
 }

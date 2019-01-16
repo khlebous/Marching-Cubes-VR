@@ -8,30 +8,59 @@ using UnityEngine;
 
 public static class PathHelper
 {
-    public const string Extension = ".bin";
+    public const string ExtensionBin = ".bin";
+	public const string ExtensionPng = ".png";
 
-    public static void EnsureDirForFileExists(string path)
+	public static void EnsureDirForFileExists(string path)
     {
         var fileInfo = new FileInfo(path);
         fileInfo.Directory.Create();
     }
 
-    public static string GetModelPath(Guid modelGuid, Guid sceneGuid)
+    public static string GetModelBinPath(Guid modelGuid, Guid sceneGuid)
     {
-        return Path.Combine(GetModelDirPath(sceneGuid), modelGuid.ToString() + Extension);
+        return Path.Combine(GetModelDirPath(sceneGuid), modelGuid.ToString() + ExtensionBin);
     }
-    public static string GetTerrainPath(Guid terrainGuid, Guid sceneGuid)
+    public static string GetTerrainBinPath(Guid terrainGuid, Guid sceneGuid)
     {
-        return Path.Combine(GetSceneDirPath(sceneGuid), terrainGuid.ToString() + Extension);
+        return Path.Combine(GetSceneDirPath(sceneGuid), terrainGuid.ToString() + ExtensionBin);
     }
-    public static string GetScenePath(Guid sceneGuid)
+    public static string GetSceneBinPath(Guid sceneGuid)
     {
-        return Path.Combine(GetSceneDirPath(sceneGuid), sceneGuid.ToString() + Extension);
+        return Path.Combine(GetSceneDirPath(sceneGuid), sceneGuid.ToString() + ExtensionBin);
     }
 
-    public static string GetModelDirPath(Guid sceneGuid)
-    {
+	public static string GetNoImagePath()
+	{
+		return Path.Combine(Directory.GetCurrentDirectory(), "Assets/Resources/0.png");
+	}
+	public static string GetNewScenePath()
+	{
+		return Path.Combine(Directory.GetCurrentDirectory(), "Assets/Resources/NewScene.png");
+	}
+	public static string GetEmptyModelsListPath()
+	{
+		return Path.Combine(Directory.GetCurrentDirectory(), "Assets/Resources/EmptyModelsList.png");
+	}
+	public static string GetModelPngPath(Guid modelGuid, Guid sceneGuid)
+	{
+		return Path.Combine(GetModelDirPath(sceneGuid), modelGuid.ToString() + ExtensionPng);
+	}
+	public static string GetModelTmpPngPath(Guid sceneGuid)
+	{
+		return Path.Combine(GetModelDirPath(sceneGuid), "tmp" + ExtensionPng);
+	}
+	public static string GetScenePngPath(Guid sceneGuid)
+	{
+		return Path.Combine(GetSceneDirPath(sceneGuid), sceneGuid.ToString() + ExtensionPng);
+	}
+	public static string GetSceneTmpPngPath(Guid sceneGuid)
+	{
+		return Path.Combine(GetSceneDirPath(sceneGuid), "tmp" + ExtensionPng);
+	}
 
+	public static string GetModelDirPath(Guid sceneGuid)
+    {
         return Path.Combine(GetSceneDirPath(sceneGuid), "models");
     }
     public static string GetSceneDirPath(Guid sceneGuid)

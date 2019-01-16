@@ -4,6 +4,7 @@ using UniRx;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+using System.IO;
 
 public class SceneModeController : MonoBehaviour
 {
@@ -57,7 +58,7 @@ public class SceneModeController : MonoBehaviour
 		scene.gameObject.transform.parent = sceneContiner.transform;
 		scene.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-		menuSceneController.UpdatePhoto(GetFullPath());
+		menuSceneController.UpdatePhoto(PathHelper.GetScenePngPath(scene.Guid));
 		TurnOnCurrentMode();
 		ModelsListChanged();
 	}
@@ -84,17 +85,29 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.SetInactive();
 		controllerRaycast.SetActive(false);
 
-		scene.Destroy();
-		scene = null;
+		string path = PathHelper.GetSceneTmpPngPath(scene.Guid);
+		File.Delete(path);
 
 		exitToMainModeSubject.OnNext(Unit.Default);
+		scene.Destroy();
+		scene = null;
 	}
 
 	private void SaveSceneAndExitToMainMode()
 	{
 		mcManager.Save(scene);
-		ExitToMainMode();
+		sceneContiner.SetActive(false);
+		menuSceneController.SetInactive();
 		controllerRaycast.SetActive(false);
+
+		string path = PathHelper.GetScenePngPath(scene.Guid);
+		File.Delete(path);
+		string tmpPath = PathHelper.GetSceneTmpPngPath(scene.Guid);
+		File.Move(tmpPath, path);
+
+		scene.Destroy();
+		scene = null;
+		exitToMainModeSubject.OnNext(Unit.Default);
 	}
 
 
@@ -190,17 +203,9 @@ public class SceneModeController : MonoBehaviour
 
 	private void TakePhoto()
 	{
-		string fullPath = GetFullPath();
-		var fileInfo = new System.IO.FileInfo(fullPath);
-		fileInfo.Directory.Create();
+		string path = PathHelper.GetScenePngPath(scene.Guid);
 
-		cameraCapture.TakeShot(fullPath);
-		menuSceneController.UpdatePhoto(GetFullPath());
-	}
-
-	private string GetFullPath()
-	{
-		return Application.dataPath + "/Resources/" + scene.Guid.ToString()
-			+ "/" + scene.Guid.ToString() + ".png";
+		cameraCapture.TakeShot(path);
+		menuSceneController.UpdatePhoto(path);
 	}
 }

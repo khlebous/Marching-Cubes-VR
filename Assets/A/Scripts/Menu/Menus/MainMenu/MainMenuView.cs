@@ -3,12 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 public class MainMenuView : MonoBehaviour
 {
 	[Header("UI")]
 	[SerializeField] private Text scenesText;
-	[SerializeField] private Renderer renderer;
+	[SerializeField] private Renderer imageRenderer;
 
 	[Header("Controller")]
 	[SerializeField]
@@ -31,20 +32,26 @@ public class MainMenuView : MonoBehaviour
 		scenesText.text = ActiveItemIndex + "/" + (MaxItemIndex - 1);
 		if (ActiveItemIndex == 0)
 		{
-			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile
-				(Application.dataPath + "/Resources/NewScene.png");
+			imageRenderer.material.mainTexture = TextureLoader.LoadTextureFromFile
+				(PathHelper.GetNewScenePath());
 		}
 		else
 		{
-			string path = GetFullPath(SceneGuids[ActiveItemIndex - 1]);
-			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
-		}
-	}
+			string path = PathHelper.GetScenePngPath(SceneGuids[ActiveItemIndex - 1]);
 
-	private string GetFullPath(Guid guid)
-	{
-		return Application.dataPath + "/Resources/" + guid.ToString()
-			+ "/" + guid.ToString() + ".png";
+			FileInfo fi = new FileInfo(path);
+			if (fi.Exists)
+			{
+				Texture2D texture= TextureLoader.LoadTextureFromFile(path);
+				imageRenderer.material.mainTexture = texture;
+			}
+			else
+			{
+				path = PathHelper.GetNoImagePath();
+				Texture2D texture = TextureLoader.LoadTextureFromFile(path);
+				imageRenderer.material.mainTexture = texture;
+			}
+		}
 	}
 
 

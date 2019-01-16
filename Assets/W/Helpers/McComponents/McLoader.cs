@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using UnityEngine;
 
 public class McLoader
@@ -71,7 +70,7 @@ public class McLoader
                 {
                     var filename = Path.GetFileName(dir.Name);
                     var guid = new Guid(filename);
-                    var a = dir.GetFiles();
+                    //var a = dir.GetFiles();
                     if (dir.GetFiles().Any(x => x.Name == guid.ToString() + _extension))
                         guids.Add(guid);
                 }

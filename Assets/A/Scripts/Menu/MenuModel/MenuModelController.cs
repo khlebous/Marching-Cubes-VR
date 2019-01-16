@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UniRx;
 using System.Collections;
+using System;
 
 public class MenuModelController : MonoBehaviour
 {
@@ -46,6 +47,7 @@ public class MenuModelController : MonoBehaviour
 
 		StartWaitForMenuOpen();
 	}
+
 	private void StartWaitForMenuOpen()
 	{
 		StopListening();
@@ -131,11 +133,21 @@ public class MenuModelController : MonoBehaviour
 		menuRightController.CloseMenu();
 
 		gameObject.SetActive(true);
-
 		StartWaitForMenuOpen();
 	}
 
-	
+	public void ResetMenus()
+	{
+		menuLeftController.CloseMenu();
+		menuRightController.CloseMenu();
+		menuLeftController.ResetMenu();
+		menuRightController.ResetMenu();
+
+		gameObject.SetActive(true);
+		StartWaitForMenuOpen();
+	}
+
+
 	private void StartListeningForRight()
 	{
 		waitForMenuRightCloseCoroutine = StartCoroutine(WaitForCloseMenuRight());

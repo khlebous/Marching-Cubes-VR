@@ -44,7 +44,7 @@ public class ModelModeController : MonoBehaviour
 
 		modelContiner.SetActive(true);
 		menuModelController.UpdatePhoto(GetFullPath());
-		menuModelController.SetActive();
+		menuModelController.ResetMenus();
 		brush.SetActive();
 	}
 

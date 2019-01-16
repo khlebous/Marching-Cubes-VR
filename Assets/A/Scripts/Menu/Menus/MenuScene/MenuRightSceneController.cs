@@ -57,6 +57,7 @@ public class MenuRightSceneController : MonoBehaviour
 			deleteModel
 		};
 		SetupMenu();
+		gameObject.SetActive(false);
 	}
 
 	private void SetupMenu()
@@ -70,6 +71,11 @@ public class MenuRightSceneController : MonoBehaviour
 		items[activeItemIndex].SetActive();
 	}
 
+	public void ResetMenu()
+	{
+		// modelsList.ResetItem();
+		SetupMenu();
+	}
 
 	private void Start()
 	{
@@ -189,4 +195,5 @@ public class MenuRightSceneController : MonoBehaviour
 			activeItemIndex = items.Count;
 		activeItemIndex--;
 	}
+
 }

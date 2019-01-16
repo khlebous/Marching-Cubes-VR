@@ -3,6 +3,7 @@ using UniRx;
 using System.Collections.Generic;
 using System.Collections;
 using System.IO;
+using System;
 
 public class MenuLeftModelController : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public class MenuLeftModelController : MonoBehaviour
 			modelPreviewItem
 		};
 		SetupMenu();
+		gameObject.SetActive(false);
 	}
 
 	private void SetupMenu()
@@ -53,10 +55,13 @@ public class MenuLeftModelController : MonoBehaviour
 
 		foreach (var item in items)
 			item.SetInactive();
-
 		items[activeItemIndex].SetActive();
 	}
 
+	public void ResetMenu()
+	{
+		SetupMenu();
+	}
 
 	void Update()
 	{

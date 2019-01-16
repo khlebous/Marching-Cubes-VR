@@ -146,7 +146,17 @@ public class MenuSceneController : MonoBehaviour
 		menuRightController.CloseMenu();
 
 		gameObject.SetActive(true);
+		StartWaitForMenuOpen();
+	}
 
+	public void ResetMenus()
+	{
+		menuLeftController.CloseMenu();
+		menuRightController.CloseMenu();
+		menuLeftController.ResetMenu();
+		menuRightController.ResetMenu();
+
+		gameObject.SetActive(true);
 		StartWaitForMenuOpen();
 	}
 

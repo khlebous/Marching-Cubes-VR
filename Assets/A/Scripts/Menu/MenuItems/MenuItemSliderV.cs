@@ -1,23 +1,34 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using System;
 
 public class MenuItemSliderV : MenuItemV
 {
 	[Header("Slider")]
-	[SerializeField]
-	private Slider slider;
+	[SerializeField] private Slider slider;
 	[SerializeField] float sliderStep = 0.01f;
 
 	[Header("Input")]
-	[SerializeField]
-	private OVRInput.Button decreaseValueButton = OVRInput.Button.SecondaryThumbstickLeft;
+	[SerializeField] private OVRInput.Button decreaseValueButton = OVRInput.Button.SecondaryThumbstickLeft;
 	[SerializeField] private OVRInput.Button increaseButton = OVRInput.Button.SecondaryThumbstickRight;
 
 	protected ISubject<float> valueChangedSubject = new Subject<float>();
 	public IObservable<float> ValueChangedStream { get { return valueChangedSubject; } }
 
 	private bool active;
+
+	private void Start()
+	{
+		ResetItem();
+	}
+
+	public void ResetItem()
+	{
+		slider.value = 0.5f;
+		SliderValueChanged();
+		active = false;
+	}
 
 	public override void SetChoosen()
 	{
@@ -49,11 +60,6 @@ public class MenuItemSliderV : MenuItemV
 	}
 
 	private void SliderValueChanged()
-	{
-		valueChangedSubject.OnNext(slider.value);
-	}
-
-	private void Start()
 	{
 		valueChangedSubject.OnNext(slider.value);
 	}

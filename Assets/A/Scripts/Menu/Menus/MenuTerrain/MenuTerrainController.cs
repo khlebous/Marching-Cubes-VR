@@ -154,4 +154,16 @@ public class MenuTerrainController : MonoBehaviour
 		menuRightController.CloseMenu();
 		gameObject.SetActive(false);
 	}
+
+	public void ResetMenus()
+	{
+		gameObject.SetActive(true);
+
+		menuLeftController.CloseMenu();
+		menuRightController.CloseMenu();
+		menuLeftController.ResetMenu();
+		menuRightController.ResetMenu();
+
+		StartWaitForMenuOpen();
+	}
 }

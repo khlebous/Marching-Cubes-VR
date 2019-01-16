@@ -11,7 +11,6 @@ public class MovementWithOculusTouch : MonoBehaviour
 
     [Header("Rotatation multipliers")]
     [SerializeField] private int speed = 10;
-    [SerializeField] private int bound = 20;
 
     private new Transform transform;
     private Vector3 startPos;

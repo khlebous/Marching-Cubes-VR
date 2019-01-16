@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using System;
 
 public class MenuItemHMenuV : MenuItemV
 {
@@ -17,11 +18,22 @@ public class MenuItemHMenuV : MenuItemV
 	private int activeItemIndex = 0;
 	private bool active;
 
-	public void Start()
+	public void Awake()
 	{
+		ResetItem();
+	}
+
+	public void ResetItem()
+	{
+		thumbstick = ButtonState.Normal;
+		activeItemIndex = 0;
+		active = false;
+
 		foreach (var item in items)
 			item.SetInactive();
 		items[activeItemIndex].SetActive();
+
+		ModeChanged();
 	}
 
 	public override void SetChoosen()

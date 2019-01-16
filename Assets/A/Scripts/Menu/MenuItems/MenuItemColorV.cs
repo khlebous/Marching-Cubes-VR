@@ -4,8 +4,7 @@ using UniRx;
 public class MenuItemColorV : MenuItemV
 {
 	[Header("Colors")]
-	[SerializeField]
-	ColorIndicator colorIndicator;
+	[SerializeField] ColorIndicator colorIndicator;
 	[SerializeField] Draggable colorHuePicker;
 	[SerializeField] Draggable intensity;
 
@@ -15,6 +14,11 @@ public class MenuItemColorV : MenuItemV
 	private bool active;
 
 	public void Start()
+	{
+		ResetItem();
+	}
+
+	public void ResetItem()
 	{
 		active = false;
 		ColorChanged();

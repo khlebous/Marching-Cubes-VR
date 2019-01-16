@@ -50,6 +50,9 @@ namespace MarchingCubesGPUProject
             _renderer.CalculateNormals();
             UpdateMeshes();
 
+            //test
+            StartShaping();
+
         }
         private void InitMeshes()
         {
@@ -143,7 +146,7 @@ namespace MarchingCubesGPUProject
             Shaders.brushColorShader.SetVector("_Scale", transform.lossyScale);
             Shaders.brushColorShader.SetBuffer(0, "_VoxelColors", _renderer.dataColorBuffer);
 
-            Shaders.brushColorShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
+            Shaders.brushColorShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix(brush.transform.position).ToFloats());
 
             Shaders.brushColorShader.SetInt("_BrushShape", (int)brush.shape);
             Shaders.brushColorShader.SetVector("_BrushColor", brush.color);
@@ -159,7 +162,7 @@ namespace MarchingCubesGPUProject
             Shaders.brushShapeShader.SetVector("_Scale", transform.lossyScale);
             Shaders.brushShapeShader.SetBuffer(0, "_Voxels", _renderer.dataBuffer);
 
-            Shaders.brushShapeShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
+            Shaders.brushShapeShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix(StartShapingBrushPosition).ToFloats());
 
             Shaders.brushShapeShader.SetInt("_BrushShape", (int)brush.shape);
             Shaders.brushShapeShader.SetInt("_BrushMode", (int)brush.mode);
@@ -168,7 +171,7 @@ namespace MarchingCubesGPUProject
             if (brush.mode == TerrainBrushMode.ExtremeChange)
             {
                 CalculateExtremeValue();
-                Shaders.brushShapeShader.SetBuffer(0, "ExtremeValue", _extremeValueBuffer);
+                Shaders.brushShapeShader.SetBuffer(0, "_ExtremeValue", _extremeValueBuffer);
             }
             Shaders.brushShapeShader.Dispatch(0, N / 8, 1, N / 8);
         }
@@ -180,7 +183,7 @@ namespace MarchingCubesGPUProject
 
             Shaders.ExtremeValueShader.SetBuffer(0, "_Voxels", _renderer.dataBuffer);
 
-            Shaders.ExtremeValueShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix().ToFloats());
+            Shaders.ExtremeValueShader.SetFloats("_FromMcToBrushMatrix", GetFromMcToBrushMatrix(StartShapingBrushPosition).ToFloats());
 
             Shaders.ExtremeValueShader.SetInt("_BrushShape", (int)brush.shape);
             Shaders.ExtremeValueShader.SetFloat("_HeightChange", GetShapingHeight());
@@ -190,10 +193,10 @@ namespace MarchingCubesGPUProject
         }
 
 
-        private Matrix4x4 GetFromMcToBrushMatrix()
+        private Matrix4x4 GetFromMcToBrushMatrix(Vector3 brushPosition)
         {
             var adjustBrushScale = Matrix4x4.Scale(transform.lossyScale).inverse;
-            var fromMcToBrushMatrix = adjustBrushScale * brush.GetToBrushMatrix(brush.transform.position) * GetFromMcMatrix();
+            var fromMcToBrushMatrix = adjustBrushScale * brush.GetToBrushMatrix(brushPosition) * GetFromMcMatrix();
             return fromMcToBrushMatrix;
         }
 

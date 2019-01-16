@@ -10,16 +10,16 @@ RWStructuredBuffer<float> _ExtremeValue;
 uint _Width, _Height, _Depth;
 
 
-float GetDistToBrush(float2 pos) {
+bool IsPointInBrush(float2 pos) {
 
 	if (_BrushShape == 1) {
 		//wheel
-		return max(0, distance(pos, 0) - 0.5);
+		return distance(pos, 0) <= 0.5;
 	}
 	else {
 		//rectangle
 		float2 closestPointInRectangle = clamp(pos, -0.5, 0.5);
-		return distance(pos, closestPointInRectangle);
+		return closestPointInRectangle.x == pos.x && closestPointInRectangle.y == pos.y;
 	}
 }
 
@@ -34,11 +34,10 @@ void CSMain()
 		{
 			float4 rawPosition = float4(x, 0, z, 1);
 			float4 position = mul(_FromMcToBrushMatrix, rawPosition);
-			float dist = GetDistToBrush(position.xz);
 
 			int idx = x + z * _Width;
 
-			if (dist <= 0)
+			if (IsPointInBrush(position.xz))
 			{
 				if (_HeightChange >= 0 && extreme > _Voxels[idx])
 					extreme = _Voxels[idx];

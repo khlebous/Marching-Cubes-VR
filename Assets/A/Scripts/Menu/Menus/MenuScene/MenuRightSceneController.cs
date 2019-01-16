@@ -45,7 +45,7 @@ public class MenuRightSceneController : MonoBehaviour
 	private int activeItemIndex;
 
 
-	private void Start()
+	private void Awake()
 	{
 		items = new List<MenuItemV>
 		{
@@ -57,8 +57,6 @@ public class MenuRightSceneController : MonoBehaviour
 			deleteModel
 		};
 		SetupMenu();
-
-		modelsList.ItemSelectedStream.Subscribe(_ => StartCoroutine(WaitNextFrameAndSetMenuActive()));
 	}
 
 	private void SetupMenu()
@@ -70,6 +68,13 @@ public class MenuRightSceneController : MonoBehaviour
 		foreach (var item in items)
 			item.SetInactive();
 		items[activeItemIndex].SetActive();
+	}
+
+
+	private void Start()
+	{
+		modelsList.ItemSelectedStream.Subscribe
+			(_ => StartCoroutine(WaitNextFrameAndSetMenuActive()));
 	}
 
 	IEnumerator WaitNextFrameAndSetMenuActive()

@@ -29,7 +29,7 @@ public class MenuRightModelController : MonoBehaviour
 	private bool isMenuActive;
 	private int activeItemIndex;
 
-	private void Start()
+	private void Awake()
 	{
 		items = new List<MenuItemV>
 		{
@@ -39,14 +39,6 @@ public class MenuRightModelController : MonoBehaviour
 			brushColorItem
 		};
 		SetupMenu();
-
-		foreach (var item in items)
-			item.ThubstickClickedStream.Subscribe(_ => StartCoroutine(WaitNextFrameAndSetMenuActive()));
-
-		modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
-		brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
-		brushSizeItem.ValueChangedStream.Subscribe(brush.SetSizeChanged);
-		brushColorItem.ColorChangedStream.Subscribe(brush.SetColor);
 	}
 
 	private void SetupMenu()
@@ -58,6 +50,19 @@ public class MenuRightModelController : MonoBehaviour
 		foreach (var item in items)
 			item.SetInactive();
 		items[activeItemIndex].SetActive();
+	}
+
+
+	private void Start()
+	{
+		foreach (var item in items)
+			item.ThubstickClickedStream.Subscribe
+				(_ => StartCoroutine(WaitNextFrameAndSetMenuActive()));
+
+		modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
+		brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
+		brushSizeItem.ValueChangedStream.Subscribe(brush.SetSizeChanged);
+		brushColorItem.ColorChangedStream.Subscribe(brush.SetColor);
 	}
 
 	IEnumerator WaitNextFrameAndSetMenuActive()

@@ -45,30 +45,6 @@ public class MenuLeftSceneController : MonoBehaviour
 		SetupMenu();
 	}
 
-	public void UpdatePhoto(string path = "")
-	{
-		FileInfo fi = new FileInfo(path);
-		Texture2D tex = TextureLoader.LoadTextureFromFile(path);
-		if (fi.Exists)
-			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
-		else
-		{
-			path = Application.dataPath + "/Resources/0.png";
-			tex = TextureLoader.LoadTextureFromFile(path);
-			renderer.material.mainTexture = tex;
-		}
-	}
-
-	//IEnumerator TextureUpdate(string url)
-	//{
-	//	Texture2D tex;
-	//	tex = new Texture2D(4, 4, TextureFormat.DXT1, false);
-	//	WWW www = new WWW(url);
-	//	yield return www;
-	//	www.LoadImageIntoTexture(tex);
-	//	renderer.material.mainTexture = tex;
-	//}
-
 	private void SetupMenu()
 	{
 		currThumbstickState = ButtonState.Normal;
@@ -168,4 +144,29 @@ public class MenuLeftSceneController : MonoBehaviour
 			activeItemIndex = items.Count;
 		activeItemIndex--;
 	}
+
+
+	public void UpdatePhoto(string path = "")
+	{
+		FileInfo fi = new FileInfo(path);
+		Texture2D tex = TextureLoader.LoadTextureFromFile(path);
+		if (fi.Exists)
+			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
+		else
+		{
+			path = Application.dataPath + "/Resources/0.png";
+			tex = TextureLoader.LoadTextureFromFile(path);
+			renderer.material.mainTexture = tex;
+		}
+	}
+
+	//IEnumerator TextureUpdate(string url)
+	//{
+	//	Texture2D tex;
+	//	tex = new Texture2D(4, 4, TextureFormat.DXT1, false);
+	//	WWW www = new WWW(url);
+	//	yield return www;
+	//	www.LoadImageIntoTexture(tex);
+	//	renderer.material.mainTexture = tex;
+	//}
 }

@@ -556,7 +556,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &398466544
 RectTransform:
   m_ObjectHideFlags: 0
@@ -591,6 +591,7 @@ MonoBehaviour:
   activeLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  button: 2
 --- !u!120 &398466546
 LineRenderer:
   m_ObjectHideFlags: 0

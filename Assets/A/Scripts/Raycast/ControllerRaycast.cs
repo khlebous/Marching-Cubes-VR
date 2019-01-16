@@ -1,61 +1,108 @@
-﻿using UniRx;
+﻿using System.Collections;
+using UniRx;
 using UnityEngine;
 
 public class ControllerRaycast : MonoBehaviour
 {
-	public LineRenderer laserLineRenderer;
-	public float maxRayDistance = 20f;
-	public LayerMask activeLayers;
-	private bool rayEnabled = true;
+	[SerializeField] private float maxRayDistance = 20f;
+	[SerializeField] private OVRInput.RawButton button = OVRInput.RawButton.B;
 
 	protected ISubject<ObjectController> objectSelectedSubject = new Subject<ObjectController>();
 	public IObservable<ObjectController> ObjectSelectedStream { get { return objectSelectedSubject; } }
 
-	void Start()
-	{
-		Vector3[] initLaserPositions = new Vector3[2] { Vector3.zero, Vector3.zero };
-		laserLineRenderer.SetPositions(initLaserPositions);
-		laserLineRenderer.startWidth = 0.1f;
-		laserLineRenderer.endWidth = 0.01f;
+	private LineRenderer lineRenderer;
+	private Coroutine button_down;
+	private Coroutine button_up;
 
-		SetEnable(false);
+	void Awake()
+	{
+		lineRenderer = GetComponent<LineRenderer>();
+		lineRenderer.SetPositions(new Vector3[2] { Vector3.zero, Vector3.zero });
+		lineRenderer.startWidth = 0.1f;
+		lineRenderer.endWidth = 0.01f;
 	}
 
-	public void SetEnable(bool enabled)
+	private void OnEnable()
 	{
-		rayEnabled = enabled;
-		laserLineRenderer.enabled = enabled;
+		StartListening();
 	}
 
-	void Update()
+	private void OnDisable()
 	{
-		if (rayEnabled)
+		StopListening();
+	}
+
+	public void SetActive(bool value)
+	{
+		gameObject.SetActive(value);
+	}
+
+
+	private void StartListening()
+	{
+		button_down = StartCoroutine(WaitForButton_Down());
+	}
+
+	private void StopListening()
+	{
+		if (null != button_down)
+			StopCoroutine(button_down);
+
+		if (null != button_up)
+			StopCoroutine(button_up);
+	}
+
+	private IEnumerator WaitForButton_Down()
+	{
+		while (true)
 		{
-			ShootLaserFromTargetPosition(transform.position, transform.forward, maxRayDistance);
+			if (OVRInput.GetDown(button))
+			{
+				lineRenderer.enabled = true;
+				StopListening();
+				button_up = StartCoroutine(WaitForButton_Up());
+			}
+
+			yield return new WaitForEndOfFrame();
 		}
 	}
 
-	void ShootLaserFromTargetPosition(Vector3 targetPosition, Vector3 direction, float length)
+	private IEnumerator WaitForButton_Up()
+	{
+		while (true)
+		{
+			var raycastHit = ShootLaserFromTargetPosition
+				(transform.position, transform.forward, maxRayDistance);
+
+			if (OVRInput.GetUp(button))
+			{
+				lineRenderer.enabled = false;
+				ObjectController objController = raycastHit.collider.gameObject.transform
+					.GetComponentInParent<ObjectController>();
+				if (objController != null)
+					objectSelectedSubject.OnNext(objController);
+
+				StopListening();
+				button_down = StartCoroutine(WaitForButton_Down());
+			}
+
+			yield return new WaitForEndOfFrame();
+		}
+	}
+
+	RaycastHit ShootLaserFromTargetPosition(Vector3 targetPosition, Vector3 direction, float length)
 	{
 		Ray ray = new Ray(targetPosition, direction);
 		RaycastHit raycastHit;
 		Vector3 endPosition = targetPosition + (length * direction);
 
 		if (Physics.Raycast(ray, out raycastHit, length))
-		{
 			endPosition = raycastHit.point;
 
-			if (OVRInput.Get(OVRInput.RawButton.A))
-			{
-				ObjectController objController = raycastHit.collider.gameObject.transform
-					.GetComponentInParent<ObjectController>();
-				if (objController != null)
-					objectSelectedSubject.OnNext(objController);
-			}
-		}
-
-		laserLineRenderer.SetPosition(0, targetPosition);
-		laserLineRenderer.SetPosition(1, endPosition);
+		lineRenderer.SetPosition(0, targetPosition);
+		lineRenderer.SetPosition(1, endPosition);
 		Debug.DrawLine(transform.position, transform.position + direction * maxRayDistance, Color.red);
+
+		return raycastHit;
 	}
 }

@@ -48,7 +48,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		sceneContiner.SetActive(true);
 		menuSceneController.ResetMenus();
-		controllerRaycast.SetEnable(true);
+		controllerRaycast.SetActive(true);
 	}
 
 	public void TurnOnModeWith(Guid guid)
@@ -67,14 +67,14 @@ public class SceneModeController : MonoBehaviour
 		scene.SetOrUpdateModel(new McGameObjData(data, mcManager.LoadModelMeshes(data)));
 		ModelsListChanged();
 		TurnOnCurrentMode();
-		controllerRaycast.SetEnable(true);
+		controllerRaycast.SetActive(true);
 	}
 
 	public void TurnOnCurrentModeWithTerrainUpdate(McData data)
 	{
 		scene.SetOrUpdateTerrain(new McGameObjData(data, mcManager.LoadTerrainMeshes(data)));
 		TurnOnCurrentMode();
-		controllerRaycast.SetEnable(true);
+		controllerRaycast.SetActive(true);
 	}
 
 
@@ -82,7 +82,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
-		controllerRaycast.SetEnable(false);
+		controllerRaycast.SetActive(false);
 
 		scene.Destroy();
 		scene = null;
@@ -94,7 +94,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		mcManager.Save(scene);
 		ExitToMainMode();
-		controllerRaycast.SetEnable(false);
+		controllerRaycast.SetActive(false);
 	}
 
 
@@ -102,7 +102,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
-		controllerRaycast.SetEnable(false);
+		controllerRaycast.SetActive(false);
 
 		exitToTerrainModeSubject.OnNext
 			(new LoadData(scene.Guid, scene.Terrain.Data));
@@ -112,7 +112,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
-		controllerRaycast.SetEnable(false);
+		controllerRaycast.SetActive(false);
 
 		exitToObjectModeSubject.OnNext(new LoadData(scene.Guid, null));
 	}
@@ -121,7 +121,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		sceneContiner.SetActive(false);
 		menuSceneController.SetInactive();
-		controllerRaycast.SetEnable(false);
+		controllerRaycast.SetActive(false);
 
 		exitToObjectModeSubject.OnNext(new LoadData(scene.Guid, scene.Models[guid].Data));
 	}
@@ -131,7 +131,6 @@ public class SceneModeController : MonoBehaviour
 	{
 		menuSceneController.SetInactive();
 		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = false;
-		controllerRaycast.SetEnable(false);
 
 		if (selectedObject != null)
 			SetObjectNormal(selectedObject);
@@ -153,7 +152,7 @@ public class SceneModeController : MonoBehaviour
 				SetObjectNormal(selectedObject);
 				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
 				menuSceneController.SetActive();
-				controllerRaycast.SetEnable(true);
+				controllerRaycast.SetActive(true);
 			}
 
 			yield return new WaitForEndOfFrame();

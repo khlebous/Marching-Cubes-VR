@@ -24,8 +24,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 	public class TerrainBrush : MonoBehaviour
 	{
 		[Header("Input")]
-		[SerializeField]
-		private OVRInput.Button buttonB = OVRInput.Button.Two;
+		[SerializeField] private OVRInput.Button buttonB = OVRInput.Button.Two;
 		[SerializeField] private OVRInput.Button buttonA = OVRInput.Button.One;
 		[SerializeField] private OVRInput.Controller controller = OVRInput.Controller.RTouch;
 

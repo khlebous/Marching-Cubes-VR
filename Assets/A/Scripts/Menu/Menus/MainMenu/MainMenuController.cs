@@ -7,9 +7,14 @@ using System.Collections.Generic;
 public class MainMenuController : MonoBehaviour
 {
 	[Header("Menu items")]
-	[SerializeField] private MenuItemV loadSceneItem;
+	[SerializeField]
+	private MenuItemV loadSceneItem;
 	[SerializeField] private MenuItemV deleteSceneItem;
 	[SerializeField] private MenuItemV quitItem;
+
+	[Header("Other")]
+	[SerializeField]
+	private McManager mcManager;
 
 	public int ActiveSceneIndex { get; private set; }
 	public int MaxItemIndex { get; private set; }
@@ -159,7 +164,16 @@ public class MainMenuController : MonoBehaviour
 		}
 		else if (activeItemIndex == 1)
 		{
-			Debug.Log("delete scene");
+			if (ActiveSceneIndex == 0)
+			{
+				StartCoroutine(WaitNextFrameAndSetMenuActive());
+				return;
+			}
+
+			mcManager.DeleteScene(ScenesGuids[ActiveSceneIndex - 1]);
+			SetupMenu(mcManager.GetAllSceneGuids());
+			ActiveSceneIndex = 0;
+			itemChangedSubject.OnNext(Unit.Default);
 			StartCoroutine(WaitNextFrameAndSetMenuActive());
 		}
 		else if (activeItemIndex == 2)

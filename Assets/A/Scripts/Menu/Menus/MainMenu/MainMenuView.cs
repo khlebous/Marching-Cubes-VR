@@ -7,8 +7,7 @@ using System.Collections.Generic;
 public class MainMenuView : MonoBehaviour
 {
 	[Header("UI")]
-	[SerializeField]
-	private Text scenesText;
+	[SerializeField] private Text scenesText;
 	[SerializeField] private Renderer renderer;
 
 	[Header("Controller")]

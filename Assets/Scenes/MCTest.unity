@@ -132,6 +132,7 @@ MonoBehaviour:
   loadSceneItem: {fileID: 1401900512}
   deleteSceneItem: {fileID: 1354138159}
   quitItem: {fileID: 168930484}
+  mcManager: {fileID: 1400500067}
 --- !u!4 &43039110 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 978214a9b04de8344a1099ebe113b6b2, type: 3}

@@ -145,7 +145,7 @@ public class McManager : MonoBehaviour
 
     public List<Guid> GetAllSceneGuids()
     {
-        return Loader.GetAllDirGuids("");
+        return Loader.GetAllScenesGuids("");
     }
 
     public GameObject LoadTerrainMeshes(McData data)

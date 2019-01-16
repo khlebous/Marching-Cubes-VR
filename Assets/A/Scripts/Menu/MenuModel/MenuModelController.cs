@@ -13,6 +13,9 @@ public class MenuModelController : MonoBehaviour
 	protected ISubject<Unit> saveAndExitToSceneModeSubject = new Subject<Unit>();
 	public IObservable<Unit> SaveAndExitToSceneModeStream { get { return saveAndExitToSceneModeSubject; } }
 
+	protected ISubject<Unit> photoRequesSubject = new Subject<Unit>();
+	public IObservable<Unit> PhotoRequestStream { get { return photoRequesSubject; } }
+
 	private OVRInput.Button showMenuLeftButton = OVRInput.Button.PrimaryThumbstickRight;
 	private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
 	private OVRInput.Controller leftController = OVRInput.Controller.LTouch;
@@ -35,6 +38,8 @@ public class MenuModelController : MonoBehaviour
 
 		menuLeftController.ExitToSceneModeStream.Subscribe(_ => SetInactive());
 		menuLeftController.ExitToSceneModeStream.Subscribe(exitToSceneModeSubject.OnNext);
+
+		menuLeftController.PhotoRequestStream.Subscribe(photoRequesSubject.OnNext);
 
 		menuRightController.ItemIsActiveStream.Subscribe(_ => StopListeningForRight());
 		menuRightController.ItemNotActiveStream.Subscribe(_ => StartListeningForRight());
@@ -160,4 +165,9 @@ public class MenuModelController : MonoBehaviour
 			StopCoroutine(waitForMenuRightCloseCoroutine);
 	}
 
+
+	public void UpdatePhoto(string path)
+	{
+		menuLeftController.UpdatePhoto(path);
+	}
 }

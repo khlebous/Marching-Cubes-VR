@@ -5,13 +5,13 @@ public class RotationWithOculusTouch : MonoBehaviour
 {
     [Header("Oculus Touch input")]
     [Tooltip("Button to rotate")]
-    [SerializeField] private OVRInput.Button buttonY = OVRInput.Button.One;
+    [SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Three;
     [Tooltip("Controller to follow")]
-    [SerializeField] private Transform controllerToFollow;
+    private Transform controllerToFollow;
 
     [Header("Rotatation multipliers")]
     [SerializeField] private int speed = 500;
-    [SerializeField] private int bound = 20;
+    [SerializeField] private int bound = 10;
 
     private new Transform transform;
     private Vector3 startControllerPosition;
@@ -25,8 +25,6 @@ public class RotationWithOculusTouch : MonoBehaviour
         transform = GetComponent<Transform>();
         startControllerPosition = Vector3.zero;
         startObjRotation = Vector3.zero;
-
-        StartListening();
     }
 
     private void StartListening()
@@ -80,7 +78,6 @@ public class RotationWithOculusTouch : MonoBehaviour
     }
 
 
-
     private void CorrectAnglesIfNeeded()
     {
         float eulerAnglesX = transform.eulerAngles.x;
@@ -109,4 +106,20 @@ public class RotationWithOculusTouch : MonoBehaviour
         float rightDistance = 360 - angle - bound;
         return leftDistance > rightDistance ? 360 - bound : bound;
     }
+
+
+	public void SetControllerToFollow(Transform toFollow)
+	{
+		controllerToFollow = toFollow;
+	}
+
+	private void OnEnable()
+	{
+		StartListening();
+	}
+
+	private void OnDisable()
+	{
+		StopListening();
+	}
 }

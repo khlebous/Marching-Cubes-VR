@@ -7,6 +7,7 @@ public class MainModeController : MonoBehaviour
 {
 	[SerializeField] private MainMenuController mainMenuController;
 
+
 	protected ISubject<Guid> itemSelectedSubject = new Subject<Guid>();
 	public IObservable<Guid> ItemSelectedStream { get { return itemSelectedSubject; } }
 

@@ -7,10 +7,13 @@ using System.Collections.Generic;
 public class MainMenuView : MonoBehaviour
 {
 	[Header("UI")]
-	[SerializeField] private Text scenesText;
+	[SerializeField]
+	private Text scenesText;
+	[SerializeField] private Renderer renderer;
 
 	[Header("Controller")]
-	[SerializeField] private MainMenuController controller;
+	[SerializeField]
+	private MainMenuController controller;
 
 	private int ActiveItemIndex { get { return controller.ActiveItemIndex; } }
 	private int MaxItemIndex { get { return controller.MaxItemIndex; } }
@@ -28,11 +31,25 @@ public class MainMenuView : MonoBehaviour
 
 	private void UpdateUI()
 	{
+		scenesText.text = ActiveItemIndex + "/" + (MaxItemIndex - 1);
 		if (ActiveItemIndex == 0)
-			scenesText.text = ActiveItemIndex + "/" + (MaxItemIndex-1) + "\n (New scene)";
+		{
+			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile
+				(Application.dataPath + "/Resources/NewScene.png");
+		}
 		else
-			scenesText.text = ActiveItemIndex + "/" + (MaxItemIndex-1) + "\n " + SceneGuids[ActiveItemIndex - 1];
+		{
+			string path = GetFullPath(SceneGuids[ActiveItemIndex - 1]);
+			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
+		}
 	}
+
+	private string GetFullPath(Guid guid)
+	{
+		return Application.dataPath + "/Resources/" + guid.ToString()
+			+ "/" + guid.ToString() + ".png";
+	}
+
 
 	private void OnMenuEnable()
 	{

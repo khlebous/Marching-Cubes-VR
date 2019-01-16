@@ -14,6 +14,7 @@ public class SceneModeController : MonoBehaviour
 	[Header("Other")]
 	[SerializeField] private McManager mcManager;
 	[SerializeField] private ControllerRaycast controllerRaycast;
+	[SerializeField] private CameraCapture cameraCapture;
 
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
@@ -37,6 +38,7 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.ModelToAddSelectedStream.Subscribe(AddModelToScene);
 		menuSceneController.ModelToEditSelectedStream.Subscribe(SuspendAndExitToObjectMode);
 		menuSceneController.ModelToDeleteSelectedStream.Subscribe(DeleteModelFromModelsList);
+		menuSceneController.PhotoRequestStream.Subscribe(_ => TakePhoto());
 
 		controllerRaycast.ObjectSelectedStream.Subscribe(SetObjectSelected);
 	}
@@ -53,10 +55,11 @@ public class SceneModeController : MonoBehaviour
 	{
 		scene = mcManager.LoadScene(guid);
 		scene.gameObject.transform.parent = sceneContiner.transform;
-		scene.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+		scene.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
 		sceneContiner.SetActive(true);
 		menuSceneController.SetActive();
+		menuSceneController.UpdatePhoto(GetFullPath());
 		controllerRaycast.SetEnable(true);
 
 		ModelsListChanged();
@@ -136,6 +139,7 @@ public class SceneModeController : MonoBehaviour
 		if (selectedObject != null)
 			SetObjectNormal(selectedObject);
 		selectedObject = go;
+		go.SetControllerToFollow(controllerToFollow);
 		go.SetActive();
 
 		waitForMenuLeftOpenCoroutine = StartCoroutine(WaitForNewObjectMovementEnd());
@@ -169,7 +173,7 @@ public class SceneModeController : MonoBehaviour
 	private void ModelsListChanged()
 	{
 		List<Guid> modelGuids = scene.Models.Keys.ToList();
-		menuSceneController.UpdateModelsGuids(modelGuids);
+		menuSceneController.UpdateModelsGuids(scene.Guid, modelGuids);
 	}
 
 	private void AddModelToScene(Guid modelGuid)
@@ -186,5 +190,21 @@ public class SceneModeController : MonoBehaviour
 		scene.DeleteModel(modelGuid);
 		mcManager.DeleteModel(modelGuid, scene.Guid);
 		ModelsListChanged();
+	}
+
+	private void TakePhoto()
+	{
+		string fullPath = GetFullPath();
+		var fileInfo = new System.IO.FileInfo(fullPath);
+		fileInfo.Directory.Create();
+
+		cameraCapture.TakeShot(fullPath);
+		menuSceneController.UpdatePhoto(GetFullPath());
+	}
+
+	private string GetFullPath()
+	{
+		return Application.dataPath + "/Resources/" + scene.Guid.ToString()
+			+ "/" + scene.Guid.ToString() + ".png";
 	}
 }

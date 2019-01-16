@@ -34,7 +34,7 @@ public class TerrainModeController : MonoBehaviour
 
 		terrain = mcManager.LoadTerrain(loadData.data);
 		terrain.gameObject.transform.parent = terrainContiner.transform;
-		terrain.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+		terrain.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 		
 		
 		terrainContiner.SetActive(true);

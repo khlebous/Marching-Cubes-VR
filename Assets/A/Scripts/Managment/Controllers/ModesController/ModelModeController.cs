@@ -10,6 +10,7 @@ public class ModelModeController : MonoBehaviour
 
 	[Header("Other")]
 	[SerializeField] private McManager mcManager;
+	[SerializeField] private CameraCapture cameraCapture;
 
 	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
 	public IObservable<Unit> ModeExitedStream { get { return modeExitedSubject; } }
@@ -25,6 +26,7 @@ public class ModelModeController : MonoBehaviour
 	{
 		menuModelController.ExitToSceneModeStream.Subscribe(_ => ExitMode());
 		menuModelController.SaveAndExitToSceneModeStream.Subscribe(_ => SaveObjectAndExitMode());
+		menuModelController.PhotoRequestStream.Subscribe(_ => TakePhoto());
 	}
 
 
@@ -38,9 +40,10 @@ public class ModelModeController : MonoBehaviour
 			model = mcManager.LoadModel(loadData.data);
 
 		model.gameObject.transform.parent = modelContiner.transform;
-		model.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+		model.transform.localScale = new Vector3(0.02f, 0.02f, 0.02f);
 
 		modelContiner.SetActive(true);
+		menuModelController.UpdatePhoto(GetFullPath());
 		menuModelController.SetActive();
 		brush.SetActive();
 	}
@@ -68,5 +71,21 @@ public class ModelModeController : MonoBehaviour
 		modeSavedAndExitedSubject.OnNext(model.GetData());
 		model.Destroy();
 		model = null;
+	}
+
+	private void TakePhoto()
+	{
+		string fullPath = GetFullPath();
+		var fileInfo = new System.IO.FileInfo(fullPath);
+		fileInfo.Directory.Create();
+
+		cameraCapture.TakeShot(fullPath);
+		menuModelController.UpdatePhoto(GetFullPath());
+	}
+
+	private string GetFullPath()
+	{
+		return Application.dataPath + "/Resources/" + sceneGuid.ToString()
+			+ "/Models/" + model.Guid.ToString() + ".png";
 	}
 }

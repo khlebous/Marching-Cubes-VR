@@ -30,6 +30,9 @@ public class MenuSceneController : MonoBehaviour
 	private ISubject<Guid> modelToDeleteSelectedSubject = new Subject<Guid>();
 	public IObservable<Guid> ModelToDeleteSelectedStream { get { return modelToDeleteSelectedSubject; } }
 
+	protected ISubject<Unit> photoRequesSubject = new Subject<Unit>();
+	public IObservable<Unit> PhotoRequestStream { get { return photoRequesSubject; } }
+
 	private OVRInput.Button showMenuLeftButton = OVRInput.Button.PrimaryThumbstickRight;
 	private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
 	private OVRInput.Button showMenuRightButton = OVRInput.Button.SecondaryThumbstickLeft;
@@ -51,6 +54,8 @@ public class MenuSceneController : MonoBehaviour
 
 		menuLeftController.ExitToMainModeStream.Subscribe(_ => SetInactive());
 		menuLeftController.ExitToMainModeStream.Subscribe(exitToMainModeSubject.OnNext);
+
+		menuLeftController.PhotoRequestStream.Subscribe(photoRequesSubject.OnNext);
 
 		menuRightController.ExitToTerrainModeStream.Subscribe(_ => Suspend());
 		menuRightController.ExitToTerrainModeStream.Subscribe(suspendAndExitToTerrainModeSubject.OnNext);
@@ -162,9 +167,9 @@ public class MenuSceneController : MonoBehaviour
 		gameObject.SetActive(false);
 	}
 
-	public void UpdateModelsGuids(List<Guid> modelGuids)
+	public void UpdateModelsGuids(Guid sceneGuid, List<Guid> modelGuids)
 	{
-		menuRightController.UpdateModelsGuids(modelGuids);
+		menuRightController.UpdateModelsGuids(sceneGuid, modelGuids);
 	}
 
 
@@ -199,5 +204,11 @@ public class MenuSceneController : MonoBehaviour
 
 		if (null != waitForMenuRightCloseCoroutine)
 			StopCoroutine(waitForMenuRightCloseCoroutine);
+	}
+
+
+	public void UpdatePhoto(string path)
+	{
+		menuLeftController.UpdatePhoto(path);
 	}
 }

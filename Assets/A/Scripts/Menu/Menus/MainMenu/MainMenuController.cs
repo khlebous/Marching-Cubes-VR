@@ -6,8 +6,12 @@ using System.Collections.Generic;
 
 public class MainMenuController : MonoBehaviour
 {
+	[Header("Menu items")]
+	[SerializeField] private MenuItemV loadSceneItem;
+	[SerializeField] private MenuItemV deleteSceneItem;
+	[SerializeField] private MenuItemV quitItem;
 
-	public int ActiveItemIndex { get; private set; }
+	public int ActiveSceneIndex { get; private set; }
 	public int MaxItemIndex { get; private set; }
 	public List<Guid> ScenesGuids { get; private set; }
 
@@ -21,12 +25,38 @@ public class MainMenuController : MonoBehaviour
 	public IObservable<Guid> ItemSelectedStream { get { return itemSelectedSubject; } }
 
 	private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
-	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickLeft;
-	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickRight;
+	private OVRInput.Button prevSceneButton = OVRInput.Button.PrimaryThumbstickLeft;
+	private OVRInput.Button nextSceneButton = OVRInput.Button.PrimaryThumbstickRight;
+	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickUp;
+	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickDown;
 	private OVRInput.Controller controller = OVRInput.Controller.LTouch;
 
+	private List<MenuItemV> items;
 	private ButtonState currThumbstickState;
 	private bool isMenuActive;
+	private int activeItemIndex;
+
+	private void Awake()
+	{
+		items = new List<MenuItemV>
+		{
+			loadSceneItem,
+			deleteSceneItem,
+			quitItem
+		};
+		SetupMenu();
+	}
+
+	private void SetupMenu()
+	{
+		currThumbstickState = ButtonState.Normal;
+		isMenuActive = false;
+		activeItemIndex = 0;
+
+		foreach (var item in items)
+			item.SetInactive();
+		items[activeItemIndex].SetActive();
+	}
 
 	public void SetActive(List<Guid> sceneGuids)
 	{
@@ -45,7 +75,7 @@ public class MainMenuController : MonoBehaviour
 
 	private void SetupMenu(List<Guid> sceneGuids)
 	{
-		ActiveItemIndex = 0;
+		ActiveSceneIndex = 0;
 		ScenesGuids = sceneGuids;
 		MaxItemIndex = ScenesGuids.Count + 1;
 	}
@@ -69,13 +99,32 @@ public class MainMenuController : MonoBehaviour
 			}
 			else
 			{
-				if (OVRInput.Get(prevItemButton, controller))
+				if (OVRInput.Get(prevSceneButton, controller))
+				{
+					if (currThumbstickState == ButtonState.Normal)
+					{
+						currThumbstickState = ButtonState.Left;
+						DecreaseActiveSceneIndex();
+						itemChangedSubject.OnNext(Unit.Default);
+					}
+				}
+				else if (OVRInput.Get(nextSceneButton, controller))
+				{
+					if (currThumbstickState == ButtonState.Normal)
+					{
+						currThumbstickState = ButtonState.Right;
+						IncreaseActiveSceneIndex();
+						itemChangedSubject.OnNext(Unit.Default);
+					}
+				}
+				else if (OVRInput.Get(prevItemButton, controller))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{
 						currThumbstickState = ButtonState.Up;
+						items[activeItemIndex].SetInactive();
 						DecreaseActiveItemIndex();
-						itemChangedSubject.OnNext(Unit.Default);
+						items[activeItemIndex].SetActive();
 					}
 				}
 				else if (OVRInput.Get(nextItemButton, controller))
@@ -83,8 +132,9 @@ public class MainMenuController : MonoBehaviour
 					if (currThumbstickState == ButtonState.Normal)
 					{
 						currThumbstickState = ButtonState.Down;
+						items[activeItemIndex].SetInactive();
 						IncreaseActiveItemIndex();
-						itemChangedSubject.OnNext(Unit.Default);
+						items[activeItemIndex].SetActive();
 					}
 				}
 				else
@@ -100,23 +150,49 @@ public class MainMenuController : MonoBehaviour
 
 	private void ItemSelected()
 	{
-		if (ActiveItemIndex == 0)
-			itemSelectedSubject.OnNext(Guid.Empty);
-		else
-			itemSelectedSubject.OnNext(ScenesGuids[ActiveItemIndex - 1]);
+		if (activeItemIndex == 0)
+		{
+			if (ActiveSceneIndex == 0)
+				itemSelectedSubject.OnNext(Guid.Empty);
+			else
+				itemSelectedSubject.OnNext(ScenesGuids[ActiveSceneIndex - 1]);
+		}
+		else if (activeItemIndex == 1)
+		{
+			Debug.Log("delete scene");
+			StartCoroutine(WaitNextFrameAndSetMenuActive());
+		}
+		else if (activeItemIndex == 2)
+		{
+			Application.Quit();
+		}
 	}
 
-	 
+
+	private void IncreaseActiveSceneIndex()
+	{
+		ActiveSceneIndex++;
+		ActiveSceneIndex %= MaxItemIndex;
+	}
+
+	private void DecreaseActiveSceneIndex()
+	{
+		if (ActiveSceneIndex == 0)
+			ActiveSceneIndex = MaxItemIndex;
+		ActiveSceneIndex--;
+	}
+
+
 	private void IncreaseActiveItemIndex()
 	{
-		ActiveItemIndex++;
-		ActiveItemIndex %= MaxItemIndex;
+		activeItemIndex++;
+		activeItemIndex %= items.Count;
 	}
 
 	private void DecreaseActiveItemIndex()
 	{
-		if (ActiveItemIndex == 0)
-			ActiveItemIndex = MaxItemIndex;
-		ActiveItemIndex--;
+		if (activeItemIndex == 0)
+			activeItemIndex = items.Count;
+		activeItemIndex--;
 	}
 }

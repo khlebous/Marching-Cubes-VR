@@ -15,15 +15,13 @@ public class MainMenuView : MonoBehaviour
 	[SerializeField]
 	private MainMenuController controller;
 
-	private int ActiveItemIndex { get { return controller.ActiveItemIndex; } }
+	private int ActiveItemIndex { get { return controller.ActiveSceneIndex; } }
 	private int MaxItemIndex { get { return controller.MaxItemIndex; } }
 
 	private List<Guid> SceneGuids { get { return controller.ScenesGuids; } }
 
 	void Start()
 	{
-		OnMenuDisable();
-
 		controller.ItemChangedStream.Subscribe(_ => UpdateUI());
 		controller.MenuEnabledStream.Subscribe(_ => OnMenuEnable());
 		controller.ItemSelectedStream.Subscribe(_ => OnMenuDisable());

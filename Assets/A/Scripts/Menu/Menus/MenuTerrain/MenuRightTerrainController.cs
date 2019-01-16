@@ -43,6 +43,7 @@ public class MenuRightTerrainController : MonoBehaviour
 		gameObject.SetActive(false);
 
 		brushSizeItem.ValueChangedStream.Subscribe(brush.SetSizeChanged);
+		brushColorItem.ColorChangedStream.Subscribe(brush.SetColor);
 	}
 
 	private void SetupMenu()
@@ -71,7 +72,6 @@ public class MenuRightTerrainController : MonoBehaviour
 	{
 		modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
 		brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
-		brushColorItem.ColorChangedStream.Subscribe(brush.SetColor);
 
 		foreach (var item in items)
 			item.ThubstickClickedStream.Subscribe

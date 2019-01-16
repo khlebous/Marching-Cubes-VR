@@ -40,6 +40,9 @@ public class MenuRightTerrainController : MonoBehaviour
 			brushColorItem
 		};
 		SetupMenu();
+		gameObject.SetActive(false);
+
+		brushSizeItem.ValueChangedStream.Subscribe(brush.SetSizeChanged);
 	}
 
 	private void SetupMenu()
@@ -53,11 +56,21 @@ public class MenuRightTerrainController : MonoBehaviour
 		items[activeItemIndex].SetActive();
 	}
 
+	public void ResetMenu()
+	{
+		modeItem.ResetItem();
+		brushShapeItem.ResetItem();
+		brushSizeItem.ResetItem();
+		brushColorItem.ResetItem();
+
+		SetupMenu();
+	}
+
+
 	private void Start()
 	{
 		modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
 		brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
-		brushSizeItem.ValueChangedStream.Subscribe(brush.SetSizeChanged);
 		brushColorItem.ColorChangedStream.Subscribe(brush.SetColor);
 
 		foreach (var item in items)

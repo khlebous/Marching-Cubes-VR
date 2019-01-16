@@ -57,6 +57,12 @@ public class ModelsMenuV : MenuItemV
 		UpdateUI();
 	}
 
+	public void ResetItem()
+	{
+		activeItemIndex = 0;
+		UpdateUI();
+	}
+
 	IEnumerator WaitNextFrame()
 	{
 		yield return new WaitForSeconds(0.5f);

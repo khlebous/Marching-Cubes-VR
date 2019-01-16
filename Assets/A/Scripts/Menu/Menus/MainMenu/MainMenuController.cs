@@ -63,11 +63,13 @@ public class MainMenuController : MonoBehaviour
 		items[activeItemIndex].SetActive();
 	}
 
-	public void SetActive(List<Guid> sceneGuids)
+	public void ResetMenu(List<Guid> sceneGuids)
 	{
+		SetupMenu();
+
 		SetupMenu(sceneGuids);
 		menuEnabledSubject.OnNext(Unit.Default);
-		currThumbstickState = ButtonState.Normal;
+
 		gameObject.SetActive(true);
 		StartCoroutine(WaitNextFrameAndSetMenuActive());
 	}
@@ -172,7 +174,6 @@ public class MainMenuController : MonoBehaviour
 
 			mcManager.DeleteScene(ScenesGuids[ActiveSceneIndex - 1]);
 			SetupMenu(mcManager.GetAllSceneGuids());
-			ActiveSceneIndex = 0;
 			itemChangedSubject.OnNext(Unit.Default);
 			StartCoroutine(WaitNextFrameAndSetMenuActive());
 		}

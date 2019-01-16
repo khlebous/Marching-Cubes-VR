@@ -33,6 +33,7 @@ public class MenuLeftTerrainController : MonoBehaviour
 			dontSaveExitItem
 		};
 		SetupMenu();
+		gameObject.SetActive(false);
 	}
 
 	private void SetupMenu()
@@ -46,6 +47,10 @@ public class MenuLeftTerrainController : MonoBehaviour
 		items[activeItemIndex].SetActive();
 	}
 
+	public void ResetMenu()
+	{
+		SetupMenu();
+	}
 
 	void Update()
 	{

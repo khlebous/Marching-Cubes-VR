@@ -427,10 +427,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1627559421097596, guid: 7b415877d1c849f44ac3d791560d459a, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7b415877d1c849f44ac3d791560d459a, type: 2}
   m_IsPrefabParent: 0
@@ -2017,10 +2013,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1248268016779156, guid: 06e9530bb1819d0418fd3f655283f13e, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 06e9530bb1819d0418fd3f655283f13e, type: 2}
   m_IsPrefabParent: 0
@@ -2678,7 +2670,6 @@ MonoBehaviour:
   buttonY: 256
   controllerToFollow: {fileID: 830349226}
   speed: 10
-  bound: 20
 --- !u!1 &1152297781 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 157742, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 2}
@@ -2707,7 +2698,6 @@ MonoBehaviour:
   buttonY: 256
   controllerToFollow: {fileID: 830349226}
   speed: 10
-  bound: 20
 --- !u!1001 &1158568074
 Prefab:
   m_ObjectHideFlags: 0
@@ -2877,6 +2867,16 @@ Prefab:
       propertyPath: brush
       value: 
       objectReference: {fileID: 720026327}
+    - target: {fileID: 224914346968573862, guid: 0b439dcaefc023d43a8269b184b865b3,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224914346968573862, guid: 0b439dcaefc023d43a8269b184b865b3,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0b439dcaefc023d43a8269b184b865b3, type: 2}
   m_IsPrefabParent: 0
@@ -3162,19 +3162,6 @@ Prefab:
       propertyPath: mcManager
       value: 
       objectReference: {fileID: 1400500067}
-    - target: {fileID: 1949756220788248, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224486949739456376, guid: 49ed7aa465a859d43894a0e160f463a9,
-        type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 4648396823867920, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0.039999995
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
   m_IsPrefabParent: 0
@@ -3665,6 +3652,10 @@ Prefab:
       propertyPath: brush
       value: 
       objectReference: {fileID: 1721579687}
+    - target: {fileID: 1482618563597042, guid: d1f1d3e4d7f1a5a438281f8b8b287b48, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d1f1d3e4d7f1a5a438281f8b8b287b48, type: 2}
   m_IsPrefabParent: 0
@@ -3754,7 +3745,6 @@ MonoBehaviour:
   buttonY: 256
   controllerToFollow: {fileID: 0}
   speed: 3
-  bound: 20
 --- !u!4 &1481738839 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 1d1d0cda0df6701408ad5bd34aeb10bf, type: 3}
@@ -4658,7 +4648,6 @@ MonoBehaviour:
   buttonY: 256
   controllerToFollow: {fileID: 830349226}
   speed: 10
-  bound: 20
 --- !u!114 &1762231444 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114659647573878020, guid: 7b415877d1c849f44ac3d791560d459a,

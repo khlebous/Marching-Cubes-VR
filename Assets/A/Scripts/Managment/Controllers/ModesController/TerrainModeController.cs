@@ -36,9 +36,8 @@ public class TerrainModeController : MonoBehaviour
 		terrain.gameObject.transform.parent = terrainContiner.transform;
 		terrain.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 		
-		
 		terrainContiner.SetActive(true);
-		menuTerrainController.SetActive();
+		menuTerrainController.ResetMenus();
 		terrainBrush.SetActive();
 	}
 

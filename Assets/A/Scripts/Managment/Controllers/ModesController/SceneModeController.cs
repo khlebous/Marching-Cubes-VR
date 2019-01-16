@@ -47,7 +47,7 @@ public class SceneModeController : MonoBehaviour
 	public void TurnOnCurrentMode()
 	{
 		sceneContiner.SetActive(true);
-		menuSceneController.SetActive();
+		menuSceneController.ResetMenus();
 		controllerRaycast.SetEnable(true);
 	}
 
@@ -57,11 +57,8 @@ public class SceneModeController : MonoBehaviour
 		scene.gameObject.transform.parent = sceneContiner.transform;
 		scene.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-		sceneContiner.SetActive(true);
-		menuSceneController.SetActive();
 		menuSceneController.UpdatePhoto(GetFullPath());
-		controllerRaycast.SetEnable(true);
-
+		TurnOnCurrentMode();
 		ModelsListChanged();
 	}
 

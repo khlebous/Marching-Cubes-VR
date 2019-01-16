@@ -25,6 +25,6 @@ public class MainModeController : MonoBehaviour
 	
 	public void TurnOnModeWithCurrentSceneGuids(List<Guid> sceneGuids)
 	{
-		mainMenuController.SetActive(sceneGuids);
+		mainMenuController.ResetMenu(sceneGuids);
 	}
 }

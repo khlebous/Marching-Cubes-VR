@@ -39,6 +39,8 @@ public class MenuRightModelController : MonoBehaviour
 			brushColorItem
 		};
 		SetupMenu();
+		gameObject.SetActive(false);
+		brushSizeItem.ValueChangedStream.Subscribe(brush.SetSizeChanged);
 	}
 
 	private void SetupMenu()
@@ -52,6 +54,15 @@ public class MenuRightModelController : MonoBehaviour
 		items[activeItemIndex].SetActive();
 	}
 
+	public void ResetMenu()
+	{
+		modeItem.ResetItem();
+		brushShapeItem.ResetItem();
+		brushSizeItem.ResetItem();
+		brushColorItem.ResetItem();
+
+		SetupMenu();
+	}
 
 	private void Start()
 	{
@@ -61,7 +72,6 @@ public class MenuRightModelController : MonoBehaviour
 
 		modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
 		brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
-		brushSizeItem.ValueChangedStream.Subscribe(brush.SetSizeChanged);
 		brushColorItem.ColorChangedStream.Subscribe(brush.SetColor);
 	}
 
@@ -130,7 +140,7 @@ public class MenuRightModelController : MonoBehaviour
 		isMenuActive = false;
 	}
 
-	
+
 	private void IncreaseActiveItemIndex()
 	{
 		activeItemIndex++;

@@ -43,6 +43,7 @@ public class MenuLeftSceneController : MonoBehaviour
 			scenePreviewItem
 		};
 		SetupMenu();
+		gameObject.SetActive(false);
 	}
 
 	private void SetupMenu()
@@ -54,6 +55,11 @@ public class MenuLeftSceneController : MonoBehaviour
 		foreach (var item in items)
 			item.SetInactive();
 		items[activeItemIndex].SetActive();
+	}
+
+	public void ResetMenu()
+	{
+		SetupMenu();
 	}
 
 

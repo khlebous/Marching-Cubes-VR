@@ -113,6 +113,26 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &35592424 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1678589347060362, guid: 5302d74ef6b10d24a9dd05c9bb60ae7d,
+    type: 2}
+  m_PrefabInternal: {fileID: 565042607}
+--- !u!114 &35592425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 35592424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95d796d036142374eb482644e59d8bf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadSceneItem: {fileID: 1401900512}
+  deleteSceneItem: {fileID: 1354138159}
+  quitItem: {fileID: 168930484}
+  mcManager: {fileID: 1400500067}
 --- !u!4 &43039110 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 978214a9b04de8344a1099ebe113b6b2, type: 3}
@@ -367,7 +387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 142304438}
-  stopEditingItemButton: 8388608
+  stopEditingItemButton: 32768
 --- !u!1001 &201118191
 Prefab:
   m_ObjectHideFlags: 0
@@ -989,7 +1009,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2133038312}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &490502569
 MonoBehaviour:
@@ -1148,7 +1168,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2133038312}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &525910612
 MonoBehaviour:
@@ -1342,7 +1362,7 @@ Prefab:
         type: 2}
       propertyPath: controller
       value: 
-      objectReference: {fileID: 1137784736}
+      objectReference: {fileID: 35592425}
     - target: {fileID: 1675824660497654, guid: 5302d74ef6b10d24a9dd05c9bb60ae7d, type: 2}
       propertyPath: m_IsActive
       value: 1
@@ -2629,46 +2649,6 @@ Transform:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: a19a9aa8b8240fe479daf001fa5a33d7, type: 3}
   m_PrefabInternal: {fileID: 1701461424}
---- !u!1 &1137784734
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1137784735}
-  - component: {fileID: 1137784736}
-  m_Layer: 0
-  m_Name: MainMenuController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1137784735
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1137784734}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2133038312}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1137784736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1137784734}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95d796d036142374eb482644e59d8bf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1142201859 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114999278078681714, guid: 06e9530bb1819d0418fd3f655283f13e,
@@ -3307,7 +3287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 1929464058}
-  stopEditingItemButton: 8388608
+  stopEditingItemButton: 32768
 --- !u!1 &1385287522
 GameObject:
   m_ObjectHideFlags: 0
@@ -3431,7 +3411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 1450976125}
-  stopEditingItemButton: 8388608
+  stopEditingItemButton: 32768
 --- !u!1 &1411186783
 GameObject:
   m_ObjectHideFlags: 0
@@ -4070,7 +4050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 526a39ac52df0c6468c278b0c9be6b45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuController: {fileID: 1137784736}
+  mainMenuController: {fileID: 35592425}
 --- !u!1001 &1572828385
 Prefab:
   m_ObjectHideFlags: 0
@@ -4160,7 +4140,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2133038312}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1590765280
 MonoBehaviour:
@@ -5598,7 +5578,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1137784735}
   - {fileID: 1590765279}
   - {fileID: 525910611}
   - {fileID: 490502568}

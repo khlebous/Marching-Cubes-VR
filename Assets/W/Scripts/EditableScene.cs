@@ -109,14 +109,6 @@ public class EditableScene : MonoBehaviour
             modelObj.transform.rotation = Quaternion.Euler(modelSceneData.Rotation);
             modelObj.transform.localScale = modelSceneData.Scale;
 
-			modelObj.AddComponent<ObjectController>();
-			modelObj.AddComponent<MovementWithOculusTouch>();
-			modelObj.GetComponent<MovementWithOculusTouch>().enabled = false;
-			modelObj.AddComponent<RotationWithOculusTouch>();
-			modelObj.GetComponent<RotationWithOculusTouch>().enabled = false;
-			modelObj.tag = Constants.OBJECT_TAG;
-			modelObj.SetActive(true);
-
             ModelsOnTerrain.Add(new McObject(modelSceneData.Guid, modelObj));
         }
     }

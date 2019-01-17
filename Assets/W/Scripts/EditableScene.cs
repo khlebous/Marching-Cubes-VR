@@ -18,7 +18,7 @@ public class EditableScene : MonoBehaviour
 		var obj = GameObject.Instantiate(Models[guid].GameObject);
         obj.name = McConsts.ObjectPrefix + guid.ToString();
         obj.transform.parent = this.transform;
-		obj.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+		obj.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
 		obj.transform.localPosition = Vector3.zero;
 		ModelsOnTerrain.Add(new McObject(guid, obj));
 
@@ -112,8 +112,6 @@ public class EditableScene : MonoBehaviour
             modelObj.transform.position = modelSceneData.Position;
             modelObj.transform.rotation = Quaternion.Euler(modelSceneData.Rotation);
             modelObj.transform.localScale = modelSceneData.Scale;
-
-            ModelsOnTerrain.Add(new McObject(modelSceneData.Guid, modelObj));
         }
     }
 

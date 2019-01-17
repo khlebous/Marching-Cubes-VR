@@ -169,10 +169,25 @@ public class SceneModeController : MonoBehaviour
 			{
 				StopCoroutine(waitForMenuLeftOpenCoroutine);
 
-				SetObjectNormal(selectedObject);
+				if (selectedObject != null)
+					SetObjectNormal(selectedObject);
 				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
 				menuSceneController.SetActive();
 				controllerRaycast.SetActive(true);
+			}
+			else if (OVRInput.GetDown(OVRInput.RawButton.A))
+			{
+				StopCoroutine(waitForMenuLeftOpenCoroutine);
+
+				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
+				menuSceneController.SetActive();
+				controllerRaycast.SetActive(true);
+
+				if (selectedObject != null)
+				{
+					scene.DeleteModelFromTerrain(selectedObject.gameObject);
+					selectedObject = null;
+				}
 			}
 
 			yield return new WaitForEndOfFrame();

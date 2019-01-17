@@ -66,7 +66,9 @@ public class MovementWithOculusTouch : MonoBehaviour
             Vector3 currentPos = controllerToFollow.position;
             Vector3 diff = currentPos - startPos;
             startPos = currentPos;
-            transform.Translate(diff * speed);
+			Vector3 movementVector = Matrix4x4.Rotate(transform.rotation).inverse * (diff * speed);
+
+			transform.Translate(movementVector);
 
             if (OVRInput.GetUp(buttonY))
             {

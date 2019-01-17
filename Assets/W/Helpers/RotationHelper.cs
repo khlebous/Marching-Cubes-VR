@@ -1,13 +1,9 @@
-﻿using Assets.MarchingCubesGPU.Scripts;
-using MarchingCubesGPUProject;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public static class RotationHelper
 {
-    private const float _rotationMultiplier = 3;
+    private const float _rotationMultiplier = 30;
     public static Vector3 GetRotation_1(Vector3 objPos, Vector3 objRotation, Vector3 startConPos, Vector3 currentConPos)
     {
         var startVec = startConPos - objPos;

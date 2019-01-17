@@ -27,6 +27,8 @@ public class EditableScene : MonoBehaviour
 		obj.GetComponent<MovementWithOculusTouch>().enabled = false;
 		obj.AddComponent<RotationWithOculusTouch>();
 		obj.GetComponent<RotationWithOculusTouch>().enabled = false;
+		obj.AddComponent<ScaleWithOculusTouch>();
+		obj.GetComponent<ScaleWithOculusTouch>().enabled = false;
 
 		obj.tag = Constants.OBJECT_TAG;
 		obj.SetActive(true);
@@ -54,6 +56,7 @@ public class EditableScene : MonoBehaviour
 	public void SetOrUpdateModel(McGameObjData data)
 	{
 		var guid = data.Data.Guid;
+		data.GameObject.transform.parent = this.transform;
 
 		if (!Models.ContainsKey(guid))
 		{
@@ -83,12 +86,13 @@ public class EditableScene : MonoBehaviour
     }
     public void DeleteModel(Guid modelGuid)
     {
-        var toDelete = ModelsOnTerrain.Where(x => x.ModelGuid == modelGuid);
-        foreach (var model in toDelete)
+        var objToDelete = ModelsOnTerrain.Where(x => x.ModelGuid == modelGuid);
+        foreach (var obj in objToDelete)
         {
-            GameObject.Destroy(model.GameObject);
+            GameObject.Destroy(obj.GameObject);
         }
 
+		GameObject.Destroy(Models[modelGuid].GameObject);
         Models.Remove(modelGuid);
     }
     public void DeleteModelFromTerrain(GameObject gameObject)

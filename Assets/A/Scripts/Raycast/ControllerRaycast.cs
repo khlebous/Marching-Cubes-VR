@@ -76,14 +76,17 @@ public class ControllerRaycast : MonoBehaviour
 
 			if (OVRInput.GetUp(button))
 			{
-				lineRenderer.enabled = false;
-				ObjectController objController = raycastHit.collider.gameObject.transform
-					.GetComponentInParent<ObjectController>();
-				if (objController != null)
-					objectSelectedSubject.OnNext(objController);
+				if (raycastHit.collider != null)
+				{
+					lineRenderer.enabled = false;
+					ObjectController objController = raycastHit.collider.gameObject.transform
+						.GetComponentInParent<ObjectController>();
+					if (objController != null)
+						objectSelectedSubject.OnNext(objController);
 
-				StopListening();
-				button_down = StartCoroutine(WaitForButton_Down());
+					StopListening();
+					button_down = StartCoroutine(WaitForButton_Down());
+				}
 			}
 
 			yield return new WaitForEndOfFrame();

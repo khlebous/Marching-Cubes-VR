@@ -230,11 +230,10 @@ public class McManager : MonoBehaviour
                 {
                     var filename = Path.GetFileName(dir.Name);
                     var guid = new Guid(filename);
-                    var a = dir.GetFiles();
                     if (dir.GetFiles().Any(x => x.Name == guid.ToString() + PathHelper.ExtensionBin))
                         guids.Add(guid);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }

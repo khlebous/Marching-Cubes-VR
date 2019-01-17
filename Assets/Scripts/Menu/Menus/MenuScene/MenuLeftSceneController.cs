@@ -12,7 +12,7 @@ public class MenuLeftSceneController : MonoBehaviour
 	[SerializeField] private MenuItemV scenePreviewItem;
 
 	[Header("Other")]
-	[SerializeField] private Renderer renderer;
+	[SerializeField] private Renderer sceneImageRenderer;
 
 	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
@@ -152,17 +152,17 @@ public class MenuLeftSceneController : MonoBehaviour
 	}
 
 
-	public void UpdatePhoto(string path = "")
+	public void UpdatePhoto(string path)
 	{
-		FileInfo fi = new FileInfo(path);
-		Texture2D tex = TextureLoader.LoadTextureFromFile(path);
-		if (fi.Exists)
-			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
+		if (File.Exists(path))
+		{
+			sceneImageRenderer.material.mainTexture 
+				= TextureLoader.LoadTextureFromFile(path);
+		}
 		else
 		{
-			path = Application.dataPath + "/Resources/0.png";
-			tex = TextureLoader.LoadTextureFromFile(path);
-			renderer.material.mainTexture = tex;
+			sceneImageRenderer.material.mainTexture
+				= Resources.Load<Texture2D>(PathHelper.GetNoImagePath());
 		}
 	}
 

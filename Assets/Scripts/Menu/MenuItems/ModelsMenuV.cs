@@ -11,7 +11,7 @@ public class ModelsMenuV : MenuItemV
 	[Header("UI")]
 	[SerializeField]
 	private Text scenesText;
-	[SerializeField] private Renderer renderer;
+	[SerializeField] private Renderer modelRenderer;
 
 	protected ISubject<Guid> itemSelectedSubject = new Subject<Guid>();
 	public IObservable<Guid> ItemSelectedStream { get { return itemSelectedSubject; } }
@@ -88,25 +88,24 @@ public class ModelsMenuV : MenuItemV
 		if (maxItemIndex == 0)
 		{
 			scenesText.text = "";
-			string path = PathHelper.GetEmptyModelsListPath();
-			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
+
+			modelRenderer.material.mainTexture = Resources.Load<Texture2D>
+				(PathHelper.GetEmptyModelsListPath());
 		}
 		else
 		{
 			scenesText.text = (activeItemIndex + 1) + "/" + maxItemIndex;
-			string path = PathHelper.GetModelPngPath(modelGuids[activeItemIndex], sceneGuid);
 
-			FileInfo fi = new FileInfo(path);
-			if (fi.Exists)
+			string path = PathHelper.GetModelPngPath(modelGuids[activeItemIndex], sceneGuid);
+			if (File.Exists(path))
 			{
-				Texture2D texture = TextureLoader.LoadTextureFromFile(path);
-				renderer.material.mainTexture = texture;
+				modelRenderer.material.mainTexture 
+					= TextureLoader.LoadTextureFromFile(path);
 			}
 			else
 			{
-				path = PathHelper.GetNoImagePath();
-				Texture2D texture = TextureLoader.LoadTextureFromFile(path);
-				renderer.material.mainTexture = texture;
+				modelRenderer.material.mainTexture 
+					= Resources.Load<Texture2D>(PathHelper.GetNoImagePath());
 			}
 		}
 	}

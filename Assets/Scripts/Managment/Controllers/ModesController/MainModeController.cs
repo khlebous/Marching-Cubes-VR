@@ -5,8 +5,8 @@ using UniRx;
 
 public class MainModeController : MonoBehaviour
 {
+	[SerializeField] private GameObject mainModeContiner;
 	[SerializeField] private MainMenuController mainMenuController;
-
 
 	protected ISubject<Guid> itemSelectedSubject = new Subject<Guid>();
 	public IObservable<Guid> ItemSelectedStream { get { return itemSelectedSubject; } }
@@ -19,12 +19,14 @@ public class MainModeController : MonoBehaviour
 
 	public void ExitModeLoadSceneModeWithGuid(Guid guid)
 	{
+		mainModeContiner.SetActive(false);
 		mainMenuController.SetInactive();
 		itemSelectedSubject.OnNext(guid);
 	}
 	
 	public void TurnOnModeWithCurrentSceneGuids(List<Guid> sceneGuids)
 	{
+		mainModeContiner.SetActive(true);
 		mainMenuController.ResetMenu(sceneGuids);
 	}
 }

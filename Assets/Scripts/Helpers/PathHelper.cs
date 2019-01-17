@@ -32,15 +32,15 @@ public static class PathHelper
 
 	public static string GetNoImagePath()
 	{
-		return Path.Combine(Directory.GetCurrentDirectory(), "Assets/Resources/0.png");
+		return "Images/NoImage";
 	}
 	public static string GetNewScenePath()
 	{
-		return Path.Combine(Directory.GetCurrentDirectory(), "Assets/Resources/NewScene.png");
+		return "Images/NewScene";
 	}
 	public static string GetEmptyModelsListPath()
 	{
-		return Path.Combine(Directory.GetCurrentDirectory(), "Assets/Resources/EmptyModelsList.png");
+		return "Images/EmptyModelsList";
 	}
 	public static string GetModelPngPath(Guid modelGuid, Guid sceneGuid)
 	{

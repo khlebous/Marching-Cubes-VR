@@ -32,24 +32,21 @@ public class MainMenuView : MonoBehaviour
 		scenesText.text = ActiveItemIndex + "/" + (MaxItemIndex - 1);
 		if (ActiveItemIndex == 0)
 		{
-			imageRenderer.material.mainTexture = TextureLoader.LoadTextureFromFile
-				(PathHelper.GetNewScenePath());
+			imageRenderer.material.mainTexture 
+				= Resources.Load<Texture2D>(PathHelper.GetNewScenePath());
 		}
 		else
 		{
 			string path = PathHelper.GetScenePngPath(SceneGuids[ActiveItemIndex - 1]);
-
-			FileInfo fi = new FileInfo(path);
-			if (fi.Exists)
+			if (File.Exists(path))
 			{
 				Texture2D texture= TextureLoader.LoadTextureFromFile(path);
 				imageRenderer.material.mainTexture = texture;
 			}
 			else
 			{
-				path = PathHelper.GetNoImagePath();
-				Texture2D texture = TextureLoader.LoadTextureFromFile(path);
-				imageRenderer.material.mainTexture = texture;
+				imageRenderer.material.mainTexture 
+					= Resources.Load<Texture2D>(PathHelper.GetNoImagePath());
 			}
 		}
 	}

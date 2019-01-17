@@ -155,15 +155,15 @@ public class MenuLeftModelController : MonoBehaviour
 
 	public void UpdatePhoto(string path)
 	{
-		FileInfo fi = new FileInfo(path);
-		Texture2D tex = TextureLoader.LoadTextureFromFile(path);
-		if (fi.Exists)
-			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
+		if (File.Exists(path))
+		{
+			renderer.material.mainTexture 
+				= TextureLoader.LoadTextureFromFile(path);
+		}
 		else
 		{
-			path = Application.dataPath + "/Resources/0.png";
-			tex = TextureLoader.LoadTextureFromFile(path);
-			renderer.material.mainTexture = tex;
+			renderer.material.mainTexture 
+				= Resources.Load<Texture2D>(PathHelper.GetNoImagePath());
 		}
 
 	}

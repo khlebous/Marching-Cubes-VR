@@ -541,7 +541,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: c19b9982b218731499158f6ba6d4080e, type: 2}
+  - {fileID: 2100000, guid: 2985b885b67f1be48b0eb195ac7670d1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1019,7 +1019,7 @@ MonoBehaviour:
   saveExitItem: {fileID: 114568567139748016}
   dontSaveExitItem: {fileID: 114619178160367198}
   scenePreviewItem: {fileID: 114778246159010098}
-  renderer: {fileID: 23269976384582182}
+  sceneImageRenderer: {fileID: 23269976384582182}
 --- !u!114 &114662586138441186
 MonoBehaviour:
   m_ObjectHideFlags: 1

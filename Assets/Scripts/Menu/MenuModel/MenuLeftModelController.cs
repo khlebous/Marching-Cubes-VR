@@ -3,7 +3,6 @@ using UniRx;
 using System.Collections.Generic;
 using System.Collections;
 using System.IO;
-using System;
 
 public class MenuLeftModelController : MonoBehaviour
 {
@@ -13,8 +12,7 @@ public class MenuLeftModelController : MonoBehaviour
 	[SerializeField] private MenuItemV modelPreviewItem;
 
 	[Header("Other")]
-	[SerializeField]
-	private Renderer renderer;
+	[SerializeField] private Renderer modelImageRenderer;
 
 	protected ISubject<Unit> exitToSceneModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToSceneModeStream { get { return exitToSceneModeSubject; } }
@@ -157,12 +155,12 @@ public class MenuLeftModelController : MonoBehaviour
 	{
 		if (File.Exists(path))
 		{
-			renderer.material.mainTexture 
+			modelImageRenderer.material.mainTexture 
 				= TextureLoader.LoadTextureFromFile(path);
 		}
 		else
 		{
-			renderer.material.mainTexture 
+			modelImageRenderer.material.mainTexture 
 				= Resources.Load<Texture2D>(PathHelper.GetNoImagePath());
 		}
 

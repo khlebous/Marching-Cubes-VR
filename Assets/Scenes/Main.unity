@@ -2542,9 +2542,19 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114569657506434896, guid: 835e48ca4e395dc4b87d036ca5e1a43d,
+        type: 2}
+      propertyPath: modelImageRenderer
+      value: 
+      objectReference: {fileID: 1212886984}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 835e48ca4e395dc4b87d036ca5e1a43d, type: 2}
   m_IsPrefabParent: 0
+--- !u!23 &1212886984 stripped
+MeshRenderer:
+  m_PrefabParentObject: {fileID: 23756782623141158, guid: 835e48ca4e395dc4b87d036ca5e1a43d,
+    type: 2}
+  m_PrefabInternal: {fileID: 1212886983}
 --- !u!1 &1216307090
 GameObject:
   m_ObjectHideFlags: 0

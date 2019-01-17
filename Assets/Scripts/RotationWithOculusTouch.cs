@@ -10,7 +10,6 @@ public class RotationWithOculusTouch : MonoBehaviour
     private Transform controllerToFollow;
 
     [Header("Rotatation multipliers")]
-    [SerializeField] private int speed = 500;
     [SerializeField] private int bound = 10;
 
     private new Transform transform;

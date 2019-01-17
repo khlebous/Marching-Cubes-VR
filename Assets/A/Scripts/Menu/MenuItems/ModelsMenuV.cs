@@ -88,33 +88,27 @@ public class ModelsMenuV : MenuItemV
 		if (maxItemIndex == 0)
 		{
 			scenesText.text = "";
-			string path = Application.dataPath + "/Resources/"
-				+ "EmptyModelsList.png";
+			string path = PathHelper.GetEmptyModelsListPath();
 			renderer.material.mainTexture = TextureLoader.LoadTextureFromFile(path);
 		}
 		else
 		{
 			scenesText.text = (activeItemIndex + 1) + "/" + maxItemIndex;
-
-			string path = GetFullPath(sceneGuid, modelGuids[activeItemIndex]);
-			Texture2D tex = TextureLoader.LoadTextureFromFile(path);
+			string path = PathHelper.GetModelPngPath(modelGuids[activeItemIndex], sceneGuid);
 
 			FileInfo fi = new FileInfo(path);
 			if (fi.Exists)
-				renderer.material.mainTexture = tex;
+			{
+				Texture2D texture = TextureLoader.LoadTextureFromFile(path);
+				renderer.material.mainTexture = texture;
+			}
 			else
 			{
-				path = Application.dataPath + "/Resources/0.png";
-				tex = TextureLoader.LoadTextureFromFile(path);
-				renderer.material.mainTexture = tex;
+				path = PathHelper.GetNoImagePath();
+				Texture2D texture = TextureLoader.LoadTextureFromFile(path);
+				renderer.material.mainTexture = texture;
 			}
 		}
-	}
-
-	private string GetFullPath(Guid sceneGuid, Guid modelGuid)
-	{
-		return Application.dataPath + "/Resources/" + sceneGuid.ToString()
-			+ "/Models/" + modelGuid.ToString() + ".png";
 	}
 
 	public void SetModelsGuids(Guid sceneGuid, List<Guid> modelsGuids)

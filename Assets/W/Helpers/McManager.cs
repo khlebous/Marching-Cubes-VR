@@ -36,23 +36,22 @@ public class McManager : MonoBehaviour
     public void Save(EditableTerrain terrain, Guid sceneGuid)
     {
         var data = terrain.GetData();
-        var path = PathHelper.GetTerrainPath(data.Guid, sceneGuid);
+        var path = PathHelper.GetTerrainBinPath(data.Guid, sceneGuid);
         Loader.SaveObj(path, data);
     }
     public void Save(EditableModel model, Guid sceneGuid)
     {
         var data = model.GetData();
-        var path = PathHelper.GetModelPath(data.Guid, sceneGuid);
+        var path = PathHelper.GetModelBinPath(data.Guid, sceneGuid);
         Loader.SaveObj(path, data);
     }
     public void Save(EditableScene scene)
     {
         var data = scene.GetData();
-        Loader.SaveScene(PathHelper.GetScenePath(scene.Guid), data);
+        Loader.SaveScene(PathHelper.GetSceneBinPath(scene.Guid), data);
 
-        var terrinPath = PathHelper.GetTerrainPath(scene.Terrain.Data.Guid, scene.Guid);
-        var terrainInfo = new FileInfo(terrinPath);
-        if (!terrainInfo.Exists)
+        var terrinPath = PathHelper.GetTerrainBinPath(scene.Terrain.Data.Guid, scene.Guid);
+        if (!File.Exists(terrinPath))
             Loader.SaveObj(terrinPath, scene.Terrain.Data);
     }
 
@@ -63,10 +62,10 @@ public class McManager : MonoBehaviour
 
     }
     public void DeleteModel(Guid modelGuid, Guid sceneGuid)
-    {
-        var fileInfo = new FileInfo(PathHelper.GetModelPath(modelGuid,sceneGuid));
-        fileInfo.Delete();
-    }
+	{
+		File.Delete(PathHelper.GetModelBinPath(modelGuid, sceneGuid));
+		File.Delete(PathHelper.GetModelPngPath(modelGuid, sceneGuid));
+	}
 
     public EditableModel LoadModel(McData data)
     {
@@ -82,7 +81,7 @@ public class McManager : MonoBehaviour
     }
     public EditableModel LoadModel(Guid modelGuid, Guid sceneGuid)
     {
-        var path = PathHelper.GetModelPath(modelGuid, sceneGuid);
+        var path = PathHelper.GetModelBinPath(modelGuid, sceneGuid);
         var data = Loader.LoadObj(path);
 
         return LoadModel(data);
@@ -103,7 +102,7 @@ public class McManager : MonoBehaviour
     }
     public EditableTerrain LoadTerrain(Guid terrainGuid, Guid sceneGuid)
     {
-        var path = PathHelper.GetTerrainPath(terrainGuid, sceneGuid);
+        var path = PathHelper.GetTerrainBinPath(terrainGuid, sceneGuid);
         var data = Loader.LoadObj(path);
 
         return LoadTerrain(data);
@@ -120,7 +119,7 @@ public class McManager : MonoBehaviour
         scene.Models = LoadModelList(sceneGuid, scene.transform);
 
 		// TODO add movement with oculus and set controller to follow
-        var sceneData = Loader.LoadScene(PathHelper.GetScenePath(sceneGuid));
+        var sceneData = Loader.LoadScene(PathHelper.GetSceneBinPath(sceneGuid));
         scene.LoadModelsOnScene(sceneData.Models);
 
         scene.SetOrUpdateTerrain(LoadTerrainMeshes(sceneData.TerrainGuid, sceneGuid));
@@ -158,7 +157,7 @@ public class McManager : MonoBehaviour
     private McGameObjData LoadTerrainMeshes(Guid terrainGuid, Guid sceneGuid)
     {
         var god = new McGameObjData();
-        god.Data = Loader.LoadObj(PathHelper.GetTerrainPath(terrainGuid, sceneGuid));
+        god.Data = Loader.LoadObj(PathHelper.GetTerrainBinPath(terrainGuid, sceneGuid));
         god.GameObject = LoadTerrainMeshes(god.Data);
 
         return god;
@@ -188,7 +187,7 @@ public class McManager : MonoBehaviour
         {
             var god = new McGameObjData();
 
-            god.Data = Loader.LoadObj(PathHelper.GetModelPath(guid, sceneGuid));
+            god.Data = Loader.LoadObj(PathHelper.GetModelBinPath(guid, sceneGuid));
             god.GameObject = ModelGenerator.GenerateMeshes(god.Data);
             god.GameObject.name = McConsts.ModelPrefix + guid.ToString();
             god.GameObject.transform.parent = sceneTransform;
@@ -232,7 +231,7 @@ public class McManager : MonoBehaviour
                     var filename = Path.GetFileName(dir.Name);
                     var guid = new Guid(filename);
                     var a = dir.GetFiles();
-                    if (dir.GetFiles().Any(x => x.Name == guid.ToString() + PathHelper.Extension))
+                    if (dir.GetFiles().Any(x => x.Name == guid.ToString() + PathHelper.ExtensionBin))
                         guids.Add(guid);
                 }
                 catch (Exception ex)
@@ -252,7 +251,7 @@ public class McManager : MonoBehaviour
         {
             foreach (var file in dirInfo.GetFiles())
             {
-                if (file.Extension != PathHelper.Extension)
+                if (file.Extension != PathHelper.ExtensionBin)
                     continue;
 
                 try

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UniRx;
 using System;
+using System.IO;
 
 public class ModelModeController : MonoBehaviour
 {
@@ -9,7 +10,8 @@ public class ModelModeController : MonoBehaviour
 	[SerializeField] private MenuModelController menuModelController;
 
 	[Header("Other")]
-	[SerializeField] private McManager mcManager;
+	[SerializeField]
+	private McManager mcManager;
 	[SerializeField] private CameraCapture cameraCapture;
 
 	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
@@ -43,7 +45,7 @@ public class ModelModeController : MonoBehaviour
 		model.transform.localScale = new Vector3(0.02f, 0.02f, 0.02f);
 
 		modelContiner.SetActive(true);
-		menuModelController.UpdatePhoto(GetFullPath());
+		menuModelController.UpdatePhoto(PathHelper.GetModelPngPath(model.Guid, sceneGuid));
 		menuModelController.ResetMenus();
 		brush.SetActive();
 	}
@@ -57,16 +59,29 @@ public class ModelModeController : MonoBehaviour
 		model.Destroy();
 		model = null;
 
+		string tmpPath = PathHelper.GetModelTmpPngPath(sceneGuid);
+		if (File.Exists(tmpPath))
+			File.Delete(tmpPath);
+
 		modeExitedSubject.OnNext(Unit.Default);
 	}
 
 	private void SaveObjectAndExitMode()
 	{
+		mcManager.Save(model, sceneGuid);
 		brush.SetInactive();
 		modelContiner.SetActive(false);
 		menuModelController.SetInactive();
 
-		mcManager.Save(model, sceneGuid);
+		string path = PathHelper.GetModelPngPath(model.Guid, sceneGuid);
+		string tmpPath = PathHelper.GetModelTmpPngPath(sceneGuid);
+
+		if (File.Exists(tmpPath))
+		{
+			if (File.Exists(path))
+				File.Delete(path);
+			File.Move(tmpPath, path);
+		}
 
 		modeSavedAndExitedSubject.OnNext(model.GetData());
 		model.Destroy();
@@ -75,17 +90,9 @@ public class ModelModeController : MonoBehaviour
 
 	private void TakePhoto()
 	{
-		string fullPath = GetFullPath();
-		var fileInfo = new System.IO.FileInfo(fullPath);
-		fileInfo.Directory.Create();
-
-		cameraCapture.TakeShot(fullPath);
-		menuModelController.UpdatePhoto(GetFullPath());
-	}
-
-	private string GetFullPath()
-	{
-		return Application.dataPath + "/Resources/" + sceneGuid.ToString()
-			+ "/Models/" + model.Guid.ToString() + ".png";
+		string path = PathHelper.GetModelTmpPngPath(sceneGuid);
+		PathHelper.EnsureDirForFileExists(path);
+		cameraCapture.TakeShot(path);
+		menuModelController.UpdatePhoto(path);
 	}
 }

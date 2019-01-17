@@ -16,15 +16,6 @@ public class CameraCapture : MonoBehaviour
 		cameraForCapture = GetComponent<Camera>();
 	}
 
-	public static string ScreenShotName(int width, int height)
-	{
-		Debug.Log(Application.dataPath);
-		return string.Format("{0}/Resources/screen_{1}x{2}_{3}.png",
-							 Application.dataPath,
-							 width, height,
-							 System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss"));
-	}
-
 	public void TakeShot(string path)
 	{
 		leftHand.SetActive(false);
@@ -39,13 +30,12 @@ public class CameraCapture : MonoBehaviour
 		RenderTexture.active = rt;
 		screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
 		cameraForCapture.targetTexture = null;
-		RenderTexture.active = null; // JC: added to avoid errors
+		RenderTexture.active = null;
 		Destroy(rt);
 		byte[] bytes = screenShot.EncodeToPNG();
 		string fullPath = path;
 
 		System.IO.File.WriteAllBytes(fullPath, bytes);
-		Debug.Log(string.Format("Took screenshot to: {0}", fullPath));
 
 		leftHand.SetActive(true);
 		rightHand.SetActive(true);

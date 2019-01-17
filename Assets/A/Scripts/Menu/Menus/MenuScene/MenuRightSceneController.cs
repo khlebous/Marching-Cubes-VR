@@ -158,6 +158,7 @@ public class MenuRightSceneController : MonoBehaviour
 			case 5: // Delete Model
 				if (modelsList.AtLeastOneObjectExist())
 					modelToDeleteSelectedSubject.OnNext(modelsList.GetChoosenGuid());
+				StartCoroutine(WaitNextFrameAndSetMenuActive());
 				break;
 			default:
 				break;

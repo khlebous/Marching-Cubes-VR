@@ -13,7 +13,8 @@ public class SceneModeController : MonoBehaviour
 	[SerializeField] private Transform controllerToFollow;
 
 	[Header("Other")]
-	[SerializeField] private McManager mcManager;
+	[SerializeField]
+	private McManager mcManager;
 	[SerializeField] private ControllerRaycast controllerRaycast;
 	[SerializeField] private CameraCapture cameraCapture;
 
@@ -85,8 +86,9 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.SetInactive();
 		controllerRaycast.SetActive(false);
 
-		string path = PathHelper.GetSceneTmpPngPath(scene.Guid);
-		File.Delete(path);
+		string tmpPath = PathHelper.GetSceneTmpPngPath(scene.Guid);
+		if (File.Exists(tmpPath))
+			File.Delete(tmpPath);
 
 		exitToMainModeSubject.OnNext(Unit.Default);
 		scene.Destroy();
@@ -101,9 +103,14 @@ public class SceneModeController : MonoBehaviour
 		controllerRaycast.SetActive(false);
 
 		string path = PathHelper.GetScenePngPath(scene.Guid);
-		File.Delete(path);
 		string tmpPath = PathHelper.GetSceneTmpPngPath(scene.Guid);
-		File.Move(tmpPath, path);
+
+		if (File.Exists(tmpPath))
+		{
+			if (File.Exists(path))
+				File.Delete(path);
+			File.Move(tmpPath, path);
+		}
 
 		scene.Destroy();
 		scene = null;
@@ -203,8 +210,8 @@ public class SceneModeController : MonoBehaviour
 
 	private void TakePhoto()
 	{
-		string path = PathHelper.GetScenePngPath(scene.Guid);
-
+		string path = PathHelper.GetSceneTmpPngPath(scene.Guid);
+		PathHelper.EnsureDirForFileExists(path);
 		cameraCapture.TakeShot(path);
 		menuSceneController.UpdatePhoto(path);
 	}

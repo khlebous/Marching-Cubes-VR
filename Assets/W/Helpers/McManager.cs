@@ -51,8 +51,7 @@ public class McManager : MonoBehaviour
         Loader.SaveScene(PathHelper.GetSceneBinPath(scene.Guid), data);
 
         var terrinPath = PathHelper.GetTerrainBinPath(scene.Terrain.Data.Guid, scene.Guid);
-        var terrainInfo = new FileInfo(terrinPath);
-        if (!terrainInfo.Exists)
+        if (!File.Exists(terrinPath))
             Loader.SaveObj(terrinPath, scene.Terrain.Data);
     }
 
@@ -63,10 +62,10 @@ public class McManager : MonoBehaviour
 
     }
     public void DeleteModel(Guid modelGuid, Guid sceneGuid)
-    {
-        var fileInfo = new FileInfo(PathHelper.GetModelBinPath(modelGuid,sceneGuid));
-        fileInfo.Delete();
-    }
+	{
+		File.Delete(PathHelper.GetModelBinPath(modelGuid, sceneGuid));
+		File.Delete(PathHelper.GetModelPngPath(modelGuid, sceneGuid));
+	}
 
     public EditableModel LoadModel(McData data)
     {

@@ -586,11 +586,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 294babee0b8458f4581b851676cf8c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laserLineRenderer: {fileID: 398466546}
   maxRayDistance: 20
-  activeLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
   button: 2
 --- !u!120 &398466546
 LineRenderer:
@@ -1491,6 +1487,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114839744025506252, guid: 5302d74ef6b10d24a9dd05c9bb60ae7d,
+        type: 2}
+      propertyPath: imageRenderer
+      value: 
+      objectReference: {fileID: 1941983625}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5302d74ef6b10d24a9dd05c9bb60ae7d, type: 2}
   m_IsPrefabParent: 0

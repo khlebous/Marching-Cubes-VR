@@ -10,7 +10,8 @@ public class ModelModeController : MonoBehaviour
 	[SerializeField] private MenuModelController menuModelController;
 
 	[Header("Other")]
-	[SerializeField] private McManager mcManager;
+	[SerializeField]
+	private McManager mcManager;
 	[SerializeField] private CameraCapture cameraCapture;
 
 	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
@@ -58,8 +59,9 @@ public class ModelModeController : MonoBehaviour
 		model.Destroy();
 		model = null;
 
-		string path = PathHelper.GetModelTmpPngPath(sceneGuid);
-		File.Delete(path);
+		string tmpPath = PathHelper.GetModelTmpPngPath(sceneGuid);
+		if (File.Exists(tmpPath))
+			File.Delete(tmpPath);
 
 		modeExitedSubject.OnNext(Unit.Default);
 	}
@@ -72,9 +74,14 @@ public class ModelModeController : MonoBehaviour
 		menuModelController.SetInactive();
 
 		string path = PathHelper.GetModelPngPath(model.Guid, sceneGuid);
-		File.Delete(path);
 		string tmpPath = PathHelper.GetModelTmpPngPath(sceneGuid);
-		File.Move(tmpPath, path);
+
+		if (File.Exists(tmpPath))
+		{
+			if (File.Exists(path))
+				File.Delete(path);
+			File.Move(tmpPath, path);
+		}
 
 		modeSavedAndExitedSubject.OnNext(model.GetData());
 		model.Destroy();
@@ -85,7 +92,6 @@ public class ModelModeController : MonoBehaviour
 	{
 		string path = PathHelper.GetModelTmpPngPath(sceneGuid);
 		PathHelper.EnsureDirForFileExists(path);
-
 		cameraCapture.TakeShot(path);
 		menuModelController.UpdatePhoto(path);
 	}

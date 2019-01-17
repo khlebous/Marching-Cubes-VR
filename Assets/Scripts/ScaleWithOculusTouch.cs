@@ -5,15 +5,15 @@ public class ScaleWithOculusTouch : MonoBehaviour
 {
     [Header("Oculus Touch input")]
     [Tooltip("Button to scale")]
-    [SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Three;
+    [SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Four;
     [Tooltip("Controller to follow")]
     private Transform controllerToFollow;
 
     [Header("Scale multipliers")]
-    [SerializeField] private float multiplier = 0.05f;
+    [SerializeField] private float multiplier = 2f;
 
     private new Transform transform;
-    private Vector3 startControllerPosition;
+    private Vector3 LastControllerPosition;
 
     private Coroutine button_down;
     private Coroutine button_up;
@@ -21,7 +21,7 @@ public class ScaleWithOculusTouch : MonoBehaviour
     private void Start()
     {
         transform = GetComponent<Transform>();
-        startControllerPosition = Vector3.zero;
+        LastControllerPosition = Vector3.zero;
     }
 
     private void StartListening()
@@ -44,7 +44,7 @@ public class ScaleWithOculusTouch : MonoBehaviour
         {
             if (OVRInput.GetDown(buttonY))
             {
-                startControllerPosition = controllerToFollow.position;
+                LastControllerPosition = controllerToFollow.position;
                 StopCoroutine(button_down);
                 button_up = StartCoroutine(WaitForButton_Up());
             }
@@ -57,13 +57,14 @@ public class ScaleWithOculusTouch : MonoBehaviour
     {
         while (true)
         {
-            var startDist = Vector3.Distance(transform.position, startControllerPosition);
+            var startDist = Vector3.Distance(transform.position, LastControllerPosition);
             var currtDist = Vector3.Distance(transform.position, controllerToFollow.transform.position);
 
-            transform.localPosition += Vector3.one * multiplier * (currtDist - startDist);
+            transform.localScale += Vector3.one * multiplier * (currtDist - startDist);
+			LastControllerPosition = controllerToFollow.position;
 
 
-            if (OVRInput.GetUp(buttonY))
+			if (OVRInput.GetUp(buttonY))
             {
                 StopCoroutine(button_up);
 

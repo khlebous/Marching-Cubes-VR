@@ -18,7 +18,7 @@ public class ModesController : MonoBehaviour
 	{
 		mainModeController.ItemSelectedStream.Subscribe(LoadSceneWithGuid);
 
-		sceneModeController.ExitToMainModeStream.Subscribe(_ => TurnOnMainModeFromSceneMode());
+		sceneModeController.ExitToMainModeStream.Subscribe(_ => LoadMainMode());
 		sceneModeController.ExitToTerrainModeStream.Subscribe(TurnOnTerrainModeFromSceneMode);
 		sceneModeController.ExitToObjectModeStream.Subscribe(TurnOnObjectModeFromSceneMode);
 
@@ -33,7 +33,7 @@ public class ModesController : MonoBehaviour
 
 	private void LoadMainMode()
 	{
-		mainModeController.TurnOnModeWithCurrentSceneGuids(mcManager.GetAllSceneGuids());
+		mainModeController.Load(mcManager.GetAllSceneGuids());
 	}
 
 
@@ -42,11 +42,6 @@ public class ModesController : MonoBehaviour
 		sceneModeController.TurnOnModeWith(sceneGuid);
 	}
 
-
-	private void TurnOnMainModeFromSceneMode()
-	{
-		mainModeController.TurnOnModeWithCurrentSceneGuids(mcManager.GetAllSceneGuids());
-	}
 
 	private void TurnOnTerrainModeFromSceneMode(LoadData terrainData)
 	{

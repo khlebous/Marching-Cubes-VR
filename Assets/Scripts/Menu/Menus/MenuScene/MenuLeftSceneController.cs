@@ -108,7 +108,7 @@ public class MenuLeftSceneController : MonoBehaviour
 	private void ItemSelected()
 	{
 		if (activeItemIndex == 0)
-			saveAndExitToMainModeSubject.OnNext(Unit.Default);
+			SaveAndExitToMainModeItemSelected();
 		else if (activeItemIndex == 1)
 			exitToMainModeSubject.OnNext(Unit.Default);
 		if (activeItemIndex == 2)
@@ -116,6 +116,11 @@ public class MenuLeftSceneController : MonoBehaviour
 			photoRequesSubject.OnNext(Unit.Default);
 			StartCoroutine(WaitNextFrameAndSetMenuActive());
 		}
+	}
+
+	private void SaveAndExitToMainModeItemSelected()
+	{
+		saveAndExitToMainModeSubject.OnNext(Unit.Default);
 	}
 
 	private IEnumerator WaitNextFrameAndSetMenuActive()

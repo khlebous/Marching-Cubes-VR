@@ -2246,7 +2246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ab14313cf505341b22d2f169bcef2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 256
+  buttonY: 1048576
   controllerToFollow: {fileID: 830349226}
   speed: 10
 --- !u!1 &1152297781 stripped
@@ -2295,7 +2295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ab14313cf505341b22d2f169bcef2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 256
+  buttonY: 1048576
   controllerToFollow: {fileID: 830349226}
   speed: 10
 --- !u!1001 &1158568074
@@ -3527,7 +3527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ab14313cf505341b22d2f169bcef2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 256
+  buttonY: 1048576
   controllerToFollow: {fileID: 830349226}
   speed: 10
 --- !u!114 &1762231444 stripped

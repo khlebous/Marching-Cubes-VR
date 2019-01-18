@@ -23,10 +23,9 @@ public class MenuLeftSceneController : MonoBehaviour
 	protected ISubject<Unit> photoRequesSubject = new Subject<Unit>();
 	public IObservable<Unit> PhotoRequestStream { get { return photoRequesSubject; } }
 
-	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickUp;
-	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickDown;
-	private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
-	private OVRInput.Controller controller = OVRInput.Controller.LTouch;
+	private OVRInput.RawButton prevItemButton = OVRInput.RawButton.LThumbstickUp;
+	private OVRInput.RawButton nextItemButton = OVRInput.RawButton.LThumbstickDown;
+	private OVRInput.RawButton selectItemButton = OVRInput.RawButton.LThumbstick;
 
 	private List<MenuItemV> items;
 	private ButtonState currThumbstickState;
@@ -74,7 +73,7 @@ public class MenuLeftSceneController : MonoBehaviour
 			}
 			else
 			{
-				if (OVRInput.Get(prevItemButton, controller))
+				if (OVRInput.Get(prevItemButton))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{
@@ -84,7 +83,7 @@ public class MenuLeftSceneController : MonoBehaviour
 						items[activeItemIndex].SetActive();
 					}
 				}
-				else if (OVRInput.Get(nextItemButton, controller))
+				else if (OVRInput.Get(nextItemButton))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{

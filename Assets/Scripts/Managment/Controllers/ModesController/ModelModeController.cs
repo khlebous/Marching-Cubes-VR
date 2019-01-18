@@ -10,8 +10,7 @@ public class ModelModeController : MonoBehaviour
 	[SerializeField] private MenuModelController menuModelController;
 
 	[Header("Other")]
-	[SerializeField]
-	private McManager mcManager;
+	[SerializeField] private McManager mcManager;
 	[SerializeField] private CameraCapture cameraCapture;
 
 	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();

@@ -35,9 +35,9 @@ public class MenuRightSceneController : MonoBehaviour
 	protected ISubject<Unit> itemSelectedSubject = new Subject<Unit>();
 	public IObservable<Unit> ItemSelectedStream { get { return itemSelectedSubject; } }
 
-	private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickUp;
-	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickDown;
-	private OVRInput.Button selectItemButton = OVRInput.Button.SecondaryThumbstick;
+	private OVRInput.RawButton prevItemButton = OVRInput.RawButton.RThumbstickUp;
+	private OVRInput.RawButton nextItemButton = OVRInput.RawButton.RThumbstickDown;
+	private OVRInput.RawButton selectItemButton = OVRInput.RawButton.RThumbstick;
 
 	private List<MenuItemV> items;
 	private ButtonState currThumbstickState;

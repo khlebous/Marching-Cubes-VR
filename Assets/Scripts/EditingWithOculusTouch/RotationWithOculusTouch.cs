@@ -5,7 +5,7 @@ public class RotationWithOculusTouch : MonoBehaviour
 {
     [Header("Oculus Touch input")]
     [Tooltip("Button to rotate")]
-    [SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Three;
+    [SerializeField] private OVRInput.RawButton buttonY = OVRInput.RawButton.X;
     [Tooltip("Controller to follow")]
     private Transform controllerToFollow;
 

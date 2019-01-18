@@ -7,14 +7,12 @@ using System.Collections.Generic;
 public class MainMenuController : MonoBehaviour
 {
 	[Header("Menu items")]
-	[SerializeField]
-	private MenuItemV loadSceneItem;
+	[SerializeField] private MenuItemV loadSceneItem;
 	[SerializeField] private MenuItemV deleteSceneItem;
 	[SerializeField] private MenuItemV quitItem;
 
 	[Header("Other")]
-	[SerializeField]
-	private McManager mcManager;
+	[SerializeField] private McManager mcManager;
 
 	public int ActiveSceneIndex { get; private set; }
 	public int MaxItemIndex { get; private set; }
@@ -29,15 +27,13 @@ public class MainMenuController : MonoBehaviour
 	protected ISubject<Guid> itemSelectedSubject = new Subject<Guid>();
 	public IObservable<Guid> ItemSelectedStream { get { return itemSelectedSubject; } }
 
-	private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
-	private OVRInput.Button prevSceneButton = OVRInput.Button.PrimaryThumbstickLeft;
-	private OVRInput.Button nextSceneButton = OVRInput.Button.PrimaryThumbstickRight;
-	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickUp;
-	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickDown;
-	private OVRInput.Controller controller = OVRInput.Controller.LTouch;
+	private OVRInput.RawButton selectItemButton = OVRInput.RawButton.LThumbstick;
+	private OVRInput.RawButton prevSceneButton = OVRInput.RawButton.LThumbstickLeft;
+	private OVRInput.RawButton nextSceneButton = OVRInput.RawButton.LThumbstickRight;
+	private OVRInput.RawButton prevItemButton = OVRInput.RawButton.LThumbstickUp;
+	private OVRInput.RawButton nextItemButton = OVRInput.RawButton.LThumbstickDown;
 
 	private List<MenuItemV> items;
-	private ButtonState currThumbstickState;
 	private bool isMenuActive;
 	private int activeItemIndex;
 
@@ -54,7 +50,6 @@ public class MainMenuController : MonoBehaviour
 
 	private void SetupMenu()
 	{
-		currThumbstickState = ButtonState.Normal;
 		isMenuActive = false;
 		activeItemIndex = 0;
 
@@ -99,57 +94,34 @@ public class MainMenuController : MonoBehaviour
 	{
 		if (isMenuActive)
 		{
-			if (OVRInput.Get(selectItemButton, controller))
+			if (OVRInput.Get(selectItemButton))
 			{
 				isMenuActive = false;
 				ItemSelected();
 			}
 			else
 			{
-				if (OVRInput.Get(prevSceneButton, controller))
+				if (OVRInput.GetDown(prevSceneButton))
 				{
-					if (currThumbstickState == ButtonState.Normal)
-					{
-						currThumbstickState = ButtonState.Left;
 						DecreaseActiveSceneIndex();
 						itemChangedSubject.OnNext(Unit.Default);
-					}
 				}
-				else if (OVRInput.Get(nextSceneButton, controller))
+				else if (OVRInput.GetDown(nextSceneButton))
 				{
-					if (currThumbstickState == ButtonState.Normal)
-					{
-						currThumbstickState = ButtonState.Right;
 						IncreaseActiveSceneIndex();
 						itemChangedSubject.OnNext(Unit.Default);
-					}
 				}
-				else if (OVRInput.Get(prevItemButton, controller))
+				else if (OVRInput.GetDown(prevItemButton))
 				{
-					if (currThumbstickState == ButtonState.Normal)
-					{
-						currThumbstickState = ButtonState.Up;
 						items[activeItemIndex].SetInactive();
 						DecreaseActiveItemIndex();
 						items[activeItemIndex].SetActive();
-					}
 				}
-				else if (OVRInput.Get(nextItemButton, controller))
+				else if (OVRInput.GetDown(nextItemButton))
 				{
-					if (currThumbstickState == ButtonState.Normal)
-					{
-						currThumbstickState = ButtonState.Down;
 						items[activeItemIndex].SetInactive();
 						IncreaseActiveItemIndex();
 						items[activeItemIndex].SetActive();
-					}
-				}
-				else
-				{
-					if (currThumbstickState != ButtonState.Normal)
-					{
-						currThumbstickState = ButtonState.Normal;
-					}
 				}
 			}
 		}

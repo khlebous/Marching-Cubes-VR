@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UniRx;
 using System.Collections.Generic;
+using UniRx;
 
 public class MenuLeftTerrainController : MonoBehaviour
 {
@@ -14,10 +14,9 @@ public class MenuLeftTerrainController : MonoBehaviour
 	protected ISubject<Unit> saveAndExitToSceneModeSubject = new Subject<Unit>();
 	public IObservable<Unit> SaveAndExitToSceneModeStream { get { return saveAndExitToSceneModeSubject; } }
 
-	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickUp;
-	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickDown;
-	private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
-	private OVRInput.Controller controller = OVRInput.Controller.LTouch;
+	private OVRInput.RawButton prevItemButton = OVRInput.RawButton.LThumbstickUp;
+	private OVRInput.RawButton nextItemButton = OVRInput.RawButton.LThumbstickDown;
+	private OVRInput.RawButton selectItemButton = OVRInput.RawButton.LThumbstick;
 
 	private List<MenuItemV> items;
 	private ButtonState currThumbstickState;
@@ -63,7 +62,7 @@ public class MenuLeftTerrainController : MonoBehaviour
 			}
 			else
 			{
-				if (OVRInput.Get(prevItemButton, controller))
+				if (OVRInput.Get(prevItemButton))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{
@@ -73,7 +72,7 @@ public class MenuLeftTerrainController : MonoBehaviour
 						items[activeItemIndex].SetActive();
 					}
 				}
-				else if (OVRInput.Get(nextItemButton, controller))
+				else if (OVRInput.Get(nextItemButton))
 				{
 					if (currThumbstickState == ButtonState.Normal)
 					{

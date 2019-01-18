@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using UnityEngine;
-using UniRx;
+﻿using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 
 public class MenuSceneController : MonoBehaviour
 {
@@ -33,11 +33,10 @@ public class MenuSceneController : MonoBehaviour
 	protected ISubject<Unit> photoRequesSubject = new Subject<Unit>();
 	public IObservable<Unit> PhotoRequestStream { get { return photoRequesSubject; } }
 
-	private OVRInput.Button showMenuLeftButton = OVRInput.Button.PrimaryThumbstickRight;
-	private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
-	private OVRInput.Button showMenuRightButton = OVRInput.Button.SecondaryThumbstickLeft;
-	private OVRInput.Button hideMenuRightButton = OVRInput.Button.SecondaryThumbstickRight;
-	private OVRInput.Controller controllerLeft = OVRInput.Controller.LTouch;
+	private OVRInput.RawButton showMenuLeftButton = OVRInput.RawButton.LThumbstickRight;
+	private OVRInput.RawButton hideMenuLeftButton = OVRInput.RawButton.LThumbstickLeft;
+	private OVRInput.RawButton showMenuRightButton = OVRInput.RawButton.RThumbstickLeft;
+	private OVRInput.RawButton hideMenuRightButton = OVRInput.RawButton.RThumbstickRight;
 
 	private Coroutine waitForMenuLeftOpenCoroutine;
 	private Coroutine waitForMenuLeftCloseCoroutine;
@@ -83,7 +82,7 @@ public class MenuSceneController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(showMenuLeftButton, controllerLeft))
+			if (OVRInput.Get(showMenuLeftButton))
 			{
 				StopCoroutine(waitForMenuLeftOpenCoroutine);
 				menuLeftController.OpenMenu();
@@ -98,7 +97,7 @@ public class MenuSceneController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(hideMenuLeftButton, controllerLeft))
+			if (OVRInput.Get(hideMenuLeftButton))
 			{
 				StopCoroutine(waitForMenuLeftCloseCoroutine);
 				menuLeftController.CloseMenu();

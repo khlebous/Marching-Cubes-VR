@@ -20,9 +20,9 @@ public class MenuRightModelController : MonoBehaviour
 	private ISubject<Unit> itemNotActiveSubject = new Subject<Unit>();
 	public IObservable<Unit> ItemNotActiveStream { get { return itemNotActiveSubject; } }
 
-	private OVRInput.Button selectItemButton = OVRInput.Button.SecondaryThumbstick;
-	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickDown;
-	private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickUp;
+	private OVRInput.RawButton selectItemButton = OVRInput.RawButton.RThumbstick;
+	private OVRInput.RawButton nextItemButton = OVRInput.RawButton.RThumbstickDown;
+	private OVRInput.RawButton prevItemButton = OVRInput.RawButton.RThumbstickUp;
 
 	private List<MenuItemV> items;
 	private ButtonState currThumbstickState;

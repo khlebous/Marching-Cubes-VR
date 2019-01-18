@@ -23,16 +23,13 @@ namespace Assets.MarchingCubesGPU.Scripts
 
 	public class TerrainBrush : MonoBehaviour
 	{
-		[Header("Input")]
-		[SerializeField] private OVRInput.Button buttonB = OVRInput.Button.Two;
-		[SerializeField] private OVRInput.Button buttonA = OVRInput.Button.One;
-		[SerializeField] private OVRInput.Controller controller = OVRInput.Controller.RTouch;
-
-		[Header("Other")]
 		public MarchingCubesGPUProject.EditableTerrain terrain;
 		public Color color;
 		public TerrainBrushMode mode = TerrainBrushMode.Change;
 		public TerrainBrushShape shape = TerrainBrushShape.Wheel;
+
+		private OVRInput.RawButton buttonB = OVRInput.RawButton.B;
+		private OVRInput.RawButton buttonA = OVRInput.RawButton.A;
 
 		private const float _minScale = 1;
 		private const float _maxScale = McConsts.ModelN / 2f;
@@ -88,7 +85,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 		{
 			while (true)
 			{
-				if (OVRInput.GetDown(buttonB, controller))
+				if (OVRInput.GetDown(buttonB))
 				{
 					StopCoroutine(buttonB_down);
 					mode = terrainMode;

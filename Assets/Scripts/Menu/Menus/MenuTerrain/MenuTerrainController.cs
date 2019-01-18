@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UniRx;
 using System.Collections;
+using UniRx;
 
 public class MenuTerrainController : MonoBehaviour
 {
@@ -13,11 +13,10 @@ public class MenuTerrainController : MonoBehaviour
 	protected ISubject<Unit> saveAndExitToSceneModeSubject = new Subject<Unit>();
 	public IObservable<Unit> SaveAndExitToSceneModeStream { get { return saveAndExitToSceneModeSubject; } }
 
-	private OVRInput.Button showMenuLeftButton = OVRInput.Button.PrimaryThumbstickRight;
-	private OVRInput.Button hideMenuLeftButton = OVRInput.Button.PrimaryThumbstickLeft;
-	private OVRInput.Controller leftController = OVRInput.Controller.LTouch;
-	private OVRInput.Button showMenuRightButton = OVRInput.Button.SecondaryThumbstickLeft;
-	private OVRInput.Button hideMenuRightButton = OVRInput.Button.SecondaryThumbstickRight;
+	private OVRInput.RawButton showMenuLeftButton = OVRInput.RawButton.LThumbstickRight;
+	private OVRInput.RawButton hideMenuLeftButton = OVRInput.RawButton.LThumbstickLeft;
+	private OVRInput.RawButton showMenuRightButton = OVRInput.RawButton.RThumbstickLeft;
+	private OVRInput.RawButton hideMenuRightButton = OVRInput.RawButton.RThumbstickRight;
 
 	private Coroutine waitForMenuLeftOpenCoroutine;
 	private Coroutine waitForMenuLeftCloseCoroutine;
@@ -82,7 +81,7 @@ public class MenuTerrainController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(showMenuLeftButton, leftController))
+			if (OVRInput.Get(showMenuLeftButton))
 			{
 				StopCoroutine(waitForMenuLeftOpenCoroutine);
 				menuLeftController.OpenMenu();
@@ -97,7 +96,7 @@ public class MenuTerrainController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.Get(hideMenuLeftButton, leftController))
+			if (OVRInput.Get(hideMenuLeftButton))
 			{
 				StopCoroutine(waitForMenuLeftCloseCoroutine);
 				menuLeftController.CloseMenu();

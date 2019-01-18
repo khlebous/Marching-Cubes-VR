@@ -19,16 +19,13 @@ namespace Assets.MarchingCubesGPU.Scripts
 
 	public class ModelBrush : MonoBehaviour
 	{
-		[Header("Input")]
-		[SerializeField] private OVRInput.Button buttonB = OVRInput.Button.Two;
-		[SerializeField] private OVRInput.Button buttonA = OVRInput.Button.One;
-		[SerializeField] private OVRInput.Controller controller = OVRInput.Controller.RTouch;
-
-		[Header("Other")]
 		public Color color;
 
 		public BrushMode mode = BrushMode.Inactive;
 		public BrushShape shape = BrushShape.Sphere;
+
+		private OVRInput.RawButton buttonB = OVRInput.RawButton.B;
+		private OVRInput.RawButton buttonA = OVRInput.RawButton.A;
 
 		private const float _minScale = 0.5f;
 		private const float _maxScale = McConsts.ModelN / 2f;
@@ -85,7 +82,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 		{
 			while (true)
 			{
-				if (OVRInput.GetDown(buttonB, controller))
+				if (OVRInput.GetDown(buttonB))
 				{
 					StopCoroutine(buttonB_down);
 					mode = brushMode;

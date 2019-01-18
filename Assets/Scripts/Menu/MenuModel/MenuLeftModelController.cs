@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using UniRx;
-using System.Collections.Generic;
-using System.Collections;
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
+using UniRx;
 
 public class MenuLeftModelController : MonoBehaviour
 {
@@ -23,9 +23,9 @@ public class MenuLeftModelController : MonoBehaviour
 	protected ISubject<Unit> photoRequesSubject = new Subject<Unit>();
 	public IObservable<Unit> PhotoRequestStream { get { return photoRequesSubject; } }
 
-	private OVRInput.Button prevItemButton = OVRInput.Button.PrimaryThumbstickUp;
-	private OVRInput.Button nextItemButton = OVRInput.Button.PrimaryThumbstickDown;
-	private OVRInput.Button selectItemButton = OVRInput.Button.PrimaryThumbstick;
+	private OVRInput.RawButton prevItemButton = OVRInput.RawButton.LThumbstickUp;
+	private OVRInput.RawButton nextItemButton = OVRInput.RawButton.LThumbstickDown;
+	private OVRInput.RawButton selectItemButton = OVRInput.RawButton.LThumbstick;
 
 	private List<MenuItemV> items;
 	private ButtonState currThumbstickState;

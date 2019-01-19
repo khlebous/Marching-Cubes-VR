@@ -2263,6 +2263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 512
+  controllerToFollow: {fileID: 830349226}
   multiplier: 2
 --- !u!114 &1148545602
 MonoBehaviour:
@@ -2276,6 +2277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
+  controllerToFollow: {fileID: 830349226}
   bound: 10
 --- !u!1 &1152297781 stripped
 GameObject:
@@ -2340,6 +2342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 512
+  controllerToFollow: {fileID: 830349226}
   multiplier: 2
 --- !u!114 &1156782514
 MonoBehaviour:
@@ -2353,6 +2356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
+  controllerToFollow: {fileID: 830349226}
   bound: 10
 --- !u!1001 &1158568074
 Prefab:
@@ -3502,15 +3506,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 1034169979272910, guid: f16ed0679cb82f54595d6dc316ee2592, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 23106475257327642, guid: f16ed0679cb82f54595d6dc316ee2592,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 4caa2fce5d3b533409d65746534fe20d, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f16ed0679cb82f54595d6dc316ee2592, type: 2}
   m_IsPrefabParent: 0
@@ -3599,6 +3594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 512
+  controllerToFollow: {fileID: 830349226}
   multiplier: 2
 --- !u!114 &1749380868
 MonoBehaviour:
@@ -3612,6 +3608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
+  controllerToFollow: {fileID: 830349226}
   bound: 10
 --- !u!114 &1762231444 stripped
 MonoBehaviour:
@@ -3941,24 +3938,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 1159086762384064, guid: 103330d87420ea441b59f85ef39a445c, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 23929023067021370, guid: 103330d87420ea441b59f85ef39a445c,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 4caa2fce5d3b533409d65746534fe20d, type: 2}
-    - target: {fileID: 1960239744623252, guid: 103330d87420ea441b59f85ef39a445c, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 23695834888591294, guid: 103330d87420ea441b59f85ef39a445c,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 4caa2fce5d3b533409d65746534fe20d, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 103330d87420ea441b59f85ef39a445c, type: 2}
   m_IsPrefabParent: 0

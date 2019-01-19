@@ -7,7 +7,7 @@ public class ScaleWithOculusTouch : MonoBehaviour
     [Tooltip("Button to scale")]
     [SerializeField] private OVRInput.RawButton buttonY = OVRInput.RawButton.Y;
     [Tooltip("Controller to follow")]
-    private Transform controllerToFollow;
+	[SerializeField] private Transform controllerToFollow;
 
     [Header("Scale multipliers")]
     [SerializeField] private float multiplier = 2f;

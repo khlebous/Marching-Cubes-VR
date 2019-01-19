@@ -55,13 +55,15 @@ namespace Assets.MarchingCubesGPU.Scripts
 		public void SetActive()
 		{
 			mode = TerrainBrushMode.Inactive;
+            this.gameObject.SetActive(true);
 			StartListening(TerrainBrushMode.Change);
-		}
+        }
 
 		public void SetInactive()
 		{
 			StopListening();
-		}
+            this.gameObject.SetActive(false);
+        }
 
 		private void StopListening()
 		{

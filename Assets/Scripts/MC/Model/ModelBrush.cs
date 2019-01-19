@@ -56,12 +56,14 @@ namespace Assets.MarchingCubesGPU.Scripts
         public void SetActive()
         {
             mode = BrushMode.Inactive;
+            this.gameObject.SetActive(true);
             StartListening(BrushMode.Create);
         }
 
         public void SetInactive()
         {
             StopListening();
+            this.gameObject.SetActive(false);
         }
 
         private void StopListening()

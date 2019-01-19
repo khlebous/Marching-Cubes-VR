@@ -21,9 +21,8 @@ namespace Assets.MarchingCubesGPU.Scripts
     public class ModelBrush : MonoBehaviour
     {
         [Header("Input")]
-        [SerializeField] private OVRInput.Button buttonB = OVRInput.Button.Two;
-        [SerializeField] private OVRInput.Button buttonA = OVRInput.Button.One;
-        [SerializeField] private OVRInput.Controller controller = OVRInput.Controller.RTouch;
+        [SerializeField] private OVRInput.RawButton buttonB = OVRInput.RawButton.B;
+        [SerializeField] private OVRInput.RawButton buttonA = OVRInput.RawButton.A;
 
         [Header("Other")]
         public Color color;
@@ -91,7 +90,7 @@ namespace Assets.MarchingCubesGPU.Scripts
         {
             while (true)
             {
-                if (OVRInput.GetDown(buttonB, controller))
+                if (OVRInput.GetDown(buttonB))
                 {
                     StopCoroutine(buttonB_down);
                     mode = brushMode;

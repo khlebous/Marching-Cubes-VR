@@ -629,11 +629,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd56bb29aa07efb4d88eb16073d4f7b1, type: 2}
   m_IsPrefabParent: 0
---- !u!23 &292080051 stripped
-MeshRenderer:
-  m_PrefabParentObject: {fileID: 23756782623141158, guid: 835e48ca4e395dc4b87d036ca5e1a43d,
-    type: 2}
-  m_PrefabInternal: {fileID: 1212886983}
 --- !u!4 &321805269
 Transform:
   m_ObjectHideFlags: 0
@@ -2253,7 +2248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ab14313cf505341b22d2f169bcef2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 256
+  buttonY: 1048576
   controllerToFollow: {fileID: 830349226}
   speed: 10
 --- !u!114 &1148545601
@@ -2267,7 +2262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a47cba1660a1b46907eda7a175fa81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 8
+  buttonY: 512
   multiplier: 2
 --- !u!114 &1148545602
 MonoBehaviour:
@@ -2280,7 +2275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0636c0a3b4e41ac46bb74c7e68f1bae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 4
+  buttonY: 256
   bound: 10
 --- !u!1 &1152297781 stripped
 GameObject:
@@ -2330,7 +2325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ab14313cf505341b22d2f169bcef2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 256
+  buttonY: 1048576
   controllerToFollow: {fileID: 830349226}
   speed: 10
 --- !u!114 &1156782513
@@ -2344,7 +2339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a47cba1660a1b46907eda7a175fa81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 8
+  buttonY: 512
   multiplier: 2
 --- !u!114 &1156782514
 MonoBehaviour:
@@ -2357,7 +2352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0636c0a3b4e41ac46bb74c7e68f1bae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 4
+  buttonY: 256
   bound: 10
 --- !u!1001 &1158568074
 Prefab:
@@ -2603,11 +2598,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114569657506434896, guid: 835e48ca4e395dc4b87d036ca5e1a43d,
-        type: 2}
-      propertyPath: renderer
-      value: 
-      objectReference: {fileID: 292080051}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 835e48ca4e395dc4b87d036ca5e1a43d, type: 2}
   m_IsPrefabParent: 0
@@ -3516,6 +3506,11 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 23106475257327642, guid: f16ed0679cb82f54595d6dc316ee2592,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4caa2fce5d3b533409d65746534fe20d, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f16ed0679cb82f54595d6dc316ee2592, type: 2}
   m_IsPrefabParent: 0
@@ -3589,7 +3584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ab14313cf505341b22d2f169bcef2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 256
+  buttonY: 1048576
   controllerToFollow: {fileID: 830349226}
   speed: 10
 --- !u!114 &1749380867
@@ -3603,7 +3598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a47cba1660a1b46907eda7a175fa81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 8
+  buttonY: 512
   multiplier: 2
 --- !u!114 &1749380868
 MonoBehaviour:
@@ -3616,7 +3611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0636c0a3b4e41ac46bb74c7e68f1bae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 4
+  buttonY: 256
   bound: 10
 --- !u!114 &1762231444 stripped
 MonoBehaviour:
@@ -3950,6 +3945,20 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 23929023067021370, guid: 103330d87420ea441b59f85ef39a445c,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4caa2fce5d3b533409d65746534fe20d, type: 2}
+    - target: {fileID: 1960239744623252, guid: 103330d87420ea441b59f85ef39a445c, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 23695834888591294, guid: 103330d87420ea441b59f85ef39a445c,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4caa2fce5d3b533409d65746534fe20d, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 103330d87420ea441b59f85ef39a445c, type: 2}
   m_IsPrefabParent: 0

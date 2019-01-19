@@ -73,6 +73,8 @@ namespace MarchingCubesGPUProject
 
         private void Update()
         {
+            EnsureProperBrushMesh();
+
             if (brush.mode == BrushMode.Inactive)
                 return;
 
@@ -191,6 +193,12 @@ namespace MarchingCubesGPUProject
             _meshes[meshIdx].SetNormals(normals);
             _meshes[meshIdx].SetColors(colors);
             _meshes[meshIdx].SetTriangles(indexes, 0);
+        }
+        private void EnsureProperBrushMesh()
+        {
+            var scale = this.transform.lossyScale;
+            brush.cubeMesh.transform.localScale = scale;
+            brush.sphereMesh.transform.localScale = scale;
         }
         private void EnsureProperMeshScaling()
         {

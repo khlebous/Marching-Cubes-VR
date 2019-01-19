@@ -111,9 +111,11 @@ namespace MarchingCubesGPUProject
 
         private void Update()
         {
+            UpdateBrushRotation();
+            EnsureProperBrushMesh();
+
             if (brush.mode != TerrainBrushMode.Inactive)
             {
-                UpdateBrushRotation();
                 _renderer.CleanMeshBuffer();
                 CalculateChanges();
                 _renderer.CalculateMesh(this.transform);
@@ -288,6 +290,22 @@ namespace MarchingCubesGPUProject
             _meshes[meshIdx].SetColors(colors);
             _meshes[meshIdx].SetTriangles(indexes, 0);
         }
+        private void EnsureProperBrushMesh()
+        {
+            var toMcMatrix = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation)) * Matrix4x4.Translate(-this.transform.position);
+            var fromMcMatrix = Matrix4x4.Translate(this.transform.position) * Matrix4x4.Rotate(this.transform.rotation);
+
+            var brushPoint = toMcMatrix * brush.transform.position.ToVector4();
+            if (brushPoint.y >= this.transform.lossyScale.y)
+                brushPoint.y = this.transform.lossyScale.y;
+            brushPoint = fromMcMatrix * brushPoint;
+
+            var unscaledDist = Vector3.Distance(brush.transform.position, brushPoint.ToVector3());
+            var dist = unscaledDist / brush.transform.localScale.y / 2f;
+            brush.cylinderMesh.transform.localPosition = new Vector3(0, -dist, 0);
+            brush.cylinderMesh.transform.localScale = new Vector3(this.transform.lossyScale.x, dist, this.transform.lossyScale.z);
+
+        }
         private void EnsureProperMeshScaling()
         {
             var scale = this.transform.localScale;
@@ -331,32 +349,5 @@ namespace MarchingCubesGPUProject
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

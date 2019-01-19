@@ -34,6 +34,8 @@ namespace Assets.MarchingCubesGPU.Scripts
 		private const float _minScale = 1;
 		private const float _maxScale = McConsts.ModelN / 2f;
 
+        public Transform cylinderMesh;
+
 		public Matrix4x4 GetToBrushMatrix(Vector3 position)
 		{
 			var brushPosition = Matrix4x4.Translate(-position);

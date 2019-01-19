@@ -111,7 +111,7 @@ namespace MarchingCubesGPUProject
 
 		private void Update()
 		{
-			UpdateBrushRotation();
+			EnsureBrushRotation();
 			EnsureProperBrushMesh();
 			EnsureProperBrushPosition();
 
@@ -128,7 +128,7 @@ namespace MarchingCubesGPUProject
 				LastShapingBrushPosition = brush.transform.position;
 		}
 
-		private void UpdateBrushRotation()
+		private void EnsureBrushRotation()
 		{
 			brush.transform.rotation = this.transform.rotation;
 		}

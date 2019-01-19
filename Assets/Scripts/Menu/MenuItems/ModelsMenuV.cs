@@ -24,7 +24,6 @@ public class ModelsMenuV : MenuItemV
 	private Guid sceneGuid;
 	private List<Guid> modelGuids = new List<Guid>();
 
-	private ButtonState currThumbstickState = ButtonState.Normal;
 	private bool isMenuActive;
 	private int maxItemIndex;
 
@@ -99,12 +98,12 @@ public class ModelsMenuV : MenuItemV
 			string path = PathHelper.GetModelPngPath(modelGuids[activeItemIndex], sceneGuid);
 			if (File.Exists(path))
 			{
-				modelRenderer.material.mainTexture 
+				modelRenderer.material.mainTexture
 					= TextureLoader.LoadTextureFromFile(path);
 			}
 			else
 			{
-				modelRenderer.material.mainTexture 
+				modelRenderer.material.mainTexture
 					= Resources.Load<Texture2D>(PathHelper.GetNoImagePath());
 			}
 		}
@@ -127,30 +126,15 @@ public class ModelsMenuV : MenuItemV
 			}
 			else
 			{
-				if (OVRInput.Get(prevItemButton))
+				if (OVRInput.GetDown(prevItemButton))
 				{
-					if (currThumbstickState == ButtonState.Normal)
-					{
-						currThumbstickState = ButtonState.Up;
-						DecreaseActiveItemIndex();
-						UpdateUI();
-					}
+					DecreaseActiveItemIndex();
+					UpdateUI();
 				}
-				else if (OVRInput.Get(nextItemButton))
+				else if (OVRInput.GetDown(nextItemButton))
 				{
-					if (currThumbstickState == ButtonState.Normal)
-					{
-						currThumbstickState = ButtonState.Down;
-						IncreaseActiveItemIndex();
-						UpdateUI();
-					}
-				}
-				else
-				{
-					if (currThumbstickState != ButtonState.Normal)
-					{
-						currThumbstickState = ButtonState.Normal;
-					}
+					IncreaseActiveItemIndex();
+					UpdateUI();
 				}
 			}
 		}

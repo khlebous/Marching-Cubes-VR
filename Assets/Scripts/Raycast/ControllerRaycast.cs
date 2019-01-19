@@ -40,6 +40,7 @@ public class ControllerRaycast : MonoBehaviour
 
 	private void StartListening()
 	{
+		StopListening();
 		button_down = StartCoroutine(WaitForButton_Down());
 	}
 
@@ -81,11 +82,12 @@ public class ControllerRaycast : MonoBehaviour
 					lineRenderer.enabled = false;
 					ObjectController objController = raycastHit.collider.gameObject.transform
 						.GetComponentInParent<ObjectController>();
-					if (objController != null)
-						objectSelectedSubject.OnNext(objController);
 
 					StopListening();
-					button_down = StartCoroutine(WaitForButton_Down());
+					if (objController != null)
+						objectSelectedSubject.OnNext(objController);
+					else
+						StartListening();
 				}
 			}
 

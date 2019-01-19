@@ -151,6 +151,9 @@ public class SceneModeController : MonoBehaviour
 	{
 		menuSceneController.SetInactive();
 		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = false;
+		sceneContiner.GetComponent<RotationWithOculusTouch>().enabled = false;
+		sceneContiner.GetComponent<ScaleWithOculusTouch>().enabled = false;
+		controllerRaycast.SetActive(false);
 
 		if (selectedObject != null)
 			SetObjectNormal(selectedObject);
@@ -167,7 +170,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.GetDown(OVRInput.RawButton.RThumbstick))
+			if (OVRInput.GetDown(OVRInput.RawButton.LThumbstick))
 			{
 				if (waitForMenuLeftOpenCoroutine != null)
 					StopCoroutine(waitForMenuLeftOpenCoroutine);
@@ -175,6 +178,8 @@ public class SceneModeController : MonoBehaviour
 				if (selectedObject != null)
 					SetObjectNormal(selectedObject);
 				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
+				sceneContiner.GetComponent<RotationWithOculusTouch>().enabled = true;
+				sceneContiner.GetComponent<ScaleWithOculusTouch>().enabled = true;
 				menuSceneController.SetActive();
 				controllerRaycast.SetActive(true);
 			}
@@ -184,6 +189,8 @@ public class SceneModeController : MonoBehaviour
 					StopCoroutine(waitForMenuLeftOpenCoroutine);
 
 				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
+				sceneContiner.GetComponent<RotationWithOculusTouch>().enabled = true;
+				sceneContiner.GetComponent<ScaleWithOculusTouch>().enabled = true;
 				menuSceneController.SetActive();
 				controllerRaycast.SetActive(true);
 

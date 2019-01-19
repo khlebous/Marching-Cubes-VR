@@ -307,7 +307,6 @@ namespace MarchingCubesGPUProject
 			var dist = unscaledDist / brush.transform.localScale.y / 2f;
 			brush.cylinderMesh.transform.localPosition = new Vector3(0, -dist, 0);
 			brush.cylinderMesh.transform.localScale = new Vector3(this.transform.lossyScale.x, dist, this.transform.lossyScale.z);
-
 		}
 		private void EnsureProperMeshScaling()
 		{

@@ -5,7 +5,7 @@ public class MovementWithOculusTouch : MonoBehaviour
 {
     [Header("Oculus Touch input")]
     [Tooltip("Button to move")]
-    [SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Start;
+    [SerializeField] private OVRInput.RawButton buttonY = OVRInput.RawButton.Start;
     [Tooltip("Controller to follow")]
     [SerializeField] private Transform controllerToFollow;
 

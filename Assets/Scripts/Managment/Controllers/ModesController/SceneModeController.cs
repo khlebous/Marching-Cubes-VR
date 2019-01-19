@@ -158,6 +158,8 @@ public class SceneModeController : MonoBehaviour
 		go.SetControllerToFollow(controllerToFollow);
 		go.SetActive();
 
+		if (waitForMenuLeftOpenCoroutine != null)
+			StopCoroutine(waitForMenuLeftOpenCoroutine);
 		waitForMenuLeftOpenCoroutine = StartCoroutine(WaitForNewObjectMovementEnd());
 	}
 
@@ -165,9 +167,10 @@ public class SceneModeController : MonoBehaviour
 	{
 		while (true)
 		{
-			if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick, OVRInput.Controller.LTouch))
+			if (OVRInput.GetDown(OVRInput.RawButton.RThumbstick))
 			{
-				StopCoroutine(waitForMenuLeftOpenCoroutine);
+				if (waitForMenuLeftOpenCoroutine != null)
+					StopCoroutine(waitForMenuLeftOpenCoroutine);
 
 				if (selectedObject != null)
 					SetObjectNormal(selectedObject);
@@ -177,7 +180,8 @@ public class SceneModeController : MonoBehaviour
 			}
 			else if (OVRInput.GetDown(OVRInput.RawButton.A))
 			{
-				StopCoroutine(waitForMenuLeftOpenCoroutine);
+				if (waitForMenuLeftOpenCoroutine != null)
+					StopCoroutine(waitForMenuLeftOpenCoroutine);
 
 				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
 				menuSceneController.SetActive();

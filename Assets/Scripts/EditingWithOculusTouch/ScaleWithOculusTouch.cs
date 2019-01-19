@@ -5,7 +5,7 @@ public class ScaleWithOculusTouch : MonoBehaviour
 {
     [Header("Oculus Touch input")]
     [Tooltip("Button to scale")]
-    [SerializeField] private OVRInput.Button buttonY = OVRInput.Button.Four;
+    [SerializeField] private OVRInput.RawButton buttonY = OVRInput.RawButton.Y;
     [Tooltip("Controller to follow")]
     private Transform controllerToFollow;
 
@@ -45,7 +45,7 @@ public class ScaleWithOculusTouch : MonoBehaviour
             if (OVRInput.GetDown(buttonY))
             {
                 LastControllerPosition = controllerToFollow.position;
-                StopCoroutine(button_down);
+				StopListening();
                 button_up = StartCoroutine(WaitForButton_Up());
             }
 
@@ -63,12 +63,10 @@ public class ScaleWithOculusTouch : MonoBehaviour
             transform.localScale += Vector3.one * multiplier * (currtDist - startDist);
 			LastControllerPosition = controllerToFollow.position;
 
-
 			if (OVRInput.GetUp(buttonY))
             {
-                StopCoroutine(button_up);
-
-                button_down = StartCoroutine(WaitForButton_Down());
+				StopListening();
+				button_down = StartCoroutine(WaitForButton_Down());
             }
 
             yield return new WaitForEndOfFrame();

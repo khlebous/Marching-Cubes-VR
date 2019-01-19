@@ -2246,7 +2246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ab14313cf505341b22d2f169bcef2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 256
+  buttonY: 1048576
   controllerToFollow: {fileID: 830349226}
   speed: 10
 --- !u!1 &1152297781 stripped
@@ -2295,7 +2295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ab14313cf505341b22d2f169bcef2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 256
+  buttonY: 1048576
   controllerToFollow: {fileID: 830349226}
   speed: 10
 --- !u!1001 &1158568074
@@ -2542,9 +2542,19 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114569657506434896, guid: 835e48ca4e395dc4b87d036ca5e1a43d,
+        type: 2}
+      propertyPath: modelImageRenderer
+      value: 
+      objectReference: {fileID: 1212886984}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 835e48ca4e395dc4b87d036ca5e1a43d, type: 2}
   m_IsPrefabParent: 0
+--- !u!23 &1212886984 stripped
+MeshRenderer:
+  m_PrefabParentObject: {fileID: 23756782623141158, guid: 835e48ca4e395dc4b87d036ca5e1a43d,
+    type: 2}
+  m_PrefabInternal: {fileID: 1212886983}
 --- !u!1 &1216307090
 GameObject:
   m_ObjectHideFlags: 0
@@ -3517,7 +3527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ab14313cf505341b22d2f169bcef2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonY: 256
+  buttonY: 1048576
   controllerToFollow: {fileID: 830349226}
   speed: 10
 --- !u!114 &1762231444 stripped

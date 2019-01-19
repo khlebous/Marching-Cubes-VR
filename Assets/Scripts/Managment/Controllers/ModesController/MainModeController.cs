@@ -24,7 +24,7 @@ public class MainModeController : MonoBehaviour
 		itemSelectedSubject.OnNext(guid);
 	}
 	
-	public void TurnOnModeWithCurrentSceneGuids(List<Guid> sceneGuids)
+	public void Load(List<Guid> sceneGuids)
 	{
 		mainModeContiner.SetActive(true);
 		mainMenuController.ResetMenu(sceneGuids);

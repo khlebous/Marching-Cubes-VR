@@ -77,9 +77,9 @@ public class ControllerRaycast : MonoBehaviour
 
 			if (OVRInput.GetUp(button))
 			{
+				lineRenderer.enabled = false;
 				if (raycastHit.collider != null)
 				{
-					lineRenderer.enabled = false;
 					ObjectController objController = raycastHit.collider.gameObject.transform
 						.GetComponentInParent<ObjectController>();
 
@@ -88,6 +88,10 @@ public class ControllerRaycast : MonoBehaviour
 						objectSelectedSubject.OnNext(objController);
 					else
 						StartListening();
+				}
+				else
+				{
+					StartListening();
 				}
 			}
 

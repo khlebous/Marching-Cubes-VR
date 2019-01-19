@@ -25,7 +25,6 @@ public class MenuRightTerrainController : MonoBehaviour
 	private OVRInput.RawButton prevItemButton = OVRInput.RawButton.RThumbstickUp;
 
 	private List<MenuItemV> items;
-	private ButtonState currThumbstickState;
 	private bool isMenuActive;
 	private int activeItemIndex;
 
@@ -48,7 +47,6 @@ public class MenuRightTerrainController : MonoBehaviour
 
 	private void SetupMenu()
 	{
-		currThumbstickState = ButtonState.Normal;
 		isMenuActive = false;
 		activeItemIndex = 0;
 
@@ -99,36 +97,20 @@ public class MenuRightTerrainController : MonoBehaviour
 			}
 			else
 			{
-				if (OVRInput.Get(prevItemButton))
+				if (OVRInput.GetDown(prevItemButton))
 				{
-					if (currThumbstickState == ButtonState.Normal)
-					{
-						currThumbstickState = ButtonState.Up;
 						items[activeItemIndex].SetInactive();
 						DecreaseActiveItemIndex();
 						items[activeItemIndex].SetActive();
-					}
 				}
-				else if (OVRInput.Get(nextItemButton))
+				else if (OVRInput.GetDown(nextItemButton))
 				{
-					if (currThumbstickState == ButtonState.Normal)
-					{
-						currThumbstickState = ButtonState.Down;
 						items[activeItemIndex].SetInactive();
 						IncreaseActiveItemIndex();
 						items[activeItemIndex].SetActive();
-					}
-				}
-				else
-				{
-					if (currThumbstickState != ButtonState.Normal)
-					{
-						currThumbstickState = ButtonState.Normal;
-					}
 				}
 			}
 		}
-
 	}
 
 

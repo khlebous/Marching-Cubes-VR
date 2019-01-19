@@ -9,12 +9,12 @@ using System.IO;
 public class SceneModeController : MonoBehaviour
 {
 	[SerializeField] private GameObject sceneContiner;
-	[SerializeField] private MenuSceneController menuSceneController;
 	[SerializeField] private Transform controllerToFollow;
+	[SerializeField] private MenuSceneController menuSceneController;
+	[SerializeField] private MenuObjectChoosenController menuObjectChoosen;
 
 	[Header("Other")]
-	[SerializeField]
-	private McManager mcManager;
+	[SerializeField] private McManager mcManager;
 	[SerializeField] private ControllerRaycast controllerRaycast;
 	[SerializeField] private CameraCapture cameraCapture;
 
@@ -42,9 +42,51 @@ public class SceneModeController : MonoBehaviour
 		menuSceneController.ModelToDeleteSelectedStream.Subscribe(DeleteModelFromModelsList);
 		menuSceneController.PhotoRequestStream.Subscribe(_ => TakePhoto());
 
+		menuObjectChoosen.StopEditingStream.Subscribe(_ => StopEditnigObject());
+		menuObjectChoosen.EditModelStream.Subscribe(_ => EditModel());
+		menuObjectChoosen.DeleteObjectStream.Subscribe(_ => DeleteObject());
+
 		controllerRaycast.ObjectSelectedStream.Subscribe(SetObjectSelected);
 	}
 
+	private void DeleteObject()
+	{
+		menuObjectChoosen.CloseMenu();
+
+		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
+		sceneContiner.GetComponent<RotationWithOculusTouch>().enabled = true;
+		sceneContiner.GetComponent<ScaleWithOculusTouch>().enabled = true;
+		menuSceneController.SetActive();
+		controllerRaycast.SetActive(true);
+
+		if (selectedObject != null)
+		{
+			scene.DeleteModelFromTerrain(selectedObject.gameObject);
+			selectedObject = null;
+		}
+	}
+
+	private void EditModel()
+	{
+		Guid guid = scene.ModelsOnTerrain.FirstOrDefault
+			(x => x.GameObject == selectedObject.gameObject).ModelGuid;
+		SetObjectNormal(selectedObject);
+		menuObjectChoosen.CloseMenu();
+		SuspendAndExitToObjectMode(guid);
+	}
+
+	private void StopEditnigObject()
+	{
+		menuObjectChoosen.CloseMenu();
+
+		if (selectedObject != null)
+			SetObjectNormal(selectedObject);
+		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
+		sceneContiner.GetComponent<RotationWithOculusTouch>().enabled = true;
+		sceneContiner.GetComponent<ScaleWithOculusTouch>().enabled = true;
+		menuSceneController.SetActive();
+		controllerRaycast.SetActive(true);
+	}
 
 	public void TurnOnCurrentMode()
 	{
@@ -161,48 +203,7 @@ public class SceneModeController : MonoBehaviour
 		go.SetControllerToFollow(controllerToFollow);
 		go.SetActive();
 
-		if (waitForMenuLeftOpenCoroutine != null)
-			StopCoroutine(waitForMenuLeftOpenCoroutine);
-		waitForMenuLeftOpenCoroutine = StartCoroutine(WaitForNewObjectMovementEnd());
-	}
-
-	private IEnumerator WaitForNewObjectMovementEnd()
-	{
-		while (true)
-		{
-			if (OVRInput.GetDown(OVRInput.RawButton.LThumbstick))
-			{
-				if (waitForMenuLeftOpenCoroutine != null)
-					StopCoroutine(waitForMenuLeftOpenCoroutine);
-
-				if (selectedObject != null)
-					SetObjectNormal(selectedObject);
-				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
-				sceneContiner.GetComponent<RotationWithOculusTouch>().enabled = true;
-				sceneContiner.GetComponent<ScaleWithOculusTouch>().enabled = true;
-				menuSceneController.SetActive();
-				controllerRaycast.SetActive(true);
-			}
-			else if (OVRInput.GetDown(OVRInput.RawButton.A))
-			{
-				if (waitForMenuLeftOpenCoroutine != null)
-					StopCoroutine(waitForMenuLeftOpenCoroutine);
-
-				sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
-				sceneContiner.GetComponent<RotationWithOculusTouch>().enabled = true;
-				sceneContiner.GetComponent<ScaleWithOculusTouch>().enabled = true;
-				menuSceneController.SetActive();
-				controllerRaycast.SetActive(true);
-
-				if (selectedObject != null)
-				{
-					scene.DeleteModelFromTerrain(selectedObject.gameObject);
-					selectedObject = null;
-				}
-			}
-
-			yield return new WaitForEndOfFrame();
-		}
+		menuObjectChoosen.OpenMenu();
 	}
 
 	private void SetObjectNormal(ObjectController go)

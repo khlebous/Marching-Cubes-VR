@@ -2263,7 +2263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 512
-  controllerToFollow: {fileID: 830349226}
+  controllerToFollow: {fileID: 0}
   multiplier: 2
 --- !u!114 &1148545602
 MonoBehaviour:
@@ -2277,7 +2277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
-  controllerToFollow: {fileID: 830349226}
+  controllerToFollow: {fileID: 0}
   bound: 10
 --- !u!1 &1152297781 stripped
 GameObject:
@@ -2342,7 +2342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 512
-  controllerToFollow: {fileID: 830349226}
+  controllerToFollow: {fileID: 0}
   multiplier: 2
 --- !u!114 &1156782514
 MonoBehaviour:
@@ -2356,7 +2356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
-  controllerToFollow: {fileID: 830349226}
+  controllerToFollow: {fileID: 0}
   bound: 10
 --- !u!1001 &1158568074
 Prefab:
@@ -3224,6 +3224,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainModeContiner: {fileID: 323772215}
   mainMenuController: {fileID: 35592425}
+--- !u!1001 &1568609841
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1591130762}
+    m_Modifications:
+    - target: {fileID: 4958543391657602, guid: 28bcf33a4fb569c4f819bf9241065f38, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958543391657602, guid: 28bcf33a4fb569c4f819bf9241065f38, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958543391657602, guid: 28bcf33a4fb569c4f819bf9241065f38, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958543391657602, guid: 28bcf33a4fb569c4f819bf9241065f38, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958543391657602, guid: 28bcf33a4fb569c4f819bf9241065f38, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958543391657602, guid: 28bcf33a4fb569c4f819bf9241065f38, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958543391657602, guid: 28bcf33a4fb569c4f819bf9241065f38, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958543391657602, guid: 28bcf33a4fb569c4f819bf9241065f38, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 28bcf33a4fb569c4f819bf9241065f38, type: 2}
+  m_IsPrefabParent: 0
+--- !u!114 &1568609842 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114921850685875314, guid: 28bcf33a4fb569c4f819bf9241065f38,
+    type: 2}
+  m_PrefabInternal: {fileID: 1568609841}
+  m_Script: {fileID: 11500000, guid: 2c35b12edc6bc734385b85580c8d5d1d, type: 3}
 --- !u!1 &1590765278
 GameObject:
   m_ObjectHideFlags: 0
@@ -3594,7 +3642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 512
-  controllerToFollow: {fileID: 830349226}
+  controllerToFollow: {fileID: 0}
   multiplier: 2
 --- !u!114 &1749380868
 MonoBehaviour:
@@ -3608,7 +3656,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
-  controllerToFollow: {fileID: 830349226}
+  controllerToFollow: {fileID: 0}
   bound: 10
 --- !u!114 &1762231444 stripped
 MonoBehaviour:
@@ -3833,8 +3881,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneContiner: {fileID: 1156782511}
-  menuSceneController: {fileID: 1590765280}
   controllerToFollow: {fileID: 830349226}
+  menuSceneController: {fileID: 1590765280}
+  menuObjectChoosen: {fileID: 1568609842}
   mcManager: {fileID: 1400500067}
   controllerRaycast: {fileID: 398466545}
   cameraCapture: {fileID: 688125111}

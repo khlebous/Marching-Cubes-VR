@@ -88,7 +88,6 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -2479,21 +2478,21 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 224868592392000938, guid: 0b439dcaefc023d43a8269b184b865b3,
+        type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224868592392000938, guid: 0b439dcaefc023d43a8269b184b865b3,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 114896367705582948, guid: 0b439dcaefc023d43a8269b184b865b3,
         type: 2}
       propertyPath: brush
       value: 
       objectReference: {fileID: 720026327}
-    - target: {fileID: 224914346968573862, guid: 0b439dcaefc023d43a8269b184b865b3,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224914346968573862, guid: 0b439dcaefc023d43a8269b184b865b3,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0b439dcaefc023d43a8269b184b865b3, type: 2}
   m_IsPrefabParent: 0
@@ -2891,16 +2890,6 @@ Prefab:
       propertyPath: mcManager
       value: 
       objectReference: {fileID: 1400500067}
-    - target: {fileID: 23253743985447966, guid: 49ed7aa465a859d43894a0e160f463a9,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 2985b885b67f1be48b0eb195ac7670d1, type: 2}
-    - target: {fileID: 114905771452487252, guid: 49ed7aa465a859d43894a0e160f463a9,
-        type: 2}
-      propertyPath: modelRenderer
-      value: 
-      objectReference: {fileID: 1993574073}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 49ed7aa465a859d43894a0e160f463a9, type: 2}
   m_IsPrefabParent: 0
@@ -3033,40 +3022,21 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 224934392388733930, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
+        type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224934392388733930, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 114866091133667686, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
         type: 2}
       propertyPath: brush
       value: 
       objectReference: {fileID: 1721579687}
-    - target: {fileID: 1482618563597042, guid: d1f1d3e4d7f1a5a438281f8b8b287b48, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224934392388733930, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
-        type: 2}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224934392388733930, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224934392388733930, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224467542164534052, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224467542164534052, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d1f1d3e4d7f1a5a438281f8b8b287b48, type: 2}
   m_IsPrefabParent: 0
@@ -3835,11 +3805,6 @@ MeshFilter:
 GameObject:
   m_PrefabParentObject: {fileID: 184120, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 2}
   m_PrefabInternal: {fileID: 1873653364}
---- !u!23 &1993574073 stripped
-MeshRenderer:
-  m_PrefabParentObject: {fileID: 23253743985447966, guid: 49ed7aa465a859d43894a0e160f463a9,
-    type: 2}
-  m_PrefabInternal: {fileID: 1275130795}
 --- !u!1 &1999632365
 GameObject:
   m_ObjectHideFlags: 0

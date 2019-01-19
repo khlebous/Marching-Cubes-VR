@@ -61,7 +61,7 @@ public class HandMenuController : MonoBehaviour
 				Debug.Log("Thumbstic clickedClicked");
 
 				isMenuActive = false;
-				items[activeItemIndex].SetChoosen();
+				items[activeItemIndex].SetChosen();
 				itemIsActiveStream.OnNext(true);
 			}
 			else

@@ -33,7 +33,7 @@ public class ModelsMenuV : MenuItemV
 	//	StartCoroutine(WaitNextFrame());
 	//}
 
-	public Guid GetChoosenGuid()
+	public Guid GetChosenGuid()
 	{
 		if (modelGuids.Count == 0)
 			return Guid.Empty;
@@ -69,9 +69,9 @@ public class ModelsMenuV : MenuItemV
 		isMenuActive = true;
 	}
 
-	public override void SetChoosen()
+	public override void SetChosen()
 	{
-		base.SetChoosen();
+		base.SetChosen();
 
 		StartCoroutine(WaitNextFrame());
 	}

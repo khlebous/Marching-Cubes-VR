@@ -68,8 +68,8 @@ public class MenuRightTerrainController : MonoBehaviour
 
 	private void Start()
 	{
-		modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
-		brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
+		modeItem.ChosenItemSubject.Subscribe(brush.SetMode);
+		brushShapeItem.ChosenItemSubject.Subscribe(brush.SetShape);
 
 		foreach (var item in items)
 			item.ThubstickClickedStream.Subscribe
@@ -92,7 +92,7 @@ public class MenuRightTerrainController : MonoBehaviour
 			if (OVRInput.Get(selectItemButton))
 			{
 				isMenuActive = false;
-				items[activeItemIndex].SetChoosen();
+				items[activeItemIndex].SetChosen();
 				itemIsActiveSubject.OnNext(Unit.Default);
 			}
 			else

@@ -25,7 +25,7 @@ public class MenuItemV : MonoBehaviour
 	}
 
 	// TODO choosable items, this logic should not be here
-	public virtual void SetChoosen()
+	public virtual void SetChosen()
 	{
 		highlight.SetState(2);
 		waitForEndEditing = StartCoroutine(WaitForEndEditing());

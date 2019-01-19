@@ -24,9 +24,9 @@ public class MenuItemColorV : MenuItemV
 		ColorChanged();
 	}
 
-	public override void SetChoosen()
+	public override void SetChosen()
 	{
-		base.SetChoosen();
+		base.SetChosen();
 		active = true;
 	}
 

@@ -11,8 +11,8 @@ public class MenuItemHMenuV : MenuItemV
 	[SerializeField] private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickRight;
 	[SerializeField] private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickLeft;
 
-	private ISubject<int> choosenItemStream = new Subject<int>();
-	public IObservable<int> ChoosenItemSubject { get { return choosenItemStream; } }
+	private ISubject<int> chosenItemStream = new Subject<int>();
+	public IObservable<int> ChosenItemSubject { get { return chosenItemStream; } }
 
 	private ButtonState thumbstick = ButtonState.Normal;
 	private int activeItemIndex = 0;
@@ -36,9 +36,9 @@ public class MenuItemHMenuV : MenuItemV
 		ModeChanged();
 	}
 
-	public override void SetChoosen()
+	public override void SetChosen()
 	{
-		base.SetChoosen();
+		base.SetChosen();
 		active = true;
 	}
 
@@ -86,7 +86,7 @@ public class MenuItemHMenuV : MenuItemV
 
 	private void ModeChanged()
 	{
-		choosenItemStream.OnNext(activeItemIndex);
+		chosenItemStream.OnNext(activeItemIndex);
 	}
 
 	private void IncreaseActiveItemIndex()

@@ -30,9 +30,9 @@ public class MenuItemSliderV : MenuItemV
 		active = false;
 	}
 
-	public override void SetChoosen()
+	public override void SetChosen()
 	{
-		base.SetChoosen();
+		base.SetChosen();
 		active = true;
 	}
 

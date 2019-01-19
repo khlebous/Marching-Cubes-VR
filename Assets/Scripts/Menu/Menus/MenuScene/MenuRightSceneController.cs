@@ -145,19 +145,19 @@ public class MenuRightSceneController : MonoBehaviour
 				break;
 			case 2: // modelsList
 				itemSelectedSubject.OnNext(Unit.Default);
-				modelsList.SetChoosen();
+				modelsList.SetChosen();
 				break;
 			case 3: // Add model to scene
 				if (modelsList.AtLeastOneObjectExist())
-					modelToAddSelectedSubject.OnNext(modelsList.GetChoosenGuid());
+					modelToAddSelectedSubject.OnNext(modelsList.GetChosenGuid());
 				break;
 			case 4: // Edit model
 				if (modelsList.AtLeastOneObjectExist())
-					modelToEditSelectedSubject.OnNext(modelsList.GetChoosenGuid());
+					modelToEditSelectedSubject.OnNext(modelsList.GetChosenGuid());
 				break;
 			case 5: // Delete Model
 				if (modelsList.AtLeastOneObjectExist())
-					modelToDeleteSelectedSubject.OnNext(modelsList.GetChoosenGuid());
+					modelToDeleteSelectedSubject.OnNext(modelsList.GetChosenGuid());
 				StartCoroutine(WaitNextFrameAndSetMenuActive());
 				break;
 			default:

@@ -72,8 +72,8 @@ public class MenuRightModelController : MonoBehaviour
 			item.ThubstickClickedStream.Subscribe
 				(_ => StartCoroutine(WaitNextFrameAndSetMenuActive()));
 
-		modeItem.ChoosenItemSubject.Subscribe(brush.SetMode);
-		brushShapeItem.ChoosenItemSubject.Subscribe(brush.SetShape);
+		modeItem.ChosenItemSubject.Subscribe(brush.SetMode);
+		brushShapeItem.ChosenItemSubject.Subscribe(brush.SetShape);
 	}
 
 	IEnumerator WaitNextFrameAndSetMenuActive()
@@ -92,7 +92,7 @@ public class MenuRightModelController : MonoBehaviour
 			if (OVRInput.Get(selectItemButton))
 			{
 				isMenuActive = false;
-				items[activeItemIndex].SetChoosen();
+				items[activeItemIndex].SetChosen();
 				itemIsActiveSubject.OnNext(Unit.Default);
 			}
 			else

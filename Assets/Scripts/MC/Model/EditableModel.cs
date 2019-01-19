@@ -203,7 +203,7 @@ namespace MarchingCubesGPUProject
             if (IsInTestVersion)
                 return;
 
-			var offset = 0.1f;
+			var offset = 0.03f;
 			var dist = offset + this.transform.lossyScale.z * brush.transform.localScale.z / 2;
 			brush.transform.localPosition = new Vector3(0, 0, dist);
 		}

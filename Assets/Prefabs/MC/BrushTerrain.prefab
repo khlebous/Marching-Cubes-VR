@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrain: {fileID: 0}
-  color: {r: 0, g: 0, b: 0, a: 0}
+  color: {r: 0.89705884, g: 0.7108236, b: 0.31001297, a: 0}
   mode: 0
   shape: 1
   cylinderMesh: {fileID: 4565886761523344}

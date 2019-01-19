@@ -14,7 +14,8 @@ public class SceneModeController : MonoBehaviour
 	[SerializeField] private MenuObjectChoosenController menuObjectChoosen;
 
 	[Header("Other")]
-	[SerializeField] private McManager mcManager;
+	[SerializeField]
+	private McManager mcManager;
 	[SerializeField] private ControllerRaycast controllerRaycast;
 	[SerializeField] private CameraCapture cameraCapture;
 
@@ -79,8 +80,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		menuObjectChoosen.CloseMenu();
 
-		if (selectedObject != null)
-			SetObjectNormal(selectedObject);
+		SetObjectNormal(selectedObject);
 		sceneContiner.GetComponent<MovementWithOculusTouch>().enabled = true;
 		sceneContiner.GetComponent<RotationWithOculusTouch>().enabled = true;
 		sceneContiner.GetComponent<ScaleWithOculusTouch>().enabled = true;

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UniRx;
+using System.Collections;
 
 public class MenuObjectChoosenController : MonoBehaviour {
 
@@ -94,6 +95,14 @@ public class MenuObjectChoosenController : MonoBehaviour {
 	public void OpenMenu()
 	{
 		gameObject.SetActive(true);
+
+		StartCoroutine(WaitNextFrameAndSetMenuActive());
+	}
+
+	IEnumerator WaitNextFrameAndSetMenuActive()
+	{
+		yield return new WaitForSeconds(0.5f);
+
 		isMenuActive = true;
 	}
 

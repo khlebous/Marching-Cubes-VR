@@ -2228,6 +2228,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1724395820}
   - component: {fileID: 1148545600}
+  - component: {fileID: 1148545602}
+  - component: {fileID: 1148545601}
   m_Layer: 0
   m_Name: TerrainContainer
   m_TagString: Untagged
@@ -2249,6 +2251,34 @@ MonoBehaviour:
   buttonY: 1048576
   controllerToFollow: {fileID: 830349226}
   speed: 10
+--- !u!114 &1148545601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1148545599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a47cba1660a1b46907eda7a175fa81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonY: 512
+  controllerToFollow: {fileID: 830349226}
+  multiplier: 2
+--- !u!114 &1148545602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1148545599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0636c0a3b4e41ac46bb74c7e68f1bae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonY: 256
+  controllerToFollow: {fileID: 830349226}
+  bound: 10
 --- !u!1 &1152297781 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 157742, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 2}
@@ -2277,6 +2307,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1156782510}
   - component: {fileID: 1156782512}
+  - component: {fileID: 1156782514}
+  - component: {fileID: 1156782513}
   m_Layer: 0
   m_Name: SceneContainer
   m_TagString: Untagged
@@ -2298,6 +2330,34 @@ MonoBehaviour:
   buttonY: 1048576
   controllerToFollow: {fileID: 830349226}
   speed: 10
+--- !u!114 &1156782513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1156782511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a47cba1660a1b46907eda7a175fa81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonY: 512
+  controllerToFollow: {fileID: 830349226}
+  multiplier: 2
+--- !u!114 &1156782514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1156782511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0636c0a3b4e41ac46bb74c7e68f1bae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonY: 256
+  controllerToFollow: {fileID: 830349226}
+  bound: 10
 --- !u!1001 &1158568074
 Prefab:
   m_ObjectHideFlags: 0
@@ -2542,19 +2602,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114569657506434896, guid: 835e48ca4e395dc4b87d036ca5e1a43d,
-        type: 2}
-      propertyPath: modelImageRenderer
-      value: 
-      objectReference: {fileID: 1212886984}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 835e48ca4e395dc4b87d036ca5e1a43d, type: 2}
   m_IsPrefabParent: 0
---- !u!23 &1212886984 stripped
-MeshRenderer:
-  m_PrefabParentObject: {fileID: 23756782623141158, guid: 835e48ca4e395dc4b87d036ca5e1a43d,
-    type: 2}
-  m_PrefabInternal: {fileID: 1212886983}
 --- !u!1 &1216307090
 GameObject:
   m_ObjectHideFlags: 0
@@ -3509,6 +3559,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1749380864}
   - component: {fileID: 1749380866}
+  - component: {fileID: 1749380868}
+  - component: {fileID: 1749380867}
   m_Layer: 0
   m_Name: ModelContainer
   m_TagString: Untagged
@@ -3530,6 +3582,34 @@ MonoBehaviour:
   buttonY: 1048576
   controllerToFollow: {fileID: 830349226}
   speed: 10
+--- !u!114 &1749380867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1749380865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a47cba1660a1b46907eda7a175fa81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonY: 512
+  controllerToFollow: {fileID: 830349226}
+  multiplier: 2
+--- !u!114 &1749380868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1749380865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0636c0a3b4e41ac46bb74c7e68f1bae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonY: 256
+  controllerToFollow: {fileID: 830349226}
+  bound: 10
 --- !u!114 &1762231444 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114659647573878020, guid: 7b415877d1c849f44ac3d791560d459a,

@@ -1,182 +1,198 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.MarchingCubesGPU.Scripts
 {
-	public enum BrushMode
-	{
-		Color = 3,
-		Remove = 2,
-		Create = 1,
-		Inactive = 0
-	}
+    public enum BrushMode
+    {
+        Color = 3,
+        Remove = 2,
+        Create = 1,
+        Inactive = 0
+    }
 
-	public enum BrushShape
-	{
-		Sphere = 1,
-		Cuboid = 2
-	}
+    public enum BrushShape
+    {
+        Sphere = 1,
+        Cuboid = 2
+    }
 
-	public class ModelBrush : MonoBehaviour
-	{
-		public Color color;
+    public class ModelBrush : MonoBehaviour
+    {
+        [Header("Input")]
+        [SerializeField] private OVRInput.RawButton buttonB = OVRInput.RawButton.B;
+        [SerializeField] private OVRInput.RawButton buttonA = OVRInput.RawButton.A;
 
-		public BrushMode mode = BrushMode.Inactive;
-		public BrushShape shape = BrushShape.Sphere;
+        [Header("Other")]
+        public Color color;
 
-		private OVRInput.RawButton buttonB = OVRInput.RawButton.B;
-		private OVRInput.RawButton buttonA = OVRInput.RawButton.A;
+        public BrushMode mode = BrushMode.Inactive;
+        public BrushShape shape = BrushShape.Sphere;
 
-		private const float _minScale = 0.5f;
-		private const float _maxScale = McConsts.ModelN / 2f;
+        private const float _minScale = 0.5f;
+        private const float _maxScale = McConsts.ModelN / 2f;
 
-		public Matrix4x4 GetToBrushMatrix()
-		{
-			var brushPosition = Matrix4x4.Translate(-this.transform.position);
-			var brushRotation = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation));
-			var scale = Matrix4x4.Scale(this.transform.lossyScale).inverse;
+        public Transform sphereMesh;
+        public Transform cubeMesh;
 
-			var result = scale * brushRotation * brushPosition;
-			return result;
-		}
+        public Matrix4x4 GetToBrushMatrix()
+        {
+            var brushPosition = Matrix4x4.Translate(-this.transform.position);
+            var brushRotation = Matrix4x4.Rotate(Quaternion.Inverse(this.transform.rotation));
+            var scale = Matrix4x4.Scale(this.transform.lossyScale).inverse;
 
-		private Coroutine buttonA_down;
-		private Coroutine buttonA_up;
+            var result = scale * brushRotation * brushPosition;
+            return result;
+        }
 
-		private Coroutine buttonB_down;
-		private Coroutine buttonB_up;
+        private Coroutine buttonA_down;
+        private Coroutine buttonA_up;
 
-		public void SetActive()
-		{
-			mode = BrushMode.Inactive;
-			StartListening(BrushMode.Create);
-		}
+        private Coroutine buttonB_down;
+        private Coroutine buttonB_up;
 
-		public void SetInactive()
-		{
-			StopListening();
-		}
+        public void SetActive()
+        {
+            mode = BrushMode.Inactive;
+            this.gameObject.SetActive(true);
+            StartListening(BrushMode.Create);
+        }
 
-		private void StopListening()
-		{
-			if (null != buttonA_down)
-				StopCoroutine(buttonA_down);
-			if (null != buttonB_down)
-				StopCoroutine(buttonB_down);
+        public void SetInactive()
+        {
+            StopListening();
+            this.gameObject.SetActive(false);
+        }
 
-			if (null != buttonA_up)
-				StopCoroutine(buttonA_up);
-			if (null != buttonB_up)
-				StopCoroutine(buttonB_up);
-		}
+        private void StopListening()
+        {
+            if (null != buttonA_down)
+                StopCoroutine(buttonA_down);
+            if (null != buttonB_down)
+                StopCoroutine(buttonB_down);
 
-		private void StartListening(BrushMode brushMode)
-		{
-			StopListening();
-			buttonB_down = StartCoroutine(WaitForButtonB_Down(brushMode));
-			if (brushMode != BrushMode.Color)
-				buttonA_down = StartCoroutine(WaitForButtonA_Down()); // automaticaly delele
-		}
+            if (null != buttonA_up)
+                StopCoroutine(buttonA_up);
+            if (null != buttonB_up)
+                StopCoroutine(buttonB_up);
+        }
 
-		private IEnumerator WaitForButtonB_Down(BrushMode brushMode)
-		{
-			while (true)
-			{
-				if (OVRInput.GetDown(buttonB))
-				{
-					StopCoroutine(buttonB_down);
-					mode = brushMode;
-					buttonB_up = StartCoroutine(WaitForButtonB_Up(brushMode));
-				}
+        private void StartListening(BrushMode brushMode)
+        {
+            StopListening();
+            buttonB_down = StartCoroutine(WaitForButtonB_Down(brushMode));
+            if (brushMode != BrushMode.Color)
+                buttonA_down = StartCoroutine(WaitForButtonA_Down()); // automaticaly delele
+        }
 
-				yield return new WaitForEndOfFrame();
-			}
-		}
+        private IEnumerator WaitForButtonB_Down(BrushMode brushMode)
+        {
+            while (true)
+            {
+                if (OVRInput.GetDown(buttonB))
+                {
+                    StopCoroutine(buttonB_down);
+                    mode = brushMode;
+                    buttonB_up = StartCoroutine(WaitForButtonB_Up(brushMode));
+                }
 
-		private IEnumerator WaitForButtonB_Up(BrushMode brushMode)
-		{
-			while (true)
-			{
-				if (OVRInput.GetUp(buttonB))
-				{
-					StopCoroutine(buttonB_up);
-					mode = BrushMode.Inactive;
-					buttonB_down = StartCoroutine(WaitForButtonB_Down(brushMode));
-				}
+                yield return new WaitForEndOfFrame();
+            }
+        }
 
-				yield return new WaitForEndOfFrame();
-			}
-		}
+        private IEnumerator WaitForButtonB_Up(BrushMode brushMode)
+        {
+            while (true)
+            {
+                if (OVRInput.GetUp(buttonB))
+                {
+                    StopCoroutine(buttonB_up);
+                    mode = BrushMode.Inactive;
+                    buttonB_down = StartCoroutine(WaitForButtonB_Down(brushMode));
+                }
 
-		private IEnumerator WaitForButtonA_Down()
-		{
-			while (true)
-			{
-				if (OVRInput.GetDown(buttonA))
-				{
-					StopCoroutine(buttonA_down);
-					mode = BrushMode.Remove;
-					buttonA_up = StartCoroutine(WaitForButtonA_Up());
-				}
+                yield return new WaitForEndOfFrame();
+            }
+        }
 
-				yield return new WaitForEndOfFrame();
-			}
-		}
+        private IEnumerator WaitForButtonA_Down()
+        {
+            while (true)
+            {
+                if (OVRInput.GetDown(buttonA))
+                {
+                    StopCoroutine(buttonA_down);
+                    mode = BrushMode.Remove;
+                    buttonA_up = StartCoroutine(WaitForButtonA_Up());
+                }
 
-		private IEnumerator WaitForButtonA_Up()
-		{
-			while (true)
-			{
-				if (OVRInput.GetUp(buttonA))
-				{
-					StopCoroutine(buttonA_up);
-					mode = BrushMode.Inactive;
-					buttonA_down = StartCoroutine(WaitForButtonA_Down());
-				}
+                yield return new WaitForEndOfFrame();
+            }
+        }
 
-				yield return new WaitForEndOfFrame();
-			}
-		}
+        private IEnumerator WaitForButtonA_Up()
+        {
+            while (true)
+            {
+                if (OVRInput.GetUp(buttonA))
+                {
+                    StopCoroutine(buttonA_up);
+                    mode = BrushMode.Inactive;
+                    buttonA_down = StartCoroutine(WaitForButtonA_Down());
+                }
 
-		private void SetChangeMode()
-		{
-			StopListening();
-			mode = BrushMode.Inactive;
-			StartListening(BrushMode.Create);
-		}
+                yield return new WaitForEndOfFrame();
+            }
+        }
 
-		private void SetColorMode()
-		{
-			StopListening();
-			mode = BrushMode.Inactive;
-			StartListening(BrushMode.Color);
-		}
+        private void SetChangeMode()
+        {
+            StopListening();
+            mode = BrushMode.Inactive;
+            StartListening(BrushMode.Create);
+        }
 
-		public void SetColor(Color color)
-		{
-			this.color = color;
-		}
+        private void SetColorMode()
+        {
+            StopListening();
+            mode = BrushMode.Inactive;
+            StartListening(BrushMode.Color);
+        }
 
-		public void SetMode(int newMode)
-		{
-			if (newMode == 0)
-				SetChangeMode();
-			else if (newMode == 1)
-				SetColorMode();
-		}
+        public void SetColor(Color color)
+        {
+            this.color = color;
+        }
 
-		public void SetShape(int newShape)
-		{
-			if (newShape == 0)
-				shape = BrushShape.Sphere;
-			else if (newShape == 1)
-				shape = BrushShape.Cuboid;
-		}
+        public void SetMode(int newMode)
+        {
+            if (newMode == 0)
+                SetChangeMode();
+            else if (newMode == 1)
+                SetColorMode();
+        }
 
-		public void SetSizeChanged(float newValue)
-		{
-			var scale = newValue * (_maxScale - _minScale) + _minScale;
-			this.transform.localScale = scale * Vector3.one;
-		}
-	}
+        public void SetShape(int newShape)
+        {
+            if (newShape == 0)
+            {
+                shape = BrushShape.Sphere;
+                sphereMesh.gameObject.SetActive(true);
+                cubeMesh.gameObject.SetActive(false);
+            }
+            else if (newShape == 1)
+            {
+                shape = BrushShape.Cuboid;
+                cubeMesh.gameObject.SetActive(true);
+                sphereMesh.gameObject.SetActive(false);
+            }
+        }
+
+        public void SetSizeChanged(float newValue)
+        {
+            var scale = newValue * (_maxScale - _minScale) + _minScale;
+            this.transform.localScale = scale * Vector3.one;
+        }
+    }
 }

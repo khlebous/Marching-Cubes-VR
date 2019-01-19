@@ -81,6 +81,6 @@ Material:
     - _WireThickness: 100
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0.86764705, g: 0.59204155, b: 0.17863323, a: 0.3137255}
+    - _Color: {r: 0.77205884, g: 0.48821366, b: 0.06244595, a: 0.297}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Specular: {r: 0, g: 0, b: 0, a: 0}

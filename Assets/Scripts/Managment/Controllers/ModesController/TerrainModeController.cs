@@ -43,6 +43,7 @@ public class TerrainModeController : MonoBehaviour
 
 	private void ExitMode()
 	{
+		terrainBrush.SetInactive();
 		terrainContiner.SetActive(false);
 		menuTerrainController.SetInactive();
 

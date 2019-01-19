@@ -999,7 +999,7 @@ MonoBehaviour:
   saveExitItem: {fileID: 114915481739304640}
   dontSaveExitItem: {fileID: 114274667708654858}
   modelPreviewItem: {fileID: 114705454647834124}
-  renderer: {fileID: 23756782623141158}
+  modelImageRenderer: {fileID: 23756782623141158}
 --- !u!114 &114587705233400810
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -7,10 +7,11 @@ public class ScaleWithOculusTouch : MonoBehaviour
     [Tooltip("Button to scale")]
     [SerializeField] private OVRInput.RawButton buttonY = OVRInput.RawButton.Y;
     [Tooltip("Controller to follow")]
-	[SerializeField] private Transform controllerToFollow;
+    [SerializeField] private Transform controllerToFollow;
 
     [Header("Scale multipliers")]
     [SerializeField] private float multiplier = 2f;
+    private float _minScale = 00000.1f;
 
     private new Transform transform;
     private Vector3 LastControllerPosition;
@@ -45,7 +46,7 @@ public class ScaleWithOculusTouch : MonoBehaviour
             if (OVRInput.GetDown(buttonY))
             {
                 LastControllerPosition = controllerToFollow.position;
-				StopListening();
+                StopListening();
                 button_up = StartCoroutine(WaitForButton_Up());
             }
 
@@ -60,13 +61,15 @@ public class ScaleWithOculusTouch : MonoBehaviour
             var startDist = Vector3.Distance(transform.position, LastControllerPosition);
             var currtDist = Vector3.Distance(transform.position, controllerToFollow.transform.position);
 
-            transform.localScale += Vector3.one * multiplier * (currtDist - startDist);
-			LastControllerPosition = controllerToFollow.position;
+            var newScale = transform.localScale + Vector3.one * multiplier * (currtDist - startDist);
+            if (newScale.x >= _minScale && newScale.y >= _minScale && newScale.z >= _minScale)
+                transform.localScale = newScale;
+            LastControllerPosition = controllerToFollow.position;
 
-			if (OVRInput.GetUp(buttonY))
+            if (OVRInput.GetUp(buttonY))
             {
-				StopListening();
-				button_down = StartCoroutine(WaitForButton_Down());
+                StopListening();
+                button_down = StartCoroutine(WaitForButton_Down());
             }
 
             yield return new WaitForEndOfFrame();

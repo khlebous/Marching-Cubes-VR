@@ -74,8 +74,9 @@ namespace MarchingCubesGPUProject
         private void Update()
         {
             EnsureProperBrushMesh();
+			EnsureProperBrushPosition();
 
-            if (brush.mode == BrushMode.Inactive)
+			if (brush.mode == BrushMode.Inactive)
                 return;
 
             _renderer.CleanMeshBuffer();
@@ -193,8 +194,14 @@ namespace MarchingCubesGPUProject
             _meshes[meshIdx].SetNormals(normals);
             _meshes[meshIdx].SetColors(colors);
             _meshes[meshIdx].SetTriangles(indexes, 0);
-        }
-        private void EnsureProperBrushMesh()
+		}
+		private void EnsureProperBrushPosition()
+		{
+			var offset = 0.1f;
+			var dist = offset + this.transform.lossyScale.z * brush.transform.localScale.z/2;
+			brush.transform.localPosition = new Vector3(0, 0, dist);
+		}
+		private void EnsureProperBrushMesh()
         {
             var scale = this.transform.lossyScale;
             brush.cubeMesh.transform.localScale = scale;

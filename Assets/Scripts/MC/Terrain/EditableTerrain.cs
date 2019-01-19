@@ -50,9 +50,6 @@ namespace MarchingCubesGPUProject
 			_renderer.CalculateNormals();
 			UpdateMeshes();
 
-			//test
-			StartShaping();
-
 		}
 		private void InitMeshes()
 		{
@@ -124,7 +121,7 @@ namespace MarchingCubesGPUProject
 				UpdateMeshes();
 			}
 
-			if (Shaping)
+			//if (Shaping)
 				LastShapingBrushPosition = brush.transform.position;
 		}
 

@@ -86,7 +86,7 @@ public class EditableScene : MonoBehaviour
     }
     public void DeleteModel(Guid modelGuid)
     {
-        var objToDelete = ModelsOnTerrain.Where(x => x.ModelGuid == modelGuid);
+        var objToDelete = ModelsOnTerrain.Where(x => x.ModelGuid == modelGuid).ToList();
         foreach (var obj in objToDelete)
         {
             GameObject.Destroy(obj.GameObject);

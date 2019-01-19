@@ -2263,7 +2263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 512
-  controllerToFollow: {fileID: 0}
+  controllerToFollow: {fileID: 830349226}
   multiplier: 2
 --- !u!114 &1148545602
 MonoBehaviour:
@@ -2277,7 +2277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
-  controllerToFollow: {fileID: 0}
+  controllerToFollow: {fileID: 830349226}
   bound: 10
 --- !u!1 &1152297781 stripped
 GameObject:
@@ -2342,7 +2342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 512
-  controllerToFollow: {fileID: 0}
+  controllerToFollow: {fileID: 830349226}
   multiplier: 2
 --- !u!114 &1156782514
 MonoBehaviour:
@@ -2356,7 +2356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
-  controllerToFollow: {fileID: 0}
+  controllerToFollow: {fileID: 830349226}
   bound: 10
 --- !u!1001 &1158568074
 Prefab:
@@ -3642,7 +3642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 512
-  controllerToFollow: {fileID: 0}
+  controllerToFollow: {fileID: 830349226}
   multiplier: 2
 --- !u!114 &1749380868
 MonoBehaviour:
@@ -3656,7 +3656,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
-  controllerToFollow: {fileID: 0}
+  controllerToFollow: {fileID: 830349226}
   bound: 10
 --- !u!114 &1762231444 stripped
 MonoBehaviour:

@@ -125,6 +125,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 				{
 					StopCoroutine(buttonA_down);
 					mode = TerrainBrushMode.ExtremeChange;
+					terrain.StartShaping();
 					buttonA_up = StartCoroutine(WaitForButtonA_Up());
 				}
 
@@ -140,6 +141,7 @@ namespace Assets.MarchingCubesGPU.Scripts
 				{
 					StopCoroutine(buttonA_up);
 					mode = TerrainBrushMode.Inactive;
+					terrain.FinishShaping();
 					buttonA_down = StartCoroutine(WaitForButtonA_Down());
 				}
 

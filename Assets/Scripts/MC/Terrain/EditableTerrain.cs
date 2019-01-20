@@ -296,10 +296,11 @@ namespace MarchingCubesGPUProject
             var fromMcMatrix = Matrix4x4.Translate(this.transform.position) * Matrix4x4.Rotate(this.transform.rotation);
 
             var brushPoint = toMcMatrix * brush.transform.position.ToVector4();
-            if (brushPoint.y >= this.transform.lossyScale.y)
-                brushPoint.y = this.transform.lossyScale.y;
+            var yMin = -(this.transform.lossyScale.y * (N / 2 - 1));
+            if (brushPoint.y >= yMin)
+                brushPoint.y = yMin;
             else
-                brushPoint.y += this.transform.lossyScale.y / 100;
+                brushPoint.y -= this.transform.lossyScale.y / 100;
             brushPoint = fromMcMatrix * brushPoint;
 
             var unscaledDist = Vector3.Distance(brush.transform.position, brushPoint.ToVector3());

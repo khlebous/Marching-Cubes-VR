@@ -99,6 +99,7 @@ public class SceneModeController : MonoBehaviour
 	{
 		scene = mcManager.LoadScene(guid);
 		scene.gameObject.transform.parent = sceneContiner.transform;
+		scene.transform.localPosition = new Vector3(0, 0, 0);
 		scene.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
 		menuSceneController.UpdatePhoto(PathHelper.GetScenePngPath(scene.Guid));

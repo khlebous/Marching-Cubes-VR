@@ -142,7 +142,7 @@ void CSMain(int3 id : SV_DispatchThreadID)
 	if (id.z >= _Depth - 1 - _Border) return;
 
 	float3 pos = float3(id);
-	float3 centre = float3(_Width - 1, _Height - 1, _Depth - 1) / 2.0; // N-1 is triangle number
+	float3 centre = float3(_Width - 1, 0, _Depth - 1) / 2.0; // N-1 is triangle number
 
 	float cube[8];
 	float4 cubeColor[8];

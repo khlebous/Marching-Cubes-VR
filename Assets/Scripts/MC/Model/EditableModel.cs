@@ -215,7 +215,7 @@ namespace MarchingCubesGPUProject
 		}
 		private void EnsureProperMeshScaling()
 		{
-			var scale = this.transform.localScale;
+			var scale = this.transform.lossyScale;
 			var meshScale = new Vector3(1 / scale.x, 1 / scale.y, 1 / scale.z);
 
 			foreach (var tran in _meshObjTransforms)

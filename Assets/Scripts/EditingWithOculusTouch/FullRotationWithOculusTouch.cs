@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class RotationWithOculusTouch : MonoBehaviour
+public class FullRotationWithOculusTouch : MonoBehaviour
 {
 	[Header("Oculus Touch input")]
 	[Tooltip("Button to rotate")]
@@ -11,12 +11,9 @@ public class RotationWithOculusTouch : MonoBehaviour
 	[SerializeField]
 	private Transform controllerToFollow;
 
-	[Header("Rotatation multipliers")]
-	[SerializeField]
-	private float speed = 10;
-
 	private new Transform transform;
-	private Vector3 lastControllerPosition;
+	private Quaternion startControllerInverseRotation;
+	private Quaternion startObjRotation;
 
 	private Coroutine button_down;
 	private Coroutine button_up;
@@ -24,7 +21,6 @@ public class RotationWithOculusTouch : MonoBehaviour
 	private void Start()
 	{
 		transform = GetComponent<Transform>();
-		lastControllerPosition = Vector3.zero;
 	}
 
 	private void StartListening()
@@ -47,7 +43,9 @@ public class RotationWithOculusTouch : MonoBehaviour
 		{
 			if (OVRInput.GetDown(buttonY))
 			{
-				lastControllerPosition = controllerToFollow.position;
+				startControllerInverseRotation = Quaternion.Inverse(controllerToFollow.rotation);
+				startObjRotation = transform.rotation;
+
 				StopCoroutine(button_down);
 				button_up = StartCoroutine(WaitForButton_Up());
 			}
@@ -60,18 +58,8 @@ public class RotationWithOculusTouch : MonoBehaviour
 	{
 		while (true)
 		{
-			var virtualObj = controllerToFollow.transform.position + (this.transform.position - controllerToFollow.transform.position).normalized / speed;
-
-			var currToObj = virtualObj - controllerToFollow.transform.position;
-			currToObj.y = 0;
-
-			var lastToObj = virtualObj - lastControllerPosition;
-			lastToObj.y = 0;
-
-			var rotationChange = Quaternion.FromToRotation(lastToObj, currToObj);
-			transform.rotation = rotationChange * transform.rotation;
-
-			lastControllerPosition = controllerToFollow.transform.position;
+			var currentPos = controllerToFollow.position;
+			transform.rotation = controllerToFollow.rotation * startControllerInverseRotation * startObjRotation;
 
 			if (OVRInput.GetUp(buttonY))
 			{
@@ -83,7 +71,6 @@ public class RotationWithOculusTouch : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 	}
-
 
 	public void SetControllerToFollow(Transform toFollow)
 	{

@@ -303,9 +303,13 @@ namespace MarchingCubesGPUProject
             brushPoint = fromMcMatrix * brushPoint;
 
             var unscaledDist = Vector3.Distance(brush.transform.position, brushPoint.ToVector3());
-            var dist = unscaledDist / brush.transform.localScale.y / 2f;
-            brush.cylinderMesh.transform.localPosition = new Vector3(0, -dist, 0);
-            brush.cylinderMesh.transform.localScale = new Vector3(this.transform.lossyScale.x, dist, this.transform.lossyScale.z);
+            var dist = unscaledDist / brush.transform.localScale.y;
+
+            brush.cylinderMesh.transform.localPosition = new Vector3(0, -dist / 2f, 0);
+            brush.cylinderMesh.transform.localScale = new Vector3(this.transform.lossyScale.x, dist / 2f, this.transform.lossyScale.z);
+
+            brush.cubeMesh.transform.localPosition = new Vector3(0, -dist / 2f, 0);
+            brush.cubeMesh.transform.localScale = new Vector3(this.transform.lossyScale.x, dist, this.transform.lossyScale.z);
         }
         private void EnsureProperMeshScaling()
         {
@@ -317,8 +321,13 @@ namespace MarchingCubesGPUProject
                 tran.localScale = meshScale;
             }
         }
+
+        public bool IsInTestVersion;
         private void EnsureProperBrushPosition()
         {
+            if (IsInTestVersion)
+                return;
+
             var offset = 0.1f;
             var terrainFactor = Math.Max(this.transform.lossyScale.z, this.transform.lossyScale.x);
             var brushFactor = Math.Max(brush.transform.lossyScale.z, brush.transform.lossyScale.x);

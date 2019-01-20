@@ -25,8 +25,8 @@ public class EditableScene : MonoBehaviour
         obj.AddComponent<ObjectController>();
         obj.AddComponent<MovementWithOculusTouch>();
         obj.GetComponent<MovementWithOculusTouch>().enabled = false;
-        obj.AddComponent<RotationWithOculusTouch>();
-        obj.GetComponent<RotationWithOculusTouch>().enabled = false;
+        obj.AddComponent<FullRotationWithOculusTouch>();
+        obj.GetComponent<FullRotationWithOculusTouch>().enabled = false;
         obj.AddComponent<ScaleWithOculusTouch>();
         obj.GetComponent<ScaleWithOculusTouch>().enabled = false;
 

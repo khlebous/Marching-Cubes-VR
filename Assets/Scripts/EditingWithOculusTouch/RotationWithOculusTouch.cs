@@ -62,11 +62,15 @@ public class RotationWithOculusTouch : MonoBehaviour
 
             var distVec = Vector3.ProjectOnPlane(changePosVec, toObjVector);
             distVec.y = 0;
+
             var rotation = transform.rotation.eulerAngles;
             rotation.y += speed * distVec.magnitude;
+
             transform.rotation = Quaternion.Euler(rotation);
 
-            if (OVRInput.GetUp(buttonY))
+			lastControllerPosition = controllerToFollow.transform.position;
+
+			if (OVRInput.GetUp(buttonY))
             {
                 StopCoroutine(button_up);
 

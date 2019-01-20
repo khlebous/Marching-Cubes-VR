@@ -3,7 +3,7 @@
 public class ObjectController : MonoBehaviour
 {
 	private MovementWithOculusTouch move;
-	private RotationWithOculusTouch rot;
+	private FullRotationWithOculusTouch rot;
 	private ScaleWithOculusTouch scale;
 	private Shader normalShader;
 	private Shader activeShader;
@@ -12,7 +12,7 @@ public class ObjectController : MonoBehaviour
 	private void Awake()
 	{
 		move = GetComponent<MovementWithOculusTouch>();
-		rot = GetComponent<RotationWithOculusTouch>();
+		rot = GetComponent<FullRotationWithOculusTouch>();
 		scale = GetComponent<ScaleWithOculusTouch>();
 		normalShader = Shader.Find("MarchingCubesGPUProject/DrawMarchingCubes");
 		activeShader = Shader.Find("Standard");

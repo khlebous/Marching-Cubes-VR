@@ -3,83 +3,86 @@ using UnityEngine;
 
 public class RotationWithOculusTouch : MonoBehaviour
 {
-    [Header("Oculus Touch input")]
-    [Tooltip("Button to rotate")]
-    [SerializeField] private OVRInput.RawButton buttonY = OVRInput.RawButton.X;
-    [Tooltip("Controller to follow")]
-	[SerializeField] private Transform controllerToFollow;
+	[Header("Oculus Touch input")]
+	[Tooltip("Button to rotate")]
+	[SerializeField]
+	private OVRInput.RawButton buttonY = OVRInput.RawButton.X;
+	[Tooltip("Controller to follow")]
+	[SerializeField]
+	private Transform controllerToFollow;
 
-    [Header("Rotatation multipliers")]
-    [SerializeField] private int speed = 10;
+	[Header("Rotatation multipliers")]
+	[SerializeField]
+	private float speed = 10;
 
-    private new Transform transform;
-    private Vector3 lastControllerPosition;
+	private new Transform transform;
+	private Vector3 lastControllerPosition;
 
-    private Coroutine button_down;
-    private Coroutine button_up;
+	private Coroutine button_down;
+	private Coroutine button_up;
 
-    private void Start()
-    {
-        transform = GetComponent<Transform>();
-        lastControllerPosition = Vector3.zero;
-    }
+	private void Start()
+	{
+		transform = GetComponent<Transform>();
+		lastControllerPosition = Vector3.zero;
+	}
 
-    private void StartListening()
-    {
-        button_down = StartCoroutine(WaitForButton_Down());
-    }
+	private void StartListening()
+	{
+		button_down = StartCoroutine(WaitForButton_Down());
+	}
 
-    private void StopListening()
-    {
-        if (null != button_down)
-            StopCoroutine(button_down);
+	private void StopListening()
+	{
+		if (null != button_down)
+			StopCoroutine(button_down);
 
-        if (null != button_up)
-            StopCoroutine(button_up);
-    }
+		if (null != button_up)
+			StopCoroutine(button_up);
+	}
 
-    private IEnumerator WaitForButton_Down()
-    {
-        while (true)
-        {
-            if (OVRInput.GetDown(buttonY))
-            {
-                lastControllerPosition = controllerToFollow.position;
-                StopCoroutine(button_down);
-                button_up = StartCoroutine(WaitForButton_Up());
-            }
+	private IEnumerator WaitForButton_Down()
+	{
+		while (true)
+		{
+			if (OVRInput.GetDown(buttonY))
+			{
+				lastControllerPosition = controllerToFollow.position;
+				StopCoroutine(button_down);
+				button_up = StartCoroutine(WaitForButton_Up());
+			}
 
-            yield return new WaitForEndOfFrame();
-        }
-    }
+			yield return new WaitForEndOfFrame();
+		}
+	}
 
-    private IEnumerator WaitForButton_Up()
-    {
-        while (true)
-        {
-            var toObjVector = this.transform.position - lastControllerPosition;
-            var changePosVec = controllerToFollow.transform.position - lastControllerPosition;
+	private IEnumerator WaitForButton_Up()
+	{
+		while (true)
+		{
+			var virtualObj = controllerToFollow.transform.position + (this.transform.position - controllerToFollow.transform.position).normalized / speed;
 
-            var distVec = Vector3.ProjectOnPlane(changePosVec, toObjVector);
-            distVec.y = 0;
+			var currToObj = virtualObj - controllerToFollow.transform.position;
+			currToObj.y = 0;
 
-            var rotation = transform.rotation.eulerAngles;
-            rotation.y += speed * distVec.magnitude;
+			var lastToObj = virtualObj - lastControllerPosition;
+			lastToObj.y = 0;
 
-            transform.rotation = Quaternion.Euler(rotation);
+			var rotationChange = Quaternion.FromToRotation(lastToObj, currToObj);
+			transform.rotation = rotationChange * transform.rotation;
 
 			lastControllerPosition = controllerToFollow.transform.position;
 
 			if (OVRInput.GetUp(buttonY))
-            {
-                StopCoroutine(button_up);
+			{
+				StopCoroutine(button_up);
 
-                button_down = StartCoroutine(WaitForButton_Down());
-            }
+				button_down = StartCoroutine(WaitForButton_Down());
+			}
 
-            yield return new WaitForEndOfFrame();
-        }
-    }
+			yield return new WaitForEndOfFrame();
+		}
+	}
 
 
 	public void SetControllerToFollow(Transform toFollow)

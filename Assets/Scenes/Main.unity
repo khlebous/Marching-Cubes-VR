@@ -2278,7 +2278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonY: 256
   controllerToFollow: {fileID: 830349226}
-  bound: 10
+  speed: 10
 --- !u!1 &1152297781 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 157742, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 2}
@@ -2357,7 +2357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonY: 256
   controllerToFollow: {fileID: 830349226}
-  bound: 10
+  speed: 10
 --- !u!1001 &1158568074
 Prefab:
   m_ObjectHideFlags: 0
@@ -3591,8 +3591,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1749380864}
   - component: {fileID: 1749380866}
-  - component: {fileID: 1749380868}
   - component: {fileID: 1749380867}
+  - component: {fileID: 1749380868}
   m_Layer: 0
   m_Name: ModelContainer
   m_TagString: Untagged
@@ -3636,12 +3636,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1749380865}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0636c0a3b4e41ac46bb74c7e68f1bae4, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cf5d857a9cde5641bd8b2cd7ccab1f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buttonY: 256
   controllerToFollow: {fileID: 830349226}
-  bound: 10
 --- !u!114 &1762231444 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114659647573878020, guid: 7b415877d1c849f44ac3d791560d459a,

@@ -20,7 +20,7 @@ public class MainMenuView : MonoBehaviour
 
 	private List<Guid> SceneGuids { get { return controller.ScenesGuids; } }
 
-	void Start()
+	void Awake()
 	{
 		controller.ItemChangedStream.Subscribe(_ => UpdateUI());
 		controller.MenuEnabledStream.Subscribe(_ => OnMenuEnable());

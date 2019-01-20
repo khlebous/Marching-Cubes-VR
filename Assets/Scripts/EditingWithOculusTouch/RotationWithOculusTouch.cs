@@ -10,11 +10,10 @@ public class RotationWithOculusTouch : MonoBehaviour
 	[SerializeField] private Transform controllerToFollow;
 
     [Header("Rotatation multipliers")]
-    [SerializeField] private int bound = 10;
+    [SerializeField] private int speed = 10;
 
     private new Transform transform;
-    private Vector3 startControllerPosition;
-    private Vector3 startObjRotation;
+    private Vector3 lastControllerPosition;
 
     private Coroutine button_down;
     private Coroutine button_up;
@@ -22,8 +21,7 @@ public class RotationWithOculusTouch : MonoBehaviour
     private void Start()
     {
         transform = GetComponent<Transform>();
-        startControllerPosition = Vector3.zero;
-        startObjRotation = Vector3.zero;
+        lastControllerPosition = Vector3.zero;
     }
 
     private void StartListening()
@@ -46,9 +44,7 @@ public class RotationWithOculusTouch : MonoBehaviour
         {
             if (OVRInput.GetDown(buttonY))
             {
-                startControllerPosition = controllerToFollow.position;
-                startObjRotation = transform.rotation.eulerAngles;
-
+                lastControllerPosition = controllerToFollow.position;
                 StopCoroutine(button_down);
                 button_up = StartCoroutine(WaitForButton_Up());
             }
@@ -61,8 +57,13 @@ public class RotationWithOculusTouch : MonoBehaviour
     {
         while (true)
         {
-            var currentPos = controllerToFollow.position;
-            var rotation = RotationHelper.GetRotation(transform.position, startObjRotation, startControllerPosition, currentPos);
+            var toObjVector = this.transform.position - lastControllerPosition;
+            var changePosVec = controllerToFollow.transform.position - lastControllerPosition;
+
+            var distVec = Vector3.ProjectOnPlane(changePosVec, toObjVector);
+            distVec.y = 0;
+            var rotation = transform.rotation.eulerAngles;
+            rotation.y += speed * distVec.magnitude;
             transform.rotation = Quaternion.Euler(rotation);
 
             if (OVRInput.GetUp(buttonY))
@@ -74,36 +75,6 @@ public class RotationWithOculusTouch : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
-    }
-
-
-    private void CorrectAnglesIfNeeded()
-    {
-        float eulerAnglesX = transform.eulerAngles.x;
-        if (CheckAngleWithinBounds(eulerAnglesX))
-        {
-            float newEulerAngleX = CalculateNearestAngleWithinBounds(eulerAnglesX);
-            transform.eulerAngles = new Vector3(newEulerAngleX, transform.eulerAngles.y, transform.eulerAngles.z);
-        }
-
-        float eulerAnglesZ = transform.eulerAngles.z;
-        if (CheckAngleWithinBounds(eulerAnglesZ))
-        {
-            float newEulerAngleZ = CalculateNearestAngleWithinBounds(eulerAnglesZ);
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, newEulerAngleZ);
-        }
-    }
-
-    private bool CheckAngleWithinBounds(float angle)
-    {
-        return angle > bound && angle < 360 - bound;
-    }
-
-    private float CalculateNearestAngleWithinBounds(float angle)
-    {
-        float leftDistance = angle - bound;
-        float rightDistance = 360 - angle - bound;
-        return leftDistance > rightDistance ? 360 - bound : bound;
     }
 
 

@@ -59,7 +59,7 @@ namespace MarchingCubesGPUProject
             for (int i = 0; i < meshCount; i++)
             {
                 Mesh mesh = new Mesh();
-                mesh.bounds = new Bounds(new Vector3(0, N / 2, 0), new Vector3(N, N, N)); //what is it for?
+                mesh.bounds = new Bounds(new Vector3(0, 0, 0), new Vector3(N, N, N)); //what is it for?
                 _meshes[i] = mesh;
 
                 GameObject go = new GameObject("Marching Mesh");
@@ -220,7 +220,7 @@ namespace MarchingCubesGPUProject
         //}
         private Matrix4x4 GetFromMcMatrix()
         {
-            var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(-(N - 1), 0, -(N - 1)) / 2);// N-1 is triangle number
+            var mcOffsetTranslation = Matrix4x4.Translate(new Vector3(-(N - 1), -(N - 1), -(N - 1)) / 2);// N-1 is triangle number
             var mcScale = Matrix4x4.Scale(this.transform.lossyScale);
             var mcRotation = Matrix4x4.Rotate(this.transform.rotation);
             var mcPosition = Matrix4x4.Translate(this.transform.position);

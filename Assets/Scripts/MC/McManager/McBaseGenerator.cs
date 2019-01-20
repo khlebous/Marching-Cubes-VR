@@ -38,7 +38,7 @@ public abstract class McBaseGenerator : GPURenderer
     private Mesh InitMesh(Transform parent)
     {
         Mesh mesh = new Mesh();
-        mesh.bounds = new Bounds(new Vector3(0, N / 2, 0), new Vector3(N, N, N)); //what is it for?
+        mesh.bounds = new Bounds(new Vector3(0, 0, 0), new Vector3(N, N, N)); //what is it for?
 
         GameObject go = new GameObject("Marching Mesh");
         go.AddComponent<MeshFilter>();

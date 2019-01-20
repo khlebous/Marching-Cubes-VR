@@ -150,6 +150,8 @@ public class MenuRightSceneController : MonoBehaviour
 			case 3: // Add model to scene
 				if (modelsList.AtLeastOneObjectExist())
 					modelToAddSelectedSubject.OnNext(modelsList.GetChosenGuid());
+				else
+					StartCoroutine(WaitNextFrameAndSetMenuActive());
 				break;
 			case 4: // Edit model
 				if (modelsList.AtLeastOneObjectExist())

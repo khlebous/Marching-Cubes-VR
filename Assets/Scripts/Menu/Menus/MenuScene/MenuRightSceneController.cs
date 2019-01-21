@@ -155,7 +155,7 @@ public class MenuRightSceneController : MonoBehaviour
 				break;
 			case 4: // Edit model
 				if (modelsList.AtLeastOneObjectExist())
-					modelToEditSelectedSubject.OnNext(modelsList.GetChosenGuid());
+                    modelToEditSelectedSubject.OnNext(modelsList.GetChosenGuid());
 				break;
 			case 5: // Delete Model
 				if (modelsList.AtLeastOneObjectExist())
@@ -167,8 +167,7 @@ public class MenuRightSceneController : MonoBehaviour
 		}
 	}
 
-
-	public void OpenMenu()
+    public void OpenMenu()
 	{
 		gameObject.SetActive(true);
 		isMenuActive = true;

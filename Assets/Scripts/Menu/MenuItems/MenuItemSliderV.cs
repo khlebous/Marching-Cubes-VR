@@ -25,7 +25,7 @@ public class MenuItemSliderV : MenuItemV
 
 	public void ResetItem()
 	{
-		slider.value = 0.5f;
+		slider.value = 0.2f;
 		SliderValueChanged();
 		active = false;
 	}

@@ -19,7 +19,9 @@ public class SceneModeController : MonoBehaviour
 	[SerializeField] private ControllerRaycast controllerRaycast;
 	[SerializeField] private CameraCapture cameraCapture;
 
-	protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
+    [SerializeField] private Transform oculusBase;
+
+    protected ISubject<Unit> exitToMainModeSubject = new Subject<Unit>();
 	public IObservable<Unit> ExitToMainModeStream { get { return exitToMainModeSubject; } }
 
 	protected ISubject<LoadData> exitToTerrainModeSubject = new Subject<LoadData>();
@@ -102,7 +104,11 @@ public class SceneModeController : MonoBehaviour
 		scene.transform.localPosition = new Vector3(0, 0, 0);
 		scene.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-		menuSceneController.UpdatePhoto(PathHelper.GetScenePngPath(scene.Guid));
+        sceneContiner.transform.rotation = oculusBase.rotation;
+        var positionOffset = oculusBase.forward * McConsts.TerrN * scene.transform.lossyScale.x - oculusBase.up;
+        sceneContiner.transform.position = oculusBase.position + positionOffset;
+
+        menuSceneController.UpdatePhoto(PathHelper.GetScenePngPath(scene.Guid));
 		TurnOnCurrentMode();
 		ModelsListChanged();
 	}
@@ -224,7 +230,11 @@ public class SceneModeController : MonoBehaviour
 	{
 		GameObject newObject = scene.InstantiateModel(modelGuid);
 
-		ObjectController objectController = newObject.GetComponent<ObjectController>();
+        newObject.transform.rotation = oculusBase.rotation;
+        var positionOffset = oculusBase.forward * McConsts.TerrN  * scene.transform.lossyScale.x + oculusBase.up;
+        newObject.transform.position = oculusBase.position + positionOffset;
+
+        ObjectController objectController = newObject.GetComponent<ObjectController>();
 		objectController.SetControllerToFollow(controllerToFollow);
 		SetObjectSelected(objectController);
 	}

@@ -11,7 +11,7 @@ public class ScaleWithOculusTouch : MonoBehaviour
 
     [Header("Scale multipliers")]
     [SerializeField] private float multiplier = 2f;
-    private float _minScale = 0.02f;
+    private float _minScale = 0.01f;
 
     private new Transform transform;
     private Vector3 LastControllerPosition;

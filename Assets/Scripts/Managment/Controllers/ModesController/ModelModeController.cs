@@ -13,7 +13,9 @@ public class ModelModeController : MonoBehaviour
 	[SerializeField] private McManager mcManager;
 	[SerializeField] private CameraCapture cameraCapture;
 
-	protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
+    [SerializeField] private Transform oculusBase;
+
+    protected ISubject<Unit> modeExitedSubject = new Subject<Unit>();
 	public IObservable<Unit> ModeExitedStream { get { return modeExitedSubject; } }
 
 	protected ISubject<McData> modeSavedAndExitedSubject = new Subject<McData>();
@@ -42,9 +44,14 @@ public class ModelModeController : MonoBehaviour
 
 		model.gameObject.transform.parent = modelContiner.transform;
 		model.transform.localPosition = new Vector3(0, 0, 0);
+        model.transform.localRotation = Quaternion.Euler(Vector3.zero);
 		model.transform.localScale = new Vector3(0.02f, 0.02f, 0.02f);
 
-		modelContiner.SetActive(true);
+        modelContiner.transform.rotation = oculusBase.rotation;
+        var positionOffset = oculusBase.forward * McConsts.ModelN * model.transform.lossyScale.x + oculusBase.up;
+        modelContiner.transform.position = oculusBase.position + positionOffset;
+
+        modelContiner.SetActive(true);
 		menuModelController.UpdatePhoto(PathHelper.GetModelPngPath(model.Guid, sceneGuid));
 		menuModelController.ResetMenus();
 		brush.SetActive();

@@ -23,7 +23,7 @@ public class McTerrainGenerator : McBaseGenerator
 
                 if (x != 0 && z != 0 && x != N - 1 && z != N - 1)
                 {
-                    data.Values[x + z * N] = 2;
+                    data.Values[x + z * N] = 11;
                 }
             }
 

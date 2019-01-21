@@ -56,7 +56,7 @@ namespace Assets.MarchingCubesGPU.Scripts
         public void SetActive()
         {
             mode = TerrainBrushMode.Inactive;
-            this.gameObject.SetActive(true);
+            gameObject.SetActive(true);
             StartListening(TerrainBrushMode.Change);
         }
 
@@ -81,6 +81,8 @@ namespace Assets.MarchingCubesGPU.Scripts
 
         private void StartListening(TerrainBrushMode terrainMode)
         {
+            StopListening();
+            gameObject.SetActive(true);
             buttonB_down = StartCoroutine(WaitForButtonB_Down(terrainMode));
             if (terrainMode != TerrainBrushMode.Color)
                 buttonA_down = StartCoroutine(WaitForButtonA_Down()); // automaticaly extreme change

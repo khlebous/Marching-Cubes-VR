@@ -16,9 +16,9 @@ public class ModelsMenuV : MenuItemV
 	protected ISubject<Guid> itemSelectedSubject = new Subject<Guid>();
 	public IObservable<Guid> ItemSelectedStream { get { return itemSelectedSubject; } }
 
-	private OVRInput.Button selectItemButton = OVRInput.Button.SecondaryThumbstick;
-	private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickLeft;
-	private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickRight;
+	private OVRInput.RawButton selectItemButton = OVRInput.RawButton.RThumbstick;
+	private OVRInput.RawButton prevItemButton = OVRInput.RawButton.RThumbstickLeft;
+	private OVRInput.RawButton nextItemButton = OVRInput.RawButton.RThumbstickRight;
 
 	private int activeItemIndex;
 	private Guid sceneGuid;

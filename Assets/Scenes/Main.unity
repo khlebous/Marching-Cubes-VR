@@ -803,6 +803,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -1015,6 +1016,12 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 466176241}
   m_Mesh: {fileID: 4300000, guid: 874441ba3a3a1044f965525a5140ad60, type: 3}
+--- !u!114 &471727356 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114554548344706306, guid: 28bcf33a4fb569c4f819bf9241065f38,
+    type: 2}
+  m_PrefabInternal: {fileID: 1568609841}
+  m_Script: {fileID: 11500000, guid: 2c35b12edc6bc734385b85580c8d5d1d, type: 3}
 --- !u!4 &483420550 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000010416372058, guid: 84c8b8609f9bb434eaf5248f17ff1293,
@@ -1766,6 +1773,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -2486,21 +2494,21 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 224868592392000938, guid: 0b439dcaefc023d43a8269b184b865b3,
-        type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224868592392000938, guid: 0b439dcaefc023d43a8269b184b865b3,
-        type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 114896367705582948, guid: 0b439dcaefc023d43a8269b184b865b3,
         type: 2}
       propertyPath: brush
       value: 
       objectReference: {fileID: 720026327}
+    - target: {fileID: 224914346968573862, guid: 0b439dcaefc023d43a8269b184b865b3,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224914346968573862, guid: 0b439dcaefc023d43a8269b184b865b3,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0b439dcaefc023d43a8269b184b865b3, type: 2}
   m_IsPrefabParent: 0
@@ -3030,21 +3038,21 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 224934392388733930, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
-        type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224934392388733930, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
-        type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 114866091133667686, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
         type: 2}
       propertyPath: brush
       value: 
       objectReference: {fileID: 1721579687}
+    - target: {fileID: 224467542164534052, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224467542164534052, guid: d1f1d3e4d7f1a5a438281f8b8b287b48,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d1f1d3e4d7f1a5a438281f8b8b287b48, type: 2}
   m_IsPrefabParent: 0
@@ -3241,15 +3249,13 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1177347179759812, guid: 28bcf33a4fb569c4f819bf9241065f38, type: 2}
+      propertyPath: m_Name
+      value: MenuObjectChosen
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 28bcf33a4fb569c4f819bf9241065f38, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &1568609842 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114921850685875314, guid: 28bcf33a4fb569c4f819bf9241065f38,
-    type: 2}
-  m_PrefabInternal: {fileID: 1568609841}
-  m_Script: {fileID: 11500000, guid: 2c35b12edc6bc734385b85580c8d5d1d, type: 3}
 --- !u!1 &1590765278
 GameObject:
   m_ObjectHideFlags: 0
@@ -3876,7 +3882,7 @@ MonoBehaviour:
   sceneContiner: {fileID: 1156782511}
   controllerToFollow: {fileID: 830349226}
   menuSceneController: {fileID: 1590765280}
-  menuObjectChoosen: {fileID: 1568609842}
+  menuObjectChoosen: {fileID: 471727356}
   mcManager: {fileID: 1400500067}
   controllerRaycast: {fileID: 398466545}
   cameraCapture: {fileID: 688125111}

@@ -728,7 +728,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114175504961955860}
-  stopEditingItemButton: 8388608
+  stopEditingItemButton: 1024
 --- !u!114 &114504257389486284
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -790,7 +790,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114639063166552964}
-  stopEditingItemButton: 8388608
+  stopEditingItemButton: 1024
 --- !u!114 &114608113971197142
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -8,13 +8,12 @@ public class MenuItemHMenuV : MenuItemV
 	[SerializeField] private List<MenuItemV> items;
 
 	[Header("Input")]
-	[SerializeField] private OVRInput.Button nextItemButton = OVRInput.Button.SecondaryThumbstickRight;
-	[SerializeField] private OVRInput.Button prevItemButton = OVRInput.Button.SecondaryThumbstickLeft;
+	[SerializeField] private OVRInput.RawButton nextItemButton = OVRInput.RawButton.RThumbstickRight;
+	[SerializeField] private OVRInput.RawButton prevItemButton = OVRInput.RawButton.RThumbstickLeft;
 
 	private ISubject<int> chosenItemStream = new Subject<int>();
 	public IObservable<int> ChosenItemSubject { get { return chosenItemStream; } }
 
-	private ButtonState thumbstick = ButtonState.Normal;
 	private int activeItemIndex = 0;
 	private bool active;
 
@@ -25,7 +24,6 @@ public class MenuItemHMenuV : MenuItemV
 
 	public void ResetItem()
 	{
-		thumbstick = ButtonState.Normal;
 		activeItemIndex = 0;
 		active = false;
 
@@ -52,34 +50,20 @@ public class MenuItemHMenuV : MenuItemV
 	{
 		if (active)
 		{
-			if (OVRInput.Get(prevItemButton))
+			if (OVRInput.GetDown(prevItemButton))
 			{
-				if (thumbstick == ButtonState.Normal)
-				{
-					thumbstick = ButtonState.Left;
-
-					items[activeItemIndex].SetInactive();
-					DecreaseActiveItemIndex();
-					ModeChanged();
-					items[activeItemIndex].SetActive();
-				}
+				items[activeItemIndex].SetInactive();
+				DecreaseActiveItemIndex();
+				ModeChanged();
+				items[activeItemIndex].SetActive();
 
 			}
-			else if (OVRInput.Get(nextItemButton))
+			else if (OVRInput.GetDown(nextItemButton))
 			{
-				if (thumbstick == ButtonState.Normal)
-				{
-					thumbstick = ButtonState.Right;
-					items[activeItemIndex].SetInactive();
-					IncreaseActiveItemIndex();
-					ModeChanged();
-					items[activeItemIndex].SetActive();
-				}
-			}
-			else
-			{
-				if (thumbstick != ButtonState.Normal)
-					thumbstick = ButtonState.Normal;
+				items[activeItemIndex].SetInactive();
+				IncreaseActiveItemIndex();
+				ModeChanged();
+				items[activeItemIndex].SetActive();
 			}
 		}
 	}

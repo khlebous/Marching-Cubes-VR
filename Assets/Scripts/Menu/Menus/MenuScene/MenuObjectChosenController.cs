@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UniRx;
 using System.Collections;
 
-public class MenuObjectChoosenController : MonoBehaviour {
+public class MenuObjectChosenController : MonoBehaviour {
 
 	[Header("Menu items")]
 	[SerializeField] MenuItemV stopEditing;

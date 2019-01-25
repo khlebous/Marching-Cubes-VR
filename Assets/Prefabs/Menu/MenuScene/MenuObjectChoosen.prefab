@@ -72,7 +72,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4958543391657602}
-  - component: {fileID: 114921850685875314}
+  - component: {fileID: 114554548344706306}
   m_Layer: 0
   m_Name: MenuObjectChoosen
   m_TagString: Untagged
@@ -933,7 +933,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Edit model which corresponds to choosen objects
+  m_Text: Edit model which corresponds to chosen objects
 --- !u!114 &114025445722051784
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -982,7 +982,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Menu Object Choosen
+  m_Text: Menu Object Chosen
 --- !u!114 &114057232354983632
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -995,7 +995,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114115564359107300}
-  stopEditingItemButton: 8388608
+  stopEditingItemButton: 4
 --- !u!114 &114066903961025372
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1077,7 +1077,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114145229386427824}
-  stopEditingItemButton: 8388608
+  stopEditingItemButton: 4
 --- !u!114 &114145229386427824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1174,7 +1174,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114363721702862668}
-  stopEditingItemButton: 8388608
+  stopEditingItemButton: 4
+--- !u!114 &114554548344706306
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1177347179759812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c35b12edc6bc734385b85580c8d5d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stopEditing: {fileID: 114494105559596028}
+  editModel: {fileID: 114117278900070516}
+  deleteObject: {fileID: 114057232354983632}
 --- !u!114 &114570546439402790
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1265,20 +1279,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &114921850685875314
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1177347179759812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c35b12edc6bc734385b85580c8d5d1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stopEditing: {fileID: 114494105559596028}
-  editModel: {fileID: 114117278900070516}
-  deleteObject: {fileID: 114057232354983632}
 --- !u!222 &222201900658974726
 CanvasRenderer:
   m_ObjectHideFlags: 1

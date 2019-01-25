@@ -7,7 +7,7 @@ public class MenuItemV : MonoBehaviour
 	[SerializeField] protected MultiStateMaterial highlight;
 
 	[Header("Input")]
-	[SerializeField] private OVRInput.Button stopEditingItemButton = OVRInput.Button.SecondaryThumbstick;
+	[SerializeField] private OVRInput.RawButton stopEditingItemButton = OVRInput.RawButton.RThumbstick;
 
 	protected ISubject<Unit> thubstickClickedSubject = new Subject<Unit>();
 	public IObservable<Unit> ThubstickClickedStream { get { return thubstickClickedSubject; } }

@@ -970,7 +970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114941024804635592}
-  stopEditingItemButton: 8388608
+  stopEditingItemButton: 1024
 --- !u!114 &114610752430835248
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1004,7 +1004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114662586138441186}
-  stopEditingItemButton: 8388608
+  stopEditingItemButton: 1024
 --- !u!114 &114659647573878020
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1047,7 +1047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlight: {fileID: 114325409373321962}
-  stopEditingItemButton: 8388608
+  stopEditingItemButton: 1024
 --- !u!114 &114840456072812678
 MonoBehaviour:
   m_ObjectHideFlags: 1

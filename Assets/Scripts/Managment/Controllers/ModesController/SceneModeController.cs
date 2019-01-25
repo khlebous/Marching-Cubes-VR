@@ -11,7 +11,7 @@ public class SceneModeController : MonoBehaviour
 	[SerializeField] private GameObject sceneContiner;
 	[SerializeField] private Transform controllerToFollow;
 	[SerializeField] private MenuSceneController menuSceneController;
-	[SerializeField] private MenuObjectChoosenController menuObjectChoosen;
+	[SerializeField] private MenuObjectChosenController menuObjectChoosen;
 
 	[Header("Other")]
 	[SerializeField]

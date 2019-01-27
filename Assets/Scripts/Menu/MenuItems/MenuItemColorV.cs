@@ -41,29 +41,29 @@ public class MenuItemColorV : MenuItemV
 	{
 		if (active)
 		{
-			if (OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
+			if (OVRInput.Get(OVRInput.RawButton.RIndexTrigger))
 			{
 				colorHuePicker.Input(ButtonState.Right);
 			}
-			else if (OVRInput.Get(OVRInput.Button.SecondaryHandTrigger))
+			else if (OVRInput.Get(OVRInput.RawButton.RHandTrigger))
 			{
 				colorHuePicker.Input(ButtonState.Left);
 			}
-			else if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickLeft))
+			else if (OVRInput.Get(OVRInput.RawButton.RThumbstickLeft))
 			{
 				intensity.Input(ButtonState.Left);
 
 			}
-			else if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickRight))
+			else if (OVRInput.Get(OVRInput.RawButton.RThumbstickRight))
 			{
 				intensity.Input(ButtonState.Right);
 			}
-			else if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickUp))
+			else if (OVRInput.Get(OVRInput.RawButton.RThumbstickUp))
 			{
 				intensity.Input(ButtonState.Up);
 
 			}
-			else if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickDown))
+			else if (OVRInput.Get(OVRInput.RawButton.RThumbstickDown))
 			{
 				intensity.Input(ButtonState.Down);
 			}

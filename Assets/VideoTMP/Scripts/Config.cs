@@ -48,7 +48,8 @@ namespace RockVR.Video
             get
             {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-                return streamingAssetsPath + "/RockVR/FFmpeg/Windows/ffmpeg.exe";
+				Debug.Log(System.IO.Directory.GetCurrentDirectory() + "/Assets/VideoTMP/RockVR/FFmpeg/Windows/ffmpeg.exe");
+                return System.IO.Directory.GetCurrentDirectory() + "/Assets/VideoTMP/RockVR/FFmpeg/Windows/ffmpeg.exe";
 #elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
                 return streamingAssetsPath + "/RockVR/FFmpeg/OSX/ffmpeg";
 #else

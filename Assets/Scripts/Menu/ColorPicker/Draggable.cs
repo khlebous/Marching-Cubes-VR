@@ -77,9 +77,11 @@ public class Draggable : MonoBehaviour
 	{
 		thumb.localPosition = new Vector3(fixX ? thumb.localPosition.x : point.x, fixY ? thumb.localPosition.y : point.y, thumb.localPosition.z);
 		var point2 = Vector3.one - (thumb.position - GetComponent<Collider>().bounds.min) / GetComponent<Collider>().bounds.size.x;
-
 		if (!fixX && !fixY)
-			colorSaturationBrightnessPicker.OnDrag(point2);
+		{
+			Vector3 newColor = Vector3.one - (thumb.localPosition + new Vector3(40.0f, 40.0f)) / 80.0f;
+			colorSaturationBrightnessPicker.OnDrag(newColor);
+		}
 		else
 			colorHuePicker.OnDrag(point2);
 	}

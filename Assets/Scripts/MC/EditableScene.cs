@@ -30,7 +30,6 @@ public class EditableScene : MonoBehaviour
         obj.AddComponent<ScaleWithOculusTouch>();
         obj.GetComponent<ScaleWithOculusTouch>().enabled = false;
 
-        obj.tag = Constants.OBJECT_TAG;
         obj.SetActive(true);
 
         return obj;

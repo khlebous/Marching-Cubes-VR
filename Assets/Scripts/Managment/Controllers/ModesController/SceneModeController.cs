@@ -14,8 +14,7 @@ public class SceneModeController : MonoBehaviour
 	[SerializeField] private MenuObjectChosenController menuObjectChoosen;
 
 	[Header("Other")]
-	[SerializeField]
-	private McManager mcManager;
+	[SerializeField] private McManager mcManager;
 	[SerializeField] private ControllerRaycast controllerRaycast;
 	[SerializeField] private CameraCapture cameraCapture;
 

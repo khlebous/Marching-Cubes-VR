@@ -51,8 +51,6 @@ Navigation when menu open:
 
 #### Example
 
-// TODO exapmple explanation
-
 | ![menu_right_scene](https://user-images.githubusercontent.com/29755810/52978972-dff4f700-33d3-11e9-8ec2-f18906ce1dac.png) | ![menu_right_scene_0](https://user-images.githubusercontent.com/29755810/52978973-dff4f700-33d3-11e9-8a3a-7e1d1c092392.png) |
 ![menu_right_scene_1](https://user-images.githubusercontent.com/29755810/52978974-dff4f700-33d3-11e9-8b08-ce6e9e4cd4d3.png) | 
 |:-------------:|:-------------:|:-----:|
@@ -63,21 +61,3 @@ Navigation when menu open:
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|
 |:-------------:|:-------------:|:-----:|
 |(d)|(e)||
-
-#### Menu positions types
-
-// TODO
-
-### Main mode
-
-// TODO
-
-### Scene mode
-
-// TODO
-
-### Terrain mode
-
-// TODO
-
-### Model mode
